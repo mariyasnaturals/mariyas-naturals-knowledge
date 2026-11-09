@@ -50,7 +50,15 @@ for (const lang of locales) {
         ),
         `Broken route ${href}`,
       );
-    else assert.equal(new URL(href).origin, 'https://www.mariyasnaturals.com');
+    else {
+      assert.ok($(a).is('[data-source-reference]'));
+      assert.ok(
+        [
+          'https://mariyasnaturals.in',
+          'https://www.mariyasnaturals.com',
+        ].includes(new URL(href).origin),
+      );
+    }
   }
   console.log(
     `PASS ${lang}: metadata, language links, navigation, story and structured data`,
@@ -118,6 +126,16 @@ function validateTree(directory) {
         'No image hotlinks',
       );
       assert.ok(existsSync(new URL(src.slice(1), root)), 'Local image exists');
+      for (const candidate of ($(node).attr('srcset') || '')
+        .split(',')
+        .filter(Boolean)) {
+        const imagePath = candidate.trim().split(/\s+/)[0];
+        assert.ok(
+          imagePath.startsWith('/') &&
+            existsSync(new URL(imagePath.slice(1), root)),
+          'Local responsive derivative exists',
+        );
+      }
       assert.ok(
         $(node).attr('width') && $(node).attr('height'),
         'Images reserve layout space',
@@ -141,7 +159,7 @@ function validateTree(directory) {
       }
     }
     assert.equal(
-      $('a[href*="mariyasnaturals.com"]').length,
+      $('a[href*="mariyasnaturals.com"]:not([data-source-reference])').length,
       0,
       'Commerce remains disabled during migration',
     );

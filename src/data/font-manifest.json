@@ -1,0 +1,58 @@
+[
+  {
+    "name": "inter",
+    "subset": "latin",
+    "path": "/fonts/inter-latin-wght-normal.woff2",
+    "bytes": 48256,
+    "license": "/fonts/licenses/inter.txt"
+  },
+  {
+    "name": "cormorant-garamond",
+    "subset": "latin",
+    "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+    "bytes": 37640,
+    "license": "/fonts/licenses/cormorant-garamond.txt"
+  },
+  {
+    "name": "noto-sans-malayalam",
+    "subset": "malayalam",
+    "path": "/fonts/noto-sans-malayalam-malayalam-wght-normal.woff2",
+    "bytes": 89468,
+    "license": "/fonts/licenses/noto-sans-malayalam.txt"
+  },
+  {
+    "name": "noto-serif-malayalam",
+    "subset": "malayalam",
+    "path": "/fonts/noto-serif-malayalam-malayalam-wght-normal.woff2",
+    "bytes": 57548,
+    "license": "/fonts/licenses/noto-serif-malayalam.txt"
+  },
+  {
+    "name": "noto-sans-devanagari",
+    "subset": "devanagari",
+    "path": "/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2",
+    "bytes": 121192,
+    "license": "/fonts/licenses/noto-sans-devanagari.txt"
+  },
+  {
+    "name": "noto-serif-devanagari",
+    "subset": "devanagari",
+    "path": "/fonts/noto-serif-devanagari-devanagari-wght-normal.woff2",
+    "bytes": 126864,
+    "license": "/fonts/licenses/noto-serif-devanagari.txt"
+  },
+  {
+    "name": "noto-sans-tamil",
+    "subset": "tamil",
+    "path": "/fonts/noto-sans-tamil-tamil-wght-normal.woff2",
+    "bytes": 50468,
+    "license": "/fonts/licenses/noto-sans-tamil.txt"
+  },
+  {
+    "name": "noto-serif-tamil",
+    "subset": "tamil",
+    "path": "/fonts/noto-serif-tamil-tamil-wght-normal.woff2",
+    "bytes": 52720,
+    "license": "/fonts/licenses/noto-serif-tamil.txt"
+  }
+]

@@ -10,6 +10,7 @@ export interface EditorialPage {
   kind: ContentKind;
   lang: Locale;
   title: string;
+  titleLang?: Locale;
   description: string;
   sources: readonly EditorialSource[];
   reviewed: boolean;

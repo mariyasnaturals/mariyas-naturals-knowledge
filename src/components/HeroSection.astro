@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from './ArrowIcon.astro';
 import BotanicalArt from './BotanicalArt.astro';
 import ProductVisual from './ProductVisual.astro';
 import { featuredProduct } from '../data/products';
@@ -22,14 +23,18 @@ const { t, lang } = Astro.props;
       <div class="actions">
         <a class="button button-gold" href="#story">
           {t.explore}
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </a>
         <a class="text-link" href="#ingredients">
           {t.discover}
         </a>
       </div>
       <a class="scroll-invitation" href="#story">
-        <span aria-hidden="true">↓</span>
+        <span aria-hidden="true">
+          <ArrowIcon direction="down" />
+        </span>
         {t.scrollInvitation}
       </a>
     </div>
@@ -37,7 +42,13 @@ const { t, lang } = Astro.props;
       <div class="hero-orbit" aria-hidden="true"></div>
       <BotanicalArt class="hero-botanical" />
       <div class="hero-product">
-        <ProductVisual product={featuredProduct} lang={lang} t={t} priority />
+        <ProductVisual
+          product={featuredProduct}
+          lang={lang}
+          t={t}
+          priority
+          sizes="(min-width: 1100px) 500px, (min-width: 760px) 40vw, 300px"
+        />
       </div>
       <p class="composition-caption">{t.heroNote}</p>
       <span class="specimen-index" aria-hidden="true">
@@ -47,6 +58,6 @@ const { t, lang } = Astro.props;
   </div>
   <div class="hero-baseline wrap">
     <span>{t.natureCare}</span>
-    <span>EN · മലയാളം · हिन्दी · தமிழ்</span>
+    <span lang="en">MARIYAS NATURALS / JOURNAL</span>
   </div>
 </section>

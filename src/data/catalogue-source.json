@@ -1,0 +1,4448 @@
+{
+  "verifiedOn": "2026-11-09",
+  "endpoints": {
+    "in": "https://mariyasnaturals.in/wp-json/wc/store/v1/products?per_page=100",
+    "com": "https://www.mariyasnaturals.com/wp-json/wc/store/v1/products?per_page=100"
+  },
+  "reportedTotals": {
+    "in": 86,
+    "com": 90
+  },
+  "records": [
+    {
+      "store": "in",
+      "id": 3012,
+      "name": "Ghee – Vechoor Cow 500 g",
+      "sku": "98121",
+      "slug": "ghee-vechoor-cow-500-g",
+      "url": "https://mariyasnaturals.in/product/ghee-vechoor-cow-500-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3011,
+      "name": "Chyavanaprash",
+      "sku": "90605",
+      "slug": "chyavanaprash",
+      "url": "https://mariyasnaturals.in/product/chyavanaprash/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3010,
+      "name": "Mariyas Hair Oil – 1 ltr",
+      "sku": "89554",
+      "slug": "mariyas-hair-oil-1-ltr",
+      "url": "https://mariyasnaturals.in/product/mariyas-hair-oil-1-ltr/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3009,
+      "name": "Mariyas Herbal Hair Care – 500 ml",
+      "sku": "89553",
+      "slug": "mariyas-herbal-hair-care-500-ml",
+      "url": "https://mariyasnaturals.in/product/mariyas-herbal-hair-care-500-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 4290,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-1.webp"
+        },
+        {
+          "id": 4291,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-2.webp"
+        },
+        {
+          "id": 4292,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-3.webp"
+        },
+        {
+          "id": 4293,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-4.webp"
+        }
+      ]
+    },
+    {
+      "store": "in",
+      "id": 3008,
+      "name": "Mariyas Herbal Hair Care Oil – 200 ml",
+      "sku": "89552",
+      "slug": "mariyas-herbal-hair-care-oil-200-ml",
+      "url": "https://mariyasnaturals.in/product/mariyas-herbal-hair-care-oil-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 4294,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-1.webp"
+        },
+        {
+          "id": 4295,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-2.webp"
+        },
+        {
+          "id": 4296,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-3.webp"
+        },
+        {
+          "id": 4297,
+          "catalogueUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-4.webp"
+        }
+      ]
+    },
+    {
+      "store": "in",
+      "id": 3007,
+      "name": "Karkidaka Kanji",
+      "sku": "89315",
+      "slug": "karkidaka-kanji",
+      "url": "https://mariyasnaturals.in/product/karkidaka-kanji/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3005,
+      "name": "Navara Powder 100 g",
+      "sku": "79451",
+      "slug": "navara-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/navara-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3004,
+      "name": "Green Gram Powder 100 g",
+      "sku": "79450",
+      "slug": "green-gram-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/green-gram-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3003,
+      "name": "Kolarakku Powder 100 g",
+      "sku": "79449",
+      "slug": "kolarakku-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/kolarakku-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3002,
+      "name": "Triphala Powder 100 g",
+      "sku": "79448",
+      "slug": "triphala-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/triphala-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3001,
+      "name": "Nalpamaram Powder 100 g",
+      "sku": "79447",
+      "slug": "nalpamaram-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/nalpamaram-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 3000,
+      "name": "Irattimadhuram Powder 100 g",
+      "sku": "79446",
+      "slug": "irattimadhuram-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/irattimadhuram-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2999,
+      "name": "Multani Mitti Powder 100 g",
+      "sku": "79445",
+      "slug": "multani-mitti-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/multani-mitti-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        },
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2998,
+      "name": "Vetiver Powder 100 g",
+      "sku": "79444",
+      "slug": "vetiver-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/vetiver-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2997,
+      "name": "Shikkakai Powder 100 g",
+      "sku": "79443",
+      "slug": "shikkakai-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/shikkakai-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2996,
+      "name": "Curry Leaves Powder 100 g",
+      "sku": "79442",
+      "slug": "curry-leaves-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/curry-leaves-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2995,
+      "name": "Nellikka Powder 100 g",
+      "sku": "79441",
+      "slug": "nellikka-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/nellikka-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        },
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2994,
+      "name": "Manjistha Powder 100 g",
+      "sku": "79440",
+      "slug": "manjistha-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/manjistha-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2993,
+      "name": "Wild Turmeric Powder 100 g",
+      "sku": "79439",
+      "slug": "wild-turmeric-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/wild-turmeric-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2992,
+      "name": "Sandalwood Powder 100 g",
+      "sku": "79438",
+      "slug": "sandalwood-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/sandalwood-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2991,
+      "name": "Shatavari Powder 100 g",
+      "sku": "79437",
+      "slug": "shatavari-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/shatavari-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2990,
+      "name": "Red Sandalwood Powder 100 g",
+      "sku": "79436",
+      "slug": "red-sandalwood-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/red-sandalwood-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2989,
+      "name": "Reetha Powder 100 g",
+      "sku": "79435",
+      "slug": "reetha-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/reetha-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2988,
+      "name": "Pathimugham Powder 100 g",
+      "sku": "79434",
+      "slug": "pathimugham-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/pathimugham-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2987,
+      "name": "Tulsi Powder 100 g",
+      "sku": "79433",
+      "slug": "tulsi-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/tulsi-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2986,
+      "name": "Brahmi Powder 100 g",
+      "sku": "79432",
+      "slug": "brahmi-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/brahmi-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2985,
+      "name": "Neem Powder 100 g",
+      "sku": "79431",
+      "slug": "neem-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/neem-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2954,
+      "name": "Bhringraj Powder 100 g",
+      "sku": "79430",
+      "slug": "bhringraj-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/bhringraj-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2953,
+      "name": "Moringa Leaves Powder 100 g",
+      "sku": "79429",
+      "slug": "moringa-leaves-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/moringa-leaves-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2952,
+      "name": "Ashwagandha Powder 100 g",
+      "sku": "79428",
+      "slug": "ashwagandha-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/ashwagandha-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2951,
+      "name": "Amla And Aloe Vera Shampoo 200 ml",
+      "sku": "79032",
+      "slug": "amla-and-aloe-vera-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/amla-and-aloe-vera-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2950,
+      "name": "Bruhath Dhantapala Thailam 500 ml",
+      "sku": "78961",
+      "slug": "bruhath-dhantapala-thailam-500-ml",
+      "url": "https://mariyasnaturals.in/product/bruhath-dhantapala-thailam-500-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2949,
+      "name": "Indigo Powder 100 g",
+      "sku": "78952",
+      "slug": "indigo-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/indigo-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2948,
+      "name": "Mariyas Hair & Skin Care Kit",
+      "sku": "77781",
+      "slug": "mariyas-hair-skin-care-kit",
+      "url": "https://mariyasnaturals.in/product/mariyas-hair-skin-care-kit/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2947,
+      "name": "Deshapushpam Shower Gel 250 ml",
+      "sku": "77629",
+      "slug": "deshapushpam-shower-gel-250-ml",
+      "url": "https://mariyasnaturals.in/product/deshapushpam-shower-gel-250-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2946,
+      "name": "Saffron Face Cream 100 g",
+      "sku": "77628",
+      "slug": "saffron-face-cream-100-g",
+      "url": "https://mariyasnaturals.in/product/saffron-face-cream-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2945,
+      "name": "Fenugreek Tulsi Neem Shampoo 200 ml",
+      "sku": "77627",
+      "slug": "fenugreek-tulsi-neem-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/fenugreek-tulsi-neem-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2944,
+      "name": "Amla And Indigo Shampoo 200 ml",
+      "sku": "77626",
+      "slug": "amla-and-indigo-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/amla-and-indigo-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2943,
+      "name": "Five Flowers Body Cream 250 g",
+      "sku": "77619",
+      "slug": "five-flowers-body-cream-250-g",
+      "url": "https://mariyasnaturals.in/product/five-flowers-body-cream-250-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2942,
+      "name": "Rosemary Water 200 ml",
+      "sku": "76995",
+      "slug": "rosemary-water-200-ml",
+      "url": "https://mariyasnaturals.in/product/rosemary-water-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2940,
+      "name": "Body Cream 30 g",
+      "sku": "47358",
+      "slug": "body-cream-30-g",
+      "url": "https://mariyasnaturals.in/product/body-cream-30-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2939,
+      "name": "Hair Cream 30 g",
+      "sku": "47355",
+      "slug": "hair-cream-30-g",
+      "url": "https://mariyasnaturals.in/product/hair-cream-30-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2938,
+      "name": "Mens Face Gel 100 g",
+      "sku": "47273",
+      "slug": "mens-face-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/mens-face-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2937,
+      "name": "Lotus Gel 100 g",
+      "sku": "47270",
+      "slug": "lotus-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/lotus-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2936,
+      "name": "Neem Tulsi Gel 100 g",
+      "sku": "47268",
+      "slug": "neem-tulsi-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/neem-tulsi-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2935,
+      "name": "Hibiscus Gel 100 g",
+      "sku": "24246",
+      "slug": "hibiscus-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/hibiscus-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2934,
+      "name": "Lotus Gel 100 g – No Stock",
+      "sku": "24220",
+      "slug": "lotus-gel-100-g-no-stock",
+      "url": "https://mariyasnaturals.in/product/lotus-gel-100-g-no-stock/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2933,
+      "name": "Mariyas Oil Treated Comb – Combo Pack",
+      "sku": "21919",
+      "slug": "mariyas-oil-treated-comb-combo-pack",
+      "url": "https://mariyasnaturals.in/product/mariyas-oil-treated-comb-combo-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2932,
+      "name": "Mariyas Oil Treated Comb – Fine",
+      "sku": "21918",
+      "slug": "mariyas-oil-treated-comb-fine",
+      "url": "https://mariyasnaturals.in/product/mariyas-oil-treated-comb-fine/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2931,
+      "name": "Mariyas Oil Treated Comb – Wide",
+      "sku": "21914",
+      "slug": "mariyas-oil-treated-comb-wide",
+      "url": "https://mariyasnaturals.in/product/mariyas-oil-treated-comb-wide/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2930,
+      "name": "Mariyas Oil Treated Comb – Dual",
+      "sku": "21885",
+      "slug": "mariyas-oil-treated-comb-dual",
+      "url": "https://mariyasnaturals.in/product/mariyas-oil-treated-comb-dual/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2929,
+      "name": "Arrowroot Powder 250 g",
+      "sku": "19676",
+      "slug": "arrowroot-powder-250-g",
+      "url": "https://mariyasnaturals.in/product/arrowroot-powder-250-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2928,
+      "name": "Mariyas Fairness Natural Soap",
+      "sku": "19674",
+      "slug": "mariyas-fairness-natural-soap",
+      "url": "https://mariyasnaturals.in/product/mariyas-fairness-natural-soap/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2927,
+      "name": "Saffron Fairness Oil",
+      "sku": "19597",
+      "slug": "saffron-fairness-oil",
+      "url": "https://mariyasnaturals.in/product/saffron-fairness-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2926,
+      "name": "Mariyas Virgin Coconut Oil",
+      "sku": "19591",
+      "slug": "mariyas-virgin-coconut-oil",
+      "url": "https://mariyasnaturals.in/product/mariyas-virgin-coconut-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2925,
+      "name": "Mariyas Pure Organic Honey 250 g",
+      "sku": "19589",
+      "slug": "mariyas-pure-organic-honey-250-g",
+      "url": "https://mariyasnaturals.in/product/mariyas-pure-organic-honey-250-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2894,
+      "name": "Kajal",
+      "sku": "19587",
+      "slug": "kajal",
+      "url": "https://mariyasnaturals.in/product/kajal/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2893,
+      "name": "Heal Crack Cream 25 g",
+      "sku": "19528",
+      "slug": "heel-crack-cream-25-g",
+      "url": "https://mariyasnaturals.in/product/heel-crack-cream-25-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 80,
+          "name": "Skin Care",
+          "slug": "skin-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2892,
+      "name": "Papaya Gel 100 g",
+      "sku": "19527",
+      "slug": "papaya-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/papaya-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2891,
+      "name": "Alovera Gel 100 g",
+      "sku": "19526",
+      "slug": "alovera-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/alovera-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2890,
+      "name": "Cucumber Gel 100 g",
+      "sku": "19525",
+      "slug": "cucumber-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/cucumber-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2889,
+      "name": "Saffron Gel 100 g",
+      "sku": "19517",
+      "slug": "saffron-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/saffron-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2888,
+      "name": "Orange Peel Face Pack 100 g",
+      "sku": "19513",
+      "slug": "orange-peel-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/orange-peel-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2887,
+      "name": "Lotus Petals Face Pack 100 g",
+      "sku": "19512",
+      "slug": "lotus-petals-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/lotus-petals-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2886,
+      "name": "Rose Petals Face Pack 100 g",
+      "sku": "19511",
+      "slug": "rose-petals-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/rose-petals-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2885,
+      "name": "Papaya Face Pack 100 g",
+      "sku": "19507",
+      "slug": "papaya-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/papaya-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2884,
+      "name": "Beard Oil 50 ml",
+      "sku": "19226",
+      "slug": "beard-oil-50-ml",
+      "url": "https://mariyasnaturals.in/product/beard-oil-50-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2883,
+      "name": "Rose Water 200 ml",
+      "sku": "19224",
+      "slug": "rose-water-200-ml",
+      "url": "https://mariyasnaturals.in/product/rose-water-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2882,
+      "name": "Under Eye Dark Circle Oil 10 ml",
+      "sku": "19222",
+      "slug": "under-eye-dark-circle-oil-10-ml",
+      "url": "https://mariyasnaturals.in/product/under-eye-dark-circle-oil-10-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2881,
+      "name": "Eyebrow Oil 10 ml",
+      "sku": "19219",
+      "slug": "eyebrow-oil-10-ml",
+      "url": "https://mariyasnaturals.in/product/eyebrow-oil-10-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2880,
+      "name": "Lip Balm 10 g",
+      "sku": "19216",
+      "slug": "lip-balm-10-g",
+      "url": "https://mariyasnaturals.in/product/lip-balm-10-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2879,
+      "name": "Hair Pack & Wash Powder 100 g",
+      "sku": "19214",
+      "slug": "hair-pack-wash-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/hair-pack-wash-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2878,
+      "name": "Chemparathi Thali 100 g",
+      "sku": "19212",
+      "slug": "chemparathi-thali-100-g",
+      "url": "https://mariyasnaturals.in/product/chemparathi-thali-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2877,
+      "name": "Henna Powder 100 g",
+      "sku": "19210",
+      "slug": "henna-powder-100-g",
+      "url": "https://mariyasnaturals.in/product/henna-powder-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2876,
+      "name": "Strawberry Gel 100 g",
+      "sku": "19208",
+      "slug": "strawberry-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/strawberry-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2875,
+      "name": "Rosepetal Gel 100 g",
+      "sku": "19206",
+      "slug": "rosepetal-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/rosepetal-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2874,
+      "name": "Redwine Gel 100 g",
+      "sku": "19204",
+      "slug": "redwine-gel-100-g",
+      "url": "https://mariyasnaturals.in/product/redwine-gel-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2873,
+      "name": "Mixed Fruits Face Pack 100 g",
+      "sku": "19202",
+      "slug": "mixed-fruits-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/mixed-fruits-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2872,
+      "name": "Herbal Face Pack 100 g",
+      "sku": "19200",
+      "slug": "herbal-face-pack-100-g",
+      "url": "https://mariyasnaturals.in/product/herbal-face-pack-100-g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2871,
+      "name": "Tulsi Shampoo 200 ml",
+      "sku": "19197",
+      "slug": "tulsi-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/tulsi-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2870,
+      "name": "Honey Aloevera Shampoo 200 ml",
+      "sku": "19195",
+      "slug": "honey-aloevera-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/honey-aloevera-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2869,
+      "name": "Amla Shikkakai Shampoo 200 ml",
+      "sku": "19193",
+      "slug": "amla-shikkakai-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/amla-shikkakai-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2868,
+      "name": "Coconut Milk Shampoo 200 ml",
+      "sku": "19191",
+      "slug": "coconut-milk-shampoo-200-ml",
+      "url": "https://mariyasnaturals.in/product/coconut-milk-shampoo-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 79,
+          "name": "Hair Care",
+          "slug": "hair-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2867,
+      "name": "Baby Hair Oil 200 ml",
+      "sku": "19189",
+      "slug": "baby-hair-oil-200-ml",
+      "url": "https://mariyasnaturals.in/product/baby-hair-oil-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2866,
+      "name": "Baby Massage Oil 200 ml",
+      "sku": "19187",
+      "slug": "baby-massage-oil-200-ml",
+      "url": "https://mariyasnaturals.in/product/baby-massage-oil-200-ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "in",
+      "id": 2865,
+      "name": "Mariyas Herbal Hair Care Oil",
+      "sku": "19185",
+      "slug": "mariyas-herbal-hair-care-oil",
+      "url": "https://mariyasnaturals.in/product/mariyas-herbal-hair-care-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": []
+    },
+    {
+      "store": "com",
+      "id": 98121,
+      "name": "Ghee – Vechoor Cow 500GM",
+      "sku": "",
+      "slug": "ghee-vechoor-cow",
+      "url": "https://www.mariyasnaturals.com/product/ghee-vechoor-cow/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 103396,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2026/04/4_5.jpg?fit=1080%2C1350&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 90605,
+      "name": "Chyavanaprash",
+      "sku": "",
+      "slug": "chyavanaprasam",
+      "url": "https://www.mariyasnaturals.com/product/chyavanaprasam/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 90614,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2025/08/WhatsApp-Image-2025-08-27-at-16.56.14.jpeg?fit=716%2C711&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 89315,
+      "name": "Karkidaka kanji",
+      "sku": "KANJI",
+      "slug": "karkidaka-kanji",
+      "url": "https://www.mariyasnaturals.com/product/karkidaka-kanji/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 89316,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2025/07/kanji.jpeg?fit=1280%2C1280&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 85958,
+      "name": "Hair Oil 500ml + Comb",
+      "sku": "3304",
+      "slug": "hair-oil-500ml-comb",
+      "url": "https://www.mariyasnaturals.com/product/hair-oil-500ml-comb/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 85963,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-05-at-4.21.41-PM.jpeg?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79451,
+      "name": "Navara Powder 100g",
+      "sku": "",
+      "slug": "navara-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/navara-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79419,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Navara-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79450,
+      "name": "Green Gram Powder 100g",
+      "sku": "",
+      "slug": "green-gram-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/green-gram-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79411,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/green-gram-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79449,
+      "name": "Kolarakku Powder 100g",
+      "sku": "",
+      "slug": "kolarakku-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/kolarakku-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79414,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Kolarakku-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79448,
+      "name": "Triphala Powder 100g",
+      "sku": "",
+      "slug": "triphala-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/triphala-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79424,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/triphala-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79447,
+      "name": "Nalpamaram Powder 100g",
+      "sku": "",
+      "slug": "nalpamaram-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/nalpamaram-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79418,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Nalpamaram-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79446,
+      "name": "Irattimadhuram Powder 100g",
+      "sku": "",
+      "slug": "irattimadhuram-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/irattimadhuram-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79413,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/irattimadhuram-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79445,
+      "name": "Multani mitti Powder 100g",
+      "sku": "",
+      "slug": "multani-mitti-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/multani-mitti-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79417,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Multanimutti-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79444,
+      "name": "Vetiver Powder 100g",
+      "sku": "",
+      "slug": "vetiver-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/vetiver-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79425,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/vetiver-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79442,
+      "name": "Curry Leaves Powder 100g",
+      "sku": "",
+      "slug": "curry-leaves-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/curry-leaves-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79410,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Curry-leaves-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79443,
+      "name": "Shikkakai Powder 100g",
+      "sku": "",
+      "slug": "shikkakai-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/shikkakai-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79423,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Shikkakai-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79441,
+      "name": "Nellikka Powder 100g",
+      "sku": "",
+      "slug": "nellikka-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/nellikka-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79421,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Nellikka-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79440,
+      "name": "Manjistha Powder 100g",
+      "sku": "",
+      "slug": "manjistha-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/manjistha-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79415,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Manjistha-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79439,
+      "name": "Wild Turmeric Powder 100g",
+      "sku": "",
+      "slug": "wild-turmeric-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/wild-turmeric-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79426,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Wild-turmeric-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79438,
+      "name": "Sandalwood Powder 100g",
+      "sku": "",
+      "slug": "sandalwood-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/sandalwood-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79404,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Sandalwood-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79437,
+      "name": "Shatavari Powder 100g",
+      "sku": "",
+      "slug": "shatavari-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/shatavari-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79405,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Shathavari-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79436,
+      "name": "Red Sandalwood Powder 100g",
+      "sku": "",
+      "slug": "red-sandalwood-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/red-sandalwood-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79422,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/red-sandal-wood-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79435,
+      "name": "Reetha Powder 100g",
+      "sku": "",
+      "slug": "reetha-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/reetha-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79403,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Reetha-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79434,
+      "name": "Pathimugham Powder 100g",
+      "sku": "",
+      "slug": "pathimugham-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/pathimugham-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79402,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Pathimugham-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79433,
+      "name": "Tulsi Powder 100g",
+      "sku": "",
+      "slug": "tulsi-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/tulsi-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79406,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Tulsi-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79432,
+      "name": "Brahmi Powder 100g",
+      "sku": "",
+      "slug": "brahmi-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/brahmi-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79408,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Brahmi-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79431,
+      "name": "Neem Powder 100g",
+      "sku": "",
+      "slug": "neem-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/neem-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79420,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Neem-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79430,
+      "name": "Bhringraj Powder 100g",
+      "sku": "",
+      "slug": "bhringraj-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/bhringraj-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79409,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Bringaraj-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79429,
+      "name": "Moringa leaves Powder 100g",
+      "sku": "",
+      "slug": "moringa-leaves-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/moringa-leaves-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79416,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Moringa-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79428,
+      "name": "Ashwagandha Powder 100g",
+      "sku": "",
+      "slug": "ashwagandha-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/ashwagandha-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79407,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Aswagandha-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 79032,
+      "name": "Amla and Aloe Vera Shampoo 200ml",
+      "sku": "",
+      "slug": "amla-aloe-vera-shampoo-200ml",
+      "url": "https://www.mariyasnaturals.com/product/amla-aloe-vera-shampoo-200ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79034,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/amla-and-alovera-shampoo.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 78952,
+      "name": "Indigo Powder 100g",
+      "sku": "",
+      "slug": "indigo-powder-100g",
+      "url": "https://www.mariyasnaturals.com/product/indigo-powder-100g/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79401,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Indigo-powder-100g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 78961,
+      "name": "Bruhath Dhantapala Thailam 500ml",
+      "sku": "",
+      "slug": "bruhath-dhantapala-thailam-500ml",
+      "url": "https://www.mariyasnaturals.com/product/bruhath-dhantapala-thailam-500ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 78965,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/Bruhath-dhantapala-thailam-500.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77781,
+      "name": "Mariyas Hair & Skin care Kit",
+      "sku": "",
+      "slug": "mariyas-hair-skin-care-kit",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-hair-skin-care-kit/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77782,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/mariyas-hair-and-skin-care-kit.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77629,
+      "name": "Deshapushpam Shower Gel 250 ml",
+      "sku": "",
+      "slug": "deshapushpam-shower-gel",
+      "url": "https://www.mariyasnaturals.com/product/deshapushpam-shower-gel/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77623,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/2.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77628,
+      "name": "Saffron face cream 100gm",
+      "sku": "",
+      "slug": "saffron-face-cream",
+      "url": "https://www.mariyasnaturals.com/product/saffron-face-cream/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77622,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/3.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77627,
+      "name": "Fenugreek Tulsi Neem shampoo 200ml",
+      "sku": "",
+      "slug": "fenugreek-tulsi-neem-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/fenugreek-tulsi-neem-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77620,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/5.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77626,
+      "name": "Amla and Indigo Shampoo 200ml",
+      "sku": "",
+      "slug": "amla-and-indigo-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/amla-and-indigo-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77621,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/4.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 77619,
+      "name": "Five Flowers Body Cream 250gm",
+      "sku": "",
+      "slug": "five-flowers-body-cream",
+      "url": "https://www.mariyasnaturals.com/product/five-flowers-body-cream/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 77624,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/07/6.webp?fit=810%2C810&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 76995,
+      "name": "Rosemary Water 200ml",
+      "sku": "3304",
+      "slug": "rosemary-water-200ml",
+      "url": "https://www.mariyasnaturals.com/product/rosemary-water-200ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        },
+        {
+          "id": 93,
+          "name": "Natural Cosmetics",
+          "slug": "natural-cosmetics"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 76996,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/06/12.png?fit=2025%2C2025&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 75038,
+      "name": "MARIYAS HAIR OIL 200ml",
+      "sku": "mariyas-hair-oil",
+      "slug": "mariyas-hair-oil-200ml",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-hair-oil-200ml/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69406,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-herbal-hair-care-oil-1.webp?fit=1215%2C1215&ssl=1"
+        },
+        {
+          "id": 75039,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/05/Mariyas-herbal-hair-care-oil-200.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 47358,
+      "name": "Body Cream 30gm",
+      "sku": "3304",
+      "slug": "body-cream-30gm",
+      "url": "https://www.mariyasnaturals.com/product/body-cream-30gm/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 93,
+          "name": "Natural Cosmetics",
+          "slug": "natural-cosmetics"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [
+        {
+          "id": 0,
+          "name": "HSN",
+          "taxonomy": null,
+          "has_variations": false,
+          "terms": [
+            {
+              "id": 0,
+              "name": "3004",
+              "slug": "3004"
+            }
+          ]
+        }
+      ],
+      "variations": [],
+      "images": [
+        {
+          "id": 69425,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Body-cream.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 47355,
+      "name": "Hair Cream 30gm",
+      "sku": "3004",
+      "slug": "hair-cream-30gm",
+      "url": "https://www.mariyasnaturals.com/product/hair-cream-30gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69012,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-hair-cream.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 47273,
+      "name": "Mens Face Gel 100gm",
+      "sku": "",
+      "slug": "mens-face-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/mens-face-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69014,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Men-s_Face-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 47270,
+      "name": "Lotus Gel 100gm",
+      "sku": "",
+      "slug": "lotus-gel-100gm-2",
+      "url": "https://www.mariyasnaturals.com/product/lotus-gel-100gm-2/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69008,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Lotus-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 47268,
+      "name": "Neem Tulsi Gel  100gm",
+      "sku": "",
+      "slug": "neem-tulsi-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/neem-tulsi-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69004,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Neem-thulsi.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 30312,
+      "name": "Anti Pigmentation Kit",
+      "sku": "",
+      "slug": "anti-pigmentation-kit",
+      "url": "https://www.mariyasnaturals.com/product/anti-pigmentation-kit/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69451,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Anti-Pigmentation-Kit.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 30303,
+      "name": "Pimples Acne Kit",
+      "sku": "",
+      "slug": "pimples-acne-kit",
+      "url": "https://www.mariyasnaturals.com/product/pimples-acne-kit/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69450,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Pimple-acne-kit.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 27956,
+      "name": "Anti Hair Fall Kit",
+      "sku": "",
+      "slug": "anti-hair-fall-kit",
+      "url": "https://www.mariyasnaturals.com/product/anti-hair-fall-kit/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 67123,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2022/11/ANTI-HAIR-FALL-KIT.jpg?fit=600%2C600&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 27926,
+      "name": "Anti Dandruff Pack with Comb",
+      "sku": "3304,9615",
+      "slug": "anti-dandruff-pack-with-comb",
+      "url": "https://www.mariyasnaturals.com/product/anti-dandruff-pack-with-comb/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 67124,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2022/11/ANTI-DANDRUFF-PACK-WITH-COMB.jpg?fit=600%2C600&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 27915,
+      "name": "Hair Regrowth Kit",
+      "sku": "",
+      "slug": "hair-regrowth-kit",
+      "url": "https://www.mariyasnaturals.com/product/hair-regrowth-kit/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69448,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Hair-re_growth-kit.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 25421,
+      "name": "Hair Oil Hair Pack Combo",
+      "sku": "",
+      "slug": "hair-oil-hair-pack-combo",
+      "url": "https://www.mariyasnaturals.com/product/hair-oil-hair-pack-combo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [
+        {
+          "id": 0,
+          "name": "Month",
+          "taxonomy": null,
+          "has_variations": true,
+          "terms": [
+            {
+              "id": 0,
+              "name": "1 Month",
+              "slug": "1 Month",
+              "default": true
+            },
+            {
+              "id": 0,
+              "name": "3 Months",
+              "slug": "3 Months",
+              "default": false
+            },
+            {
+              "id": 0,
+              "name": "6 Months",
+              "slug": "6 Months",
+              "default": false
+            }
+          ]
+        }
+      ],
+      "variations": [],
+      "images": [
+        {
+          "id": 69445,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/65.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 25247,
+      "name": "Premature Greying Combo Pack",
+      "sku": "",
+      "slug": "premature-greying-combo-pack",
+      "url": "https://www.mariyasnaturals.com/product/premature-greying-combo-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79033,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/08/pre-mature-greying-combo-pack.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 25154,
+      "name": "Anti Dandruff Pack",
+      "sku": "",
+      "slug": "anti-dandruff-pack",
+      "url": "https://www.mariyasnaturals.com/product/anti-dandruff-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69442,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Anti-dandruff-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 24246,
+      "name": "Hibiscus Gel 100gm",
+      "sku": "",
+      "slug": "hisbicus-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/hisbicus-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69006,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Hibiscus-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 21919,
+      "name": "Mariyas oil Treated Comb – Combo Pack",
+      "sku": "9615",
+      "slug": "mariyas-oil-treated-comb-combo-pack",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-combo-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 161,
+          "name": "Combo Packs",
+          "slug": "combo-packs"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69438,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-combs-combo.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 21918,
+      "name": "Mariyas oil Treated Comb – Fine",
+      "sku": "",
+      "slug": "mariyas-oil-treated-comb-fine",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-fine/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69421,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-comb-fine.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 21914,
+      "name": "Mariyas oil Treated Comb – Wide",
+      "sku": "",
+      "slug": "mariyas-oil-treated-comb-wide",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-wide/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69422,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-neem-comb-wide.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 21885,
+      "name": "Mariyas oil Treated Comb – Dual",
+      "sku": "",
+      "slug": "mariyas-oil-treated-comb-dual",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-dual/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69437,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-comb-dual.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19676,
+      "name": "Arrowroot Powder 250gm",
+      "sku": "",
+      "slug": "arrow-root-powder",
+      "url": "https://www.mariyasnaturals.com/product/arrow-root-powder/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        },
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69397,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/arrowroot-powder.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19674,
+      "name": "Mariyas Fairness Natural Soap",
+      "sku": "3401",
+      "slug": "mariyas-fairness-natural-soap",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-fairness-natural-soap/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 68999,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-fairness-natural-soap.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19597,
+      "name": "Saffron Fairness Oil",
+      "sku": "",
+      "slug": "saffron-fairness-oil",
+      "url": "https://www.mariyasnaturals.com/product/saffron-fairness-oil/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69431,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/saffron-fairness-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19591,
+      "name": "Mariyas Virgin Coconut Oil",
+      "sku": "",
+      "slug": "organic-virgin-coconut-oil",
+      "url": "https://www.mariyasnaturals.com/product/organic-virgin-coconut-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        },
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [
+        {
+          "id": 0,
+          "name": "Weight",
+          "taxonomy": null,
+          "has_variations": true,
+          "terms": [
+            {
+              "id": 0,
+              "name": "250ML",
+              "slug": "250ML",
+              "default": true
+            },
+            {
+              "id": 0,
+              "name": "500ML",
+              "slug": "500ML",
+              "default": false
+            },
+            {
+              "id": 0,
+              "name": "1L",
+              "slug": "1L",
+              "default": false
+            }
+          ]
+        }
+      ],
+      "variations": [],
+      "images": [
+        {
+          "id": 69432,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Organic-virgin-coconut-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19589,
+      "name": "Mariyas Pure Organic Honey 250GM",
+      "sku": "",
+      "slug": "mariyas-pure-organic-honey",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-pure-organic-honey/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 106,
+          "name": "Organic",
+          "slug": "organic"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69395,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/pure-organic-honey.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19587,
+      "name": "Kajal",
+      "sku": "",
+      "slug": "kajal",
+      "url": "https://www.mariyasnaturals.com/product/kajal/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69000,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Kajal.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19528,
+      "name": "Heel Crack Cream 25gm",
+      "sku": "",
+      "slug": "heel-crack-cream-25gm",
+      "url": "https://www.mariyasnaturals.com/product/heel-crack-cream-25gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69883,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Heel-crack-cream.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19527,
+      "name": "Papaya Gel 100G",
+      "sku": "",
+      "slug": "papaya-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/papaya-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69005,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/papaya-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19526,
+      "name": "Alovera Gel 100gm",
+      "sku": "",
+      "slug": "aloe-vera-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/aloe-vera-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69424,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Alovera-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19525,
+      "name": "Cucumber Gel 100G",
+      "sku": "",
+      "slug": "cucumber-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/cucumber-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69003,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/cucumber-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19517,
+      "name": "Saffron Gel 100G",
+      "sku": "",
+      "slug": "saffron-gel-100gm",
+      "url": "https://www.mariyasnaturals.com/product/saffron-gel-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69007,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Saffron-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19513,
+      "name": "Orange Peel Face Pack 100G",
+      "sku": "",
+      "slug": "orange-peel-face-pack-100gm",
+      "url": "https://www.mariyasnaturals.com/product/orange-peel-face-pack-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 145,
+          "name": "Face Pack",
+          "slug": "face-pack"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69401,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/orange-peel-face-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19507,
+      "name": "Papaya Face Pack 100G",
+      "sku": "",
+      "slug": "papaya-face-pack-100gm",
+      "url": "https://www.mariyasnaturals.com/product/papaya-face-pack-100gm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 145,
+          "name": "Face Pack",
+          "slug": "face-pack"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69402,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/pappaya-face-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19226,
+      "name": "BEARD OIL 50ML",
+      "sku": "",
+      "slug": "mariyas-beard-oil",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-beard-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69427,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Beared-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19224,
+      "name": "Rose Water 200ML",
+      "sku": "3303",
+      "slug": "mariyas-rose-water",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-rose-water/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 145,
+          "name": "Face Pack",
+          "slug": "face-pack"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 68998,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/mariyas-rose-water.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19222,
+      "name": "Under Eye Dark Circle Oil 10 ML",
+      "sku": "",
+      "slug": "mariyas-under-eye-dark-circle-oil",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-under-eye-dark-circle-oil/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        },
+        {
+          "id": 93,
+          "name": "Natural Cosmetics",
+          "slug": "natural-cosmetics"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69429,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/under-eye-dark-circles-removal-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19219,
+      "name": "Eyebrow Oil 10ML",
+      "sku": "",
+      "slug": "mariyas-eyebrow-oil",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-eyebrow-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 93,
+          "name": "Natural Cosmetics",
+          "slug": "natural-cosmetics"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69428,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/eyebrow-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19216,
+      "name": "Lip Balm 10gm",
+      "sku": "",
+      "slug": "mariyas-lip-balm",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-lip-balm/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 93,
+          "name": "Natural Cosmetics",
+          "slug": "natural-cosmetics"
+        },
+        {
+          "id": 146,
+          "name": "Skin Care",
+          "slug": "skin_care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69013,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Lip-balm.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19214,
+      "name": "Hair Pack  & Wash Powder 100gm",
+      "sku": "",
+      "slug": "mariyas-herbal-hair-pack",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-herbal-hair-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69399,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-hair-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19212,
+      "name": "Chemparathi Thali 100gm",
+      "sku": "",
+      "slug": "mariyas-chemparathi-thaali",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-chemparathi-thaali/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69430,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Chembarathi-thali.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19210,
+      "name": "Henna Powder 100G",
+      "sku": "1404",
+      "slug": "mariyas-henna-powder",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-henna-powder/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 79400,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2021/11/henna-powder-110g.webp?fit=800%2C800&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19208,
+      "name": "Strawberry Gel 100GM",
+      "sku": "",
+      "slug": "mariyas-strawberry-gel",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-strawberry-gel/",
+      "type": "simple",
+      "inStockAtVerification": false,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69010,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/strawberry-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19206,
+      "name": "Rosepetal Gel 100G",
+      "sku": "",
+      "slug": "mariyas-rose-petals-gel",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-rose-petals-gel/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69426,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Rose-petal-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19204,
+      "name": "Redwine Gel 100G",
+      "sku": "3003",
+      "slug": "mariyas-redwine-gel",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-redwine-gel/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 158,
+          "name": "Gels",
+          "slug": "gels"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69011,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Redwine-gel.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19202,
+      "name": "MIXED FRIUTS FACE PACK 100gm",
+      "sku": "",
+      "slug": "mariyas-mixed-fruits-face-pack",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-mixed-fruits-face-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 145,
+          "name": "Face Pack",
+          "slug": "face-pack"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69400,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/mixed-fruit-face-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19200,
+      "name": "Herbal Face Pack 100G",
+      "sku": "1211",
+      "slug": "mariyas-herbal-face-pack",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-herbal-face-pack/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 145,
+          "name": "Face Pack",
+          "slug": "face-pack"
+        },
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69398,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-face-pack.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19197,
+      "name": "Tulsi Shampoo 200ML",
+      "sku": "",
+      "slug": "mariyas-tulsi-amla-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-tulsi-amla-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69434,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Tulsi-shampoo.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19195,
+      "name": "Honey Aloevera Shampoo 200ML",
+      "sku": "",
+      "slug": "mariyas-honey-aloevera-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-honey-aloevera-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69433,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Honey-alovera-shampoo.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19193,
+      "name": "Amla Shikkakai Shampoo 200ml",
+      "sku": "",
+      "slug": "mariyas-amla-shikakai-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-amla-shikakai-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 68995,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Amla-shikkakai-shampoo.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19191,
+      "name": "Coconut Milk Shampoo 200ml",
+      "sku": "3304 – Coconut",
+      "slug": "mariyas-coconut-mik-shampoo",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-coconut-mik-shampoo/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [],
+      "attributes": [
+        {
+          "id": 0,
+          "name": "3305",
+          "taxonomy": null,
+          "has_variations": false,
+          "terms": [
+            {
+              "id": 0,
+              "name": "HSN",
+              "slug": "HSN"
+            }
+          ]
+        }
+      ],
+      "variations": [],
+      "images": [
+        {
+          "id": 68996,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/coconut-anti-dandruff-shampoo.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19189,
+      "name": "Baby Hair Oil 200ml",
+      "sku": "",
+      "slug": "mariyas-baby-hair-care-oil",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-baby-hair-care-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69396,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-baby-hair-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19187,
+      "name": "Baby Massage Oil 200ml",
+      "sku": "",
+      "slug": "mariyas-baby-massage-oil",
+      "url": "https://www.mariyasnaturals.com/product/mariyas-baby-massage-oil/",
+      "type": "simple",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 142,
+          "name": "Baby Care",
+          "slug": "baby-care"
+        }
+      ],
+      "attributes": [],
+      "variations": [],
+      "images": [
+        {
+          "id": 69404,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/mariyas-baby-body-massage-oil.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    },
+    {
+      "store": "com",
+      "id": 19185,
+      "name": "MARIYAS HAIR OIL",
+      "sku": "3305",
+      "slug": "hair-care-oil-1l",
+      "url": "https://www.mariyasnaturals.com/product/hair-care-oil-1l/",
+      "type": "variable",
+      "inStockAtVerification": true,
+      "categories": [
+        {
+          "id": 95,
+          "name": "Gents Corner",
+          "slug": "gents-corner"
+        }
+      ],
+      "attributes": [
+        {
+          "id": 0,
+          "name": "Quantity",
+          "taxonomy": null,
+          "has_variations": true,
+          "terms": [
+            {
+              "id": 0,
+              "name": "200ML",
+              "slug": "200ML",
+              "default": true
+            },
+            {
+              "id": 0,
+              "name": "500ML",
+              "slug": "500ML",
+              "default": false
+            },
+            {
+              "id": 0,
+              "name": "1LTR",
+              "slug": "1LTR",
+              "default": false
+            }
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "id": 89552,
+          "attributes": [
+            {
+              "name": "Quantity",
+              "value": "200ML"
+            }
+          ]
+        },
+        {
+          "id": 89553,
+          "attributes": [
+            {
+              "name": "Quantity",
+              "value": "500ML"
+            }
+          ]
+        },
+        {
+          "id": 89554,
+          "attributes": [
+            {
+              "name": "Quantity",
+              "value": "1LTR"
+            }
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": 69406,
+          "catalogueUrl": "https://i0.wp.com/www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-herbal-hair-care-oil-1.webp?fit=1215%2C1215&ssl=1"
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "store": "com",
+      "id": 103396,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2026/04/4_5.jpg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/103396"
+    },
+    {
+      "store": "com",
+      "id": 90614,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2025/08/WhatsApp-Image-2025-08-27-at-16.56.14.jpeg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/90614"
+    },
+    {
+      "store": "com",
+      "id": 89316,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2025/07/kanji.jpeg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/89316"
+    },
+    {
+      "store": "com",
+      "id": 85963,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-05-at-4.21.41-PM.jpeg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/85963"
+    },
+    {
+      "store": "com",
+      "id": 79426,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Wild-turmeric-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79426"
+    },
+    {
+      "store": "com",
+      "id": 79425,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/vetiver-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79425"
+    },
+    {
+      "store": "com",
+      "id": 79424,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/triphala-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79424"
+    },
+    {
+      "store": "com",
+      "id": 79423,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Shikkakai-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79423"
+    },
+    {
+      "store": "com",
+      "id": 79422,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/red-sandal-wood-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79422"
+    },
+    {
+      "store": "com",
+      "id": 79421,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Nellikka-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79421"
+    },
+    {
+      "store": "com",
+      "id": 79420,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Neem-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79420"
+    },
+    {
+      "store": "com",
+      "id": 79419,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Navara-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79419"
+    },
+    {
+      "store": "com",
+      "id": 79418,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Nalpamaram-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79418"
+    },
+    {
+      "store": "com",
+      "id": 79417,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Multanimutti-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79417"
+    },
+    {
+      "store": "com",
+      "id": 79416,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Moringa-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79416"
+    },
+    {
+      "store": "com",
+      "id": 79415,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Manjistha-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79415"
+    },
+    {
+      "store": "com",
+      "id": 79414,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Kolarakku-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79414"
+    },
+    {
+      "store": "com",
+      "id": 79413,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/irattimadhuram-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79413"
+    },
+    {
+      "store": "com",
+      "id": 79411,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/green-gram-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79411"
+    },
+    {
+      "store": "com",
+      "id": 79410,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Curry-leaves-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79410"
+    },
+    {
+      "store": "com",
+      "id": 79409,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Bringaraj-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79409"
+    },
+    {
+      "store": "com",
+      "id": 79408,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Brahmi-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79408"
+    },
+    {
+      "store": "com",
+      "id": 79407,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Aswagandha-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79407"
+    },
+    {
+      "store": "com",
+      "id": 79406,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Tulsi-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79406"
+    },
+    {
+      "store": "com",
+      "id": 79405,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Shathavari-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79405"
+    },
+    {
+      "store": "com",
+      "id": 79404,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Sandalwood-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79404"
+    },
+    {
+      "store": "com",
+      "id": 79403,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Reetha-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79403"
+    },
+    {
+      "store": "com",
+      "id": 79402,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Pathimugham-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79402"
+    },
+    {
+      "store": "com",
+      "id": 79401,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Indigo-powder-100g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79401"
+    },
+    {
+      "store": "com",
+      "id": 79400,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2021/11/henna-powder-110g.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79400"
+    },
+    {
+      "store": "com",
+      "id": 79034,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/amla-and-alovera-shampoo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79034"
+    },
+    {
+      "store": "com",
+      "id": 79033,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/pre-mature-greying-combo-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/79033"
+    },
+    {
+      "store": "com",
+      "id": 78965,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/08/Bruhath-dhantapala-thailam-500.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/78965"
+    },
+    {
+      "store": "com",
+      "id": 77782,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/mariyas-hair-and-skin-care-kit.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77782"
+    },
+    {
+      "store": "com",
+      "id": 77624,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/6.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77624"
+    },
+    {
+      "store": "com",
+      "id": 77623,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/2.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77623"
+    },
+    {
+      "store": "com",
+      "id": 77622,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/3.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77622"
+    },
+    {
+      "store": "com",
+      "id": 77621,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/4.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77621"
+    },
+    {
+      "store": "com",
+      "id": 77620,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/07/5.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/77620"
+    },
+    {
+      "store": "com",
+      "id": 76996,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/06/12.png",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/76996"
+    },
+    {
+      "store": "com",
+      "id": 75039,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/05/Mariyas-herbal-hair-care-oil-200.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/75039"
+    },
+    {
+      "store": "com",
+      "id": 69883,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Heel-crack-cream.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69883"
+    },
+    {
+      "store": "com",
+      "id": 69451,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Anti-Pigmentation-Kit.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69451"
+    },
+    {
+      "store": "com",
+      "id": 69450,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Pimple-acne-kit.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69450"
+    },
+    {
+      "store": "com",
+      "id": 69448,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Hair-re_growth-kit.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69448"
+    },
+    {
+      "store": "com",
+      "id": 69445,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/65.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69445"
+    },
+    {
+      "store": "com",
+      "id": 69442,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Anti-dandruff-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69442"
+    },
+    {
+      "store": "com",
+      "id": 69438,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-combs-combo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69438"
+    },
+    {
+      "store": "com",
+      "id": 69437,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-comb-dual.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69437"
+    },
+    {
+      "store": "com",
+      "id": 69434,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Tulsi-shampoo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69434"
+    },
+    {
+      "store": "com",
+      "id": 69433,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Honey-alovera-shampoo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69433"
+    },
+    {
+      "store": "com",
+      "id": 69432,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Organic-virgin-coconut-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69432"
+    },
+    {
+      "store": "com",
+      "id": 69431,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/saffron-fairness-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69431"
+    },
+    {
+      "store": "com",
+      "id": 69430,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Chembarathi-thali.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69430"
+    },
+    {
+      "store": "com",
+      "id": 69429,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/under-eye-dark-circles-removal-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69429"
+    },
+    {
+      "store": "com",
+      "id": 69428,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/eyebrow-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69428"
+    },
+    {
+      "store": "com",
+      "id": 69427,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Beared-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69427"
+    },
+    {
+      "store": "com",
+      "id": 69426,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Rose-petal-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69426"
+    },
+    {
+      "store": "com",
+      "id": 69425,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Body-cream.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69425"
+    },
+    {
+      "store": "com",
+      "id": 69424,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Alovera-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69424"
+    },
+    {
+      "store": "com",
+      "id": 69422,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-neem-comb-wide.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69422"
+    },
+    {
+      "store": "com",
+      "id": 69421,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/oil-treated-comb-fine.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69421"
+    },
+    {
+      "store": "com",
+      "id": 69406,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-herbal-hair-care-oil-1.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69406"
+    },
+    {
+      "store": "com",
+      "id": 69404,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/mariyas-baby-body-massage-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69404"
+    },
+    {
+      "store": "com",
+      "id": 69402,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/pappaya-face-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69402"
+    },
+    {
+      "store": "com",
+      "id": 69401,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/orange-peel-face-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69401"
+    },
+    {
+      "store": "com",
+      "id": 69400,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/mixed-fruit-face-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69400"
+    },
+    {
+      "store": "com",
+      "id": 69399,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-hair-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69399"
+    },
+    {
+      "store": "com",
+      "id": 69398,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-face-pack.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69398"
+    },
+    {
+      "store": "com",
+      "id": 69397,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/arrowroot-powder.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69397"
+    },
+    {
+      "store": "com",
+      "id": 69396,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-baby-hair-oil.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69396"
+    },
+    {
+      "store": "com",
+      "id": 69395,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/pure-organic-honey.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69395"
+    },
+    {
+      "store": "com",
+      "id": 69014,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Men-s_Face-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69014"
+    },
+    {
+      "store": "com",
+      "id": 69013,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Lip-balm.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69013"
+    },
+    {
+      "store": "com",
+      "id": 69012,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/herbal-hair-cream.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69012"
+    },
+    {
+      "store": "com",
+      "id": 69011,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Redwine-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69011"
+    },
+    {
+      "store": "com",
+      "id": 69010,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/strawberry-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69010"
+    },
+    {
+      "store": "com",
+      "id": 69008,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Lotus-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69008"
+    },
+    {
+      "store": "com",
+      "id": 69007,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Saffron-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69007"
+    },
+    {
+      "store": "com",
+      "id": 69006,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Hibiscus-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69006"
+    },
+    {
+      "store": "com",
+      "id": 69005,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/papaya-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69005"
+    },
+    {
+      "store": "com",
+      "id": 69004,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Neem-thulsi.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69004"
+    },
+    {
+      "store": "com",
+      "id": 69003,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/cucumber-gel.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69003"
+    },
+    {
+      "store": "com",
+      "id": 69000,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Kajal.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/69000"
+    },
+    {
+      "store": "com",
+      "id": 68999,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Mariyas-fairness-natural-soap.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/68999"
+    },
+    {
+      "store": "com",
+      "id": 68998,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/mariyas-rose-water.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/68998"
+    },
+    {
+      "store": "com",
+      "id": 68996,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/coconut-anti-dandruff-shampoo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/68996"
+    },
+    {
+      "store": "com",
+      "id": 68995,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2024/04/Amla-shikkakai-shampoo.webp",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/68995"
+    },
+    {
+      "store": "com",
+      "id": 67124,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2022/11/ANTI-DANDRUFF-PACK-WITH-COMB.jpg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/67124"
+    },
+    {
+      "store": "com",
+      "id": 67123,
+      "sourceUrl": "https://www.mariyasnaturals.com/wp-content/uploads/2022/11/ANTI-HAIR-FALL-KIT.jpg",
+      "metadataUrl": "https://www.mariyasnaturals.com/wp-json/wp/v2/media/67123"
+    },
+    {
+      "store": "in",
+      "id": 4290,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-1.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3009"
+    },
+    {
+      "store": "in",
+      "id": 4291,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-2.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3009"
+    },
+    {
+      "store": "in",
+      "id": 4292,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-3.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3009"
+    },
+    {
+      "store": "in",
+      "id": 4293,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-500ml-4.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3009"
+    },
+    {
+      "store": "in",
+      "id": 4294,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-1.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3008"
+    },
+    {
+      "store": "in",
+      "id": 4295,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-2.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3008"
+    },
+    {
+      "store": "in",
+      "id": 4296,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-3.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3008"
+    },
+    {
+      "store": "in",
+      "id": 4297,
+      "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/mariyas-hair-oil-200ml-4.webp",
+      "metadataUrl": "https://mariyasnaturals.in/wp-json/wc/store/v1/products/3008"
+    }
+  ]
+}

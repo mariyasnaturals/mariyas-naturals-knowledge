@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -16,11 +17,11 @@ const t = dictionaries[page.lang];
   <main id="main" tabindex="-1" class="editorial-main">
     <article class:list={['wrap section', `content-${page.kind}`]}>
       <a class="text-link" href={`/${page.lang}/#products`}>
-        ← {t.backDiscovery}
+        <ArrowIcon direction="left" /> {t.backDiscovery}
       </a>
       <header class="editorial-heading">
         <p class="eyebrow">MARIYAS NATURALS / {t.journal}</p>
-        <h1>{page.title}</h1>
+        <h1 lang={page.titleLang}>{page.title}</h1>
         <p class="lede">{page.description}</p>
         {!page.reviewed && <p class="editor-note">{t.preview}</p>}
       </header>

@@ -1,0 +1,93 @@
+/* Script-specific fonts preserve OpenType shaping, conjuncts and diacritics. */
+:root,
+:lang(en) {
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond Variable', Georgia, serif;
+}
+:lang(ml) {
+  --font-sans: 'Noto Sans Malayalam Variable', 'Inter Variable', sans-serif;
+  --font-display:
+    'Noto Serif Malayalam Variable', 'Cormorant Garamond Variable', serif;
+}
+:lang(hi) {
+  --font-sans: 'Noto Sans Devanagari Variable', 'Inter Variable', sans-serif;
+  --font-display:
+    'Noto Serif Devanagari Variable', 'Cormorant Garamond Variable', serif;
+}
+:lang(ta) {
+  --font-sans: 'Noto Sans Tamil Variable', 'Inter Variable', sans-serif;
+  --font-display:
+    'Noto Serif Tamil Variable', 'Cormorant Garamond Variable', serif;
+}
+body,
+.language-switcher a,
+.language-menu summary,
+:where([lang]) {
+  font-family: var(--font-sans);
+}
+h1,
+h2,
+h3,
+.brand,
+.footer-brand {
+  font-family: var(--font-display);
+}
+html:lang(ml) {
+  line-height: 1.95;
+}
+html:lang(hi) {
+  line-height: 1.85;
+}
+html:lang(ta) {
+  line-height: 1.9;
+}
+html:not(:lang(en)) body {
+  line-height: inherit;
+}
+html:not(:lang(en)) :is(h1, h2, h3) {
+  line-height: 1.55;
+  letter-spacing: normal;
+  font-weight: 450;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+html:not(:lang(en)) .eyebrow,
+html:not(:lang(en)) .announcement,
+html:not(:lang(en)) .hero-baseline {
+  letter-spacing: normal;
+  text-transform: none;
+}
+html:not(:lang(en)) .premium-hero h1 {
+  font-size: clamp(2rem, 4.1vw, 4rem);
+  max-width: 18ch;
+}
+html:not(:lang(en)) .lede {
+  line-height: 1.95;
+}
+html:not(:lang(en)) .story-scene h3 {
+  font-size: 1.5rem;
+}
+html:not(:lang(en)) .mobile-bottom-nav a {
+  font-size: 0.67rem;
+  line-height: 1.6;
+}
+html:not(:lang(en)) .composition-caption {
+  font-style: normal !important;
+  line-height: 1.8 !important;
+}
+.product-copy [lang='en'],
+.catalogue-card [lang='en'] {
+  font-family: 'Cormorant Garamond Variable', Georgia, serif;
+  line-height: 1.2;
+}
+@media (max-width: 759px) {
+  html:not(:lang(en)) .premium-hero h1 {
+    font-size: clamp(1.85rem, 8.1vw, 2.65rem);
+  }
+  html:not(:lang(en)) h2 {
+    font-size: 1.8rem;
+  }
+  html:not(:lang(en)) .editorial-heading h1 {
+    font-size: 2.1rem;
+  }
+}

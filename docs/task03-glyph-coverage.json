@@ -1,0 +1,62 @@
+{
+  "ml": {
+    "sans": {
+      "scriptCodepointsChecked": 57,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "മലയാളം പ്രകൃതി ക്ഷേമം വ്യക്തിപരിചരണം പാരമ്പര്യം ക്ക ക്ഷ ന്ത്ര ശ്ര ച്ച ഞ്ച",
+      "shapedGlyphs": 42,
+      "missingShapedGlyphs": 0
+    },
+    "serif": {
+      "scriptCodepointsChecked": 57,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "മലയാളം പ്രകൃതി ക്ഷേമം വ്യക്തിപരിചരണം പാരമ്പര്യം ക്ക ക്ഷ ന്ത്ര ശ്ര ച്ച ഞ്ച",
+      "shapedGlyphs": 42,
+      "missingShapedGlyphs": 0
+    }
+  },
+  "hi": {
+    "sans": {
+      "scriptCodepointsChecked": 54,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "प्रकृति परंपरा व्यक्तिगत देखभाल क्ष त्र ज्ञ श्र",
+      "shapedGlyphs": 27,
+      "missingShapedGlyphs": 0
+    },
+    "serif": {
+      "scriptCodepointsChecked": 54,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "प्रकृति परंपरा व्यक्तिगत देखभाल क्ष त्र ज्ञ श्र",
+      "shapedGlyphs": 27,
+      "missingShapedGlyphs": 0
+    }
+  },
+  "ta": {
+    "sans": {
+      "scriptCodepointsChecked": 38,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "தமிழ் இயற்கை பாரம்பரியம் கூந்தல் பராமரிப்பு ஸ்ரீ",
+      "shapedGlyphs": 31,
+      "missingShapedGlyphs": 0
+    },
+    "serif": {
+      "scriptCodepointsChecked": 38,
+      "missing": [],
+      "GSUB": true,
+      "GPOS": true,
+      "sample": "தமிழ் இயற்கை பாரம்பரியம் கூந்தல் பராமரிப்பு ஸ்ரீ",
+      "shapedGlyphs": 38,
+      "missingShapedGlyphs": 0
+    }
+  }
+}

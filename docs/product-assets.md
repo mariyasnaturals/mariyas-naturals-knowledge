@@ -1,44 +1,40 @@
-# Authentic product media: acquisition and coverage
+# Authentic Mariyas product media
 
-## Observed access result
+Verified on 2026-11-09. Task 03 supersedes Task 02's blocked acquisition; the historical results remain in `task02-validation.md`.
 
-Task 02 attempted public HTTPS requests to `https://mariyasnaturals.in/` (primary source) and `https://www.mariyasnaturals.com/` (secondary reference). Both failed with `CONNECT tunnel failed, response 403`, from the cloud egress proxy before either store could be inspected. This does **not** establish that the websites are down or that WordPress requires authentication. No login, API bypass, direct-origin request or private-system access was attempted. Repeating WordPress endpoint requests behind the same denied origin would not establish anything further.
+The published Cloud network policy reported current observations and enforced access for `mariyasnaturals.in` and `mariyasnaturals.com`, including their `www` variants. Actual HTTPS GET results: `.in` 200, `.com` 301 to `https://www.mariyasnaturals.com/`, and `www.mariyasnaturals.com` 200. The sandbox could not connect to the inherited proxy; approved execution outside the command sandbox reached the same policy-enforcing Cloud proxy with TLS verification enabled.
 
-The current environment network policy has no custom allowed hosts. Configuration draft reads failed twice with “current environment draft could not be verified”; no network settings were changed or saved. To resume discovery, allow outbound HTTPS to `mariyasnaturals.in` and `www.mariyasnaturals.com` in cloud environment settings. Add redirected or image-host domains only after their actual destinations are identified and reviewed. This is cloud development access, not a change to WordPress, DNS, SSL or the VPS.
+Public WooCommerce Store API catalogues returned 86 primary records and 90 secondary records, each with `X-WP-TotalPages: 1`. The primary product sitemap also contains 86 products. No login, authenticated WooCommerce endpoint, WordPress mutation or private data was accessed.
 
-## Coverage (actual, not estimated)
+The secondary catalogue advertises `i0.wp.com` image URLs. The user approved this exact CDN host, but it was not added to network configuration or requested: the public attachment metadata exposed original `source_url` values on the already authorized `www.mariyasnaturals.com` origin, and all originals returned 200 without redirects. No unknown image host was followed.
 
-| Item                                                 |                          Count |
-| ---------------------------------------------------- | -----------------------------: |
-| Source-discovered product entries                    |                              0 |
-| Source-verified products / SKUs / sizes              |                              0 |
-| Source image URLs found                              |                              0 |
-| Authentic images downloaded                          |                              0 |
-| Images optimized / deduplicated / integrated         |                              0 |
-| User-supplied product references waiting for imagery |           1 (Mariyas Hair Oil) |
-| Total actual catalogue size                          |                        Unknown |
-| Missing main/gallery/combo/variant asset count       | Unknown until catalogue access |
+| Coverage                                    | Actual count |
+| ------------------------------------------- | -----------: |
+| Primary source product listings             |           86 |
+| Secondary source product listings           |           90 |
+| Consolidated product families               |           93 |
+| Explicit Hair Oil size variants             |            3 |
+| Product families with main images           |           90 |
+| Product families missing main images        |            3 |
+| Downloaded source attachments               |           98 |
+| Distinct images after SHA-256 deduplication |           97 |
+| Responsive local WebP files                 |          289 |
+| Local derivative bytes                      |   10,373,678 |
 
-The existing clearly marked catalogue example remains demonstration data. It is not counted as an imported product. No original product photograph, packaging silhouette or substitute AI product image was generated. Botanical line art and abstract light layers are decorative and do not assert specific ingredients or manufacturing steps.
+The 93 families plus three primary size listings represent 96 distinct listings after 80 cross-store matches. Matching uses primary SKU = secondary product ID, with name review; both source records and their own SKUs are retained. This is an observed source relationship, not a claim that the two stores share a universal SKU system. Duplicate-looking listings with different source IDs are retained separately. Source verification establishes catalogue provenance, not medical efficacy, certification, inventory accuracy, or editorial approval.
 
-`src/data/media-manifest.json` records the blocked acquisition, counts and supplied reference. `src/data/media-types.ts` defines required provenance for each future asset: stable product ID/SKU, original website/media URL or export reference, original filename, dimensions, source hash, category, variant association, local derivative path, localized alt text and verification status. Empty media lists mean no media was acquired; invented source records are not used to fill the schema.
+Missing main images: Lotus Gel 100 g – No Stock (primary 2934), Lotus Petals Face Pack 100 g (2887), Rose Petals Face Pack 100 g (2886). The Lotus Gel title and API stock flag conflict; no live availability is published. No separate verified 1LTR Hair Oil image exists. The parent's shared photograph is not assigned as a 1LTR photograph. 200ML and 500ML each have four `.in` images and their explicit source associations. No gift hamper product was found in either public catalogue. Repeated identical gallery entries are deduplicated rather than presented as additional angles.
 
-## Approved export alternative
+## Files and migration safety
 
-If public access remains unavailable, supply a separately approved product/media export through the project file workflow. Minimum content:
+- `src/data/catalogue-source.json`: trimmed public source snapshot; no prices, reviews, orders, customer data, medical descriptions or credentials.
+- `src/data/media-manifest.json`: complete product/source IDs, store SKUs, source URLs, original filenames/dimensions/byte counts/SHA-256, product and variant associations, verification date/status, local paths and derivative dimensions/bytes/hashes.
+- `src/data/media-types.ts` and `products.ts`: typed catalogue and localized image alt text. Official English product names remain unchanged and are tagged `lang="en"` in localized UI.
+- `public/images/products/{local-product-slug}/`: only resized WebP derivatives at 320/640/up to 960px; no upscaling, crop, label edits, background removal or generated packaging. All source aspect ratios are retained.
+- Raw originals remain under `/tmp/mariyas-originals`, outside Git. They are temporary working files, not a persistent archive. No build, page view or deployed image depends on that cache or on WordPress/CDN access.
 
-- Product CSV/JSON: authoritative product ID, SKU when present, exact name, categories, package sizes/variants, and which media IDs belong to each product/variant.
-- Main, gallery and combo-kit media files, with original filenames and their original source URLs or an export reference; include original dimensions and existing alt text where available.
-- Approval/verification status and any permitted descriptions. Do not include customer records, orders, passwords, application tokens or database dumps.
+`npm run media:import` regenerates derivatives from the temporary cache. `npm run media:import -- --download` explicitly reacquires the committed, reviewed source URLs before processing; it only accepts the four Mariyas origin hostnames and stops on every redirect. After a future origin move, review/update the acquisition snapshot separately; existing committed images continue to work. Neither builds nor CI run acquisition automatically. New or changed source data must be reviewed; filenames and attachment order alone are not sufficient evidence of variant identity.
 
-No authenticated WordPress integration is required for a supplied export. If one later becomes necessary, authorize it as a separate read-only product/media integration with least-privilege access; enter credentials through secure settings, never chat.
+Local route slugs are retained from the previous manifest on reimport. Internal `mn-*` / `mn-variant-*` identifiers are separate from both store slugs and source IDs. Future purchasing requires exact URLs mapped centrally by those identifiers in `src/config/commerce.mjs`. The global gate and every product gate remain false, and the destination map is empty. Provenance links inside the source disclosure are references, not Buy Now controls.
 
-## Import procedure after access or export
-
-1. Enumerate the full public catalogue, pagination, variable products and gallery associations. Record IDs/SKUs and sizes; never infer one size from another bottle. The older `.com` packaging is secondary evidence only.
-2. Download original approved files to a working directory outside Git. Preserve source URL/export ID and SHA-256. Deduplicate exact bytes while retaining every product/variant association.
-3. Generate non-upscaled WebP/AVIF derivatives in `public/images/products/{product-slug}/`; preserve aspect ratio, labels, colour and product proportions. Keep original source files outside Git when large. Use managed object storage for a large source library, and retain provenance references. Do not sharpen, regenerate or alter printed labels.
-4. Populate manifest records and the typed `Product.images.main/gallery`. Supply actual pixel dimensions, truthful localized alt text and width variants. `ProductVisual` renders local `srcset`, `sizes`, explicit dimensions, eager/high priority for the hero, and lazy loading below the fold. Galleries use native horizontal scroll snap. Do not hotlink WordPress images.
-5. Verify every visual association against its source before setting `verified`. Update counts and list omissions explicitly. Run static/browser checks with actual assets, including image loading, responsive variants and the hero LCP. Current placeholder tests do not establish real-product image quality or performance.
-
-For the hero and story, select the authoritative Hair Oil record only after its name, size and main photograph are verified. Never rename another product image to imply the example filename or volume.
+See [complete catalogue and omissions](task03-catalogue.md), [validation report](task03-report.md), and [font coverage](task03-glyph-coverage.json).

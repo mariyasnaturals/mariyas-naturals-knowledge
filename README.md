@@ -1,6 +1,6 @@
 # Mariyas Naturals Knowledge
 
-A lightweight, four-language educational website foundation, distinct from the official [commercial store](https://www.mariyasnaturals.com). This is a developing design prototype, not the complete brand website. Task 02 extends the foundation with premium storytelling; see [upgrade architecture](docs/task02-upgrade.md) and [authentic media coverage](docs/product-assets.md). No commerce, customer database, fabricated product images, certifications or efficacy claims are included.
+A lightweight, four-language educational website foundation, distinct from the official [commercial store](https://www.mariyasnaturals.com). This is a developing design prototype, not the complete brand website. Task 03 adds authentic local product media, refined storytelling and self-hosted multilingual typography; see [Task 03 report](docs/task03-report.md) and [media provenance](docs/product-assets.md). Task 02 architecture remains documented separately. No commerce, customer database, fabricated product images, certifications or efficacy claims are included.
 
 ## Stack and architecture
 
@@ -11,11 +11,11 @@ Astro 7 (static output), strict TypeScript, Tailwind CSS 4 through the official 
 - `src/components/`: header, footer, language switcher, hero, section headings, botanical previews, story scenes, product card and reusable SEO head.
 - `src/layouts/BaseLayout.astro`: common HTML document and global styles.
 - `src/config/`: validated build-time URL/indexing policy and exact store-link guard.
-- `src/data/products.ts`: typed demonstration catalogue; unknown fields stay absent.
+- `src/data/products.ts`: typed, source-verified catalogue with stable IDs, explicit sizes, local responsive media and provenance. Unknown fields stay absent.
 - `tests/` and `scripts/`: configuration, generated-output and browser/accessibility checks.
 - `public/`: temporary typographic favicon. The text brand mark is not an approved logo.
 
-The preliminary brand palette, spacing and font stacks are editable in `src/styles/global.css`. System fonts avoid network font requests. Indic-capable local fallbacks are declared; if target devices lack coverage, add licensed, subsetted WOFF2 fonts with `font-display: swap` and test their layout. Generic line-art botanicals are decorative illustrations, not assertions about ingredients.
+The brand palette and spacing remain in `src/styles/global.css` and `premium.css`. `typography.css` selects Cormorant Garamond/Inter for English and Noto Serif/Sans pairs for Malayalam, Hindi and Tamil through `lang` attributes. Eight licensed WOFF2 subsets are self-hosted, use swap, and retain Indic shaping tables. Active-language fonts are preloaded; language disclosures defer unused script font requests. Generic botanical line art is decorative and does not assert an ingredient list.
 
 ## Local installation and commands
 
@@ -41,15 +41,28 @@ Browser tests expect `/usr/bin/chromium` by default. Set `CHROMIUM_PATH` to anot
 
 ## Languages and editorial content
 
-The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages and all four matching demonstration detail pages.
+The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages, catalogues and all matching product detail pages.
 
-Malayalam, Hindi and Tamil are starter translations requiring native-speaker review before release. All prose requires editorial approval. The reported 60-year heritage is explicitly labelled as awaiting evidence. No ingredient names, manufacturing steps, ratings, certificates, prices or availability have been invented.
+Malayalam, Hindi and Tamil are starter translations requiring native-speaker review before release. All prose requires editorial approval. No numeric heritage claim is published without supporting evidence. No ingredient names, manufacturing steps, ratings, certificates, prices or availability have been invented.
 
 ## Storytelling and products
 
-`StorytellingSection` composes five `StoryScene` elements: heritage, ingredients, preparation, transformation and finished product. The GSAP/ScrollTrigger prototype adds a scrubbed progress timeline, decorative parallax and brief desktop-only pinning. Mobile retains native touch scrolling. No opacity hiding, framework hydration or heavy 3D is used. Text remains present without JavaScript; reduced-motion users receive no animation. MatchMedia contexts revert on preference changes, page lifecycle cleanup and future Astro navigation swaps.
+`StorytellingSection` composes five readable HTML scenes: heritage, botanicals, preparation, transformation and an original Hair Oil image reveal. GSAP adds scrubbed progress, chapter navigation, botanical parallax, abstract oil drops and subtle image movement. Pinning is limited to wide, tall, fine-pointer desktops and at most 650px. Mobile uses native scrolling and its own final image reveal. Skip Story, no-JavaScript content and reduced motion remain supported.
 
-The demonstration product has no real SKU, photograph, availability or purchase URL. “View product details” opens a localized static education page; an expandable information section is also retained. “Buy on Official Store” is rendered only after a verified exact product URL is provided; otherwise an explicit pending message appears. The store CTA and mobile store tab show migration status; commerce is disabled centrally until final product destinations are verified. The central `src/config/commerce.mjs` mapping constrains product links to the explicitly configured HTTPS origin; editors must verify each final destination. No product destinations are currently mapped. Never derive or guess product links. Replace demo data after approval. Use Astro image optimization and responsive `srcset`/`sizes` when real assets arrive; preserve dimensions and lazy-load below the fold.
+The catalogue contains 93 product families and three explicit Hair Oil sizes from the two public source catalogues. The homepage shows a curated swipe rail; `/{lang}/products/` lists all families and each has a static detail page. Galleries preserve variant associations, responsive dimensions and native horizontal scrolling. Three products and the 1LTR size lack separate verified images; no replacements are inferred. Original product names are retained in English while the interface and alt text are localized.
+
+`src/config/commerce.mjs` keeps purchasing disabled with an empty exact-URL map. Product discovery links are local. Source disclosures link to catalogue evidence only. Future final store URLs must be verified and mapped by stable identifiers, never constructed from WordPress slugs. See [media storage and import instructions](docs/product-assets.md).
+
+```sh
+npm run fonts:prepare     # Reproduce committed licensed WOFF2 subsets from locked packages
+npm run media:import      # Reprocess temporary source cache; no network by default
+# Explicit audited acquisition only: npm run media:import -- --download
+node scripts/measure-render.mjs  # Local lab observations + review screenshots
+# Optional font audit: Python fontTools[woff] and uharfbuzz are required
+python scripts/check-fonts.py
+```
+
+Raw image archives are outside Git; committed derivatives work without WordPress or the temporary cache. Builds never reacquire assets.
 
 ## SEO and indexing safety
 
@@ -77,7 +90,7 @@ npm run test:static
 
 ## GitHub workflow
 
-Develop on `feature/astro-foundation`, commit changes and open a PR targeting `main`. Do not push directly to main, force-push or merge as part of this task. CI validates installation, checking, formatting, unit tests, build and generated output. A separate reviewer should approve content, design and the final domain/indexing change.
+Task 03 develops on `feature/authentic-media-typography`, based on `feature/premium-storytelling`; its draft PR targets that existing implementation branch. Do not push directly to main, force-push or merge as part of this task. CI validates installation, checking, formatting, unit tests, build and generated output. A separate reviewer should approve content, design and the final domain/indexing change.
 
 ## Static hosting and migration
 

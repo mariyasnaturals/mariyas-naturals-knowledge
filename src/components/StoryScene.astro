@@ -7,12 +7,13 @@ interface Props {
 const { number, title, description } = Astro.props;
 ---
 
-<li class="story-scene" data-story-scene>
+<li id={`story-scene-${number}`} class="story-scene" data-story-scene>
   <span class="scene-number" aria-hidden="true">
     0{number}
   </span>
   <div>
     <h3>{title}</h3>
     <p>{description}</p>
+    <slot />
   </div>
 </li>

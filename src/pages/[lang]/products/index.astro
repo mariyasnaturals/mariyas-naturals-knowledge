@@ -1,0 +1,65 @@
+---
+import ArrowIcon from '../../../components/ArrowIcon.astro';
+import EditorialLayout from '../../../layouts/EditorialLayout.astro';
+import ProductVisual from '../../../components/ProductVisual.astro';
+import { products, productPath } from '../../../data/products';
+import type { ProductCategory } from '../../../data/media-types';
+import { locales, dictionaries, type Locale } from '../../../i18n';
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Locale;
+const t = dictionaries[lang];
+const categories = Object.keys(t.categories) as ProductCategory[];
+---
+
+<EditorialLayout
+  page={{
+    kind: 'product',
+    lang,
+    title: t.catalogueTitle,
+    description: t.catalogueText,
+    sources: [],
+    reviewed: true,
+  }}
+>
+  <nav class="collection-nav" aria-label={t.catalogue}>
+    {categories.map((category) => (
+      <a href={`#${category}`}>
+        {t.categories[category]}{' '}
+        <span>{products.filter((p) => p.category === category).length}</span>
+      </a>
+    ))}
+  </nav>
+  {categories.map((category) => (
+    <section
+      id={category}
+      class="catalogue-collection"
+      aria-labelledby={`heading-${category}`}
+    >
+      <h2 id={`heading-${category}`}>{t.categories[category]}</h2>
+      <div class="catalogue-grid">
+        {products
+          .filter((p) => p.category === category)
+          .map((product) => (
+            <article class="catalogue-card">
+              <a href={productPath(lang, product)}>
+                <div class="catalogue-image">
+                  <ProductVisual
+                    product={product}
+                    lang={lang}
+                    t={t}
+                    sizes="(min-width: 1000px) 280px, (min-width: 760px) 42vw, 85vw"
+                  />
+                </div>
+                <h3 lang="en">{product.name[lang]}</h3>
+                <span class="text-link">
+                  {t.viewDetails} <ArrowIcon />
+                </span>
+              </a>
+            </article>
+          ))}
+      </div>
+    </section>
+  ))}
+</EditorialLayout>
