@@ -1,47 +1,34 @@
 ---
-import { purchaseUrl, type Product } from '../data/products';
-import type { Dictionary } from '../i18n';
+import ProductVisual from './ProductVisual.astro';
+import { purchaseUrl, productPath, type Product } from '../data/products';
+import type { Dictionary, Locale } from '../i18n';
 interface Props {
   product: Product;
   t: Dictionary;
+  lang: Locale;
 }
-const { product, t } = Astro.props;
+const { product, t, lang } = Astro.props;
 const storeUrl = purchaseUrl(product);
 ---
 
 <article class="product-card">
   <div class="product-image">
-    {product.image ? (
-      <img
-        src={product.image.src}
-        alt={product.image.alt}
-        width={product.image.width}
-        height={product.image.height}
-        loading="lazy"
-        decoding="async"
-      />
-    ) : (
-      <div class="image-placeholder">
-        <span aria-hidden="true">✧</span>
-        <p>{t.imagePlaceholder}</p>
-      </div>
-    )}
+    <ProductVisual product={product} lang={lang} t={t} />
   </div>
   <div class="product-copy">
-    {product.demonstration && <p class="eyebrow">{t.demo}</p>}
-    <h3>{t[product.nameKey]}</h3>
-    <p>{t[product.shortDescriptionKey]}</p>
+    <p class="eyebrow">{product.demonstration ? t.demo : t.products}</p>
+    <h3>{product.name[lang]}</h3>
+    <p>{product.description[lang]}</p>
     <div class="actions">
-      <a class="text-link" href={`#${product.slug}`}>
-        {t.learn}
-        <span class="sr-only">: {t[product.nameKey]}</span> →
+      <a class="button" href={productPath(lang, product)}>
+        {t.viewDetails} <span aria-hidden="true">→</span>
       </a>
       {storeUrl ? (
-        <a class="button" href={storeUrl}>
+        <a class="text-link" href={storeUrl}>
           {t.buy}
         </a>
       ) : (
-        <span class="pending">{t.buyPending}</span>
+        <span class="pending">{t.commercePending}</span>
       )}
     </div>
   </div>

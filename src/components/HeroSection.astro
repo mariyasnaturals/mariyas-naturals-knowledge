@@ -1,31 +1,52 @@
 ---
 import BotanicalArt from './BotanicalArt.astro';
-import type { Dictionary } from '../i18n';
+import ProductVisual from './ProductVisual.astro';
+import { featuredProduct } from '../data/products';
+import type { Dictionary, Locale } from '../i18n';
 interface Props {
   t: Dictionary;
+  lang: Locale;
 }
-const { t } = Astro.props;
+const { t, lang } = Astro.props;
 ---
 
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero premium-hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">{t.eyebrow}</p>
+      <p class="eyebrow">
+        <span class="gold-dash" aria-hidden="true"></span>
+        {t.journal}
+      </p>
       <h1 id="hero-title">{t.hero}</h1>
       <p class="lede">{t.intro}</p>
       <div class="actions">
-        <a class="button" href="#story">
+        <a class="button button-gold" href="#story">
           {t.explore}
           <span aria-hidden="true">→</span>
         </a>
         <a class="text-link" href="#ingredients">
-          {t.discover} <span aria-hidden="true">→</span>
+          {t.discover}
         </a>
       </div>
+      <a class="scroll-invitation" href="#story">
+        <span aria-hidden="true">↓</span>
+        {t.scrollInvitation}
+      </a>
     </div>
-    <div class="hero-art">
-      <BotanicalArt />
-      <p>{t.heroNote}</p>
+    <div class="hero-art premium-composition">
+      <div class="hero-orbit" aria-hidden="true"></div>
+      <BotanicalArt class="hero-botanical" />
+      <div class="hero-product">
+        <ProductVisual product={featuredProduct} lang={lang} t={t} priority />
+      </div>
+      <p class="composition-caption">{t.heroNote}</p>
+      <span class="specimen-index" aria-hidden="true">
+        MN / 01
+      </span>
     </div>
+  </div>
+  <div class="hero-baseline wrap">
+    <span>{t.natureCare}</span>
+    <span>EN · മലയാളം · हिन्दी · தமிழ்</span>
   </div>
 </section>

@@ -1,6 +1,6 @@
 # Mariyas Naturals Knowledge
 
-A lightweight, four-language educational website foundation, distinct from the official [commercial store](https://www.mariyasnaturals.com). This is the first design prototype, not the complete brand website. No commerce, customer database, fabricated product images, certifications or efficacy claims are included.
+A lightweight, four-language educational website foundation, distinct from the official [commercial store](https://www.mariyasnaturals.com). This is a developing design prototype, not the complete brand website. Task 02 extends the foundation with premium storytelling; see [upgrade architecture](docs/task02-upgrade.md) and [authentic media coverage](docs/product-assets.md). No commerce, customer database, fabricated product images, certifications or efficacy claims are included.
 
 ## Stack and architecture
 
@@ -41,15 +41,15 @@ Browser tests expect `/usr/bin/chromium` by default. Set `CHROMIUM_PATH` to anot
 
 ## Languages and editorial content
 
-The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages only.
+The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages and all four matching demonstration detail pages.
 
 Malayalam, Hindi and Tamil are starter translations requiring native-speaker review before release. All prose requires editorial approval. The reported 60-year heritage is explicitly labelled as awaiting evidence. No ingredient names, manufacturing steps, ratings, certificates, prices or availability have been invented.
 
 ## Storytelling and products
 
-`StorytellingSection` composes five `StoryScene` elements: heritage, ingredients, preparation, transformation and finished product. The small GSAP/ScrollTrigger demonstration moves visible scenes horizontally as they enter the viewport. No scroll pinning, opacity hiding, framework hydration or heavy 3D is used. Text remains present without JavaScript; reduced-motion users receive no animation. MatchMedia contexts revert on preference changes, page lifecycle cleanup and future Astro navigation swaps.
+`StorytellingSection` composes five `StoryScene` elements: heritage, ingredients, preparation, transformation and finished product. The GSAP/ScrollTrigger prototype adds a scrubbed progress timeline, decorative parallax and brief desktop-only pinning. Mobile retains native touch scrolling. No opacity hiding, framework hydration or heavy 3D is used. Text remains present without JavaScript; reduced-motion users receive no animation. MatchMedia contexts revert on preference changes, page lifecycle cleanup and future Astro navigation swaps.
 
-The demonstration product has no real SKU, photograph, availability or purchase URL. “Learn more” points to a real expandable information section. “Buy on Official Store” is rendered only after a verified exact product URL is provided; otherwise an explicit pending message appears. The separate general store CTA links only to the verified official store homepage. Product URL validation constrains links to HTTPS `www.mariyasnaturals.com`; editors must still verify the actual destination. Never derive or guess product links. Replace demo data after approval. Use Astro image optimization and responsive `srcset`/`sizes` when real assets arrive; preserve dimensions and lazy-load below the fold.
+The demonstration product has no real SKU, photograph, availability or purchase URL. “View product details” opens a localized static education page; an expandable information section is also retained. “Buy on Official Store” is rendered only after a verified exact product URL is provided; otherwise an explicit pending message appears. The store CTA and mobile store tab show migration status; commerce is disabled centrally until final product destinations are verified. The central `src/config/commerce.mjs` mapping constrains product links to the explicitly configured HTTPS origin; editors must verify each final destination. No product destinations are currently mapped. Never derive or guess product links. Replace demo data after approval. Use Astro image optimization and responsive `srcset`/`sizes` when real assets arrive; preserve dimensions and lazy-load below the fold.
 
 ## SEO and indexing safety
 

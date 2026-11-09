@@ -19,8 +19,8 @@ const t = dictionaries[lang];
 <BaseLayout lang={lang} title={t.title} description={t.description}>
   <SiteHeader lang={lang} t={t} />
   <main id="main" tabindex="-1">
-    <HeroSection t={t} />
-    <StorytellingSection t={t} />
+    <HeroSection t={t} lang={lang} />
+    <StorytellingSection t={t} lang={lang} />
     <IngredientPreview t={t} />
     <section id="knowledge" class="section wrap">
       <SectionHeading
@@ -48,7 +48,7 @@ const t = dictionaries[lang];
           text={t.productText}
         />
         {products.map((product) => (
-          <ProductCard product={product} t={t} />
+          <ProductCard product={product} t={t} lang={lang} />
         ))}
         <details id="hair-oil-example" class="product-details">
           <summary>{t.detail}</summary>

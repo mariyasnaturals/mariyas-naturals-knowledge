@@ -1,0 +1,615 @@
+/* Task 02: premium editorial compositions built on the foundation tokens. */
+:root {
+  --header-offset: 10rem;
+}
+html {
+  scroll-padding-top: var(--header-offset);
+}
+body {
+  padding-bottom: calc(76px + env(safe-area-inset-bottom));
+}
+section {
+  scroll-margin-top: 1rem;
+}
+.announcement {
+  font-size: 0.65rem;
+  padding-block: 0.45rem;
+}
+.header-shell {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--color-cream);
+  border-bottom: 1px solid var(--color-beige);
+}
+.site-header {
+  gap: 0.4rem;
+  padding-block: 0.7rem 0.2rem;
+}
+.brand > span {
+  font-size: 1.9rem;
+}
+.brand small {
+  font-size: 0.5rem;
+}
+.site-header > .language-switcher {
+  border: 0;
+  justify-content: flex-start;
+  margin-top: 0.2rem;
+  padding-top: 0.25rem;
+}
+.language-switcher a {
+  min-height: 44px;
+  padding-inline: 0.7rem;
+}
+.mobile-menu summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  list-style: none;
+  border: 1px solid var(--color-beige);
+  border-radius: 50%;
+}
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+.hamburger {
+  display: grid;
+  gap: 5px;
+  width: 18px;
+}
+.hamburger i {
+  display: block;
+  height: 1px;
+  background: var(--color-forest);
+  transition: transform 0.2s;
+}
+.mobile-menu[open] .hamburger i:first-child {
+  transform: translateY(3px) rotate(45deg);
+}
+.mobile-menu[open] .hamburger i:last-child {
+  transform: translateY(-3px) rotate(-45deg);
+}
+.mobile-menu[open] nav {
+  width: min(85vw, 24rem);
+  padding: 1rem;
+}
+.mobile-menu nav a {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-beige);
+  padding: 1rem 0.5rem;
+}
+.premium-hero {
+  background: var(--color-deep);
+  color: var(--color-cream);
+  border: 0;
+  overflow: clip;
+}
+.premium-hero .hero-grid {
+  padding-top: 3rem;
+  padding-bottom: 2.5rem;
+  gap: 2.5rem;
+}
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+.hero-copy .eyebrow {
+  color: var(--color-gold);
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  letter-spacing: 0.11em;
+}
+.gold-dash {
+  height: 1px;
+  width: 26px;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+.premium-hero h1 {
+  font-size: clamp(2.9rem, 5.9vw, 5.8rem);
+  line-height: 1.09;
+  max-width: 12ch;
+}
+.premium-hero .lede {
+  color: var(--color-beige);
+  font-size: 0.95rem;
+  max-width: 35rem;
+}
+.button {
+  border-radius: 2px;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+.button:active {
+  transform: scale(0.98);
+}
+.premium-hero :focus-visible {
+  outline-color: var(--color-gold);
+}
+.premium-hero .actions {
+  gap: 1rem 1.6rem;
+}
+.scroll-invitation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 48px;
+  margin-top: 2rem;
+  font-size: 0.7rem;
+  color: var(--color-beige);
+}
+.scroll-invitation > span {
+  display: grid;
+  place-items: center;
+  border: 1px solid #d7b15d88;
+  border-radius: 50%;
+  width: 30px;
+  height: 38px;
+}
+.premium-composition {
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 1 / 1.05;
+  color: var(--color-gold);
+  max-width: 500px;
+  border-radius: 48% 48% 3px 3px;
+  background: radial-gradient(ellipse at 50% 40%, #efe4ce 0, #b8bf9a 100%);
+  overflow: clip;
+}
+.hero-orbit {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid #063d2a33;
+  border-radius: 50%;
+}
+.hero-botanical {
+  position: absolute;
+  inset: -7% -10% 0;
+  width: 120%;
+  height: 110%;
+  color: var(--color-forest);
+  opacity: 0.5;
+  transform: rotate(-18deg);
+  z-index: -1;
+}
+.hero-product {
+  position: absolute;
+  inset: 17% 13% 18%;
+}
+.product-visual {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+}
+.product-visual img {
+  width: 100%;
+  height: 100%;
+  max-height: 580px;
+  object-fit: contain;
+}
+.authentic-placeholder {
+  position: relative;
+  min-height: 230px;
+  width: 100%;
+  padding: 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-forest);
+  background: #fff9ecdd;
+  border: 1px solid #063d2a22;
+}
+.authentic-placeholder p {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+.authentic-placeholder small {
+  max-width: 24ch;
+  font-size: 0.65rem;
+}
+.image-brackets {
+  width: 40px;
+  height: 32px;
+  border-block: 1px solid var(--color-herbal);
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.image-brackets::before {
+  content: '+';
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font: 1.3rem var(--font-display);
+}
+.composition-caption {
+  position: absolute;
+  bottom: 7%;
+  inset-inline: 8%;
+  color: var(--color-forest);
+  font: italic 0.95rem var(--font-display) !important;
+  margin: 0 !important;
+}
+.specimen-index {
+  position: absolute;
+  left: 7%;
+  top: 8%;
+  color: var(--color-forest);
+  letter-spacing: 0.2em;
+  font-size: 0.6rem;
+}
+.hero-baseline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid #d7b15d40;
+  color: var(--color-beige);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+.story-introduction {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.story-introduction .section-heading {
+  margin-bottom: 0;
+}
+.story-introduction .editor-note {
+  font-size: 0.78rem;
+}
+.skip-story {
+  margin-top: 1rem;
+}
+.story-track {
+  display: grid;
+  gap: 1.5rem;
+  position: relative;
+}
+.story-stage {
+  min-width: 0;
+  align-self: start;
+}
+.story-stage-inner {
+  background: var(--color-beige);
+  border-radius: 2px;
+  padding: 1.5rem;
+  overflow: clip;
+}
+.story-stage-inner > .eyebrow {
+  font-size: 0.6rem;
+}
+.story-orbit {
+  position: relative;
+  height: 260px;
+  isolation: isolate;
+}
+.story-botanical {
+  position: absolute;
+  height: 110%;
+  width: 100%;
+  color: var(--color-herbal);
+  z-index: -1;
+}
+.oil-light {
+  position: absolute;
+  inset: 15% 25%;
+  border-radius: 45% 55% 65% 35%;
+  border: 1px solid #9c752a80;
+  background: radial-gradient(ellipse, #d7b15d55, transparent 70%);
+  z-index: -1;
+}
+.story-product {
+  position: absolute;
+  inset: 15% 12%;
+}
+.story-product .product-visual {
+  min-height: 0;
+}
+.story-product .authentic-placeholder {
+  min-height: 170px;
+  padding: 1rem;
+}
+.story-product .image-brackets {
+  display: none;
+}
+.story-product .authentic-placeholder p {
+  font-size: 1rem;
+}
+.story-stage-caption {
+  font: italic 1.05rem var(--font-display);
+  margin-block: 1rem 1.5rem;
+}
+.story-progress {
+  height: 2px;
+  background: #063d2a22;
+  overflow: hidden;
+}
+.story-progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-forest);
+  transform-origin: left;
+}
+.story-scenes {
+  overflow: clip;
+}
+.story-scene {
+  padding: 2rem 0.25rem;
+  gap: 1.2rem;
+}
+.story-scene h3 {
+  font-size: 1.8rem;
+}
+.story-scene p {
+  max-width: 40ch;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.story-outro {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-top: 1px solid var(--color-beige);
+  padding-top: 2rem;
+}
+.story-outro .eyebrow {
+  width: 100%;
+  margin: 0;
+}
+.botanical-section {
+  background: #e8e6d7;
+}
+.ingredient-card {
+  border: 0;
+  background: transparent;
+  padding: 1rem 0;
+  border-top: 1px solid #063d2a44;
+}
+.ingredient-card:nth-child(2) {
+  background: #fff9ec66;
+  padding: 1rem;
+}
+.plant-art {
+  height: 160px;
+}
+.knowledge-card {
+  border-color: #063d2a44;
+}
+.knowledge-card:nth-child(2) {
+  border-color: var(--color-gold);
+}
+.product-section {
+  background: var(--color-beige);
+}
+.product-card {
+  border: 0;
+  background: var(--color-cream);
+}
+.product-image {
+  aspect-ratio: 1.1;
+  background: #d7dcc9;
+  padding: 2rem;
+}
+.product-copy h3 {
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+}
+.product-copy .pending {
+  margin-top: 0.5rem;
+}
+.product-details {
+  padding-block: 0.5rem;
+}
+.store-section {
+  background: var(--color-deep);
+}
+.commerce-status {
+  font-size: 0.8rem;
+  display: block;
+  padding: 0.8rem 1rem;
+  border: 1px solid #3b745055;
+  width: fit-content;
+  margin: 1.5rem 0;
+}
+.store-section .commerce-status {
+  margin-inline: auto;
+  color: var(--color-gold);
+  border-color: #d7b15d55;
+}
+.mobile-bottom-nav {
+  position: fixed;
+  z-index: 40;
+  bottom: 0;
+  inset-inline: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--color-cream);
+  border-top: 1px solid var(--color-beige);
+  padding: 0.3rem 0.4rem calc(0.3rem + env(safe-area-inset-bottom));
+}
+.mobile-bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  font-size: 0.62rem;
+  line-height: 1.3;
+  gap: 0.25rem;
+  text-align: center;
+  overflow-wrap: anywhere;
+  border-radius: 5px;
+}
+.mobile-bottom-nav a:active {
+  background: var(--color-beige);
+}
+.mobile-bottom-nav a > span:first-child {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.editorial-heading {
+  max-width: 880px;
+  margin-block: 3rem;
+}
+.editorial-heading h1 {
+  font-size: clamp(2.5rem, 5vw, 4.7rem);
+}
+.editorial-heading .editor-note {
+  margin-top: 1.5rem;
+}
+.product-detail-grid {
+  display: grid;
+  gap: 2rem;
+}
+.product-detail-grid > div:first-child {
+  padding: 1.5rem;
+  background: var(--color-beige);
+}
+.product-facts {
+  display: grid;
+  align-content: start;
+  gap: 1.3rem;
+}
+.product-facts h2 {
+  font-size: 1.8rem;
+}
+.image-gallery {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block: 1rem;
+}
+.image-gallery img {
+  width: 80%;
+  flex: 0 0 80%;
+  object-fit: contain;
+  scroll-snap-align: start;
+}
+@media (min-width: 760px) {
+  body {
+    padding-bottom: 0;
+  }
+  .mobile-bottom-nav {
+    display: none;
+  }
+  .premium-hero .hero-grid {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    min-height: 690px;
+    padding-block: 4rem;
+  }
+  .hero-copy .lede {
+    font-size: 1rem;
+  }
+  .story-introduction {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .story-track {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+  .story-orbit {
+    height: 340px;
+  }
+  .story-scene {
+    min-height: 280px;
+    align-items: center;
+  }
+  .product-detail-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+@media (min-width: 1100px) {
+  .site-header {
+    padding-block: 1rem;
+  }
+  .site-header > .language-switcher {
+    margin: 0;
+    padding: 0;
+  }
+  :root {
+    --header-offset: 7rem;
+  }
+}
+@media (max-width: 359px) {
+  .wrap {
+    width: calc(100% - 2rem);
+  }
+  .premium-hero h1 {
+    font-size: 2.6rem;
+  }
+  .language-switcher a {
+    padding-inline: 0.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-stage {
+    position: static !important;
+  }
+  .story-progress span {
+    transform: none !important;
+  }
+}
+@media (max-width: 759px) {
+  .premium-hero .hero-grid {
+    gap: 1.5rem;
+    padding-top: 2rem;
+  }
+  .premium-hero h1 {
+    font-size: clamp(2.45rem, 10.8vw, 3rem);
+    max-width: 15ch;
+  }
+  .premium-hero .lede {
+    margin-top: 1rem;
+  }
+  .premium-hero .actions {
+    margin-top: 1.5rem;
+    gap: 0.6rem 1rem;
+  }
+  .premium-hero .button {
+    padding: 0.8rem 1rem;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+  }
+  .scroll-invitation {
+    margin-top: 0.8rem;
+  }
+  .premium-composition {
+    max-width: 300px;
+  }
+  .hero-product {
+    inset: 14% 10% 19%;
+  }
+  .hero-product .product-visual {
+    min-height: 0;
+  }
+  .hero-product .authentic-placeholder {
+    min-height: 170px;
+    padding: 1rem;
+  }
+  .hero-product .authentic-placeholder p {
+    font-size: 1rem;
+  }
+  .hero-product .image-brackets {
+    display: none;
+  }
+}

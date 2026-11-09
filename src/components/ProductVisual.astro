@@ -1,0 +1,38 @@
+---
+import type { Product } from '../data/products';
+import type { Dictionary, Locale } from '../i18n';
+interface Props {
+  product: Product;
+  lang: Locale;
+  t: Dictionary;
+  priority?: boolean;
+}
+const { product, lang, t, priority = false } = Astro.props;
+const image = product.images.main;
+---
+
+<div class:list={['product-visual', { 'has-image': !!image }]}>
+  {image ? (
+    <img
+      src={image.src}
+      srcset={
+        image.variants.length
+          ? image.variants.map((v) => `${v.src} ${v.width}w`).join(', ')
+          : undefined
+      }
+      sizes="(min-width: 900px) 40vw, 85vw"
+      width={image.width}
+      height={image.height}
+      alt={image.alt[lang]}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+  ) : (
+    <div class="authentic-placeholder">
+      <span class="image-brackets" aria-hidden="true"></span>
+      <p>{t.photoPending}</p>
+      <small>{t.authenticOnly}</small>
+    </div>
+  )}
+</div>

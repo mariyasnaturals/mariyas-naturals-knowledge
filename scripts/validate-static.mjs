@@ -69,3 +69,85 @@ assert.ok(
   readdirSync(new URL('_astro/', root)).some((name) => name.endsWith('.js')),
 );
 console.log('PASS sitemap, robots and bundled animation script');
+
+// Validate every generated HTML page, including new localized details and root.
+function validateTree(directory) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = new URL(
+      entry.name + (entry.isDirectory() ? '/' : ''),
+      directory,
+    );
+    if (entry.isDirectory()) {
+      validateTree(path);
+      continue;
+    }
+    if (!entry.name.endsWith('.html')) continue;
+    const $ = load(readFileSync(path, 'utf8'));
+    const relative = path.href
+      .slice(root.href.length)
+      .replace(/index\.html$/, '');
+    const route = `/${relative}`;
+    assert.equal($('meta[name="robots"]').attr('content'), expectedRobots);
+    assert.equal(
+      $('link[rel="canonical"]').attr('href'),
+      expectedOrigin + route,
+    );
+    for (const node of $('a[href]').toArray()) {
+      const href = $(node).attr('href');
+      if (!href.startsWith('/') && !href.startsWith('#')) continue;
+      const target = new URL(href, 'https://static.invalid' + route);
+      const file = new URL(
+        target.pathname.slice(1) +
+          (target.pathname.endsWith('/') ? 'index.html' : ''),
+        root,
+      );
+      assert.ok(existsSync(file), `Missing ${file.pathname}`);
+      if (target.hash) {
+        const document = load(readFileSync(file, 'utf8'));
+        assert.equal(
+          document(`[id="${target.hash.slice(1)}"]`).length,
+          1,
+          `Missing fragment ${href}`,
+        );
+      }
+    }
+    for (const node of $('img').toArray()) {
+      const src = $(node).attr('src');
+      assert.ok(
+        src?.startsWith('/') && !src.startsWith('//'),
+        'No image hotlinks',
+      );
+      assert.ok(existsSync(new URL(src.slice(1), root)), 'Local image exists');
+      assert.ok(
+        $(node).attr('width') && $(node).attr('height'),
+        'Images reserve layout space',
+      );
+      assert.ok(
+        $(node).attr('alt'),
+        'Product images need truthful localized alt text',
+      );
+    }
+    if (route.includes('/products/')) {
+      const suffix = route.split('/').slice(2).join('/');
+      for (const alternate of locales) {
+        assert.equal(
+          $(`link[hreflang="${alternate}"]`).attr('href'),
+          `${expectedOrigin}/${alternate}/${suffix}`,
+        );
+        assert.ok(
+          $(`header a[hreflang="${alternate}"][href="/${alternate}/${suffix}"]`)
+            .length,
+        );
+      }
+    }
+    assert.equal(
+      $('a[href*="mariyasnaturals.com"]').length,
+      0,
+      'Commerce remains disabled during migration',
+    );
+  }
+}
+validateTree(root);
+console.log(
+  'PASS all generated pages: local assets, navigation, detailed alternates and disabled commerce',
+);

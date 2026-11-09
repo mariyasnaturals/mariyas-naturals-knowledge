@@ -1,0 +1,44 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { dictionaries } from '../i18n';
+import type { EditorialPage } from '../data/editorial';
+interface Props {
+  page: EditorialPage;
+}
+const { page } = Astro.props;
+const t = dictionaries[page.lang];
+---
+
+<BaseLayout lang={page.lang} title={page.title} description={page.description}>
+  <SiteHeader lang={page.lang} t={t} />
+  <main id="main" tabindex="-1" class="editorial-main">
+    <article class:list={['wrap section', `content-${page.kind}`]}>
+      <a class="text-link" href={`/${page.lang}/#products`}>
+        ← {t.backDiscovery}
+      </a>
+      <header class="editorial-heading">
+        <p class="eyebrow">MARIYAS NATURALS / {t.journal}</p>
+        <h1>{page.title}</h1>
+        <p class="lede">{page.description}</p>
+        {!page.reviewed && <p class="editor-note">{t.preview}</p>}
+      </header>
+      <slot />
+      {page.sources.length > 0 && (
+        <section class="source-notes">
+          <h2>{t.verification}</h2>
+          <ul>
+            {page.sources.map((source) => (
+              <li>
+                <a href={source.url}>{source.title}</a>{' '}
+                <time datetime={source.accessedOn}>{source.accessedOn}</time>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </article>
+  </main>
+  <SiteFooter lang={page.lang} t={t} />
+</BaseLayout>

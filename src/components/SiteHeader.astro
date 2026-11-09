@@ -6,6 +6,7 @@ interface Props {
   t: Dictionary;
 }
 const { lang, t } = Astro.props;
+const prefix = Astro.url.pathname === `/${lang}/` ? '' : `/${lang}/`;
 const links = [
   ['story', t.story],
   ['ingredients', t.ingredients],
@@ -18,25 +19,57 @@ const links = [
   {t.skip}
 </a>
 <div class="announcement">{t.announcement}</div>
-<header class="site-header wrap">
-  <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals">
-    <span>
-      Mariyas<span class="brand-dot">.</span>
-    </span>
-    <small>N A T U R A L S</small>
-  </a>
-  <nav class="desktop-nav" aria-label={t.navLabel}>
-    {links.map(([id, label]) => (
-      <a href={`#${id}`}>{label}</a>
-    ))}
-  </nav>
-  <details class="mobile-menu">
-    <summary>{t.menu}</summary>
-    <nav aria-label={t.navLabel}>
+<header class="header-shell">
+  <div class="site-header wrap">
+    <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals">
+      <span>
+        Mariyas<span class="brand-dot">.</span>
+      </span>
+      <small>N A T U R A L S</small>
+    </a>
+    <nav class="desktop-nav" aria-label={t.navLabel}>
       {links.map(([id, label]) => (
-        <a href={`#${id}`}>{label}</a>
+        <a href={`${prefix}#${id}`}>{label}</a>
       ))}
     </nav>
-  </details>
-  <LanguageSwitcher lang={lang} label={t.language} />
+    <details class="mobile-menu">
+      <summary>
+        <span class="hamburger" aria-hidden="true">
+          <i></i>
+          <i></i>
+        </span>
+        <span class="sr-only">{t.menu}</span>
+      </summary>
+      <nav aria-label={t.navLabel}>
+        {links.map(([id, label]) => (
+          <a href={`${prefix}#${id}`}>
+            {label}
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </nav>
+    </details>
+    <LanguageSwitcher lang={lang} label={t.language} />
+  </div>
 </header>
+<script>
+  for (const menu of document.querySelectorAll<HTMLDetailsElement>(
+    '.mobile-menu',
+  )) {
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+    menu.querySelectorAll('a').forEach((link) =>
+      link.addEventListener('click', () => {
+        menu.open = false;
+      }),
+    );
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target))
+        menu.open = false;
+    });
+  }
+</script>

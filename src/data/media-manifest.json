@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "status": "acquisition-blocked-by-environment-proxy",
+  "catalogueVerified": false,
+  "sourceWebsites": [
+    "https://mariyasnaturals.in",
+    "https://www.mariyasnaturals.com"
+  ],
+  "products": [
+    {
+      "productId": "reference-mariyas-hair-oil",
+      "sku": null,
+      "displayName": "Mariyas Hair Oil",
+      "category": "hair-care",
+      "originalStoreReference": null,
+      "verificationStatus": "user-supplied-name-only",
+      "missing": [
+        "main image",
+        "gallery inventory",
+        "sizes and variant associations",
+        "SKU and store product ID"
+      ],
+      "media": []
+    }
+  ],
+  "coverage": {
+    "discoveredProductEntries": 0,
+    "verifiedProducts": 0,
+    "imagesFound": 0,
+    "imagesDownloaded": 0,
+    "imagesOptimized": 0,
+    "imagesIntegrated": 0,
+    "suppliedProductReferencesAwaitingImages": 1,
+    "totalCatalogueSize": null
+  }
+}

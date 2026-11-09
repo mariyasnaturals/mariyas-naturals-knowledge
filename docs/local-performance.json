@@ -1,0 +1,19 @@
+{
+  "method": "Single unthrottled local static-server run per viewport; fresh Chromium context, reduced motion, English homepage, before scrolling. CLS sum covers only initial render. No authentic product image is loaded. Not a Lighthouse score or field CWV result.",
+  "observations": [
+    {
+      "width": 390,
+      "lcpMs": 592,
+      "cls": 0,
+      "resourceTransferBytes": 138129,
+      "inp": "not measured; no representative interaction sample"
+    },
+    {
+      "width": 1440,
+      "lcpMs": 368,
+      "cls": 0,
+      "resourceTransferBytes": 138129,
+      "inp": "not measured; no representative interaction sample"
+    }
+  ]
+}

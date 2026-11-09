@@ -1,6 +1,6 @@
 ---
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import { site } from '../config/site';
+import MobileNavigation from './MobileNavigation.astro';
 import type { Locale, Dictionary } from '../i18n';
 interface Props {
   lang: Locale;
@@ -9,13 +9,16 @@ interface Props {
 const { lang, t } = Astro.props;
 ---
 
-<section class="store-section section">
+<section id="store" class="store-section section" aria-label={t.storeShort}>
   <div class="wrap">
-    <p class="eyebrow">MARIYAS NATURALS</p>
+    <p class="eyebrow">{t.nextChapter}</p>
     <h2>{t.storeTitle}</h2>
     <p>{t.storeText}</p>
-    <a class="button button-gold" href={site.storeUrl}>
-      {t.store} <span aria-hidden="true">→</span>
+    <p class="commerce-status">
+      <span aria-hidden="true">◇</span> {t.commercePending}
+    </p>
+    <a class="button button-gold" href={`/${lang}/#products`}>
+      {t.catalogue} →
     </a>
   </div>
 </section>
@@ -31,3 +34,4 @@ const { lang, t } = Astro.props;
     © {new Date().getFullYear()} {t.rights}. {t.preview}
   </p>
 </footer>
+<MobileNavigation lang={lang} t={t} />

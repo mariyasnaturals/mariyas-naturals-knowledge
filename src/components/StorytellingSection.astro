@@ -1,35 +1,69 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import StoryScene from './StoryScene.astro';
-import type { Dictionary } from '../i18n';
+import BotanicalArt from './BotanicalArt.astro';
+import ProductVisual from './ProductVisual.astro';
+import { featuredProduct, productPath } from '../data/products';
+import type { Dictionary, Locale } from '../i18n';
 interface Props {
   t: Dictionary;
+  lang: Locale;
 }
-const { t } = Astro.props;
+const { t, lang } = Astro.props;
 ---
 
-<section
-  id="story"
-  class="section wrap story-section"
-  aria-labelledby="story-heading"
->
-  <div id="story-heading">
-    <SectionHeading
-      eyebrow={t.heritageLabel}
-      title={t.heritageTitle}
-      text={t.heritageText}
-    />
-    <p class="editor-note">{t.heritageNote}</p>
-  </div>
-  <ol class="story-scenes">
-    {t.scenes.map((title, index) => (
-      <StoryScene
-        number={index + 1}
-        title={title}
-        description={t.sceneNotes[index] ?? ''}
+<section id="story" class="section story-experience" aria-label={t.story}>
+  <div class="wrap">
+    <div class="story-introduction">
+      <SectionHeading
+        eyebrow={t.heritageLabel}
+        title={t.heritageTitle}
+        text={t.heritageText}
       />
-    ))}
-  </ol>
+      <div>
+        <p class="editor-note">{t.heritageNote}</p>
+        <a class="text-link skip-story" href="#ingredients">
+          {t.skipStory} ↓
+        </a>
+      </div>
+    </div>
+    <div class="story-track">
+      <div class="story-stage" aria-hidden="true">
+        <div class="story-stage-inner">
+          <p class="eyebrow">MARIYAS / NATURALS</p>
+          <div class="story-orbit">
+            <BotanicalArt class="story-botanical" />
+            <div class="oil-light"></div>
+            <div class="story-product">
+              <ProductVisual product={featuredProduct} lang={lang} t={t} />
+            </div>
+          </div>
+          <p class="story-stage-caption">{t.storyIntro}</p>
+          <div class="story-progress">
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <ol class="story-scenes">
+        {t.scenes.map((title, index) => (
+          <StoryScene
+            number={index + 1}
+            title={title}
+            description={t.sceneNotes[index] ?? ''}
+          />
+        ))}
+      </ol>
+    </div>
+    <div class="story-outro">
+      <p class="eyebrow">{t.nextChapter}</p>
+      <a class="button" href={productPath(lang, featuredProduct)}>
+        {t.viewDetails} →
+      </a>
+      <a class="text-link" href="#ingredients">
+        {t.exploreIngredients} →
+      </a>
+    </div>
+  </div>
 </section>
 <script>
   import { gsap } from 'gsap';
@@ -37,18 +71,71 @@ const { t } = Astro.props;
   gsap.registerPlugin(ScrollTrigger);
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
-    gsap.utils.toArray<HTMLElement>('[data-story-scene]').forEach((scene) => {
-      // Animate position only: content stays visible if JavaScript fails or is disabled.
+    const root = document.querySelector<HTMLElement>('.story-experience');
+    if (!root) return;
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.story-track',
+        start: 'top 65%',
+        end: 'bottom 70%',
+        scrub: 0.6,
+      },
+    });
+    timeline
+      .fromTo(
+        '.story-progress span',
+        { scaleX: 0 },
+        { scaleX: 1, ease: 'none', duration: 1 },
+        0,
+      )
+      .to(
+        '.story-botanical',
+        { rotation: 12, y: -35, ease: 'none', duration: 1 },
+        0,
+      )
+      .to(
+        '.oil-light',
+        { scale: 1.35, rotation: 45, ease: 'none', duration: 0.6 },
+        0.2,
+      )
+      .fromTo(
+        '.story-product',
+        { y: 24, scale: 0.94 },
+        { y: 0, scale: 1, ease: 'none', duration: 0.35 },
+        0.65,
+      );
+    gsap.utils.toArray<HTMLElement>('[data-story-scene]').forEach((scene) =>
       gsap.from(scene, {
         x: 20,
-        duration: 0.8,
+        duration: 0.7,
         ease: 'power2.out',
         scrollTrigger: { trigger: scene, start: 'top 92%', once: true },
-      });
+      }),
+    );
+    gsap.from('.hero-copy > *', {
+      y: 12,
+      duration: 0.7,
+      stagger: 0.08,
+      ease: 'power2.out',
     });
   });
-  document.addEventListener('astro:before-swap', () => media.revert(), {
-    once: true,
+  media.add(
+    '(min-width: 1000px) and (min-height: 760px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    () => {
+      ScrollTrigger.create({
+        trigger: '.story-stage',
+        start: 'top 100px',
+        end: () => `+=${Math.min(window.innerHeight * 0.8, 650)}`,
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+      });
+    },
+  );
+  const cleanup = () => media.revert();
+  document.addEventListener('astro:before-swap', cleanup, { once: true });
+  window.addEventListener('pagehide', cleanup, { once: true });
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) ScrollTrigger.refresh();
   });
-  window.addEventListener('pagehide', () => media.revert(), { once: true });
 </script>

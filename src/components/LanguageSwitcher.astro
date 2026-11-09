@@ -5,12 +5,15 @@ interface Props {
   label: string;
 }
 const { lang, label } = Astro.props;
+const suffix = Astro.url.pathname.startsWith(`/${lang}/`)
+  ? Astro.url.pathname.slice(lang.length + 2)
+  : '';
 ---
 
 <nav class="language-switcher" aria-label={label}>
   {Object.entries(languages).map(([code, name]) => (
     <a
-      href={`/${code}/`}
+      href={`/${code}/${suffix}`}
       lang={code}
       hreflang={code}
       aria-current={lang === code ? 'page' : undefined}

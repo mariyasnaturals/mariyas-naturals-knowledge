@@ -7,12 +7,8 @@ interface Props {
   lang: Locale;
   path?: string;
 }
-const {
-  title,
-  description,
-  lang,
-  path = `/${Astro.props.lang}/`,
-} = Astro.props;
+const { title, description, lang, path = Astro.url.pathname } = Astro.props;
+const suffix = path.startsWith(`/${lang}/`) ? path.slice(lang.length + 2) : '';
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -44,9 +40,17 @@ const structuredData = {
 />
 <link rel="canonical" href={absoluteUrl(path)} />
 {locales.map((locale) => (
-  <link rel="alternate" hreflang={locale} href={absoluteUrl(`/${locale}/`)} />
+  <link
+    rel="alternate"
+    hreflang={locale}
+    href={absoluteUrl(`/${locale}/${suffix}`)}
+  />
 ))}
-<link rel="alternate" hreflang="x-default" href={absoluteUrl('/en/')} />
+<link
+  rel="alternate"
+  hreflang="x-default"
+  href={absoluteUrl(`/en/${suffix}`)}
+/>
 <meta property="og:type" content="website" />
 <meta property="og:title" content={`${title} | Mariyas Naturals`} />
 <meta property="og:description" content={description} />
