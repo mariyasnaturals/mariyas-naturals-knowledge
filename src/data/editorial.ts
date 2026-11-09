@@ -15,5 +15,7 @@ export interface EditorialPage {
   sources: readonly EditorialSource[];
   reviewed: boolean;
   reviewedOn?: string;
+  pageSchema?: Record<string, unknown>;
+  socialImage?: { src: string; width: number; height: number; alt: string };
   // Supply verified dates and reviewers only; no automatic Article/Product claims.
 }

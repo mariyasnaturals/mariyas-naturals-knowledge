@@ -1,6 +1,7 @@
 # Task 03 implementation and validation report
 
-Built on `feature/premium-storytelling` (`bbdc05fa6819addcf717bdca33cfc691741fc52a`), using branch `feature/authentic-media-typography`. The final commit SHA and draft PR URL are provided in the task handoff. No merge, deployment, commercial-store mutation or infrastructure change is part of this work.
+> Historical Task 03 evidence. The current .in-only rebrand supersedes its dual-store imagery; see [current report](rebrand-report.md) and [source policy](product-assets.md).
+> Built on `feature/premium-storytelling` (`bbdc05fa6819addcf717bdca33cfc691741fc52a`), using branch `feature/authentic-media-typography`. The final commit SHA and draft PR URL are provided in the task handoff. No merge, deployment, commercial-store mutation or infrastructure change is part of this work.
 
 ## 1. Verified outbound access
 

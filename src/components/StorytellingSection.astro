@@ -2,9 +2,12 @@
 import ArrowIcon from './ArrowIcon.astro';
 import SectionHeading from './SectionHeading.astro';
 import StoryScene from './StoryScene.astro';
-import BotanicalArt from './BotanicalArt.astro';
 import ProductVisual from './ProductVisual.astro';
-import { featuredProduct, productPath } from '../data/products';
+import {
+  featuredProduct,
+  companionProduct,
+  productPath,
+} from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
 interface Props {
   t: Dictionary;
@@ -45,15 +48,18 @@ const { t, lang } = Astro.props;
         <div class="story-stage-inner">
           <p class="eyebrow">MARIYAS / NATURALS</p>
           <div class="story-orbit">
-            <BotanicalArt class="story-botanical" />
+            <div class="story-halo"></div>
             <div class="oil-light"></div>
             <div class="oil-drops">
               <i></i>
               <i></i>
               <i></i>
             </div>
-            <div class="story-product">
+            <div class="story-product story-product-primary">
               <ProductVisual product={featuredProduct} lang={lang} t={t} />
+            </div>
+            <div class="story-product story-product-secondary">
+              <ProductVisual product={companionProduct} lang={lang} t={t} />
             </div>
           </div>
           <p class="story-stage-caption">{t.storyIntro}</p>
@@ -136,7 +142,7 @@ const { t, lang } = Astro.props;
         trigger: '.story-track',
         start: 'top 45%',
         end: 'bottom 80%',
-        scrub: 0.45,
+        scrub: 0.35,
         onUpdate: (self) => setChapter(self.progress),
       },
     });
@@ -148,21 +154,25 @@ const { t, lang } = Astro.props;
         0,
       )
       .to(
-        '.story-botanical',
-        { rotation: 10, y: -24, ease: 'none', duration: 1 },
-        0,
-      )
-      .to(
         '.oil-light',
         { scale: 1.25, rotation: 35, ease: 'none', duration: 0.55 },
         0.2,
       )
       .fromTo(
-        '.story-product',
-        { y: 18, scale: 0.96, autoAlpha: 0 },
-        { y: 0, scale: 1, autoAlpha: 1, ease: 'power1.out', duration: 0.24 },
-        0.76,
-      );
+        '.story-product-primary',
+        { y: 10, scale: 0.98 },
+        { y: 0, scale: 1, ease: 'none', duration: 1 },
+        0,
+      )
+      .to('.story-product-primary', { autoAlpha: 0, duration: 0.16 }, 0.35)
+      .fromTo(
+        '.story-product-secondary',
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.16 },
+        0.35,
+      )
+      .to('.story-product-secondary', { autoAlpha: 0, duration: 0.16 }, 0.75)
+      .to('.story-product-primary', { autoAlpha: 1, duration: 0.16 }, 0.75);
     timeline
       .fromTo(
         '.oil-drops i',
@@ -182,7 +192,7 @@ const { t, lang } = Astro.props;
         { y: 80, autoAlpha: 0, stagger: 0.025, duration: 0.2 },
         0.6,
       )
-      .to('.story-botanical', { opacity: 0.35, duration: 0.22 }, 0.76);
+      .to('.story-halo', { scale: 1.1, duration: 0.22 }, 0.76);
     gsap.utils.toArray<HTMLElement>('[data-story-scene]').forEach((scene) =>
       gsap.from(scene, {
         x: 20,

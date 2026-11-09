@@ -4,6 +4,9 @@ import { readFileSync } from 'node:fs';
 const manifest = JSON.parse(
   readFileSync('src/data/media-manifest.json', 'utf8'),
 );
+const brandManifest = JSON.parse(
+  readFileSync('src/data/brand-media.json', 'utf8'),
+);
 const fonts = {
   en: ['Inter Variable', 'Cormorant Garamond Variable'],
   ml: ['Noto Sans Malayalam Variable', 'Noto Serif Malayalam Variable'],
@@ -78,7 +81,7 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
             .analyze()
         ).violations,
       ).toEqual([]);
-      await page.goto(`/${lang}/products/mariyas-hair-oil/`);
+      await page.goto(`/${lang}/products/mariyas-hair-oil-200-ml/`);
       expect(
         await page
           .locator('h1')
@@ -96,7 +99,7 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
             new URL(el.currentSrc).hostname === '127.0.0.1',
         ),
       ).toBe(true);
-      await expect(page.locator('.image-gallery img')).toHaveCount(8);
+      await expect(page.locator('.image-gallery img')).toHaveCount(3);
       await page.locator('.image-gallery').scrollIntoViewIfNeeded();
       await page.locator('.image-gallery').focus();
       await page.keyboard.press('ArrowRight');
@@ -111,7 +114,7 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
         ),
       ).toBe(true);
       await page.locator('.provenance-details summary').click();
-      await expect(page.locator('[data-source-reference]')).toHaveCount(2);
+      await expect(page.locator('[data-source-reference]')).toHaveCount(1);
       await expect(
         page.locator(
           'a[href*="mariyasnaturals.com"]:not([data-source-reference])',
@@ -131,7 +134,7 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
 test('every responsive product derivative is served locally', async ({
   request,
 }) => {
-  const paths = manifest.media.flatMap(
+  const paths = [...manifest.media, ...brandManifest.media].flatMap(
     (m: { derivatives: { localAssetPath: string }[] }) =>
       m.derivatives.map((d) => d.localAssetPath),
   );
@@ -176,4 +179,77 @@ test('touch navigation supports narrow screens and reduced motion', async ({
         .evaluate((el) => getComputedStyle(el).transform),
     ).toBe('none');
   }
+});
+
+test('current campaign cards lead to accessible localized collections with clean product placeholders', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto('/en/');
+  await expect(page.locator('.hero-portrait img')).toHaveAttribute(
+    'data-media-id',
+    'media-in-4294',
+  );
+  const heroBox = await page.locator('.hero-portrait img').boundingBox();
+  expect(heroBox!.y + heroBox!.height).toBeLessThan(900);
+  await page
+    .locator('.campaign-rail .campaign-card .text-link')
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/en\/collections\/baby-care\/$/);
+  await expect(page.locator('.collection-cover img')).toHaveAttribute(
+    'data-media-id',
+    'brand-in-3225',
+  );
+  await expect(page.locator('.catalogue-card')).toHaveCount(2);
+  await expect(page.locator('.catalogue-card img')).toHaveCount(0);
+  await expect(page.locator('.authentic-placeholder')).toHaveCount(2);
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  await page.locator('header .language-menu summary').click();
+  await page.locator('header a[hreflang="ml"]').click();
+  await expect(page).toHaveURL(/\/ml\/collections\/baby-care\/$/);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+});
+
+test('legacy product image URLs are no longer served and current metadata is staging-safe', async ({
+  page,
+  request,
+}) => {
+  const response = await request.get(
+    '/images/products/mariyas-hair-oil-200ml-75038/media-com-75039-960.webp',
+  );
+  expect(response.status()).toBe(404);
+  await page.goto('/en/products/mariyas-hair-oil-200-ml/');
+  const graph = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluate((el) => JSON.parse(el.textContent!)['@graph']);
+  const product = graph.find(
+    (node: { mainEntity?: { '@type': string } }) =>
+      node.mainEntity?.['@type'] === 'Product',
+  ).mainEntity;
+  expect(product.image).toContain(
+    '/images/products/mariyas-hair-oil-200-ml/media-in-4294-',
+  );
+  expect(product.offers).toBeUndefined();
+  await expect(page.locator('meta[name=robots]')).toHaveAttribute(
+    'content',
+    'noindex, nofollow',
+  );
 });

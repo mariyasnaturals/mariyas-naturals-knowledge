@@ -1,0 +1,34 @@
+---
+import type { ProductImage } from '../data/products';
+import type { Locale } from '../i18n';
+import { assertApprovedImage } from '../data/media';
+interface Props {
+  lang: Locale;
+  image: ProductImage;
+  priority?: boolean;
+  sizes?: string;
+  class?: string;
+}
+const {
+  lang,
+  image,
+  priority = false,
+  sizes = '100vw',
+  class: className,
+} = Astro.props;
+assertApprovedImage(image);
+---
+
+<img
+  class={className}
+  data-media-id={image.id}
+  src={image.src}
+  srcset={image.variants.map((v) => `${v.src} ${v.width}w`).join(', ')}
+  sizes={sizes}
+  width={image.width}
+  height={image.height}
+  alt={image.alt[lang]}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  decoding="async"
+/>

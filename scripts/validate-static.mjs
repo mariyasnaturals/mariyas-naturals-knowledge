@@ -52,12 +52,7 @@ for (const lang of locales) {
       );
     else {
       assert.ok($(a).is('[data-source-reference]'));
-      assert.ok(
-        [
-          'https://mariyasnaturals.in',
-          'https://www.mariyasnaturals.com',
-        ].includes(new URL(href).origin),
-      );
+      assert.ok(['https://mariyasnaturals.in'].includes(new URL(href).origin));
     }
   }
   console.log(
@@ -145,7 +140,7 @@ function validateTree(directory) {
         'Product images need truthful localized alt text',
       );
     }
-    if (route.includes('/products/')) {
+    if (route.includes('/products/') || route.includes('/collections/')) {
       const suffix = route.split('/').slice(2).join('/');
       for (const alternate of locales) {
         assert.equal(
@@ -159,7 +154,7 @@ function validateTree(directory) {
       }
     }
     assert.equal(
-      $('a[href*="mariyasnaturals.com"]:not([data-source-reference])').length,
+      $('a[href*="mariyasnaturals.com"]').length,
       0,
       'Commerce remains disabled during migration',
     );

@@ -1,0 +1,53 @@
+---
+import ApprovedImage from './ApprovedImage.astro';
+import ArrowIcon from './ArrowIcon.astro';
+import type { ProductImage } from '../data/products';
+import type { Locale } from '../i18n';
+interface Props {
+  lang: Locale;
+  title: string;
+  eyebrow?: string;
+  text?: string;
+  action: string;
+  href: string;
+  image?: ProductImage;
+  feature?: boolean;
+}
+const {
+  lang,
+  title,
+  eyebrow,
+  text,
+  action,
+  href,
+  image,
+  feature = false,
+} = Astro.props;
+---
+
+<article class:list={['campaign-card', { 'campaign-feature': feature }]}>
+  {image && (
+    <a class="campaign-image" href={href} aria-label={title}>
+      <ApprovedImage
+        lang={lang}
+        image={image}
+        sizes={
+          feature
+            ? '(min-width: 1000px) 640px, 90vw'
+            : '(min-width: 1000px) 380px, 85vw'
+        }
+      />
+    </a>
+  )}
+  <div class="campaign-copy">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h3>
+      <a href={href}>{title}</a>
+    </h3>
+    {text && <p>{text}</p>}
+    <a class="text-link" href={href}>
+      {action}
+      <ArrowIcon />
+    </a>
+  </div>
+</article>

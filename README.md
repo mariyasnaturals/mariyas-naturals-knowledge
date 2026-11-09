@@ -1,6 +1,6 @@
 # Mariyas Naturals Knowledge
 
-A lightweight, four-language educational website foundation, distinct from the official [commercial store](https://www.mariyasnaturals.com). This is a developing design prototype, not the complete brand website. Task 03 adds authentic local product media, refined storytelling and self-hosted multilingual typography; see [Task 03 report](docs/task03-report.md) and [media provenance](docs/product-assets.md). Task 02 architecture remains documented separately. No commerce, customer database, fabricated product images, certifications or efficacy claims are included.
+A four-language, static Mariyas Naturals website with a premium editorial layout and current approved imagery from [mariyasnaturals.in](https://mariyasnaturals.in). The current rebrand supersedes the earlier dual-store image direction: no legacy .com visual is served or rendered. See the [rebrand report](docs/rebrand-report.md), [source policy](docs/product-assets.md) and [current catalogue](docs/rebrand-catalogue.md). Purchasing is disabled and .cloud remains a noindex staging environment.
 
 ## Stack and architecture
 
@@ -34,6 +34,7 @@ npm test               # Indexing and canonical-origin policy tests
 npm run build          # Static HTML in dist/
 npm run test:static    # Validate built language routes, links, metadata and sitemap
 npm run test:browser   # Chromium, keyboard, reduced motion, JS-off and axe checks
+npm run test:media-policy # Enforce current .in-only images throughout the static output
 npm run preview       # Inspect the built static output locally
 ```
 
@@ -41,17 +42,19 @@ Browser tests expect `/usr/bin/chromium` by default. Set `CHROMIUM_PATH` to anot
 
 ## Languages and editorial content
 
-The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages, catalogues and all matching product detail pages.
+The root is a language-choice page with an explicit English fallback link. There are no location, browser-language or automatic geographic redirects. Each page has its own `lang`, translated title/description, content and language links. To add a locale, add its dictionary and locale entry, then update sitemap locale configuration and tests. Future content pages should extend the language switcher and SEO alternates to map equivalent translated paths; the current mapping covers homepages, catalogues, six collection routes and all matching current product detail pages.
 
 Malayalam, Hindi and Tamil are starter translations requiring native-speaker review before release. All prose requires editorial approval. No numeric heritage claim is published without supporting evidence. No ingredient names, manufacturing steps, ratings, certificates, prices or availability have been invented.
 
 ## Storytelling and products
 
-`StorytellingSection` composes five readable HTML scenes: heritage, botanicals, preparation, transformation and an original Hair Oil image reveal. GSAP adds scrubbed progress, chapter navigation, botanical parallax, abstract oil drops and subtle image movement. Pinning is limited to wide, tall, fine-pointer desktops and at most 650px. Mobile uses native scrolling and its own final image reveal. Skip Story, no-JavaScript content and reduced motion remain supported.
+`HeroSection` uses the current .in 200 ml product image in a warm editorial composition, with edition discovery links. The mobile order puts the actual pack photograph ahead of the longer intro/actions. `StorytellingSection` retains five semantic HTML chapters, reworked around the current 200 ml and 500 ml editions. It uses restrained crossfades, a light halo and abstract oil drops. Pinning remains limited to wide, tall fine-pointer desktops and at most 650px; mobile retains native scrolling. Skip Story, no-JavaScript content and reduced-motion cleanup remain available.
 
-The catalogue contains 93 product families and three explicit Hair Oil sizes from the two public source catalogues. The homepage shows a curated swipe rail; `/{lang}/products/` lists all families and each has a static detail page. Galleries preserve variant associations, responsive dimensions and native horizontal scrolling. Three products and the 1LTR size lack separate verified images; no replacements are inferred. Original product names are retained in English while the interface and alt text are localized.
+`CampaignCard` and `CollectionHighlights` provide reusable cards and a feature banner for homepage, category and future promotional layouts. Only current .in category artwork is used. `/{lang}/collections/{category}/` supplies six localized static collections with truthful metadata and ItemList structure. No unverified “best,” purity, medical or certification claim is inserted to target a keyword.
 
-`src/config/commerce.mjs` keeps purchasing disabled with an empty exact-URL map. Product discovery links are local. Source disclosures link to catalogue evidence only. Future final store URLs must be verified and mapped by stable identifiers, never constructed from WordPress slugs. See [media storage and import instructions](docs/product-assets.md).
+The active catalogue contains 86 .in product listings. Two have four approved photographs each; the remaining 84 use clean placeholders. Current category artwork is never substituted for an individual product photo. Official product names remain in English; interface text and alt text are localized. Product ItemPage metadata includes actual names, source SKUs, brand and an approved image where available, without offers, ratings or availability assertions.
+
+`src/config/media-policy.mjs` enforces exact current .in image provenance separately from `src/config/commerce.mjs`. The latter retains disabled global/per-product purchasing and an empty exact-URL map. Product discovery is local; source disclosures cite the current .in catalogue. No final purchase destination is guessed from a WordPress slug.
 
 ```sh
 npm run fonts:prepare     # Reproduce committed licensed WOFF2 subsets from locked packages
@@ -76,7 +79,7 @@ Configuration is explicit, independent of Astro dev/build mode:
 | `SITE_ENV`       | `development`                       | `production`                    |
 | `ALLOW_INDEXING` | `false`                             | `true` only after launch review |
 
-Indexable builds fail unless all production conditions match. The validated URL feeds canonical tags, Open Graph URLs, hreflang, x-default and sitemap. JSON-LD includes only Organization/WebSite names, supplied website URLs, languages and publisher references. No fabricated business details or product schema is emitted. No social share image is asserted before an approved asset exists. Titles and descriptions are locale-specific. English is x-default.
+Indexable builds fail unless all production conditions match. The validated URL feeds canonical tags, Open Graph URLs, hreflang, x-default and sitemap. JSON-LD includes only Organization/WebSite names, supplied website URLs, languages and publisher references. No fabricated business details, offers, ratings or efficacy claims are emitted. Approved current images populate social metadata; missing product photos remain absent. Titles and descriptions are locale-specific. English is x-default.
 
 To validate a future production build without deploying:
 

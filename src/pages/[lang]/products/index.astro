@@ -1,8 +1,10 @@
 ---
 import ArrowIcon from '../../../components/ArrowIcon.astro';
 import EditorialLayout from '../../../layouts/EditorialLayout.astro';
-import ProductVisual from '../../../components/ProductVisual.astro';
-import { products, productPath } from '../../../data/products';
+import CatalogueGrid from '../../../components/CatalogueGrid.astro';
+import { collectionSchema } from '../../../data/seo';
+import { collectionPath } from '../../../data/collections';
+import { products } from '../../../data/products';
 import type { ProductCategory } from '../../../data/media-types';
 import { locales, dictionaries, type Locale } from '../../../i18n';
 export function getStaticPaths() {
@@ -21,6 +23,7 @@ const categories = Object.keys(t.categories) as ProductCategory[];
     description: t.catalogueText,
     sources: [],
     reviewed: true,
+    pageSchema: collectionSchema(products, lang),
   }}
 >
   <nav class="collection-nav" aria-label={t.catalogue}>
@@ -37,29 +40,16 @@ const categories = Object.keys(t.categories) as ProductCategory[];
       class="catalogue-collection"
       aria-labelledby={`heading-${category}`}
     >
-      <h2 id={`heading-${category}`}>{t.categories[category]}</h2>
-      <div class="catalogue-grid">
-        {products
-          .filter((p) => p.category === category)
-          .map((product) => (
-            <article class="catalogue-card">
-              <a href={productPath(lang, product)}>
-                <div class="catalogue-image">
-                  <ProductVisual
-                    product={product}
-                    lang={lang}
-                    t={t}
-                    sizes="(min-width: 1000px) 280px, (min-width: 760px) 42vw, 85vw"
-                  />
-                </div>
-                <h3 lang="en">{product.name[lang]}</h3>
-                <span class="text-link">
-                  {t.viewDetails} <ArrowIcon />
-                </span>
-              </a>
-            </article>
-          ))}
-      </div>
+      <h2 id={`heading-${category}`}>
+        <a href={collectionPath(lang, category)}>
+          {t.categories[category]} <ArrowIcon />
+        </a>
+      </h2>
+      <CatalogueGrid
+        products={products.filter((p) => p.category === category)}
+        t={t}
+        lang={lang}
+      />
     </section>
   ))}
 </EditorialLayout>

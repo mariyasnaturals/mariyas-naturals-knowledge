@@ -5,7 +5,7 @@ import { readFile, stat, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 const root = resolve('dist');
 const output = resolve(
-  process.env.REVIEW_OUTPUT_DIR || 'test-results/task03-review',
+  process.env.REVIEW_OUTPUT_DIR || 'test-results/rebrand-review',
 );
 await mkdir(output, { recursive: true });
 const server = createServer(async (request, response) => {
@@ -118,7 +118,7 @@ try {
     });
     await page.goto(`http://127.0.0.1:${server.address().port}/${lang}/`);
     await page.evaluate(() => document.fonts.ready);
-    await page.locator('.hero-product img').evaluate((el) => el.decode());
+    await page.locator('.hero-portrait img').evaluate((el) => el.decode());
     await page.waitForTimeout(1000);
     const metrics = await page.evaluate(() => ({
       ...window.__renderMetrics,
@@ -133,7 +133,7 @@ try {
           bytes: entry.transferSize,
         })),
       heroImage: document
-        .querySelector('.hero-product img')
+        .querySelector('.hero-portrait img')
         .currentSrc.split(location.origin)[1],
     }));
     observations.push({ ...scenario, ...metrics, inp: 'not measured' });
@@ -171,7 +171,7 @@ try {
         }),
       );
       await page.goto(
-        `http://127.0.0.1:${server.address().port}/${lang}/products/mariyas-hair-oil/`,
+        `http://127.0.0.1:${server.address().port}/${lang}/products/mariyas-hair-oil-200-ml/`,
       );
       await page.evaluate(() => document.fonts.ready);
       await page

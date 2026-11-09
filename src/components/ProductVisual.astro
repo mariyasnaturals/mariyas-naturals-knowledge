@@ -1,4 +1,5 @@
 ---
+import ApprovedImage from './ApprovedImage.astro';
 import type { Product } from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
 interface Props {
@@ -20,20 +21,11 @@ const image = product.images.main;
 
 <div class:list={['product-visual', { 'has-image': !!image }]}>
   {image ? (
-    <img
-      src={image.src}
-      srcset={
-        image.variants.length
-          ? image.variants.map((v) => `${v.src} ${v.width}w`).join(', ')
-          : undefined
-      }
+    <ApprovedImage
+      lang={lang}
+      image={image}
+      priority={priority}
       sizes={sizes}
-      width={image.width}
-      height={image.height}
-      alt={image.alt[lang]}
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      decoding="async"
     />
   ) : (
     <div class="authentic-placeholder">

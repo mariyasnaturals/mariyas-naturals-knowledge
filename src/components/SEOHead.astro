@@ -1,11 +1,14 @@
 ---
 import { site, absoluteUrl } from '../config/site';
 import { locales, type Locale } from '../i18n';
+import { currentStoreOrigin } from '../config/media-policy.mjs';
 interface Props {
   title: string;
   description: string;
   lang: Locale;
   path?: string;
+  pageSchema?: Record<string, unknown>;
+  socialImage?: { src: string; width: number; height: number; alt: string };
 }
 const { title, description, lang, path = Astro.url.pathname } = Astro.props;
 const suffix = path.startsWith(`/${lang}/`) ? path.slice(lang.length + 2) : '';
@@ -16,7 +19,7 @@ const structuredData = {
       '@type': 'Organization',
       '@id': `${site.url}/#organization`,
       name: 'Mariyas Naturals',
-      url: site.storeUrl,
+      url: currentStoreOrigin,
     },
     {
       '@type': 'WebSite',
@@ -25,6 +28,16 @@ const structuredData = {
       url: site.url,
       inLanguage: locales,
       publisher: { '@id': `${site.url}/#organization` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${absoluteUrl(path)}#webpage`,
+      url: absoluteUrl(path),
+      name: title,
+      description,
+      inLanguage: lang,
+      isPartOf: { '@id': `${site.url}/#website` },
+      ...Astro.props.pageSchema,
     },
   ],
 };
@@ -59,6 +72,24 @@ const structuredData = {
 <meta property="og:description" content={description} />
 <meta property="og:url" content={absoluteUrl(path)} />
 <meta property="og:site_name" content="Mariyas Naturals" />
+{Astro.props.socialImage && (
+  <>
+    <meta
+      property="og:image"
+      content={absoluteUrl(Astro.props.socialImage.src)}
+    />
+    <meta
+      property="og:image:width"
+      content={String(Astro.props.socialImage.width)}
+    />
+    <meta
+      property="og:image:height"
+      content={String(Astro.props.socialImage.height)}
+    />
+    <meta property="og:image:alt" content={Astro.props.socialImage.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </>
+)}
 <meta
   property="og:locale"
   content={{ en: 'en_IN', ml: 'ml_IN', hi: 'hi_IN', ta: 'ta_IN' }[lang]}

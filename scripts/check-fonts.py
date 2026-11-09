@@ -19,4 +19,4 @@ for lang,script,low,high in [('ml','malayalam',0x0d00,0x0d7f),('hi','devanagari'
   report[lang][kind]={'scriptCodepointsChecked':len(chars),'missing':[f'U+{c:04X}' for c in sorted(missing)],'GSUB':'GSUB' in f,'GPOS':'GPOS' in f,'sample':samples[lang],'shapedGlyphs':len(sample.glyph_infos),'missingShapedGlyphs':notdef}
   assert not missing and notdef==0,(lang,kind,missing,notdef)
 print(json.dumps(report,indent=2,ensure_ascii=False))
-(r/'docs/task03-glyph-coverage.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
+(r/'docs/rebrand-glyph-coverage.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')

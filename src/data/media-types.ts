@@ -1,5 +1,5 @@
 export interface CatalogueSource {
-  store: 'in' | 'com';
+  store: 'in';
   id: number;
   name: string;
   sku: string;
@@ -40,7 +40,7 @@ export interface ProductMediaRecord {
   height: number;
   verificationStatus: 'source-verified';
   sources: readonly {
-    store: 'in' | 'com';
+    store: 'in';
     id: number;
     sourceUrl: string;
     metadataUrl: string;
@@ -50,7 +50,7 @@ export interface ProductMediaRecord {
     productId: string;
     variantId?: string;
     variantLabel?: string;
-    sourceStore: 'in' | 'com';
+    sourceStore: 'in';
     sourceProductId: number;
     role: 'main' | 'gallery';
   }[];
@@ -74,6 +74,7 @@ export interface CatalogueProductRecord {
   missing: readonly string[];
 }
 export interface ProductMediaManifest {
+  sourcePolicy: 'current-approved-in-only';
   schemaVersion: number;
   verifiedOn: string;
   products: readonly CatalogueProductRecord[];

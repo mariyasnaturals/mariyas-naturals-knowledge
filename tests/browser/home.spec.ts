@@ -96,10 +96,10 @@ for (const width of [360, 768, 1440]) {
       await expect(page.locator('.mobile-menu summary')).toBeFocused();
     }
     await page.locator('.product-card a.button').first().click();
-    await expect(page).toHaveURL(/\/en\/products\/mariyas-hair-oil\/$/);
+    await expect(page).toHaveURL(/\/en\/products\/mariyas-hair-oil-200-ml\/$/);
     await page.locator('header .language-menu summary').click();
     await page.locator('header a[hreflang="ta"]').click();
-    await expect(page).toHaveURL(/\/ta\/products\/mariyas-hair-oil\/$/);
+    await expect(page).toHaveURL(/\/ta\/products\/mariyas-hair-oil-200-ml\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
     expect(
       await page.evaluate(
@@ -147,7 +147,7 @@ test('desktop pin is limited and resets for reduced motion', async ({
   await expect(page.locator('.skip-story')).toBeVisible();
   expect(
     await page
-      .locator('.story-product img')
+      .locator('.story-product-primary img')
       .evaluate(
         (el) =>
           el.getBoundingClientRect().height <=

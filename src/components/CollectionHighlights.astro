@@ -1,0 +1,54 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import CampaignCard from './CampaignCard.astro';
+import { collectionImage, collectionPath } from '../data/collections';
+import type { ProductCategory } from '../data/media-types';
+import type { Dictionary, Locale } from '../i18n';
+interface Props {
+  t: Dictionary;
+  lang: Locale;
+}
+const { t, lang } = Astro.props;
+const highlights: ProductCategory[] = [
+  'baby-care',
+  'skin-care',
+  'herbal-powders',
+];
+---
+
+<section id="knowledge" class="collection-highlights section">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow={t.knowledgeLabel}
+      title={t.knowledgeTitle}
+      text={t.knowledgeText}
+    />
+    <div
+      class="campaign-rail"
+      role="region"
+      tabindex="0"
+      aria-label={t.knowledge}
+    >
+      {highlights.map((category) => (
+        <CampaignCard
+          lang={lang}
+          title={t.categories[category]}
+          text={t.categoryDescriptions[category]}
+          action={t.learn}
+          image={collectionImage(category, t)}
+          href={collectionPath(lang, category)}
+        />
+      ))}
+    </div>
+    <CampaignCard
+      lang={lang}
+      feature
+      title={t.campaignTitle}
+      eyebrow={t.campaignLabel}
+      text={t.campaignText}
+      action={t.campaignAction}
+      image={collectionImage('hair-care', t)}
+      href={collectionPath(lang, 'hair-care')}
+    />
+  </div>
+</section>

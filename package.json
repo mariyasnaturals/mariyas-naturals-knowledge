@@ -18,7 +18,8 @@
     "test:static": "node scripts/validate-static.mjs",
     "test:browser": "playwright test",
     "media:import": "node scripts/import-product-media.mjs",
-    "fonts:prepare": "node scripts/prepare-fonts.mjs"
+    "fonts:prepare": "node scripts/prepare-fonts.mjs",
+    "test:media-policy": "node scripts/validate-media-policy.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

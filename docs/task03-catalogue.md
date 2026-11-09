@@ -1,6 +1,7 @@
 # Source catalogue inventory
 
-Verified 2026-11-09. Exact catalogue names are retained. Counts include only distinct attached images. Size-specific images are listed separately from parent media. See `product-assets.md` for the matching policy and limitations.
+> Historical Task 03 evidence. The current .in-only rebrand supersedes its dual-store imagery; see [current report](rebrand-report.md) and [source policy](product-assets.md).
+> Verified 2026-11-09. Exact catalogue names are retained. Counts include only distinct attached images. Size-specific images are listed separately from parent media. See `product-assets.md` for the matching policy and limitations.
 
 | Stable ID  | Official catalogue name               | Collection     | Main/gallery images | Explicit variants                                | Source product IDs                                    |
 | ---------- | ------------------------------------- | -------------- | ------------------: | ------------------------------------------------ | ----------------------------------------------------- |

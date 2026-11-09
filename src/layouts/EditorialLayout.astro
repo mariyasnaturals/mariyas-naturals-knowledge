@@ -12,7 +12,13 @@ const { page } = Astro.props;
 const t = dictionaries[page.lang];
 ---
 
-<BaseLayout lang={page.lang} title={page.title} description={page.description}>
+<BaseLayout
+  lang={page.lang}
+  title={page.title}
+  description={page.description}
+  pageSchema={page.pageSchema}
+  socialImage={page.socialImage}
+>
   <SiteHeader lang={page.lang} t={t} />
   <main id="main" tabindex="-1" class="editorial-main">
     <article class:list={['wrap section', `content-${page.kind}`]}>

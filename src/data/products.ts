@@ -2,6 +2,7 @@ import type { Locale } from '../i18n';
 import { dictionaries } from '../i18n';
 import { resolvePurchaseUrl } from '../config/commerce.mjs';
 import data from './media-manifest.json';
+import { approvedImage } from './media';
 import type {
   CatalogueSource,
   ProductCategory,
@@ -41,27 +42,16 @@ export interface Product {
 const manifest = data as ProductMediaManifest;
 export const products: readonly Product[] = manifest.products.map((record) => {
   const image = (id: string, variantAssociation?: string): ProductImage => {
-    const media = manifest.media.find((m) => m.id === id);
-    if (!media) throw new Error(`Missing media record: ${id}`);
-    const largest = media.derivatives.at(-1)!;
     const name = variantAssociation
       ? `${record.displayName} · ${variantAssociation}`
       : record.displayName;
     return {
-      id,
-      src: largest.localAssetPath,
-      width: largest.width,
-      height: largest.height,
-      alt: {
+      ...approvedImage(id, {
         en: `${name} — official store product image`,
         ml: `${name} — ഔദ്യോഗിക സ്റ്റോറിലെ ഉൽപ്പന്ന ചിത്രം`,
         hi: `${name} — आधिकारिक स्टोर की उत्पाद छवि`,
         ta: `${name} — அதிகாரப்பூர்வ கடையின் தயாரிப்புப் படம்`,
-      },
-      variants: media.derivatives.map((d) => ({
-        src: d.localAssetPath,
-        width: d.width,
-      })),
+      }),
       variantAssociation,
     };
   };
@@ -109,12 +99,12 @@ export const purchaseUrl = (product: Product): string | undefined =>
   resolvePurchaseUrl(product);
 export const productPath = (lang: Locale, product: Product) =>
   `/${lang}/products/${product.slug}/`;
-export const featuredProduct = products.find((p) => p.id === 'mn-19185')!;
-export const featuredProducts = [
-  'mn-19185',
-  'mn-19214',
-  'mn-79430',
-  'mn-19189',
-  'mn-77781',
-  'mn-76995',
-].map((id) => products.find((p) => p.id === id)!);
+export const featuredProduct = products.find((p) => p.sources[0]?.id === 3008)!;
+export const companionProduct = products.find(
+  (p) => p.sources[0]?.id === 3009,
+)!;
+export const featuredProducts = [featuredProduct, companionProduct];
+// Explicit current-store listings; these links are discovery, never purchasing.
+export const hairOilEditions = products
+  .filter((p) => [3008, 3009, 3010].includes(p.sources[0]?.id))
+  .sort((a, b) => a.sources[0]!.id - b.sources[0]!.id);
