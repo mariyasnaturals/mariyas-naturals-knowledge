@@ -1,0 +1,31 @@
+---
+import BotanicalArt from './BotanicalArt.astro';
+import type { Dictionary } from '../i18n';
+interface Props {
+  t: Dictionary;
+}
+const { t } = Astro.props;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1 id="hero-title">{t.hero}</h1>
+      <p class="lede">{t.intro}</p>
+      <div class="actions">
+        <a class="button" href="#story">
+          {t.explore}
+          <span aria-hidden="true">→</span>
+        </a>
+        <a class="text-link" href="#ingredients">
+          {t.discover} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <BotanicalArt />
+      <p>{t.heroNote}</p>
+    </div>
+  </div>
+</section>

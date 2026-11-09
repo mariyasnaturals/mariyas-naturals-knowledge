@@ -1,0 +1,54 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import StoryScene from './StoryScene.astro';
+import type { Dictionary } from '../i18n';
+interface Props {
+  t: Dictionary;
+}
+const { t } = Astro.props;
+---
+
+<section
+  id="story"
+  class="section wrap story-section"
+  aria-labelledby="story-heading"
+>
+  <div id="story-heading">
+    <SectionHeading
+      eyebrow={t.heritageLabel}
+      title={t.heritageTitle}
+      text={t.heritageText}
+    />
+    <p class="editor-note">{t.heritageNote}</p>
+  </div>
+  <ol class="story-scenes">
+    {t.scenes.map((title, index) => (
+      <StoryScene
+        number={index + 1}
+        title={title}
+        description={t.sceneNotes[index] ?? ''}
+      />
+    ))}
+  </ol>
+</section>
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+  const media = gsap.matchMedia();
+  media.add('(prefers-reduced-motion: no-preference)', () => {
+    gsap.utils.toArray<HTMLElement>('[data-story-scene]').forEach((scene) => {
+      // Animate position only: content stays visible if JavaScript fails or is disabled.
+      gsap.from(scene, {
+        x: 20,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: scene, start: 'top 92%', once: true },
+      });
+    });
+  });
+  document.addEventListener('astro:before-swap', () => media.revert(), {
+    once: true,
+  });
+  window.addEventListener('pagehide', () => media.revert(), { once: true });
+</script>

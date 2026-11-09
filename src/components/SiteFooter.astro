@@ -1,0 +1,33 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { site } from '../config/site';
+import type { Locale, Dictionary } from '../i18n';
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+}
+const { lang, t } = Astro.props;
+---
+
+<section class="store-section section">
+  <div class="wrap">
+    <p class="eyebrow">MARIYAS NATURALS</p>
+    <h2>{t.storeTitle}</h2>
+    <p>{t.storeText}</p>
+    <a class="button button-gold" href={site.storeUrl}>
+      {t.store} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+<footer class="site-footer wrap">
+  <div>
+    <a class="footer-brand" href={`/${lang}/`}>
+      Mariyas Naturals
+    </a>
+    <p>{t.footer}</p>
+  </div>
+  <LanguageSwitcher lang={lang} label={t.language} />
+  <p class="footer-note">
+    © {new Date().getFullYear()} {t.rights}. {t.preview}
+  </p>
+</footer>

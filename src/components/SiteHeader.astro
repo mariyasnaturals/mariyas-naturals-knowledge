@@ -1,0 +1,42 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Locale, Dictionary } from '../i18n';
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+}
+const { lang, t } = Astro.props;
+const links = [
+  ['story', t.story],
+  ['ingredients', t.ingredients],
+  ['knowledge', t.knowledge],
+  ['products', t.products],
+];
+---
+
+<a class="skip-link" href="#main">
+  {t.skip}
+</a>
+<div class="announcement">{t.announcement}</div>
+<header class="site-header wrap">
+  <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals">
+    <span>
+      Mariyas<span class="brand-dot">.</span>
+    </span>
+    <small>N A T U R A L S</small>
+  </a>
+  <nav class="desktop-nav" aria-label={t.navLabel}>
+    {links.map(([id, label]) => (
+      <a href={`#${id}`}>{label}</a>
+    ))}
+  </nav>
+  <details class="mobile-menu">
+    <summary>{t.menu}</summary>
+    <nav aria-label={t.navLabel}>
+      {links.map(([id, label]) => (
+        <a href={`#${id}`}>{label}</a>
+      ))}
+    </nav>
+  </details>
+  <LanguageSwitcher lang={lang} label={t.language} />
+</header>

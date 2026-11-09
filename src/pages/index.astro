@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import { dictionaries } from '../i18n';
+---
+
+<BaseLayout
+  lang="en"
+  title="Choose your language"
+  description={dictionaries.en.description}
+  path="/"
+>
+  <main class="language-landing wrap">
+    <p class="eyebrow">MARIYAS NATURALS</p>
+    <h1>
+      Rooted in Nature.
+      <br />
+      Guided by Tradition.
+    </h1>
+    <p>Choose your language to explore our knowledge website.</p>
+    <LanguageSwitcher lang="en" label="Choose language" />
+    <a class="button" href="/en/">
+      Continue in English →
+    </a>
+  </main>
+</BaseLayout>

@@ -1,0 +1,69 @@
+---
+import { site, absoluteUrl } from '../config/site';
+import { locales, type Locale } from '../i18n';
+interface Props {
+  title: string;
+  description: string;
+  lang: Locale;
+  path?: string;
+}
+const {
+  title,
+  description,
+  lang,
+  path = `/${Astro.props.lang}/`,
+} = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.url}/#organization`,
+      name: 'Mariyas Naturals',
+      url: site.storeUrl,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      name: 'Mariyas Naturals Knowledge',
+      url: site.url,
+      inLanguage: locales,
+      publisher: { '@id': `${site.url}/#organization` },
+    },
+  ],
+};
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title} | Mariyas Naturals</title>
+<meta name="description" content={description} />
+<meta
+  name="robots"
+  content={site.indexable ? 'index, follow' : 'noindex, nofollow'}
+/>
+<link rel="canonical" href={absoluteUrl(path)} />
+{locales.map((locale) => (
+  <link rel="alternate" hreflang={locale} href={absoluteUrl(`/${locale}/`)} />
+))}
+<link rel="alternate" hreflang="x-default" href={absoluteUrl('/en/')} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={`${title} | Mariyas Naturals`} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={absoluteUrl(path)} />
+<meta property="og:site_name" content="Mariyas Naturals" />
+<meta
+  property="og:locale"
+  content={{ en: 'en_IN', ml: 'ml_IN', hi: 'hi_IN', ta: 'ta_IN' }[lang]}
+/>
+{locales
+  .filter((locale) => locale !== lang)
+  .map((locale) => (
+    <meta property="og:locale:alternate" content={`${locale}_IN`} />
+  ))}
+<meta name="theme-color" content="#063D2A" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(structuredData).replace(/</g, '\u003c')}
+/>

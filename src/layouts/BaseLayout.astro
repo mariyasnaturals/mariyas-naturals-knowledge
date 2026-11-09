@@ -1,0 +1,21 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import '../styles/global.css';
+import type { Locale } from '../i18n';
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  path?: string;
+}
+---
+
+<!doctype html>
+<html lang={Astro.props.lang}>
+  <head>
+    <SEOHead {...Astro.props} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
