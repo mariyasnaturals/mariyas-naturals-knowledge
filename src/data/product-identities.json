@@ -1,0 +1,432 @@
+[
+  {
+    "sourceProductId": 3012,
+    "id": "mn-98121",
+    "slug": "ghee-vechoor-cow-500gm-98121"
+  },
+  {
+    "sourceProductId": 3011,
+    "id": "mn-90605",
+    "slug": "chyavanaprash-90605"
+  },
+  {
+    "sourceProductId": 3010,
+    "id": "mn-in-3010",
+    "slug": "mariyas-hair-oil-1-ltr"
+  },
+  {
+    "sourceProductId": 3009,
+    "id": "mn-in-3009",
+    "slug": "mariyas-hair-oil-500-ml"
+  },
+  {
+    "sourceProductId": 3008,
+    "id": "mn-in-3008",
+    "slug": "mariyas-hair-oil-200-ml"
+  },
+  {
+    "sourceProductId": 3007,
+    "id": "mn-89315",
+    "slug": "karkidaka-kanji-89315"
+  },
+  {
+    "sourceProductId": 3005,
+    "id": "mn-79451",
+    "slug": "navara-powder-100g-79451"
+  },
+  {
+    "sourceProductId": 3004,
+    "id": "mn-79450",
+    "slug": "green-gram-powder-100g-79450"
+  },
+  {
+    "sourceProductId": 3003,
+    "id": "mn-79449",
+    "slug": "kolarakku-powder-100g-79449"
+  },
+  {
+    "sourceProductId": 3002,
+    "id": "mn-79448",
+    "slug": "triphala-powder-100g-79448"
+  },
+  {
+    "sourceProductId": 3001,
+    "id": "mn-79447",
+    "slug": "nalpamaram-powder-100g-79447"
+  },
+  {
+    "sourceProductId": 3000,
+    "id": "mn-79446",
+    "slug": "irattimadhuram-powder-100g-79446"
+  },
+  {
+    "sourceProductId": 2999,
+    "id": "mn-79445",
+    "slug": "multani-mitti-powder-100g-79445"
+  },
+  {
+    "sourceProductId": 2998,
+    "id": "mn-79444",
+    "slug": "vetiver-powder-100g-79444"
+  },
+  {
+    "sourceProductId": 2997,
+    "id": "mn-79443",
+    "slug": "shikkakai-powder-100g-79443"
+  },
+  {
+    "sourceProductId": 2996,
+    "id": "mn-79442",
+    "slug": "curry-leaves-powder-100g-79442"
+  },
+  {
+    "sourceProductId": 2995,
+    "id": "mn-79441",
+    "slug": "nellikka-powder-100g-79441"
+  },
+  {
+    "sourceProductId": 2994,
+    "id": "mn-79440",
+    "slug": "manjistha-powder-100g-79440"
+  },
+  {
+    "sourceProductId": 2993,
+    "id": "mn-79439",
+    "slug": "wild-turmeric-powder-100g-79439"
+  },
+  {
+    "sourceProductId": 2992,
+    "id": "mn-79438",
+    "slug": "sandalwood-powder-100g-79438"
+  },
+  {
+    "sourceProductId": 2991,
+    "id": "mn-79437",
+    "slug": "shatavari-powder-100g-79437"
+  },
+  {
+    "sourceProductId": 2990,
+    "id": "mn-79436",
+    "slug": "red-sandalwood-powder-100g-79436"
+  },
+  {
+    "sourceProductId": 2989,
+    "id": "mn-79435",
+    "slug": "reetha-powder-100g-79435"
+  },
+  {
+    "sourceProductId": 2988,
+    "id": "mn-79434",
+    "slug": "pathimugham-powder-100g-79434"
+  },
+  {
+    "sourceProductId": 2987,
+    "id": "mn-79433",
+    "slug": "tulsi-powder-100g-79433"
+  },
+  {
+    "sourceProductId": 2986,
+    "id": "mn-79432",
+    "slug": "brahmi-powder-100g-79432"
+  },
+  {
+    "sourceProductId": 2985,
+    "id": "mn-79431",
+    "slug": "neem-powder-100g-79431"
+  },
+  {
+    "sourceProductId": 2954,
+    "id": "mn-79430",
+    "slug": "bhringraj-powder-100g-79430"
+  },
+  {
+    "sourceProductId": 2953,
+    "id": "mn-79429",
+    "slug": "moringa-leaves-powder-100g-79429"
+  },
+  {
+    "sourceProductId": 2952,
+    "id": "mn-79428",
+    "slug": "ashwagandha-powder-100g-79428"
+  },
+  {
+    "sourceProductId": 2951,
+    "id": "mn-79032",
+    "slug": "amla-and-aloe-vera-shampoo-200ml-79032"
+  },
+  {
+    "sourceProductId": 2950,
+    "id": "mn-78961",
+    "slug": "bruhath-dhantapala-thailam-500ml-78961"
+  },
+  {
+    "sourceProductId": 2949,
+    "id": "mn-78952",
+    "slug": "indigo-powder-100g-78952"
+  },
+  {
+    "sourceProductId": 2948,
+    "id": "mn-77781",
+    "slug": "mariyas-hair-skin-care-kit-77781"
+  },
+  {
+    "sourceProductId": 2947,
+    "id": "mn-77629",
+    "slug": "deshapushpam-shower-gel-250-ml-77629"
+  },
+  {
+    "sourceProductId": 2946,
+    "id": "mn-77628",
+    "slug": "saffron-face-cream-100gm-77628"
+  },
+  {
+    "sourceProductId": 2945,
+    "id": "mn-77627",
+    "slug": "fenugreek-tulsi-neem-shampoo-200ml-77627"
+  },
+  {
+    "sourceProductId": 2944,
+    "id": "mn-77626",
+    "slug": "amla-and-indigo-shampoo-200ml-77626"
+  },
+  {
+    "sourceProductId": 2943,
+    "id": "mn-77619",
+    "slug": "five-flowers-body-cream-250gm-77619"
+  },
+  {
+    "sourceProductId": 2942,
+    "id": "mn-76995",
+    "slug": "rosemary-water-200ml-76995"
+  },
+  {
+    "sourceProductId": 2940,
+    "id": "mn-47358",
+    "slug": "body-cream-30gm-47358"
+  },
+  {
+    "sourceProductId": 2939,
+    "id": "mn-47355",
+    "slug": "hair-cream-30gm-47355"
+  },
+  {
+    "sourceProductId": 2938,
+    "id": "mn-47273",
+    "slug": "mens-face-gel-100gm-47273"
+  },
+  {
+    "sourceProductId": 2937,
+    "id": "mn-47270",
+    "slug": "lotus-gel-100gm-47270"
+  },
+  {
+    "sourceProductId": 2936,
+    "id": "mn-47268",
+    "slug": "neem-tulsi-gel-100gm-47268"
+  },
+  {
+    "sourceProductId": 2935,
+    "id": "mn-24246",
+    "slug": "hibiscus-gel-100gm-24246"
+  },
+  {
+    "sourceProductId": 2934,
+    "id": "mn-in-2934",
+    "slug": "lotus-gel-100-g-no-stock-2934"
+  },
+  {
+    "sourceProductId": 2933,
+    "id": "mn-21919",
+    "slug": "mariyas-oil-treated-comb-combo-pack-21919"
+  },
+  {
+    "sourceProductId": 2932,
+    "id": "mn-21918",
+    "slug": "mariyas-oil-treated-comb-fine-21918"
+  },
+  {
+    "sourceProductId": 2931,
+    "id": "mn-21914",
+    "slug": "mariyas-oil-treated-comb-wide-21914"
+  },
+  {
+    "sourceProductId": 2930,
+    "id": "mn-21885",
+    "slug": "mariyas-oil-treated-comb-dual-21885"
+  },
+  {
+    "sourceProductId": 2929,
+    "id": "mn-19676",
+    "slug": "arrowroot-powder-250gm-19676"
+  },
+  {
+    "sourceProductId": 2928,
+    "id": "mn-19674",
+    "slug": "mariyas-fairness-natural-soap-19674"
+  },
+  {
+    "sourceProductId": 2927,
+    "id": "mn-19597",
+    "slug": "saffron-fairness-oil-19597"
+  },
+  {
+    "sourceProductId": 2926,
+    "id": "mn-19591",
+    "slug": "mariyas-virgin-coconut-oil-19591"
+  },
+  {
+    "sourceProductId": 2925,
+    "id": "mn-19589",
+    "slug": "mariyas-pure-organic-honey-250gm-19589"
+  },
+  {
+    "sourceProductId": 2894,
+    "id": "mn-19587",
+    "slug": "kajal-19587"
+  },
+  {
+    "sourceProductId": 2893,
+    "id": "mn-19528",
+    "slug": "heel-crack-cream-25gm-19528"
+  },
+  {
+    "sourceProductId": 2892,
+    "id": "mn-19527",
+    "slug": "papaya-gel-100g-19527"
+  },
+  {
+    "sourceProductId": 2891,
+    "id": "mn-19526",
+    "slug": "alovera-gel-100gm-19526"
+  },
+  {
+    "sourceProductId": 2890,
+    "id": "mn-19525",
+    "slug": "cucumber-gel-100g-19525"
+  },
+  {
+    "sourceProductId": 2889,
+    "id": "mn-19517",
+    "slug": "saffron-gel-100g-19517"
+  },
+  {
+    "sourceProductId": 2888,
+    "id": "mn-19513",
+    "slug": "orange-peel-face-pack-100g-19513"
+  },
+  {
+    "sourceProductId": 2887,
+    "id": "mn-in-2887",
+    "slug": "lotus-petals-face-pack-100-g-2887"
+  },
+  {
+    "sourceProductId": 2886,
+    "id": "mn-in-2886",
+    "slug": "rose-petals-face-pack-100-g-2886"
+  },
+  {
+    "sourceProductId": 2885,
+    "id": "mn-19507",
+    "slug": "papaya-face-pack-100g-19507"
+  },
+  {
+    "sourceProductId": 2884,
+    "id": "mn-19226",
+    "slug": "beard-oil-50ml-19226"
+  },
+  {
+    "sourceProductId": 2883,
+    "id": "mn-19224",
+    "slug": "rose-water-200ml-19224"
+  },
+  {
+    "sourceProductId": 2882,
+    "id": "mn-19222",
+    "slug": "under-eye-dark-circle-oil-10-ml-19222"
+  },
+  {
+    "sourceProductId": 2881,
+    "id": "mn-19219",
+    "slug": "eyebrow-oil-10ml-19219"
+  },
+  {
+    "sourceProductId": 2880,
+    "id": "mn-19216",
+    "slug": "lip-balm-10gm-19216"
+  },
+  {
+    "sourceProductId": 2879,
+    "id": "mn-19214",
+    "slug": "hair-pack-wash-powder-100gm-19214"
+  },
+  {
+    "sourceProductId": 2878,
+    "id": "mn-19212",
+    "slug": "chemparathi-thali-100gm-19212"
+  },
+  {
+    "sourceProductId": 2877,
+    "id": "mn-19210",
+    "slug": "henna-powder-100g-19210"
+  },
+  {
+    "sourceProductId": 2876,
+    "id": "mn-19208",
+    "slug": "strawberry-gel-100gm-19208"
+  },
+  {
+    "sourceProductId": 2875,
+    "id": "mn-19206",
+    "slug": "rosepetal-gel-100g-19206"
+  },
+  {
+    "sourceProductId": 2874,
+    "id": "mn-19204",
+    "slug": "redwine-gel-100g-19204"
+  },
+  {
+    "sourceProductId": 2873,
+    "id": "mn-19202",
+    "slug": "mixed-friuts-face-pack-100gm-19202"
+  },
+  {
+    "sourceProductId": 2872,
+    "id": "mn-19200",
+    "slug": "herbal-face-pack-100g-19200"
+  },
+  {
+    "sourceProductId": 2871,
+    "id": "mn-19197",
+    "slug": "tulsi-shampoo-200ml-19197"
+  },
+  {
+    "sourceProductId": 2870,
+    "id": "mn-19195",
+    "slug": "honey-aloevera-shampoo-200ml-19195"
+  },
+  {
+    "sourceProductId": 2869,
+    "id": "mn-19193",
+    "slug": "amla-shikkakai-shampoo-200ml-19193"
+  },
+  {
+    "sourceProductId": 2868,
+    "id": "mn-19191",
+    "slug": "coconut-milk-shampoo-200ml-19191"
+  },
+  {
+    "sourceProductId": 2867,
+    "id": "mn-19189",
+    "slug": "baby-hair-oil-200ml-19189"
+  },
+  {
+    "sourceProductId": 2866,
+    "id": "mn-19187",
+    "slug": "baby-massage-oil-200ml-19187"
+  },
+  {
+    "sourceProductId": 2865,
+    "id": "mn-19185",
+    "slug": "mariyas-hair-oil"
+  }
+]

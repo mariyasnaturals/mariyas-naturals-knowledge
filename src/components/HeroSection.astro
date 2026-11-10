@@ -1,7 +1,11 @@
 ---
-import BotanicalArt from './BotanicalArt.astro';
+import ArrowIcon from './ArrowIcon.astro';
 import ProductVisual from './ProductVisual.astro';
-import { featuredProduct } from '../data/products';
+import {
+  featuredProduct,
+  companionProduct,
+  productPath,
+} from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
 interface Props {
   t: Dictionary;
@@ -10,43 +14,58 @@ interface Props {
 const { t, lang } = Astro.props;
 ---
 
-<section class="hero premium-hero" aria-labelledby="hero-title">
+<section class="hero premium-hero current-hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
-    <div class="hero-copy">
+    <div class="hero-copy hero-heading">
       <p class="eyebrow">
         <span class="gold-dash" aria-hidden="true"></span>
         {t.journal}
       </p>
       <h1 id="hero-title">{t.hero}</h1>
+    </div>
+    <figure class="hero-portrait">
+      <div class="hero-portrait-frame">
+        <ProductVisual
+          product={featuredProduct}
+          lang={lang}
+          t={t}
+          priority
+          sizes="(min-width: 1100px) 540px, (min-width: 760px) 45vw, 90vw"
+        />
+        <span class="portrait-index" aria-hidden="true">
+          01 / MARIYAS
+        </span>
+      </div>
+      <figcaption>
+        <span>{t.heroCaption}</span>
+        <span lang="en">200 ml</span>
+      </figcaption>
+    </figure>
+    <div class="hero-description">
       <p class="lede">{t.intro}</p>
       <div class="actions">
-        <a class="button button-gold" href="#story">
+        <a class="button button-gold" href="#products">
           {t.explore}
-          <span aria-hidden="true">→</span>
+          <ArrowIcon />
         </a>
-        <a class="text-link" href="#ingredients">
+        <a class="text-link" href="#story">
           {t.discover}
+          <ArrowIcon direction="down" />
         </a>
       </div>
-      <a class="scroll-invitation" href="#story">
-        <span aria-hidden="true">↓</span>
-        {t.scrollInvitation}
-      </a>
-    </div>
-    <div class="hero-art premium-composition">
-      <div class="hero-orbit" aria-hidden="true"></div>
-      <BotanicalArt class="hero-botanical" />
-      <div class="hero-product">
-        <ProductVisual product={featuredProduct} lang={lang} t={t} priority />
+      <div class="edition-picker" aria-label={t.heroEdition}>
+        <span>{t.heroEdition}</span>
+        <a href={productPath(lang, featuredProduct)} lang="en">
+          200 ml <ArrowIcon />
+        </a>
+        <a href={productPath(lang, companionProduct)} lang="en">
+          500 ml <ArrowIcon />
+        </a>
       </div>
-      <p class="composition-caption">{t.heroNote}</p>
-      <span class="specimen-index" aria-hidden="true">
-        MN / 01
-      </span>
     </div>
   </div>
   <div class="hero-baseline wrap">
     <span>{t.natureCare}</span>
-    <span>EN · മലയാളം · हिन्दी · தமிழ்</span>
+    <span lang="en">MARIYAS NATURALS / KERALA</span>
   </div>
 </section>

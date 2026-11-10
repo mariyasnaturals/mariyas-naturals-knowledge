@@ -1,4 +1,5 @@
 ---
+import ApprovedImage from './ApprovedImage.astro';
 import type { Product } from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
 interface Props {
@@ -6,33 +7,30 @@ interface Props {
   lang: Locale;
   t: Dictionary;
   priority?: boolean;
+  sizes?: string;
 }
-const { product, lang, t, priority = false } = Astro.props;
+const {
+  product,
+  lang,
+  t,
+  priority = false,
+  sizes = '(min-width: 1000px) 480px, (min-width: 760px) 45vw, 85vw',
+} = Astro.props;
 const image = product.images.main;
 ---
 
 <div class:list={['product-visual', { 'has-image': !!image }]}>
   {image ? (
-    <img
-      src={image.src}
-      srcset={
-        image.variants.length
-          ? image.variants.map((v) => `${v.src} ${v.width}w`).join(', ')
-          : undefined
-      }
-      sizes="(min-width: 900px) 40vw, 85vw"
-      width={image.width}
-      height={image.height}
-      alt={image.alt[lang]}
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      decoding="async"
+    <ApprovedImage
+      lang={lang}
+      image={image}
+      priority={priority}
+      sizes={sizes}
     />
   ) : (
     <div class="authentic-placeholder">
       <span class="image-brackets" aria-hidden="true"></span>
-      <p>{t.photoPending}</p>
-      <small>{t.authenticOnly}</small>
+      <p>{t.imageMissing}</p>
     </div>
   )}
 </div>

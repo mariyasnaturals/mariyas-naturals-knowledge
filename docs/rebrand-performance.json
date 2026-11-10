@@ -1,0 +1,604 @@
+{
+  "measuredOn": "2026-11-09T22:30:18.270Z",
+  "method": "Local production static files, fresh Chromium context per sample. Initial CLS observation ends 1s after fonts and hero image decode; no scrolling/interactions during measurement. English: 3 samples per viewport and motion setting. Other locales: 1 sample per viewport. Simulated mobile: 3 English samples, 150ms latency, 1.6Mbps down / 750kbps up, 4x CPU slowdown via CDP. Server sends uncompressed files. These are lab observations, not Lighthouse scores, field CWV or INP measurements. Authentic local images are integrated.",
+  "observations": [
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "reduce",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 288,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "reduce",
+      "sample": 2,
+      "profile": "local-unthrottled",
+      "lcpMs": 188,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "reduce",
+      "sample": 3,
+      "profile": "local-unthrottled",
+      "lcpMs": 316,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 280,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 2,
+      "profile": "local-unthrottled",
+      "lcpMs": 272,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 3,
+      "profile": "local-unthrottled",
+      "lcpMs": 248,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "ml",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 496,
+      "lcpElement": "IMG",
+      "cls": 0.00006143904320987655,
+      "shifts": [
+        {
+          "value": 0.00006143904320987655,
+          "nodes": [null]
+        }
+      ],
+      "resourceTransferBytes": 530398,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-malayalam-malayalam-wght-normal.woff2",
+          "bytes": 89768
+        },
+        {
+          "path": "/fonts/noto-serif-malayalam-malayalam-wght-normal.woff2",
+          "bytes": 57848
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "hi",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 368,
+      "lcpElement": "IMG",
+      "cls": 0.001990712250712251,
+      "shifts": [
+        {
+          "value": 0.001990712250712251,
+          "nodes": [null, null]
+        }
+      ],
+      "resourceTransferBytes": 631438,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2",
+          "bytes": 121492
+        },
+        {
+          "path": "/fonts/noto-serif-devanagari-devanagari-wght-normal.woff2",
+          "bytes": 127164
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "ta",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 564,
+      "lcpElement": "IMG",
+      "cls": 0.00006304012345679013,
+      "shifts": [
+        {
+          "value": 0.00006304012345679013,
+          "nodes": [null]
+        }
+      ],
+      "resourceTransferBytes": 486570,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-tamil-tamil-wght-normal.woff2",
+          "bytes": 50768
+        },
+        {
+          "path": "/fonts/noto-serif-tamil-tamil-wght-normal.woff2",
+          "bytes": 53020
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "reduce",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 256,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "reduce",
+      "sample": 2,
+      "profile": "local-unthrottled",
+      "lcpMs": 168,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "reduce",
+      "sample": 3,
+      "profile": "local-unthrottled",
+      "lcpMs": 384,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 264,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 2,
+      "profile": "local-unthrottled",
+      "lcpMs": 324,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 3,
+      "profile": "local-unthrottled",
+      "lcpMs": 220,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 521668,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "ml",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 328,
+      "lcpElement": "IMG",
+      "cls": 0.0008065717616035452,
+      "shifts": [
+        {
+          "value": 0.0008065717616035452,
+          "nodes": [null, null]
+        }
+      ],
+      "resourceTransferBytes": 669284,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-malayalam-malayalam-wght-normal.woff2",
+          "bytes": 89768
+        },
+        {
+          "path": "/fonts/noto-serif-malayalam-malayalam-wght-normal.woff2",
+          "bytes": 57848
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "hi",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 356,
+      "lcpElement": "IMG",
+      "cls": 0.0013182977537722906,
+      "shifts": [
+        {
+          "value": 0.0013182977537722906,
+          "nodes": [null, null, "SPAN"]
+        }
+      ],
+      "resourceTransferBytes": 770324,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2",
+          "bytes": 121492
+        },
+        {
+          "path": "/fonts/noto-serif-devanagari-devanagari-wght-normal.woff2",
+          "bytes": 127164
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "ta",
+      "width": 1440,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "local-unthrottled",
+      "lcpMs": 328,
+      "lcpElement": "IMG",
+      "cls": 0.010539015781732252,
+      "shifts": [
+        {
+          "value": 0.010539015781732252,
+          "nodes": [
+            "hero-portrait-frame",
+            "actions",
+            "edition-picker",
+            null,
+            "A"
+          ]
+        }
+      ],
+      "resourceTransferBytes": 625456,
+      "fontResources": [
+        {
+          "path": "/fonts/noto-sans-tamil-tamil-wght-normal.woff2",
+          "bytes": 50768
+        },
+        {
+          "path": "/fonts/noto-serif-tamil-tamil-wght-normal.woff2",
+          "bytes": 53020
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        },
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 1,
+      "profile": "simulated-mobile",
+      "lcpMs": 2484,
+      "lcpElement": "IMG",
+      "cls": 0.009627097182652738,
+      "shifts": [
+        {
+          "value": 0.009627097182652738,
+          "nodes": ["text-link", "edition-picker", {}]
+        }
+      ],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 2,
+      "profile": "simulated-mobile",
+      "lcpMs": 2640,
+      "lcpElement": "IMG",
+      "cls": 0.009627097182652738,
+      "shifts": [
+        {
+          "value": 0.009627097182652738,
+          "nodes": ["text-link", "edition-picker", {}]
+        }
+      ],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "motion": "no-preference",
+      "sample": 3,
+      "profile": "simulated-mobile",
+      "lcpMs": 2460,
+      "lcpElement": "IMG",
+      "cls": 0,
+      "shifts": [],
+      "resourceTransferBytes": 382782,
+      "fontResources": [
+        {
+          "path": "/fonts/inter-latin-wght-normal.woff2",
+          "bytes": 48556
+        },
+        {
+          "path": "/fonts/cormorant-garamond-latin-wght-normal.woff2",
+          "bytes": 37940
+        }
+      ],
+      "heroImage": "/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "inp": "not measured"
+    }
+  ]
+}

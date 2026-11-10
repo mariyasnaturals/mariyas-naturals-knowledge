@@ -1,44 +1,45 @@
-# Authentic product media: acquisition and coverage
+# Current approved Mariyas .in media policy
 
-## Observed access result
+The rebrand's business direction supersedes the earlier dual-store acquisition. **Only the current `https://mariyasnaturals.in` catalogue and approved current artwork may be used in active rendering.** No legacy `.com` packaging, banner or story image is an acceptable fallback.
 
-Task 02 attempted public HTTPS requests to `https://mariyasnaturals.in/` (primary source) and `https://www.mariyasnaturals.com/` (secondary reference). Both failed with `CONNECT tunnel failed, response 403`, from the cloud egress proxy before either store could be inspected. This does **not** establish that the websites are down or that WordPress requires authentication. No login, API bypass, direct-origin request or private-system access was attempted. Repeating WordPress endpoint requests behind the same denied origin would not establish anything further.
+## Actual current coverage
 
-The current environment network policy has no custom allowed hosts. Configuration draft reads failed twice with “current environment draft could not be verified”; no network settings were changed or saved. To resume discovery, allow outbound HTTPS to `mariyasnaturals.in` and `www.mariyasnaturals.com` in cloud environment settings. Add redirected or image-host domains only after their actual destinations are identified and reviewed. This is cloud development access, not a change to WordPress, DNS, SSL or the VPS.
+The public .in Store API returned 86 product listings. Eight product attachments are available: four for Herbal Hair Care Oil 200 ml (3008) and four for Herbal Hair Care 500 ml (3009). All eight were freshly downloaded from .in without redirects. 84 listings lack an attached approved individual product image and use clean placeholders, including 1 litre and the generic Hair Oil listing. No category photo is reassigned to one of these products.
 
-## Coverage (actual, not estimated)
+Four additional current category artworks were verified on the .in homepage and downloaded from the same origin: Hair Care 3252, Skin Care 3272, Baby Care 3225, Herbal Wellness 3221. They are restricted to collection/editorial use. Pack sizes visible in category artwork do not establish sizes or variants for individual catalogue listings.
 
-| Item                                                 |                          Count |
-| ---------------------------------------------------- | -----------------------------: |
-| Source-discovered product entries                    |                              0 |
-| Source-verified products / SKUs / sizes              |                              0 |
-| Source image URLs found                              |                              0 |
-| Authentic images downloaded                          |                              0 |
-| Images optimized / deduplicated / integrated         |                              0 |
-| User-supplied product references waiting for imagery |           1 (Mariyas Hair Oil) |
-| Total actual catalogue size                          |                        Unknown |
-| Missing main/gallery/combo/variant asset count       | Unknown until catalogue access |
+| Item                                                  |     Count |
+| ----------------------------------------------------- | --------: |
+| Current .in product listings                          |        86 |
+| Listings with approved product photographs            |         2 |
+| Listings using a missing-photo placeholder            |        84 |
+| Approved product images                               |         8 |
+| Approved collection/editorial images                  |         4 |
+| Total approved images used                            |        12 |
+| Local product WebP derivatives                        |        24 |
+| Local category WebP derivatives                       |        12 |
+| Total local derivatives                               |        36 |
+| Local derivative bytes                                | 3,084,310 |
+| Available approved images that failed import          |         0 |
+| Retired .com source images removed from public assets |        89 |
+| Retired .com derivative files removed                 |       265 |
 
-The existing clearly marked catalogue example remains demonstration data. It is not counted as an imported product. No original product photograph, packaging silhouette or substitute AI product image was generated. Botanical line art and abstract light layers are decorative and do not assert specific ingredients or manufacturing steps.
+## Enforcement and storage
 
-`src/data/media-manifest.json` records the blocked acquisition, counts and supplied reference. `src/data/media-types.ts` defines required provenance for each future asset: stable product ID/SKU, original website/media URL or export reference, original filename, dimensions, source hash, category, variant association, local derivative path, localized alt text and verification status. Empty media lists mean no media was acquired; invented source records are not used to fill the schema.
+- `src/config/media-policy.mjs` admits exact HTTPS .in upload URLs only. Legacy origins, CDNs, mixed-source provenance and unknown image IDs fail validation.
+- `catalogue-source.json` contains only the current .in snapshot; `product-identities.json` preserves existing internal IDs/routes where a current listing already existed and mints identities for the three independent size listings. No legacy-only products are retained in the active catalogue.
+- `media-manifest.json` records the eight product images and exact product associations. `brand-source.json`/`brand-media.json` record the four current category artworks, their homepage evidence and their editorial-only use restriction.
+- Each image retains original filename/URL, source SHA-256, dimensions, bytes, verification status/date, source references and local derivative paths/dimensions/bytes/hashes.
+- `ApprovedImage` renders only known local derivatives through an approved media lookup. Product and gallery visuals, campaign cards, category covers, social images and JSON-LD use those current assets.
+- `public/images/products/` and `public/images/brand/` contain only the 36 approved derivatives. Old files are pruned rather than left available under unused URLs. Original files remain outside Git in a temporary cache.
+- Resizing preserves source aspect ratio, packaging shape, colour and printed labels. No new product bottles, cutouts, backgrounds or replacement packaging were generated. All product and category imagery is displayed without a packaging crop.
 
-## Approved export alternative
+`npm run media:import` processes the temporary cache; `npm run media:import -- --download` explicitly reacquires only the reviewed .in URLs. Both validate the policy and prune retired served files. No acquisition runs during a build or page view. A domain migration does not break committed images. Changing future image source approval requires an explicit policy change; commerce configuration does not alter image approval.
 
-If public access remains unavailable, supply a separately approved product/media export through the project file workflow. Minimum content:
+`npm run test:media-policy` scans all built HTML, src/srcset, CSS/JS image URLs, social metadata, structured images and the output image tree. Unit checks also compare local image hashes against a retired-image hash list, so renaming a known old image cannot silently restore it. CI runs the policy scan after build.
 
-- Product CSV/JSON: authoritative product ID, SKU when present, exact name, categories, package sizes/variants, and which media IDs belong to each product/variant.
-- Main, gallery and combo-kit media files, with original filenames and their original source URLs or an export reference; include original dimensions and existing alt text where available.
-- Approval/verification status and any permitted descriptions. Do not include customer records, orders, passwords, application tokens or database dumps.
+`docs/screenshots/rebrand/before-*` and historical Task 03 screenshots are review evidence outside `public/` and outside the site build. They are not active UI. Old source images remain only in Git history/temporary working storage; no history rewrite was performed.
 
-No authenticated WordPress integration is required for a supplied export. If one later becomes necessary, authorize it as a separate read-only product/media integration with least-privilege access; enter credentials through secure settings, never chat.
+Purchasing remains disabled centrally and per product, with an empty final destination map. Provenance links lead to the current .in catalogue only. The future commerce origin is independent of approved image sources.
 
-## Import procedure after access or export
-
-1. Enumerate the full public catalogue, pagination, variable products and gallery associations. Record IDs/SKUs and sizes; never infer one size from another bottle. The older `.com` packaging is secondary evidence only.
-2. Download original approved files to a working directory outside Git. Preserve source URL/export ID and SHA-256. Deduplicate exact bytes while retaining every product/variant association.
-3. Generate non-upscaled WebP/AVIF derivatives in `public/images/products/{product-slug}/`; preserve aspect ratio, labels, colour and product proportions. Keep original source files outside Git when large. Use managed object storage for a large source library, and retain provenance references. Do not sharpen, regenerate or alter printed labels.
-4. Populate manifest records and the typed `Product.images.main/gallery`. Supply actual pixel dimensions, truthful localized alt text and width variants. `ProductVisual` renders local `srcset`, `sizes`, explicit dimensions, eager/high priority for the hero, and lazy loading below the fold. Galleries use native horizontal scroll snap. Do not hotlink WordPress images.
-5. Verify every visual association against its source before setting `verified`. Update counts and list omissions explicitly. Run static/browser checks with actual assets, including image loading, responsive variants and the hero LCP. Current placeholder tests do not establish real-product image quality or performance.
-
-For the hero and story, select the authoritative Hair Oil record only after its name, size and main photograph are verified. Never rename another product image to imply the example filename or volume.
+See [current inventory](rebrand-catalogue.md) and [rebrand validation report](rebrand-report.md). Earlier Task 03 acquisition reports are historical and superseded by this policy.

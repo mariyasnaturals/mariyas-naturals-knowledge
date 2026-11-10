@@ -1,6 +1,7 @@
 # Static deployment architecture (instructions only)
 
-Build machine → reviewed `dist/` artifact → CloudPanel Static HTML document root → HTTPS browser.
+> Deployment direction superseded: use [owner-enabled VPS pull deployment](pull-deployment.md). Earlier manual-upload instructions are historical review guidance; do not enable an SSH-push/FTP/manual-folder deployment path.
+> Build machine → reviewed `dist/` artifact → CloudPanel Static HTML document root → HTTPS browser.
 
 Hostinger VPS: Ubuntu 24.04 LTS, CloudPanel, site user `mariyascloud`. No server changes were made by this task. Do not connect to or modify the VPS without a separate deployment instruction. No WordPress installation or existing domain is part of this code task.
 

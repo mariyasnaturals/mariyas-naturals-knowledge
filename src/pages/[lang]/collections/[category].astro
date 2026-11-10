@@ -1,0 +1,48 @@
+---
+import EditorialLayout from '../../../layouts/EditorialLayout.astro';
+import CatalogueGrid from '../../../components/CatalogueGrid.astro';
+import ApprovedImage from '../../../components/ApprovedImage.astro';
+import { products } from '../../../data/products';
+import { collectionKeys, collectionImage } from '../../../data/collections';
+import { collectionSchema, socialImage } from '../../../data/seo';
+import { locales, dictionaries, type Locale } from '../../../i18n';
+import type { ProductCategory } from '../../../data/media-types';
+export function getStaticPaths() {
+  return locales.flatMap((lang) =>
+    collectionKeys.map((category) => ({ params: { lang, category } })),
+  );
+}
+const lang = Astro.params.lang as Locale;
+const category = Astro.params.category as ProductCategory;
+const t = dictionaries[lang];
+const items = products.filter((p) => p.category === category);
+const image = collectionImage(category, t);
+---
+
+<EditorialLayout
+  page={{
+    kind: 'product',
+    lang,
+    title: `${t.categories[category]} · ${t.collectionLocation}`,
+    description: t.categoryDescriptions[category],
+    sources: [],
+    reviewed: true,
+    pageSchema: collectionSchema(items, lang),
+    socialImage: socialImage(image, lang),
+  }}
+>
+  {image && (
+    <div class="collection-cover">
+      <ApprovedImage
+        lang={lang}
+        image={image}
+        priority
+        sizes="(min-width: 1100px) 1000px, 90vw"
+      />
+    </div>
+  )}
+  <section aria-label={t.categories[category]}>
+    <h2 class="collection-list-heading">{t.categories[category]}</h2>
+    <CatalogueGrid products={items} t={t} lang={lang} />
+  </section>
+</EditorialLayout>

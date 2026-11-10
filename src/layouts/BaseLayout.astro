@@ -2,19 +2,38 @@
 import SEOHead from '../components/SEOHead.astro';
 import '../styles/global.css';
 import '../styles/premium.css';
+import '../styles/fonts.css';
+import '../styles/typography.css';
+import '../styles/rebrand.css';
+import fontManifest from '../data/font-manifest.json';
 import type { Locale } from '../i18n';
 interface Props {
   lang: Locale;
   title: string;
   description: string;
   path?: string;
+  pageSchema?: Record<string, unknown>;
+  socialImage?: { src: string; width: number; height: number; alt: string };
 }
+const subset = { en: 'latin', ml: 'malayalam', hi: 'devanagari', ta: 'tamil' }[
+  Astro.props.lang
+];
+const preloadFonts = fontManifest.filter((font) => font.subset === subset);
 ---
 
 <!doctype html>
 <html lang={Astro.props.lang}>
   <head>
     <SEOHead {...Astro.props} />
+    {preloadFonts.map((font) => (
+      <link
+        rel="preload"
+        href={font.path}
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    ))}
   </head>
   <body>
     <slot />

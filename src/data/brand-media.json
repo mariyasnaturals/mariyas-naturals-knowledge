@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 3,
+  "sourcePolicy": "current-approved-in-only",
+  "verifiedOn": "2026-11-09",
+  "media": [
+    {
+      "id": "brand-in-3252",
+      "originalFilename": "Hair-care-soecial-section-banner-1.webp",
+      "width": 800,
+      "height": 333,
+      "sourceBytes": 49748,
+      "sourceSha256": "5912c1327f7633e5f97c5f34ac5dc05b0e0b2d84a8da9b1ca82dd813d2ea3408",
+      "sourceMediaUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Hair-care-soecial-section-banner-1.webp",
+      "localAssetPath": "/images/brand/hair-care-edit/brand-in-3252-800.webp",
+      "verificationStatus": "source-verified",
+      "sources": [
+        {
+          "id": "brand-in-3252",
+          "store": "in",
+          "attachmentId": 3252,
+          "category": "hair-care",
+          "slug": "hair-care-edit",
+          "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Hair-care-soecial-section-banner-1.webp",
+          "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3252",
+          "observedOn": "https://mariyasnaturals.in/",
+          "approvedUse": "category-editorial-only",
+          "verifiedOn": "2026-11-09",
+          "originalFilename": "Hair-care-soecial-section-banner-1.webp"
+        }
+      ],
+      "associations": [],
+      "derivatives": [
+        {
+          "localAssetPath": "/images/brand/hair-care-edit/brand-in-3252-320.webp",
+          "width": 320,
+          "height": 133,
+          "bytes": 15010,
+          "sha256": "78fb861e9d9b4257abccb6262eb246fadc26b2d19623f9b43f89f878537011a0"
+        },
+        {
+          "localAssetPath": "/images/brand/hair-care-edit/brand-in-3252-640.webp",
+          "width": 640,
+          "height": 266,
+          "bytes": 41594,
+          "sha256": "fe82b80e105f0e4632b166c959add1fe7faa15781120e2daef0e4c4a0a735ef6"
+        },
+        {
+          "localAssetPath": "/images/brand/hair-care-edit/brand-in-3252-800.webp",
+          "width": 800,
+          "height": 333,
+          "bytes": 57162,
+          "sha256": "8351658d1c9d437c70cf578951bd436bcea3485371d841266cd76c213951373a"
+        }
+      ],
+      "category": "hair-care",
+      "approvedUse": "category-editorial-only"
+    },
+    {
+      "id": "brand-in-3272",
+      "originalFilename": "Skin-care-category-2.webp",
+      "width": 800,
+      "height": 382,
+      "sourceBytes": 48844,
+      "sourceSha256": "ba9f3c111f308d59d98b5baff52bc799f9d0955d1233cdf4683d1c4a7ea154cd",
+      "sourceMediaUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Skin-care-category-2.webp",
+      "localAssetPath": "/images/brand/skin-care-edit/brand-in-3272-800.webp",
+      "verificationStatus": "source-verified",
+      "sources": [
+        {
+          "id": "brand-in-3272",
+          "store": "in",
+          "attachmentId": 3272,
+          "category": "skin-care",
+          "slug": "skin-care-edit",
+          "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Skin-care-category-2.webp",
+          "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3272",
+          "observedOn": "https://mariyasnaturals.in/",
+          "approvedUse": "category-editorial-only",
+          "verifiedOn": "2026-11-09",
+          "originalFilename": "Skin-care-category-2.webp"
+        }
+      ],
+      "associations": [],
+      "derivatives": [
+        {
+          "localAssetPath": "/images/brand/skin-care-edit/brand-in-3272-320.webp",
+          "width": 320,
+          "height": 153,
+          "bytes": 13654,
+          "sha256": "4e2b2442d02bdaca98b6fdbd010d8dee8eb45aa6849e4a04f1e4c2d83db56a60"
+        },
+        {
+          "localAssetPath": "/images/brand/skin-care-edit/brand-in-3272-640.webp",
+          "width": 640,
+          "height": 306,
+          "bytes": 38132,
+          "sha256": "0aa02e528809cb1e0a1c9a9e17964285c6df4e2a5fc392ea5fe159b31a06ac64"
+        },
+        {
+          "localAssetPath": "/images/brand/skin-care-edit/brand-in-3272-800.webp",
+          "width": 800,
+          "height": 382,
+          "bytes": 53062,
+          "sha256": "4b53368c5b09dac535ec1e3e3de0d5fbb8b43ad7504df73e8591a005a36890c1"
+        }
+      ],
+      "category": "skin-care",
+      "approvedUse": "category-editorial-only"
+    },
+    {
+      "id": "brand-in-3225",
+      "originalFilename": "Baby-care-category.webp",
+      "width": 800,
+      "height": 382,
+      "sourceBytes": 36202,
+      "sourceSha256": "ee5aea33dc8c4c6c03866567802489f3d0b974cf33210c0572ece46a64e6769e",
+      "sourceMediaUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Baby-care-category.webp",
+      "localAssetPath": "/images/brand/baby-care-edit/brand-in-3225-800.webp",
+      "verificationStatus": "source-verified",
+      "sources": [
+        {
+          "id": "brand-in-3225",
+          "store": "in",
+          "attachmentId": 3225,
+          "category": "baby-care",
+          "slug": "baby-care-edit",
+          "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Baby-care-category.webp",
+          "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3225",
+          "observedOn": "https://mariyasnaturals.in/",
+          "approvedUse": "category-editorial-only",
+          "verifiedOn": "2026-11-09",
+          "originalFilename": "Baby-care-category.webp"
+        }
+      ],
+      "associations": [],
+      "derivatives": [
+        {
+          "localAssetPath": "/images/brand/baby-care-edit/brand-in-3225-320.webp",
+          "width": 320,
+          "height": 153,
+          "bytes": 11240,
+          "sha256": "28c58a1f4b915a0f3cd50444c4c8b864a18386ade3a7e7ac8f5cfa1299416f6b"
+        },
+        {
+          "localAssetPath": "/images/brand/baby-care-edit/brand-in-3225-640.webp",
+          "width": 640,
+          "height": 306,
+          "bytes": 29120,
+          "sha256": "73d25d047af3fe22bed69c639d6f3721b57889998b855e65143faa9ebd4b6694"
+        },
+        {
+          "localAssetPath": "/images/brand/baby-care-edit/brand-in-3225-800.webp",
+          "width": 800,
+          "height": 382,
+          "bytes": 38492,
+          "sha256": "81bbcee0b5ad3216dcc8eb94b3deed80a110e844e45eabfc28626d16d05889cf"
+        }
+      ],
+      "category": "baby-care",
+      "approvedUse": "category-editorial-only"
+    },
+    {
+      "id": "brand-in-3221",
+      "originalFilename": "Herbs-wellness-category.webp",
+      "width": 800,
+      "height": 382,
+      "sourceBytes": 39160,
+      "sourceSha256": "f58a0a2780b95aedeef272d7f81ca4c18f8bdb39e1c3b8846b7417b5f100d9c1",
+      "sourceMediaUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Herbs-wellness-category.webp",
+      "localAssetPath": "/images/brand/herbal-wellness-edit/brand-in-3221-800.webp",
+      "verificationStatus": "source-verified",
+      "sources": [
+        {
+          "id": "brand-in-3221",
+          "store": "in",
+          "attachmentId": 3221,
+          "category": "herbal-powders",
+          "slug": "herbal-wellness-edit",
+          "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Herbs-wellness-category.webp",
+          "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3221",
+          "observedOn": "https://mariyasnaturals.in/",
+          "approvedUse": "category-editorial-only",
+          "verifiedOn": "2026-11-09",
+          "originalFilename": "Herbs-wellness-category.webp"
+        }
+      ],
+      "associations": [],
+      "derivatives": [
+        {
+          "localAssetPath": "/images/brand/herbal-wellness-edit/brand-in-3221-320.webp",
+          "width": 320,
+          "height": 153,
+          "bytes": 11468,
+          "sha256": "3a438d8a91bad27e73f6e7b5e027e42e338085d63d344888ccd7f36be44f39b9"
+        },
+        {
+          "localAssetPath": "/images/brand/herbal-wellness-edit/brand-in-3221-640.webp",
+          "width": 640,
+          "height": 306,
+          "bytes": 30638,
+          "sha256": "d3897c2362765e427ac56a2c814246a4741ff299b50073184ff2cbf1bcd47eea"
+        },
+        {
+          "localAssetPath": "/images/brand/herbal-wellness-edit/brand-in-3221-800.webp",
+          "width": 800,
+          "height": 382,
+          "bytes": 42700,
+          "sha256": "1307988eee04cfa35e47c035c715d380ab2cd72284926334b940b77c1fcc6fae"
+        }
+      ],
+      "category": "herbal-powders",
+      "approvedUse": "category-editorial-only"
+    }
+  ]
+}

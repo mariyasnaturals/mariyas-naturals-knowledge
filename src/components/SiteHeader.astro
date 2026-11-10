@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from './ArrowIcon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import type { Locale, Dictionary } from '../i18n';
 interface Props {
@@ -21,7 +22,7 @@ const links = [
 <div class="announcement">{t.announcement}</div>
 <header class="header-shell">
   <div class="site-header wrap">
-    <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals">
+    <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals" lang="en">
       <span>
         Mariyas<span class="brand-dot">.</span>
       </span>
@@ -44,23 +45,33 @@ const links = [
         {links.map(([id, label]) => (
           <a href={`${prefix}#${id}`}>
             {label}
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">
+              <ArrowIcon />
+            </span>
           </a>
         ))}
       </nav>
     </details>
-    <LanguageSwitcher lang={lang} label={t.language} />
+    <LanguageSwitcher lang={lang} label={t.language} compact />
   </div>
 </header>
 <script>
   for (const menu of document.querySelectorAll<HTMLDetailsElement>(
-    '.mobile-menu',
+    '.mobile-menu, .language-menu',
   )) {
     menu.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && menu.open) {
         menu.open = false;
         menu.querySelector('summary')?.focus();
       }
+    });
+    menu.addEventListener('toggle', () => {
+      if (menu.open)
+        document
+          .querySelectorAll<HTMLDetailsElement>('.mobile-menu, .language-menu')
+          .forEach((other) => {
+            if (other !== menu) other.open = false;
+          });
     });
     menu.querySelectorAll('a').forEach((link) =>
       link.addEventListener('click', () => {

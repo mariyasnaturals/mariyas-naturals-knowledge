@@ -1,7 +1,16 @@
 ---
+import ArrowIcon from '../../../components/ArrowIcon.astro';
 import EditorialLayout from '../../../layouts/EditorialLayout.astro';
 import ProductVisual from '../../../components/ProductVisual.astro';
-import { products, purchaseUrl, type Product } from '../../../data/products';
+import ApprovedImage from '../../../components/ApprovedImage.astro';
+import { productSchema, socialImage } from '../../../data/seo';
+import {
+  products,
+  purchaseUrl,
+  hairOilEditions,
+  productPath,
+  type Product,
+} from '../../../data/products';
 import { locales, dictionaries, type Locale } from '../../../i18n';
 export function getStaticPaths() {
   return locales.flatMap((lang) =>
@@ -25,41 +34,72 @@ const buyUrl = purchaseUrl(product);
     kind: 'product',
     lang,
     title: product.name[lang],
-    description: product.description[lang],
+    titleLang: 'en',
+    description: `${product.name[lang]} · ${product.description[lang]}`,
     sources: [],
-    reviewed: product.verified,
+    reviewed: true,
+    pageSchema: productSchema(product, lang),
+    socialImage: socialImage(product.images.main, lang),
   }}
 >
   <div class="product-detail-grid">
-    <div>
+    <div class="product-detail-media">
       <ProductVisual product={product} lang={lang} t={t} priority />
       {product.images.gallery.length > 0 && (
-        <section aria-label={t.gallery} class="image-gallery" tabindex="0">
-          {product.images.gallery.map((image) => (
-            <img
-              src={image.src}
-              srcset={
-                image.variants.map((v) => `${v.src} ${v.width}w`).join(', ') ||
-                undefined
-              }
-              sizes="(min-width: 760px) 30vw, 80vw"
-              alt={image.alt[lang]}
-              width={image.width}
-              height={image.height}
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
+        <section class="gallery-section" aria-label={t.gallery}>
+          <h2>{t.gallery}</h2>
+          <p class="gallery-hint">{t.galleryHint}</p>
+          <ol class="image-gallery" tabindex="0" aria-label={t.gallery}>
+            {product.images.gallery.map((image, index) => (
+              <li
+                id={
+                  product.variants.find((v) => v.images[0]?.id === image.id)?.id
+                }
+              >
+                <figure>
+                  <ApprovedImage
+                    lang={lang}
+                    image={image}
+                    sizes="(min-width: 760px) 360px, 75vw"
+                  />
+                  <figcaption>
+                    <span lang="en">{image.variantAssociation}</span> ·{' '}
+                    {String(index + 1).padStart(2, '0')} /{' '}
+                    {String(product.images.gallery.length).padStart(2, '0')}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
     </div>
     <div class="product-facts">
-      <p class="eyebrow">{t.demo}</p>
+      <p class="eyebrow">{t.categories[product.category]}</p>
       <h2>{t.detail}</h2>
       <p>{t.detailText}</p>
-      <h2>{t.verification}</h2>
-      <p>{product.verified ? product.name[lang] : t.unverified}</p>
-      {product.sku && <p>SKU: {product.sku}</p>}
+      {[2865, 3008, 3009, 3010].includes(product.sources[0]!.id) && (
+        <section class="product-variants" aria-label={t.sizesLabel}>
+          <h2>{t.sizesLabel}</h2>
+          <ul class="size-options">
+            {hairOilEditions.map((edition) => (
+              <li>
+                <a
+                  href={productPath(lang, edition)}
+                  lang="en"
+                  aria-current={product.id === edition.id ? 'page' : undefined}
+                >
+                  {edition.sources[0]!.id === 3008
+                    ? '200 ml'
+                    : edition.sources[0]!.id === 3009
+                      ? '500 ml'
+                      : '1 ltr'}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {buyUrl ? (
         <a class="button" href={buyUrl}>
           {t.buy}
@@ -67,9 +107,30 @@ const buyUrl = purchaseUrl(product);
       ) : (
         <p class="commerce-status">{t.commercePending}</p>
       )}
-      <a class="text-link" href={`/${lang}/#ingredients`}>
-        {t.exploreIngredients} →
+      <a class="text-link" href={`/${lang}/products/`}>
+        {t.allProducts} <ArrowIcon />
       </a>
+      <details class="provenance-details">
+        <summary>{t.verification}</summary>
+        <p>
+          {t.sourceVerified} ·{' '}
+          <time datetime={product.verifiedOn}>{product.verifiedOn}</time>
+        </p>
+        <ul>
+          {product.sources.map((source) => (
+            <li>
+              <a href={source.url} data-source-reference lang="en">
+                {new URL(source.url).hostname} · {source.name}
+              </a>
+              <small lang="en">
+                {' '}
+                ID {source.id}
+                {source.sku && ` · SKU ${source.sku}`}
+              </small>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   </div>
 </EditorialLayout>

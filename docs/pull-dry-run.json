@@ -1,0 +1,17 @@
+{
+  "scope": "Local temporary directories only; no VPS connection/configuration and no real release branch publication.",
+  "compiled_source_sha": "da0c28877fa0b74b72b914984e62b19ddf91d2ed",
+  "archive_sha256": "5b0283293124213962e1ffc2a7ffd9c033ea1d19ded62eeff7ebf5061c214e84",
+  "compiled_files_verified": 435,
+  "approved_image_derivatives_verified": 36,
+  "signature": "Ed25519 test key generated locally and destroyed",
+  "approval_method": "Independent owner inspection plus explicit exact-manifest digest; local fixture only",
+  "dry_run_website_bytes_unchanged": true,
+  "dry_run_backups_created": false,
+  "simulated_apply_verified_backup_first": true,
+  "well_known_preserved": true,
+  "simulated_rollback_restored_previous_page": true,
+  "poll_did_not_undo_rollback": true,
+  "network_fetch": "Not exercised against GitHub/VPS; requires owner-installed deploy key and pinned host trust",
+  "production_deployment": false
+}

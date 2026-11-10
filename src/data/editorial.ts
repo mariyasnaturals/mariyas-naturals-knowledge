@@ -10,9 +10,12 @@ export interface EditorialPage {
   kind: ContentKind;
   lang: Locale;
   title: string;
+  titleLang?: Locale;
   description: string;
   sources: readonly EditorialSource[];
   reviewed: boolean;
   reviewedOn?: string;
+  pageSchema?: Record<string, unknown>;
+  socialImage?: { src: string; width: number; height: number; alt: string };
   // Supply verified dates and reviewers only; no automatic Article/Product claims.
 }

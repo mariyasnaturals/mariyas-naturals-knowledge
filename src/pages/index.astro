@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import { dictionaries } from '../i18n';
@@ -20,7 +21,7 @@ import { dictionaries } from '../i18n';
     <p>Choose your language to explore our knowledge website.</p>
     <LanguageSwitcher lang="en" label="Choose language" />
     <a class="button" href="/en/">
-      Continue in English →
+      Continue in English <ArrowIcon />
     </a>
   </main>
 </BaseLayout>

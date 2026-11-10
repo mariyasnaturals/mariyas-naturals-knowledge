@@ -3,22 +3,44 @@ import { languages, type Locale } from '../i18n';
 interface Props {
   lang: Locale;
   label: string;
+  compact?: boolean;
 }
-const { lang, label } = Astro.props;
+const { lang, label, compact = false } = Astro.props;
 const suffix = Astro.url.pathname.startsWith(`/${lang}/`)
   ? Astro.url.pathname.slice(lang.length + 2)
   : '';
 ---
 
-<nav class="language-switcher" aria-label={label}>
-  {Object.entries(languages).map(([code, name]) => (
-    <a
-      href={`/${code}/${suffix}`}
-      lang={code}
-      hreflang={code}
-      aria-current={lang === code ? 'page' : undefined}
-    >
-      {name}
-    </a>
-  ))}
-</nav>
+{compact ? (
+  <details class="language-menu">
+    <summary aria-label={`${label}: ${languages[lang]}`}>
+      <span lang={lang}>{languages[lang]}</span>
+      <span class="chevron" aria-hidden="true"></span>
+    </summary>
+    <nav class="language-switcher" aria-label={label}>
+      {Object.entries(languages).map(([code, name]) => (
+        <a
+          href={`/${code}/${suffix}`}
+          lang={code}
+          hreflang={code}
+          aria-current={lang === code ? 'page' : undefined}
+        >
+          {name}
+        </a>
+      ))}
+    </nav>
+  </details>
+) : (
+  <nav class="language-switcher" aria-label={label}>
+    {Object.entries(languages).map(([code, name]) => (
+      <a
+        href={`/${code}/${suffix}`}
+        lang={code}
+        hreflang={code}
+        aria-current={lang === code ? 'page' : undefined}
+      >
+        {name}
+      </a>
+    ))}
+  </nav>
+)}

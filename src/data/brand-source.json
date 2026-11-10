@@ -1,0 +1,50 @@
+[
+  {
+    "id": "brand-in-3252",
+    "store": "in",
+    "attachmentId": 3252,
+    "category": "hair-care",
+    "slug": "hair-care-edit",
+    "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Hair-care-soecial-section-banner-1.webp",
+    "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3252",
+    "observedOn": "https://mariyasnaturals.in/",
+    "approvedUse": "category-editorial-only",
+    "verifiedOn": "2026-11-09"
+  },
+  {
+    "id": "brand-in-3272",
+    "store": "in",
+    "attachmentId": 3272,
+    "category": "skin-care",
+    "slug": "skin-care-edit",
+    "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Skin-care-category-2.webp",
+    "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3272",
+    "observedOn": "https://mariyasnaturals.in/",
+    "approvedUse": "category-editorial-only",
+    "verifiedOn": "2026-11-09"
+  },
+  {
+    "id": "brand-in-3225",
+    "store": "in",
+    "attachmentId": 3225,
+    "category": "baby-care",
+    "slug": "baby-care-edit",
+    "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Baby-care-category.webp",
+    "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3225",
+    "observedOn": "https://mariyasnaturals.in/",
+    "approvedUse": "category-editorial-only",
+    "verifiedOn": "2026-11-09"
+  },
+  {
+    "id": "brand-in-3221",
+    "store": "in",
+    "attachmentId": 3221,
+    "category": "herbal-powders",
+    "slug": "herbal-wellness-edit",
+    "sourceUrl": "https://mariyasnaturals.in/wp-content/uploads/2026/11/Herbs-wellness-category.webp",
+    "metadataUrl": "https://mariyasnaturals.in/wp-json/wp/v2/media/3221",
+    "observedOn": "https://mariyasnaturals.in/",
+    "approvedUse": "category-editorial-only",
+    "verifiedOn": "2026-11-09"
+  }
+]

@@ -60,6 +60,7 @@ test('content and language navigation work without JavaScript', async ({
   const page = await context.newPage();
   await page.goto('http://127.0.0.1:4321/en/');
   await expect(page.locator('[data-story-scene]').first()).toBeVisible();
+  await page.locator('header .language-menu summary').click();
   await page.locator('header a[hreflang="ml"]').click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ml');
   await context.close();
@@ -94,10 +95,11 @@ for (const width of [360, 768, 1440]) {
       await expect(page.locator('.mobile-menu')).not.toHaveAttribute('open');
       await expect(page.locator('.mobile-menu summary')).toBeFocused();
     }
-    await page.locator('.product-card a.button').click();
-    await expect(page).toHaveURL(/\/en\/products\/hair-oil-example\/$/);
+    await page.locator('.product-card a.button').first().click();
+    await expect(page).toHaveURL(/\/en\/products\/mariyas-hair-oil-200-ml\/$/);
+    await page.locator('header .language-menu summary').click();
     await page.locator('header a[hreflang="ta"]').click();
-    await expect(page).toHaveURL(/\/ta\/products\/hair-oil-example\/$/);
+    await expect(page).toHaveURL(/\/ta\/products\/mariyas-hair-oil-200-ml\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
     expect(
       await page.evaluate(
@@ -110,28 +112,26 @@ for (const width of [360, 768, 1440]) {
         .analyze()
         .then((r) => r.violations),
     ).toEqual([]);
-    await expect(page.locator('a[href*="mariyasnaturals.com"]')).toHaveCount(0);
+    await expect(
+      page.locator(
+        'a[href*="mariyasnaturals.com"]:not([data-source-reference])',
+      ),
+    ).toHaveCount(0);
   });
 }
 
-test('scroll progress advances and pinning is excluded on touch-sized screens', async ({
+test('mobile chapters advance without pinning and reveal the original photograph', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/en/');
-  const progress = page.locator('.story-progress span');
   await page.locator('#story').scrollIntoViewIfNeeded();
-  const before = await progress.evaluate(
-    (el) => new DOMMatrix(getComputedStyle(el).transform).a,
+  await page.locator('#story-scene-5').scrollIntoViewIfNeeded();
+  await expect(page.locator('.story-experience')).toHaveAttribute(
+    'data-chapter',
+    '5',
   );
-  await page.locator('#ingredients').scrollIntoViewIfNeeded();
-  await expect
-    .poll(() =>
-      progress.evaluate(
-        (el) => new DOMMatrix(getComputedStyle(el).transform).a,
-      ),
-    )
-    .toBeGreaterThan(before);
+  await expect(page.locator('.scene-reveal img')).toBeVisible();
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
@@ -145,4 +145,13 @@ test('desktop pin is limited and resets for reduced motion', async ({
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
   await expect(page.locator('.skip-story')).toBeVisible();
+  expect(
+    await page
+      .locator('.story-product-primary img')
+      .evaluate(
+        (el) =>
+          el.getBoundingClientRect().height <=
+          el.parentElement!.getBoundingClientRect().height + 1,
+      ),
+  ).toBe(true);
 });

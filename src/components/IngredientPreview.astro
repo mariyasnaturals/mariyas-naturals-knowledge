@@ -1,6 +1,5 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import BotanicalArt from './BotanicalArt.astro';
 import type { Dictionary } from '../i18n';
 interface Props {
   t: Dictionary;
@@ -8,23 +7,23 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="ingredients" class="botanical-section section">
+<section id="ingredients" class="care-notes section">
   <div class="wrap">
     <SectionHeading
       eyebrow={t.ingredientLabel}
       title={t.ingredientTitle}
       text={t.ingredientText}
     />
-    <div class="three-grid">
+    <ol class="ritual-notes">
       {t.ingredientItems.map((title, i) => (
-        <article class="ingredient-card">
-          <div class={`plant-art plant-${i}`}>
-            <BotanicalArt />
-          </div>
+        <li>
+          <span class="scene-number" aria-hidden="true">
+            0{i + 1}
+          </span>
           <h3>{title}</h3>
           <p>{t.ingredientNotes[i]}</p>
-        </article>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
