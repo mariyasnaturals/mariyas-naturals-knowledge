@@ -1,0 +1,70 @@
+---
+import assets from '../../data/cinematic-assets.json';
+import type { Locale } from '../../i18n';
+interface Props {
+  scene: (typeof assets.scenes)[number];
+  index: number;
+  title: string;
+  description: string;
+  pending: string;
+  lang: Locale;
+}
+const { scene, index, title, description, pending, lang } = Astro.props;
+const ready = scene.status === 'ready' && scene.src;
+---
+
+<li
+  id={`story-scene-${index + 1}`}
+  class="cinema-scene"
+  data-story-scene
+  data-effect={scene.effect}
+  data-scene-id={scene.id}
+>
+  <div class="cinema-scene-copy">
+    <p class="eyebrow">
+      <span aria-hidden="true">0{index + 1} / 08</span> · MARIYAS NATURALS
+    </p>
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <slot />
+  </div>
+  <figure class="cinema-frame" data-asset-state={scene.status}>
+    {ready && (
+      <img
+        src={scene.src!}
+        width={scene.width!}
+        height={scene.height!}
+        alt={scene.alt[lang]}
+        loading="lazy"
+        decoding="async"
+        data-cinematic-asset={scene.id}
+      />
+    )}
+    <!-- Abstract light only: no stand-in packaging, faces or synthetic hair. -->
+    {!ready && (
+      <div class="cinema-atmosphere" aria-hidden="true">
+        <span class="cinema-halo"></span>
+        <span class="cinema-light"></span>
+        <span class="cinema-sweep"></span>
+      </div>
+    )}
+    {ready &&
+      scene.effect === 'shine' &&
+      assets.hairMask.status === 'ready' &&
+      assets.hairMask.src && (
+        <div
+          class="cinema-hair-highlight"
+          style={{ maskImage: `url(${assets.hairMask.src})` }}
+          aria-hidden="true"
+        >
+          <span class="cinema-sweep"></span>
+        </div>
+      )}
+    <figcaption>
+      <span class="cinema-frame-index" aria-hidden="true">
+        0{index + 1}
+      </span>
+      {!ready && pending}
+    </figcaption>
+  </figure>
+</li>

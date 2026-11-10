@@ -123,5 +123,35 @@
     "wellness": "Discover the other herbal wellness and everyday-care listings in the current Mariyas Naturals catalogue."
   },
   "collectionLocation": "in Kerala",
-  "collectionBack": "All collections"
+  "collectionBack": "All collections",
+  "cinematic": {
+    "title": "From nature. Into your ritual.",
+    "film": "The Mariyas Naturals film",
+    "videoPending": "The original film will appear here.",
+    "imagePending": "Original scene imagery pending",
+    "play": "Play film",
+    "pause": "Pause film",
+    "unavailable": "The film is unavailable. Explore the chapters below.",
+    "originals": "Original Mariyas product and model imagery will complete this story. These abstract light studies are placeholders.",
+    "titles": [
+      "Botanical ingredients",
+      "A moment of golden oil",
+      "The Mariyas Naturals reveal",
+      "The original model",
+      "The application ritual",
+      "Light through the lengths",
+      "An elegant long-hair sweep",
+      "Your Mariyas moment"
+    ],
+    "notes": [
+      "The story opens in the botanical world. Ingredient imagery awaits the original film; no formula is implied.",
+      "Warm golden light moves gently into the next chapter.",
+      "A dedicated reveal for the authentic Mariyas Naturals pack.",
+      "Space reserved for the original model, with identity and likeness preserved.",
+      "The original footage will show the hair-oil application. Refer to the product label for directions.",
+      "A restrained travelling highlight, ready for the original hair footage.",
+      "A gentle movement through the frame, ready for the original long-hair sequence.",
+      "Botanical atmosphere, the authentic product and the original model come together in the final composition."
+    ]
+  }
 }

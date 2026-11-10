@@ -1,237 +1,88 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
-import SectionHeading from './SectionHeading.astro';
-import StoryScene from './StoryScene.astro';
-import ProductVisual from './ProductVisual.astro';
-import {
-  featuredProduct,
-  companionProduct,
-  productPath,
-} from '../data/products';
+import ResponsiveFilm from './cinematic/ResponsiveFilm.astro';
+import CinematicScene from './cinematic/CinematicScene.astro';
+import assets from '../data/cinematic-assets.json';
+import { featuredProduct, productPath } from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
+import '../styles/cinematic.css';
 interface Props {
   t: Dictionary;
   lang: Locale;
 }
 const { t, lang } = Astro.props;
+const c = t.cinematic;
 ---
 
-<section id="story" class="section story-experience" aria-label={t.story}>
+<section id="story" class="cinema story-experience" aria-label={t.story}>
   <div class="wrap">
-    <div class="story-introduction">
-      <SectionHeading
-        eyebrow={t.heritageLabel}
-        title={t.heritageTitle}
-        text={t.heritageText}
-      />
+    <div class="cinema-introduction">
       <div>
-        <p class="editor-note">{t.heritageNote}</p>
-        <a class="text-link skip-story" href="#ingredients">
-          {t.skipStory} <ArrowIcon direction="down" />
-        </a>
+        <p class="eyebrow">{t.journal}</p>
+        <h1 id="hero-title">{t.hero}</h1>
+        <p class="lede">{t.intro}</p>
+        <div class="actions">
+          <a class="button button-gold" href="#story-scene-1">
+            {t.scrollInvitation}
+            <ArrowIcon direction="down" />
+          </a>
+          <a class="text-link skip-story" href="#ingredients">
+            {t.skipStory}
+            <ArrowIcon />
+          </a>
+        </div>
       </div>
+      <ResponsiveFilm
+        label={c.film}
+        pending={c.videoPending}
+        play={c.play}
+        pause={c.pause}
+        unavailable={c.unavailable}
+      />
     </div>
-    <nav class="story-chapters" aria-label={t.story}>
-      {t.scenes.map((title, index) => (
-        <a
-          href={`#story-scene-${index + 1}`}
-          aria-label={`${index + 1}. ${title}`}
-          data-chapter-link
-        >
+    <div class="cinema-chapter-heading">
+      <p class="eyebrow">{t.heritageLabel}</p>
+      <h2>{c.title}</h2>
+    </div>
+    <nav class="cinema-chapters" aria-label={t.story}>
+      {c.titles.map((title, index) => (
+        <a href={`#story-scene-${index + 1}`} data-chapter-link>
           <span aria-hidden="true">0{index + 1}</span>
-          <span class="chapter-name">{title}</span>
+          <span>{title}</span>
         </a>
       ))}
     </nav>
-    <div class="story-track">
-      <div class="story-stage" aria-hidden="true">
-        <div class="story-stage-inner">
-          <p class="eyebrow">MARIYAS / NATURALS</p>
-          <div class="story-orbit">
-            <div class="story-halo"></div>
-            <div class="oil-light"></div>
-            <div class="oil-drops">
-              <i></i>
-              <i></i>
-              <i></i>
-            </div>
-            <div class="story-product story-product-primary">
-              <ProductVisual product={featuredProduct} lang={lang} t={t} />
-            </div>
-            <div class="story-product story-product-secondary">
-              <ProductVisual product={companionProduct} lang={lang} t={t} />
-            </div>
-          </div>
-          <p class="story-stage-caption">{t.storyIntro}</p>
-          <div class="stage-chapters">
-            {t.scenes.map((title, index) => (
-              <span
-                data-stage-caption
-                class:list={{ 'is-current': index === 0 }}
-              >
-                0{index + 1} / {title}
-              </span>
-            ))}
-          </div>
-          <div class="story-progress">
-            <span></span>
-          </div>
-        </div>
-      </div>
-      <ol class="story-scenes">
-        {t.scenes.map((title, index) => (
-          <StoryScene
-            number={index + 1}
-            title={title}
-            description={t.sceneNotes[index] ?? ''}
-          >
-            {index === 4 && (
-              <div class="scene-reveal">
-                <ProductVisual
-                  product={featuredProduct}
-                  lang={lang}
-                  t={t}
-                  sizes="(min-width: 760px) 1px, 85vw"
-                />
-              </div>
-            )}
-          </StoryScene>
-        ))}
-      </ol>
+    <div class="cinema-progress" aria-hidden="true">
+      <span></span>
     </div>
-    <div class="story-outro">
-      <p class="eyebrow">{t.nextChapter}</p>
-      <a class="button" href={productPath(lang, featuredProduct)}>
-        {t.viewDetails} <ArrowIcon />
-      </a>
-      <a class="text-link" href="#ingredients">
-        {t.exploreIngredients} <ArrowIcon />
-      </a>
-    </div>
+    <ol class="cinema-scenes">
+      {assets.scenes.map((scene, index) => (
+        <CinematicScene
+          scene={scene}
+          index={index}
+          title={c.titles[index]}
+          description={c.notes[index]}
+          pending={c.imagePending}
+          lang={lang}
+        >
+          {index === 7 && (
+            <a
+              class="button button-gold"
+              href={productPath(lang, featuredProduct)}
+            >
+              {t.viewDetails}
+              <ArrowIcon />
+            </a>
+          )}
+        </CinematicScene>
+      ))}
+    </ol>
+    <p class="cinema-endnote">{c.originals}</p>
   </div>
 </section>
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-  const media = gsap.matchMedia();
-  media.add('(prefers-reduced-motion: no-preference)', () => {
-    const root = document.querySelector<HTMLElement>('.story-experience');
-    if (!root) return;
-    const chapters = root.querySelectorAll<HTMLAnchorElement>(
-      '[data-chapter-link]',
-    );
-    const captions = root.querySelectorAll<HTMLElement>('[data-stage-caption]');
-    let current = -1;
-    const setChapter = (progress: number) => {
-      const index = Math.min(4, Math.floor(progress * 5));
-      if (index === current) return;
-      current = index;
-      root.dataset.chapter = String(index + 1);
-      chapters.forEach((link, i) =>
-        i === index
-          ? link.setAttribute('aria-current', 'step')
-          : link.removeAttribute('aria-current'),
-      );
-      captions.forEach((caption, i) =>
-        caption.classList.toggle('is-current', i === index),
-      );
-    };
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.story-track',
-        start: 'top 45%',
-        end: 'bottom 80%',
-        scrub: 0.35,
-        onUpdate: (self) => setChapter(self.progress),
-      },
-    });
-    timeline
-      .fromTo(
-        '.story-progress span',
-        { scaleX: 0 },
-        { scaleX: 1, ease: 'none', duration: 1 },
-        0,
-      )
-      .to(
-        '.oil-light',
-        { scale: 1.25, rotation: 35, ease: 'none', duration: 0.55 },
-        0.2,
-      )
-      .fromTo(
-        '.story-product-primary',
-        { y: 10, scale: 0.98 },
-        { y: 0, scale: 1, ease: 'none', duration: 1 },
-        0,
-      )
-      .to('.story-product-primary', { autoAlpha: 0, duration: 0.16 }, 0.35)
-      .fromTo(
-        '.story-product-secondary',
-        { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.16 },
-        0.35,
-      )
-      .to('.story-product-secondary', { autoAlpha: 0, duration: 0.16 }, 0.75)
-      .to('.story-product-primary', { autoAlpha: 1, duration: 0.16 }, 0.75);
-    timeline
-      .fromTo(
-        '.oil-drops i',
-        { y: -18, scale: 0.6, autoAlpha: 0 },
-        {
-          y: 56,
-          scale: 1,
-          autoAlpha: 0.65,
-          stagger: 0.04,
-          duration: 0.25,
-          ease: 'sine.inOut',
-        },
-        0.28,
-      )
-      .to(
-        '.oil-drops i',
-        { y: 80, autoAlpha: 0, stagger: 0.025, duration: 0.2 },
-        0.6,
-      )
-      .to('.story-halo', { scale: 1.1, duration: 0.22 }, 0.76);
-    gsap.utils.toArray<HTMLElement>('[data-story-scene]').forEach((scene) =>
-      gsap.from(scene, {
-        x: 20,
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: scene, start: 'top 92%', once: true },
-      }),
-    );
-    gsap.from('.hero-copy > *', {
-      y: 12,
-      duration: 0.7,
-      stagger: 0.08,
-      ease: 'power2.out',
-    });
-    return () => {
-      delete root.dataset.chapter;
-      chapters.forEach((link) => link.removeAttribute('aria-current'));
-      captions.forEach((caption, i) =>
-        caption.classList.toggle('is-current', i === 0),
-      );
-    };
-  });
-  media.add(
-    '(min-width: 1000px) and (min-height: 760px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-    () => {
-      ScrollTrigger.create({
-        trigger: '.story-stage',
-        start: 'top 100px',
-        end: () => `+=${Math.min(window.innerHeight * 0.8, 650)}`,
-        pin: true,
-        pinSpacing: false,
-        invalidateOnRefresh: true,
-      });
-    },
-  );
-  const cleanup = () => media.revert();
-  document.addEventListener('astro:before-swap', cleanup, { once: true });
-  window.addEventListener('pagehide', cleanup, { once: true });
-  window.addEventListener('pageshow', (event) => {
-    if (event.persisted) ScrollTrigger.refresh();
-  });
+  import { mountCinematicStory } from '../scripts/cinematic-story';
+  document
+    .querySelectorAll<HTMLElement>('.cinema')
+    .forEach(mountCinematicStory);
 </script>

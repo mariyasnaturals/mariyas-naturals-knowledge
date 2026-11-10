@@ -3,7 +3,25 @@ import { createHash } from 'node:crypto';
 import { load } from 'cheerio';
 import assert from 'node:assert/strict';
 import { assertApprovedMedia } from '../src/config/media-policy.mjs';
+import { assertCinematicAssets } from '../src/config/cinematic-assets.mjs';
 const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
+const cinematic = json('../src/data/cinematic-assets.json');
+assertCinematicAssets(cinematic);
+const originals = [
+  ...Object.values(cinematic.videos),
+  ...Object.values(cinematic.references),
+  ...cinematic.scenes,
+  cinematic.hairMask,
+].filter((asset) => asset.status === 'ready');
+for (const asset of originals) {
+  const bytes = readFileSync(new URL('../public' + asset.src, import.meta.url));
+  assert.equal(
+    createHash('sha256').update(bytes).digest('hex'),
+    asset.sha256,
+    'Original asset hash must match provenance',
+  );
+}
+const originalImages = originals.filter((asset) => !asset.src.endsWith('.mp4'));
 const expectedOrigin =
   process.env.EXPECT_SITE_URL || 'https://www.mariyasnaturals.cloud';
 const manifests = [
@@ -16,9 +34,10 @@ const retired = new Set(
 );
 const media = manifests.flatMap((m) => m.media);
 const byId = new Map(media.map((m) => [m.id, m]));
-const approved = new Set(
-  media.flatMap((m) => m.derivatives.map((d) => d.localAssetPath)),
-);
+const approved = new Set([
+  ...media.flatMap((m) => m.derivatives.map((d) => d.localAssetPath)),
+  ...originalImages.map((asset) => asset.src),
+]);
 const used = new Set();
 let htmlCount = 0,
   imageCount = 0;
@@ -88,6 +107,17 @@ function walk(directory, prefix = '') {
     const $ = load(text);
     for (const node of $('img').toArray()) {
       imageCount++;
+      if ($(node).attr('data-cinematic-asset')) {
+        const asset = cinematic.scenes.find(
+          (scene) => scene.id === $(node).attr('data-cinematic-asset'),
+        );
+        assert.ok(
+          asset?.status === 'ready' && asset.src === $(node).attr('src'),
+          'Only recorded owner originals may render',
+        );
+        checkImage($(node).attr('src'));
+        continue;
+      }
       const id = $(node).attr('data-media-id');
       const record = byId.get(id);
       assert.ok(

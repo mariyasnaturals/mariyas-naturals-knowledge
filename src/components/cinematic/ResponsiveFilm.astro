@@ -1,0 +1,48 @@
+---
+import assets from '../../data/cinematic-assets.json';
+import { assertCinematicAssets } from '../../config/cinematic-assets.mjs';
+assertCinematicAssets(assets);
+interface Props {
+  label: string;
+  pending: string;
+  play: string;
+  pause: string;
+  unavailable: string;
+}
+const { label, pending, play, pause, unavailable } = Astro.props;
+---
+
+<responsive-film
+  class="cinema-film"
+  data-desktop={assets.videos.desktop.src ?? undefined}
+  data-mobile={assets.videos.mobile.src ?? undefined}
+  data-breakpoint={assets.breakpoint}
+  data-play={play}
+  data-pause={pause}
+  data-unavailable={unavailable}
+>
+  <video
+    muted
+    playsinline
+    loop
+    preload="none"
+    aria-label={label}
+    hidden
+  ></video>
+  <div class="cinema-film-placeholder">
+    <span class="cinema-orbit" aria-hidden="true"></span>
+    <p class="eyebrow">MARIYAS NATURALS · 15 SEC</p>
+    <p data-film-status>{pending}</p>
+    <span class="cinema-format" lang="en">
+      16:9 DESKTOP / 9:16 MOBILE
+    </span>
+  </div>
+  <button class="cinema-play" type="button" aria-label={play} hidden>
+    {play}
+  </button>
+</responsive-film>
+<script>
+  import { ResponsiveFilm } from '../../scripts/responsive-film';
+  if (!customElements.get('responsive-film'))
+    customElements.define('responsive-film', ResponsiveFilm);
+</script>

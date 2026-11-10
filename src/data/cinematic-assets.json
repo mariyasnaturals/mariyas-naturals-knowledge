@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 15,
+  "breakpoint": 760,
+  "videos": {
+    "desktop": {
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/homepage-desktop.mp4",
+      "aspectRatio": "16:9",
+      "type": "video/mp4",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null
+    },
+    "mobile": {
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/homepage-mobile.mp4",
+      "aspectRatio": "9:16",
+      "type": "video/mp4",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null
+    }
+  },
+  "references": {
+    "product": {
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/original-product.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    "model": {
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/original-model.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    }
+  },
+  "scenes": [
+    {
+      "id": "botanicals",
+      "start": 0,
+      "end": 2,
+      "effect": "botanical",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/01-botanicals.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "golden-oil",
+      "start": 2,
+      "end": 3.5,
+      "effect": "oil",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/02-golden-oil.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "product-reveal",
+      "start": 3.5,
+      "end": 5,
+      "effect": "reveal",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/03-product-reveal.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "original-model",
+      "start": 5,
+      "end": 7,
+      "effect": "portrait",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/04-original-model.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "application",
+      "start": 7,
+      "end": 9,
+      "effect": "application",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/05-application.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "hair-shine",
+      "start": 9,
+      "end": 11,
+      "effect": "shine",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/06-hair-shine.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "hair-sweep",
+      "start": 11,
+      "end": 13,
+      "effect": "sweep",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/07-hair-sweep.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    },
+    {
+      "id": "final-hero",
+      "start": 13,
+      "end": 15,
+      "effect": "hero",
+      "status": "pending",
+      "src": null,
+      "expectedPath": "/cinematic/08-final-hero.webp",
+      "source": "owner-original",
+      "originalFilename": null,
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "alt": {
+        "en": "",
+        "ml": "",
+        "hi": "",
+        "ta": ""
+      }
+    }
+  ],
+  "hairMask": {
+    "status": "pending",
+    "src": null,
+    "expectedPath": "/cinematic/original-hair-mask.webp",
+    "source": "owner-original",
+    "originalFilename": null,
+    "sha256": null,
+    "width": null,
+    "height": null,
+    "alt": {
+      "en": "",
+      "ml": "",
+      "hi": "",
+      "ta": ""
+    }
+  }
+}

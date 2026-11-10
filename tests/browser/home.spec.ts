@@ -74,7 +74,9 @@ test('ScrollTrigger moves a scene into its resting position', async ({
   await page.goto('/en/');
   const scene = page.locator('[data-story-scene]').last();
   const translation = () =>
-    scene.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m41);
+    scene
+      .locator('.cinema-scene-copy')
+      .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
   await expect.poll(translation).toBeGreaterThan(0);
   await scene.scrollIntoViewIfNeeded();
   await expect.poll(translation).toBe(0);
@@ -120,38 +122,39 @@ for (const width of [360, 768, 1440]) {
   });
 }
 
-test('mobile chapters advance without pinning and reveal the original photograph', async ({
+test('mobile chapters advance without pinning or substitute imagery', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/en/');
   await page.locator('#story').scrollIntoViewIfNeeded();
-  await page.locator('#story-scene-5').scrollIntoViewIfNeeded();
+  await page.locator('#story-scene-8').scrollIntoViewIfNeeded();
   await expect(page.locator('.story-experience')).toHaveAttribute(
     'data-chapter',
-    '5',
+    '8',
   );
-  await expect(page.locator('.scene-reveal img')).toBeVisible();
+  await expect(page.locator('.cinema-frame img')).toHaveCount(0);
+  await expect(
+    page.locator('.cinema-frame[data-asset-state="pending"]'),
+  ).toHaveCount(8);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
-test('desktop pin is limited and resets for reduced motion', async ({
+test('desktop uses natural scrolling and resets animation for reduced motion', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/en/');
-  await expect(page.locator('.pin-spacer')).toHaveCount(1);
-  await page.locator('.story-stage').scrollIntoViewIfNeeded();
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
+  await page.locator('#story-scene-6').scrollIntoViewIfNeeded();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
-  await expect(page.locator('.skip-story')).toBeVisible();
+  await expect(page.locator('.story-experience')).not.toHaveAttribute(
+    'data-chapter',
+  );
   expect(
     await page
-      .locator('.story-product-primary img')
-      .evaluate(
-        (el) =>
-          el.getBoundingClientRect().height <=
-          el.parentElement!.getBoundingClientRect().height + 1,
-      ),
+      .locator('#story-scene-6 .cinema-frame')
+      .evaluate((el) => getComputedStyle(el).transform === 'none'),
   ).toBe(true);
 });

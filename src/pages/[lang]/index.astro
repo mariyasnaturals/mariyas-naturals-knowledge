@@ -2,7 +2,6 @@
 import ArrowIcon from '../../components/ArrowIcon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import HeroSection from '../../components/HeroSection.astro';
 import StorytellingSection from '../../components/StorytellingSection.astro';
 import IngredientPreview from '../../components/IngredientPreview.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
@@ -27,7 +26,6 @@ const t = dictionaries[lang];
 >
   <SiteHeader lang={lang} t={t} />
   <main id="main" tabindex="-1">
-    <HeroSection t={t} lang={lang} />
     <StorytellingSection t={t} lang={lang} />
     <IngredientPreview t={t} />
     <CollectionHighlights t={t} lang={lang} />
