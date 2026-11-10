@@ -19,7 +19,8 @@
     "test:browser": "playwright test",
     "media:import": "node scripts/import-product-media.mjs",
     "fonts:prepare": "node scripts/prepare-fonts.mjs",
-    "test:media-policy": "node scripts/validate-media-policy.mjs"
+    "test:media-policy": "node scripts/validate-media-policy.mjs",
+    "package:staging": "node scripts/package-staging.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

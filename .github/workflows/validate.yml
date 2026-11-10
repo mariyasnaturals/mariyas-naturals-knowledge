@@ -15,6 +15,8 @@ jobs:
       ALLOW_INDEXING: 'false'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24.22.1'
@@ -26,3 +28,13 @@ jobs:
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
+      - name: Package approved staging review (PR artifacts only)
+        if: github.event_name == 'pull_request'
+        run: npm run package:staging
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: mariyas-cloud-staging-review-${{ github.event.pull_request.head.sha }}
+          path: review-artifacts/
+          retention-days: 30
+          if-no-files-found: error
