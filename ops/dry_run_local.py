@@ -26,7 +26,8 @@ def main():
         (website / '.well-known/token').write_text('preserve ACME fixture')
         cfg = {'_root': website, '_state': state, 'enabled': False, 'release_public_key': str(public)}
         with contextlib.redirect_stdout(io.StringIO()):
-            prepare_release.prepare(root / 'review-artifacts', work / 'release', review['sourceSha'], 1, key)
+            approval_hash = prepare_release.inspect(root / 'review-artifacts', work / 'release', review['sourceSha'], 1, '1234')
+            prepare_release.approve(work / 'release', key, public, approval_hash)
             manifest, signature_hash, staged = pull.verify_release(work / 'release', cfg)
             before = {p.relative_to(website).as_posix(): p.read_bytes() for p in website.rglob('*') if p.is_file()}
             pull.apply_release(cfg, manifest, signature_hash, staged, 'b' * 40)
@@ -42,7 +43,7 @@ def main():
             assert (website / 'index.html').read_text() == 'previous fixture staging page'
             pull.apply_release(cfg, manifest, signature_hash, staged, 'b' * 40, True)
             assert (website / 'index.html').read_text() == 'previous fixture staging page'
-        report = {'scope': 'Local temporary directories only; no VPS connection/configuration and no real release branch publication.', 'compiled_source_sha': review['sourceSha'], 'archive_sha256': review['archiveSha256'], 'compiled_files_verified': len(manifest['files']), 'approved_image_derivatives_verified': len(manifest['approved_images']), 'signature': 'Ed25519 test key generated locally and destroyed', 'dry_run_website_bytes_unchanged': before == after, 'dry_run_backups_created': False, 'simulated_apply_verified_backup_first': True, 'well_known_preserved': True, 'simulated_rollback_restored_previous_page': True, 'poll_did_not_undo_rollback': True, 'network_fetch': 'Not exercised against GitHub/VPS; requires owner-installed deploy key and pinned host trust', 'production_deployment': False}
+        report = {'scope': 'Local temporary directories only; no VPS connection/configuration and no real release branch publication.', 'compiled_source_sha': review['sourceSha'], 'archive_sha256': review['archiveSha256'], 'compiled_files_verified': len(manifest['files']), 'approved_image_derivatives_verified': len(manifest['approved_images']), 'signature': 'Ed25519 test key generated locally and destroyed', 'approval_method': 'Independent owner inspection plus explicit exact-manifest digest; local fixture only', 'dry_run_website_bytes_unchanged': before == after, 'dry_run_backups_created': False, 'simulated_apply_verified_backup_first': True, 'well_known_preserved': True, 'simulated_rollback_restored_previous_page': True, 'poll_did_not_undo_rollback': True, 'network_fetch': 'Not exercised against GitHub/VPS; requires owner-installed deploy key and pinned host trust', 'production_deployment': False}
     (root / 'docs/pull-dry-run.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 

@@ -1,9 +1,9 @@
-name: Publish approved staging static release
+name: Build staging candidate (owner signs separately)
 on:
   workflow_dispatch:
     inputs:
       source_sha:
-        description: Full SHA of the approved source branch tip (40 characters)
+        description: Full SHA of the candidate source branch tip (40 characters)
         required: true
         type: string
 permissions:
@@ -23,7 +23,7 @@ jobs:
       SITE_ENV: development
       ALLOW_INDEXING: 'false'
     steps:
-      - name: Admit only the selected approved branch revision
+      - name: Admit only the selected candidate branch revision
         id: identity
         env:
           REQUESTED_SHA: ${{ inputs.source_sha }}
@@ -55,36 +55,9 @@ jobs:
       - run: npm run package:staging
       - uses: actions/upload-artifact@v4
         with:
-          name: validated-staging-input
+          name: unsigned-staging-candidate-${{ github.run_id }}-${{ github.run_attempt }}
           path: review-artifacts/
           retention-days: 30
           if-no-files-found: error
-  publish:
-    needs: build
-    if: github.ref == 'refs/heads/feature/authentic-media-typography'
-    runs-on: ubuntu-latest
-    environment: staging-release
-    permissions:
-      contents: write
-    steps:
-      - name: Require owner-configured protected environment
-        env:
-          ENABLED: ${{ vars.STAGING_RELEASES_ENABLED }}
-        run: test "$ENABLED" = owner-approved
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: validated-staging-input
-          path: review-artifacts/
-      - name: Sign validated manifest (no VPS SSH credentials)
-        env:
-          STAGING_RELEASE_SIGNING_KEY: ${{ secrets.STAGING_RELEASE_SIGNING_KEY }}
-          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
-        run: python3 ops/prepare_release.py --bundle review-artifacts --output signed-release --source-sha "$SOURCE_SHA" --sequence "$GITHUB_RUN_NUMBER"
-      - name: Publish only compiled signed data
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 ops/publish_release.py
+      - name: Explain owner approval boundary
+        run: echo 'Unsigned candidate only. Review and sign with independently installed owner tools; this workflow cannot publish a release.' >> "$GITHUB_STEP_SUMMARY"

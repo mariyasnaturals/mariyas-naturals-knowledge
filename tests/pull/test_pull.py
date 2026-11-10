@@ -3,11 +3,14 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import types
 import unittest
 from unittest.mock import patch
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'ops'))
 
 spec = importlib.util.spec_from_file_location('pull', Path(__file__).resolve().parents[2] / 'ops/pull_deploy.py')
 pull = importlib.util.module_from_spec(spec)
