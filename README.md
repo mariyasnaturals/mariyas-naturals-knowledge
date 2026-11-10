@@ -100,3 +100,7 @@ Task 03 develops on `feature/authentic-media-typography`, based on `feature/prem
 See [deployment documentation](docs/deployment.md). Only the verified contents of `dist/` eventually go to the CloudPanel Static HTML site's document root. No Node server, adapter or database is needed at runtime. The precise document root must be confirmed before any deployment. This task does not connect to the VPS or modify CloudPanel, WordPress, DNS, TLS or live websites.
 
 Future migration to `.in` requires approved content, exact store URLs, domain/canonical validation, redirects, multilingual editorial review, accessibility checks and a deliberate indexing decision. Core Web Vitals targets are LCP <=2.5s, INP <=200ms and CLS <=0.1; these are goals, not measured guarantees. Browser checks are useful smoke tests, not proof of full WCAG conformance.
+
+## Owner-enabled pull deployment
+
+The prepared [pull deployment architecture](docs/pull-deployment.md) uses GitHub-hosted validation/build, an owner-approved signed static release branch, and site-user CloudPanel cron with an outbound read-only GitHub deploy key. It defaults to dry-run and requires a verified backup and exact local approval before the first live apply. No inbound VPS SSH, FTP, source builds on the VPS or self-hosted runner is used. Preparation does not deploy or change VPS configuration. [Local security/rehearsal results](docs/pull-validation.md).

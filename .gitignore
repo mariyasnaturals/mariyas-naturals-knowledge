@@ -8,3 +8,6 @@ playwright-report/
 test-results/
 *.log
 review-artifacts/
+__pycache__/
+*.pyc
+signed-release/

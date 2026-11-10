@@ -1,6 +1,7 @@
 # Mariyas .cloud staging review — owner-operated upload only
 
-This bundle is for `https://www.mariyasnaturals.cloud`. It preserves approved UI/media baseline `71cca8d24e73a7c10fd7c0585e1404a362424bb4`, four languages, GSAP, self-hosted typography and the current .in-only catalogue. Purchasing is disabled, final commerce mapping is empty, every HTML page is noindex/nofollow, and robots denies crawling. No server upload or deployment is performed by these build workflows.
+> Deployment direction superseded: use [owner-enabled VPS pull deployment](pull-deployment.md). Earlier manual-upload instructions are historical review guidance; do not enable an SSH-push/FTP/manual-folder deployment path.
+> This bundle is for `https://www.mariyasnaturals.cloud`. It preserves approved UI/media baseline `71cca8d24e73a7c10fd7c0585e1404a362424bb4`, four languages, GSAP, self-hosted typography and the current .in-only catalogue. Purchasing is disabled, final commerce mapping is empty, every HTML page is noindex/nofollow, and robots denies crawling. No server upload or deployment is performed by these build workflows.
 
 ## Download and inspect
 

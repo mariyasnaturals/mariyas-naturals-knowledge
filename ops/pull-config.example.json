@@ -1,0 +1,10 @@
+{
+  "site": "https://www.mariyasnaturals.cloud",
+  "enabled": false,
+  "document_root": "/REPLACE_WITH_VERIFIED_CLOUDPANEL_STATIC_ROOT",
+  "state_dir": "/home/mariyascloud/.local/state/mariyas-pull",
+  "deploy_key": "/home/mariyascloud/.ssh/github-staging-readonly",
+  "known_hosts": "/home/mariyascloud/.ssh/github-staging-known-hosts",
+  "release_public_key": "/home/mariyascloud/.config/mariyas-pull/release-public.pem",
+  "release_public_key_sha256": "REPLACE_WITH_OWNER_VERIFIED_SHA256_OF_PUBLIC_PEM"
+}

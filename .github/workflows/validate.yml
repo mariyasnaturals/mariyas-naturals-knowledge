@@ -25,6 +25,7 @@ jobs:
       - run: npm run check
       - run: npm run lint
       - run: npm test
+      - run: python3 -m unittest discover -s tests/pull -v
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
