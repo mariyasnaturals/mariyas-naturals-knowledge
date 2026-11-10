@@ -1,0 +1,63 @@
+name: Build staging candidate (owner signs separately)
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Full SHA of the candidate source branch tip (40 characters)
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: mariyas-staging-release
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref == 'refs/heads/feature/authentic-media-typography'
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.identity.outputs.source_sha }}
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://www.mariyasnaturals.cloud
+      SITE_ENV: development
+      ALLOW_INDEXING: 'false'
+    steps:
+      - name: Admit only the selected candidate branch revision
+        id: identity
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+        run: |
+          [[ "$REQUESTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$REQUESTED_SHA" = "$GITHUB_SHA"
+          echo "source_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run lint
+      - run: npm test
+      - run: python3 -m unittest discover -s tests/pull -v
+      - run: npm run build
+      - run: npm run test:static
+      - run: npm run test:media-policy
+      - name: Browser and accessibility validation
+        run: |
+          npx playwright install --with-deps chromium
+          CHROMIUM_PATH="$(node --input-type=module -e 'import {chromium} from "@playwright/test"; console.log(chromium.executablePath())')" npm run test:browser
+      - run: npm run package:staging
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-staging-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: review-artifacts/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Explain owner approval boundary
+        run: echo 'Unsigned candidate only. Review and sign with independently installed owner tools; this workflow cannot publish a release.' >> "$GITHUB_STEP_SUMMARY"
