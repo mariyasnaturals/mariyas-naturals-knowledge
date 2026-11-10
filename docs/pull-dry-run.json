@@ -1,7 +1,7 @@
 {
   "scope": "Local temporary directories only; no VPS connection/configuration and no real release branch publication.",
-  "compiled_source_sha": "abeb99f0141273f1936a3b916239a7e1e43311d5",
-  "archive_sha256": "cd100db7dd5c699cc34df28de6b5899f5949e0cf1456636a240102cbb742ca0c",
+  "compiled_source_sha": "da0c28877fa0b74b72b914984e62b19ddf91d2ed",
+  "archive_sha256": "5b0283293124213962e1ffc2a7ffd9c033ea1d19ded62eeff7ebf5061c214e84",
   "compiled_files_verified": 435,
   "approved_image_derivatives_verified": 36,
   "signature": "Ed25519 test key generated locally and destroyed",
