@@ -13,3 +13,5 @@ __pycache__/
 *.pyc
 signed-release/
 cinematic-candidate-artifacts/
+ci-staging-unsigned/
+ci-staging-bootstrap/

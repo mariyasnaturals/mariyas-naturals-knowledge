@@ -1,0 +1,31 @@
+# CI staging trust inventory
+
+Independently review the implementation commit and this inventory before installation. These are file checksums, not a claim of owner signing or live activation. Existing owner tools remain installed unchanged; the listed core/helper files are copied into the separate versioned runtime.
+
+Bundle inventory SHA-256: `82bed463302f546fde16e6be826519aacb9654cb6f2e847f291d774e934d0ea0`
+
+```text
+fe7e4a9154f3a40ce8c3221f2c208713402c30c6d39cc7d3a338249841a31cb9  ops/automatic_staging.py
+6bfc59e674c4f373e68b588067bd8fd4164522f6250f9b3c37b9c2c9ca9267d4  ops/ci_staging/__init__.py
+11478f379ec224311c6203accd822d54a00b3fe41cfa1eb3f9d8b44c59d33bff  ops/ci_staging/artifact.py
+56b3414448bba8f3ae3c5bcdc9ad97a217bb4d8cdc1b8c562e4e37ebf059b3be  ops/ci_staging/bootstrap.py
+61b2c7a594f353c37dca7e96d47bced0d430d48fda833f414f91a168ce002e6a  ops/ci_staging/cli.py
+551cf32218306bc1ea633f0a3a2b88e1e064f7c8c66bfc895c0de18df2ef9bfe  ops/ci_staging/github.py
+83e4561c0862294b9fe0502590cfc180095a2e5acef9fd66dc184b621f6f5fea  ops/ci_staging/github_setup.py
+1ce1c361c73fc051870a37d4409acda93712964f2d7e09a1130a5183e943729f  ops/ci_staging/health.py
+aefabf1e9413cfd1d44e2956bbfc27fb5a0ac368c5ee0b8ac8e261a506bc2d90  ops/ci_staging/install.py
+b72bc04f3ddbed84fa5ea257ba89ee0a3912b54a8ab280e92ca77b70ff8f03c4  ops/ci_staging/runtime.py
+01c341361daca8f4cea7cae5c4686b59714b691d85bac36d36e1a2812be1b1af  ops/ci_staging/schedule.py
+a1553835fbbf6d6d8002478600181433d4097e5630a90b2646949217ea93bbdb  ops/ci_staging/trust.py
+192c4ddc182966b9f63986428a5745d43d4d9226fbd37fe57f6338a58fbd3a05  ops/ci_staging/verify_next_push.py
+c8702f64d4e75118bbb2d5be7b06d63398a7183a26e318acdc7d58758dd6447c  ops/cinematic/media_policy.py
+33b4da045bfabbcd89ea9070dc03f524c558ebc21fffc6995cb54a4e76ea7789  ops/cinematic/owner-media-policy.json
+71f3b132b7b4f2d2cbc4b3e6a71c2c13535793010a9ef4285d849696ce6eb61f  ops/cinematic/pull_deploy.py
+```
+
+Verify from the immutable reviewed checkout:
+
+```sh
+sha256sum ops/ci_staging/bundle.sha256
+sha256sum --check ops/ci_staging/bundle.sha256
+```

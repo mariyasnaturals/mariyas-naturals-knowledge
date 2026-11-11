@@ -21,6 +21,8 @@
     "cinematic:import": "node scripts/import-cinematic-media.mjs",
     "fonts:prepare": "node scripts/prepare-fonts.mjs",
     "test:media-policy": "node scripts/validate-media-policy.mjs",
+    "package:ci-staging": "node scripts/package-ci-staging.mjs",
+    "verify:staging": "node scripts/verify-live-staging.mjs",
     "package:staging": "node scripts/package-staging.mjs",
     "package:pr-preview": "node scripts/package-pr-preview.mjs"
   },
