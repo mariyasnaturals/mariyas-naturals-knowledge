@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: '24.22.1'
           cache: npm
+      - name: Install FFmpeg for original-media verification
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          command -v ffprobe
+          ffprobe -version
       - run: npm ci
       - run: npm run check
       - run: npm run lint
