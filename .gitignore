@@ -12,3 +12,4 @@ pr-preview-artifacts/
 __pycache__/
 *.pyc
 signed-release/
+cinematic-candidate-artifacts/

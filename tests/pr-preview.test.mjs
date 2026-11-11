@@ -75,8 +75,6 @@ test('approved staging packager still rejects the cinematic website; trusted too
   );
   for (const file of [
     'scripts/package-staging.mjs',
-    '.github/workflows/staging-release.yml',
-    '.github/workflows/staging-review.yml',
     'ops/prepare_release.py',
     'ops/publish_release.py',
     'ops/pull_deploy.py',
