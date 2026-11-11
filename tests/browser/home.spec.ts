@@ -133,9 +133,9 @@ test('mobile chapters advance without pinning or substitute imagery', async ({
     'data-chapter',
     '8',
   );
-  await expect(page.locator('.cinema-frame img')).toHaveCount(0);
+  await expect(page.locator('.cinema-frame img')).toHaveCount(9);
   await expect(
-    page.locator('.cinema-frame[data-asset-state="pending"]'),
+    page.locator('.cinema-frame[data-asset-state="ready"]'),
   ).toHaveCount(8);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });

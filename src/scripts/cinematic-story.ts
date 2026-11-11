@@ -8,6 +8,18 @@ export function mountCinematicStory(root: HTMLElement) {
     root.querySelectorAll<HTMLElement>('[data-story-scene]'),
   );
   const links = root.querySelectorAll('[data-chapter-link]');
+  const watch = (event: MouseEvent) => {
+    const link = (event.target as Element).closest<HTMLElement>(
+      '[data-watch-scene]',
+    );
+    if (link)
+      root.querySelector('responsive-film')?.dispatchEvent(
+        new CustomEvent('cinematic:seek', {
+          detail: { id: link.dataset.watchScene },
+        }),
+      );
+  };
+  root.addEventListener('click', watch);
   const setChapter = (index: number) => {
     root.dataset.chapter = String(index + 1);
     links.forEach((link, i) =>
@@ -51,6 +63,35 @@ export function mountCinematicStory(root: HTMLElement) {
             0,
           );
         const effect = scene.dataset.effect;
+        const originals = scene.querySelector('.cinema-originals');
+        if (originals && effect === 'botanical')
+          timeline.fromTo(
+            originals,
+            { y: 5 },
+            { y: -5, ease: 'sine.inOut' },
+            0,
+          );
+        if (originals && effect === 'oil')
+          timeline.fromTo(
+            originals,
+            { opacity: 0.9, y: -4 },
+            { opacity: 1, y: 4, ease: 'sine.inOut' },
+            0,
+          );
+        if (originals && effect === 'reveal')
+          timeline.fromTo(
+            originals,
+            { y: 14, opacity: 0.85 },
+            { y: 0, opacity: 1, ease: 'power2.out' },
+            0,
+          );
+        if (originals && effect === 'sweep')
+          timeline.fromTo(
+            originals,
+            { x: -5 },
+            { x: 5, ease: 'sine.inOut' },
+            0,
+          );
         if (
           (effect === 'oil' || effect === 'application') &&
           scene.querySelector('.cinema-light')
@@ -65,12 +106,25 @@ export function mountCinematicStory(root: HTMLElement) {
           (effect === 'shine' || effect === 'sweep') &&
           scene.querySelector('.cinema-sweep')
         )
-          timeline.fromTo(
-            scene.querySelector('.cinema-sweep'),
-            { xPercent: -110, rotation: -18, opacity: 0 },
-            { xPercent: 110, rotation: 8, opacity: 0.22, ease: 'sine.inOut' },
-            0,
-          );
+          timeline
+            .fromTo(
+              scene.querySelector('.cinema-sweep'),
+              { xPercent: -70, rotation: -12, opacity: 0 },
+              {
+                xPercent: 0,
+                rotation: -6,
+                opacity: 0.16,
+                ease: 'sine.inOut',
+                duration: 0.45,
+              },
+              0,
+            )
+            .to(scene.querySelector('.cinema-sweep'), {
+              xPercent: 70,
+              opacity: 0,
+              duration: 0.45,
+              ease: 'sine.inOut',
+            });
         if (effect === 'reveal' || effect === 'portrait' || effect === 'hero')
           timeline.fromTo(
             scene.querySelector('.cinema-frame'),
@@ -100,7 +154,10 @@ export function mountCinematicStory(root: HTMLElement) {
     },
     root,
   );
-  const cleanup = () => media.revert();
+  const cleanup = () => {
+    media.revert();
+    root.removeEventListener('click', watch);
+  };
   document.addEventListener('astro:before-swap', cleanup, { once: true });
   window.addEventListener('pagehide', (event) => {
     if (!event.persisted) cleanup();

@@ -171,7 +171,7 @@ test('touch navigation supports narrow screens and reduced motion', async ({
     await expect(page.locator('header .language-menu summary')).toBeFocused();
     await page.locator('#story-scene-5').scrollIntoViewIfNeeded();
     await expect(page.locator('#story-scene-5 .cinema-frame')).toBeVisible();
-    await expect(page.locator('.cinema-frame img')).toHaveCount(0);
+    await expect(page.locator('.cinema-frame img')).toHaveCount(9);
     await expect(page.locator('.pin-spacer')).toHaveCount(0);
     expect(
       await page
@@ -187,9 +187,10 @@ test('current campaign cards lead to accessible localized collections with clean
 }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/en/');
-  await expect(page.locator('.cinema-film-placeholder')).toBeVisible();
-  await expect(page.locator('responsive-film video')).not.toHaveAttribute(
+  await expect(page.locator('.cinema-film-placeholder')).toBeHidden();
+  await expect(page.locator('responsive-film video')).toHaveAttribute(
     'src',
+    '/cinematic/homepage-mobile.mp4',
   );
   await page
     .locator('.campaign-rail .campaign-card .text-link')

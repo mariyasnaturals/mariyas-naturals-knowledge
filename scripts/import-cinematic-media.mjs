@@ -92,6 +92,7 @@ export async function inspectOriginal(path, slot, expectedSeconds = 15) {
       throw new Error(`The ${slot} file has the wrong display aspect ratio`);
     detail = {
       durationSeconds: duration,
+      videoDurationSeconds: Number(stream.duration ?? duration),
       codec: stream.codec_name,
       encodedWidth: stream.width,
       encodedHeight: stream.height,

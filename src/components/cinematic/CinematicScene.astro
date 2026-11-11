@@ -2,6 +2,7 @@
 import assets from '../../data/cinematic-assets.json';
 import { sceneVisuals } from '../../data/cinematic-visuals.mjs';
 import type { Locale } from '../../i18n';
+import ArrowIcon from '../ArrowIcon.astro';
 interface Props {
   scene: (typeof assets.scenes)[number];
   index: number;
@@ -9,8 +10,11 @@ interface Props {
   description: string;
   pending: string;
   lang: Locale;
+  watch: string;
+  sourceLabel: string;
 }
-const { scene, index, title, description, pending, lang } = Astro.props;
+const { scene, index, title, description, pending, lang, watch, sourceLabel } =
+  Astro.props;
 const visuals = sceneVisuals(assets, scene);
 const ready = visuals.length > 0;
 ---
@@ -28,9 +32,26 @@ const ready = visuals.length > 0;
     </p>
     <h3>{title}</h3>
     <p>{description}</p>
+    <a
+      class="text-link cinema-watch"
+      href="#cinema-film"
+      data-watch-scene={scene.id}
+    >
+      {watch}
+      <ArrowIcon />
+    </a>
     <slot />
   </div>
-  <figure class="cinema-frame" data-asset-state={ready ? 'ready' : 'pending'}>
+  <figure
+    class="cinema-frame"
+    data-asset-state={ready ? 'ready' : 'pending'}
+    style={{
+      '--frame-ratio':
+        scene.id === 'final-hero'
+          ? '16 / 9'
+          : `${visuals[0]?.asset.width ?? 16} / ${visuals[0]?.asset.height ?? 9}`,
+    }}
+  >
     {ready && (
       <div
         class:list={[
@@ -76,6 +97,7 @@ const ready = visuals.length > 0;
         0{index + 1}
       </span>
       {!ready && pending}
+      {ready && <span>{sourceLabel}</span>}
     </figcaption>
   </figure>
 </li>

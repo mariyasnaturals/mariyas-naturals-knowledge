@@ -7,6 +7,7 @@ import {
   readFile,
   readdir,
   rm,
+  writeFile,
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -18,6 +19,7 @@ import {
   inspectOriginal,
 } from '../scripts/import-cinematic-media.mjs';
 import { sceneVisuals } from '../src/data/cinematic-visuals.mjs';
+import { cinematicRecords } from '../src/config/cinematic-assets.mjs';
 
 const manifestFile = new URL(
   '../src/data/cinematic-assets.json',
@@ -28,6 +30,15 @@ async function workspace(t) {
   t.after(() => rm(root, { recursive: true, force: true }));
   await mkdir(join(root, 'src/data'), { recursive: true });
   await copyFile(manifestFile, join(root, 'src/data/cinematic-assets.json'));
+  const manifest = JSON.parse(await readFile(manifestFile));
+  cinematicRecords(manifest).forEach((asset) => {
+    asset.status = 'pending';
+    asset.src = null;
+  });
+  await writeFile(
+    join(root, 'src/data/cinematic-assets.json'),
+    JSON.stringify(manifest),
+  );
   return root;
 }
 
@@ -129,6 +140,10 @@ test('MP4 inspection rejects wrong duration, then imports a measured 15-second c
 
 test('product and model compositions use only authoritative reference photographs', async () => {
   const manifest = JSON.parse(await readFile(manifestFile));
+  Object.values(manifest.references).forEach((asset) => {
+    asset.status = 'pending';
+    asset.src = null;
+  });
   manifest.scenes.forEach((scene) =>
     Object.assign(scene, {
       status: 'ready',

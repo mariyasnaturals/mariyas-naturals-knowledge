@@ -1,82 +1,121 @@
-# Cinematic homepage development
+# Integrated cinematic homepage
 
-Development branch: `feature/cinematic-homepage`, based on
-`feature/authentic-media-typography` at `f958b4b`. No deployment is required.
+Development branch: `feature/cinematic-homepage`. Phase 2 continues from `54a9941`.
+The supplied media is integrated locally. Nothing has been merged, pushed,
+deployed or published, and the VPS is untouched.
 
-The Astro homepage now opens with a responsive film slot and eight chapters:
-botanicals → golden oil → authentic product → original model → application →
-hair shine → long-hair sweep → final hero. Existing catalogue, product detail,
-language navigation and commerce restrictions are retained.
+The eight chapters are botanicals, golden oil, product reveal, model presentation,
+application, hair shine, hair sweep and final hero. English, Malayalam, Hindi and
+Tamil retain their localized navigation, copy, controls and alt text.
 
-## Components
+## Original media and provenance
 
-- `StorytellingSection.astro` composes the homepage and localized chapter navigation.
-- `cinematic/CinematicScene.astro` provides each scene's copy, original-image slot,
-  fallback light study and final product link.
-- `cinematic/ResponsiveFilm.astro` and `scripts/responsive-film.ts` select one MP4
-  at the 760 px breakpoint. Desktop uses 16:9; mobile uses 9:16. Cuts play in real
-  time and loop; scrolling animates the surrounding story, not video seeking.
-- `scripts/cinematic-story.ts` scopes GSAP/ScrollTrigger to this homepage. Effects
-  include botanical drift, golden light, reveal, portrait movement, application
-  light, restrained shine, a lateral sweep and the final composition. Natural
-  page scrolling and anchor links work without JavaScript.
+The existing byte-preserving importer was executed on all four uploads. Their
+registered hashes match both the received files and the served copies. No
+transcoding, retouching, packaging reconstruction or model replacement was done.
 
-Reduced motion disables GSAP and automatic playback. Save-data disables automatic
-playback. Explicit play remains available. Videos pause offscreen or when the tab
-is hidden; user pause survives scrolling and orientation changes. A missing or
-failed cut keeps a readable placeholder. No alternative orientation downloads
-when the selected cut is missing.
+| Supplied filename                  | Role                             | Dimensions  |     Bytes | SHA-256                                                            |
+| ---------------------------------- | -------------------------------- | ----------- | --------: | ------------------------------------------------------------------ |
+| `714482450_1794338494564178-1.mp4` | Desktop, 16:9                    | 1280 × 720  | 7,849,962 | `b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641` |
+| `496978374_1794339270167488-1.mp4` | Mobile, 9:16                     | 720 × 1280  | 7,594,716 | `faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92` |
+| `9468.jpg`                         | Authoritative model photograph   | 1280 × 720  |    64,291 | `0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46` |
+| `9456.jpg`                         | Authoritative product photograph | 1280 × 1108 |   219,940 | `be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65` |
 
-## Add original assets later
+Both H.264 videos contain exactly 15 seconds of picture. The container duration is
+15.04 seconds because of the AAC audio tail. Original audio streams remain in the
+files; the cinematic player uses muted playback.
 
-Phase 2 intake is implemented with `npm run cinematic:import`. The original
-files have not been attached yet. Known filenames are recorded as expected
-filenames, with every actual asset still pending and timing explicitly awaiting
-footage review. No dimensions, hashes or ready status are guessed.
+`src/data/cinematic-assets.json` is the source of truth. All original, scene,
+poster and mask records are ready. Google Flow video records use
+`identityAccuracy: "not-asserted"`; original photographs are authoritative for
+identity and packaging in the still compositions. Derived film stills are
+labelled in the interface and link to their source video's exact SHA-256 and
+capture time. The separate feathered alpha mask traces only the lower hair sweep
+in `9468.jpg`; it does not change the photograph's bytes.
 
-```sh
-npm run cinematic:import -- --desktop /path/to/714482450_1794338494564178.mp4
-npm run cinematic:import -- --mobile /path/to/496978374_1794339270167488.mp4
-npm run cinematic:import -- --model /path/to/8573.png --product /path/to/original-product.jpg
-```
+## Reviewed chapter timing
 
-The importer measures the supplied files, copies their bytes unchanged and
-registers their hashes, dimensions, size and provenance. FFprobe must be installed
-for video intake. Wrong orientation or duration is reported for review rather
-than silently changing the video. All inputs are inspected before copying.
-Google Flow video is recorded as `contentOrigin: "google-flow"` with
-`identityAccuracy: "not-asserted"`; photographs are recorded separately as
-`owner-photograph`. Supplied product/model originals take precedence over scene
-stills in the reveal, portrait and final compositions. These exact references
-are never replaced with AI video frames.
+Both cuts were inspected using contact sheets and frames around their transitions.
+The boundaries follow the visible edits and preserve the source crossfades. The
+cuts differ, so the player uses a separate timeline for each orientation.
 
-The Android browser check uses Chromium with the Pixel 7 device profile, touch
-input and Android user agent. Its screenshot is labelled `pending-originals`;
-it is a layout check rather than a review of footage or a physical device capture.
+| Chapter               | Desktop seconds | Mobile seconds |
+| --------------------- | --------------- | -------------- |
+| Botanical ingredients | 0–2.916667      | 0–3            |
+| Golden oil            | 2.916667–4.125  | 3–4            |
+| Product reveal        | 4.125–6.125     | 4–6.125        |
+| Model presentation    | 6.125–7.5       | 6.125–7.5      |
+| Application           | 7.5–9           | 7.5–9          |
+| Hair shine            | 9–12            | 9–12.125       |
+| Hair sweep            | 12–14.5         | 12.125–13.5    |
+| Final hero            | 14.5–15         | 13.5–15        |
 
-The source of truth is `src/data/cinematic-assets.json`. Every slot currently has
-`status: "pending"` and `src: null`. Expected paths are intake guidance, never
-rendered source URLs. No fabricated packaging, people or hair images are present.
-The tiny neutral-color MP4s under `tests/fixtures` are test-only and never public.
+Playback captions follow `timeupdate` and seeking. “Watch this moment” links seek
+to the appropriate chapter in the selected cut and use normal anchor scrolling.
+Switching orientation maps the position within the same story chapter to the
+other edit. Normal page scrolling remains independent of video playback; no
+scroll pinning or continuous video seeking is used.
 
-1. Put the two finished owner videos in `public/cinematic/`, using the expected
-   desktop/mobile filenames (or another local filename recorded in `src`).
-2. Record each file's SHA-256, original filename, original dimensions, local
-   `src`, `source: "owner-original"` and `status: "ready"`. Preserve original
-   identity and packaging. Do not activate an asset before receiving the file.
-3. Keep pending originals at `src: null`. A cut can be activated independently.
-   Ready product/model references populate the reveal, portrait and final
-   compositions. Other scene stills can be added separately using the same
-   contract and truthful `alt` text in English, Malayalam, Hindi and Tamil.
-4. Chapter timing fields are provisional editorial markers covering 0–15 seconds.
-   Align their internal boundaries with the supplied film; scene order stays fixed.
-5. The optional `hairMask` must be derived from the original shine still with
-   matching dimensions and alignment. It confines the low-opacity highlight to
-   actual hair. Without it, approved imagery is shown cleanly. Realistic hair
-   motion remains in the original video; tune highlight timing against those
-   assets before calling the result final.
-6. Run the validation commands below. The existing `.in` catalogue media policy
-   remains enforced; owner cinematic originals have a separate provenance path.
+## Presentation and loading
+
+- The 760 px breakpoint selects one original MP4. The other orientation is not
+  requested. Images and the video use containment to preserve their composition.
+- Lightweight, orientation-specific botanical posters show real footage before
+  playback. `preload="none"` defers video data until visibility or explicit intent.
+- Reduced motion and save-data disable automatic playback. Explicit playback and
+  pause remain available. Videos pause offscreen and when the tab is hidden.
+- GSAP adds restrained botanical drift, golden-light movement, product reveal,
+  portrait movement and a masked, low-opacity hair highlight. Reduced motion
+  removes these effects and restores their resting styles.
+- The final still composition layers the two original photographs without
+  altering their files. The model and product remain visible for as long as the
+  visitor chooses to view the final chapter.
+- Original catalogue routes, local fonts, commerce restrictions and `.in` media
+  policy remain in place. Cinematic originals and derivatives are separately
+  audited by their provenance and file hashes.
+
+## Visual review
+
+Review captures show actual integrated media, not placeholders. Android captures
+use Chromium's Pixel 7 profile with an Android user agent, mobile viewport, DPR
+and touch input. They are browser emulation, not physical Android hardware.
+
+- [Desktop film](screenshots/cinematic-media/integrated-desktop-film.png)
+- [Android film](screenshots/cinematic-media/integrated-android-film.png)
+- [Desktop final composition](screenshots/cinematic-media/integrated-desktop-final.png)
+- [Android final composition](screenshots/cinematic-media/integrated-android-final.png)
+- [Original product on Android](screenshots/cinematic-media/integrated-android-product.png)
+- [Original portrait on Android](screenshots/cinematic-media/integrated-android-model.png)
+- [Masked hair highlight](screenshots/cinematic-media/integrated-desktop-hair-shine.png)
+
+Remaining source limitations:
+
+1. The Google Flow films are creative interpretations. Their model likeness,
+   generated hands and label details should not be treated as exact reproductions
+   of the original photographs. Their content is preserved unchanged.
+2. A small left-arrow mark is baked into `9456.jpg`. It remains visible because
+   the supplied product photograph is used without retouching or cropping.
+3. The desktop film's final front-facing pose lasts about half a second; mobile's
+   lasts about 1.5 seconds. The original still finale provides the longer viewing
+   moment without extending or modifying either video.
+4. The unchanged mobile MP4 is about 7.6 MB. Selecting only one cut, deferring its
+   download and respecting data-saving preferences limits unnecessary transfers;
+   no smaller re-encoded derivative replaces the original.
+
+## Validation
+
+Verified on 2026-11-11: all checks passed.
+
+| Check                             | Result                                         |
+| --------------------------------- | ---------------------------------------------- |
+| Astro check                       | 65 files; zero errors, warnings or hints       |
+| Formatting                        | Passed                                         |
+| Node unit tests                   | 20 passed; no skips                            |
+| Full Chromium browser suite       | 37 passed                                      |
+| Local pull-deployment simulations | 31 passed; no VPS access                       |
+| Readiness simulations             | Six passed                                     |
+| Build and static checks           | 377 pages passed                               |
+| Media policy                      | All original and derivative file hashes passed |
 
 ```sh
 ASTRO_TELEMETRY_DISABLED=1 npm run check
@@ -86,38 +125,20 @@ ASTRO_TELEMETRY_DISABLED=1 npm run build
 npm run test:static
 npm run test:media-policy
 ASTRO_TELEMETRY_DISABLED=1 npm run test:browser
+python3 -m unittest discover -s tests/pull -v
+python3 -m unittest discover -s tests/readiness -v
 ```
 
-Asset hashes are checked against local files by `test:media-policy`. Browser tests
-cover 360, 759, 760 and 1440 px, actual MP4 decoding, orientation switching, manual
-pause, reduced motion, save-data, failure fallback, chapter navigation and the
-existing multilingual accessibility flows. Final artistic timing and likeness
-review remain dependent on the owner originals.
+The original-file regression tests pin all four received SHA-256 hashes, check
+actual dimensions and stream durations, and verify derivative provenance. Browser
+checks exercise the real MP4s, every chapter boundary, orientation mapping,
+original still compositions, Android touch controls, loading preferences,
+masked shine, natural scrolling and the existing multilingual accessibility flows.
 
-## Validation on 2026-11-10
+## Replacing an original later
 
-- Astro check: 59 files, zero errors, warnings or hints.
-- Prettier, unit tests and the production build command passed locally.
-- Static navigation and media-policy checks passed for all 377 generated pages.
-- Complete Chromium suite: 32 tests passed, including multilingual accessibility,
-  keyboard navigation, no-JavaScript browsing and the new cinematic controls.
-- Desktop and mobile preview screenshots were visually reviewed.
-
-These are local development checks. No deployment, remote merge or VPS action
-was performed. Final footage, packaging, model likeness and hair-lighting review
-are still pending the original files.
-
-## Phase 2 intake validation on 2026-11-11
-
-The byte-preserving importer and authoritative-reference composition selection
-are implemented. Validation passed: 16 unit tests, 33 Chromium browser tests,
-31 local pull-deployment simulation tests, six readiness tests, Astro checks
-(62 files, no diagnostics), formatting, build, static navigation and media policy.
-No real deployment or VPS was used by those simulations.
-
-Desktop and Pixel 7 Android-emulation screenshots show the pending-media layout.
-The desktop composition remains clear and balanced; the portrait slot fits the
-mobile layout and touch playback/pause passed using neutral test fixtures.
-These captures do not show the owner's footage or photographs and do not verify
-product or model likeness. All original slots remain pending, and the eight
-chapter boundaries remain provisional until the four original files arrive.
+Use `npm run cinematic:import -- --desktop FILE --mobile FILE --model FILE
+--product FILE`, supplying one or more slots. Review derived stills, masks and
+chapter timing whenever a source changes: provenance validation deliberately
+rejects stale derivatives. FFprobe is required for video inspection. Run the
+validation commands before presenting the result for deployment review.

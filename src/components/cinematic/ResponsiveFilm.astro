@@ -1,6 +1,7 @@
 ---
 import assets from '../../data/cinematic-assets.json';
 import { assertCinematicAssets } from '../../config/cinematic-assets.mjs';
+import type { Locale } from '../../i18n';
 assertCinematicAssets(assets);
 interface Props {
   label: string;
@@ -8,19 +9,39 @@ interface Props {
   play: string;
   pause: string;
   unavailable: string;
+  chapters: string[];
+  lang: Locale;
 }
-const { label, pending, play, pause, unavailable } = Astro.props;
+const { label, pending, play, pause, unavailable, chapters, lang } =
+  Astro.props;
 ---
 
 <responsive-film
   class="cinema-film"
+  id="cinema-film"
   data-desktop={assets.videos.desktop.src ?? undefined}
   data-mobile={assets.videos.mobile.src ?? undefined}
   data-breakpoint={assets.breakpoint}
   data-play={play}
   data-pause={pause}
   data-unavailable={unavailable}
+  data-timeline-desktop={JSON.stringify(assets.videos.desktop.chapters)}
+  data-timeline-mobile={JSON.stringify(assets.videos.mobile.chapters)}
 >
+  <picture class="cinema-film-poster">
+    <source
+      media={`(max-width: ${assets.breakpoint - 1}px)`}
+      srcset={assets.videos.mobile.poster.src}
+    />
+    <img
+      src={assets.videos.desktop.poster.src}
+      width={assets.videos.desktop.poster.width}
+      height={assets.videos.desktop.poster.height}
+      alt={assets.videos.desktop.poster.alt[lang]}
+      data-cinematic-poster
+      fetchpriority="high"
+    />
+  </picture>
   <video
     muted
     playsinline
@@ -29,13 +50,21 @@ const { label, pending, play, pause, unavailable } = Astro.props;
     aria-label={label}
     hidden
   ></video>
-  <div class="cinema-film-placeholder">
+  <div class="cinema-film-placeholder" hidden>
     <span class="cinema-orbit" aria-hidden="true"></span>
     <p class="eyebrow">MARIYAS NATURALS · 15 SEC</p>
     <p data-film-status>{pending}</p>
     <span class="cinema-format" lang="en">
       16:9 DESKTOP / 9:16 MOBILE
     </span>
+  </div>
+  <div class="cinema-film-caption" aria-hidden="true" hidden>
+    {chapters.map((chapter, index) => (
+      <span data-film-caption={index} hidden>
+        <span class="cinema-film-counter">0{index + 1} / 08 · GOOGLE FLOW</span>
+        {chapter}
+      </span>
+    ))}
   </div>
   <button class="cinema-play" type="button" aria-label={play} hidden>
     {play}

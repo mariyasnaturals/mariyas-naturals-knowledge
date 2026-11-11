@@ -10,6 +10,18 @@ export const sceneOrder = [
   'final-hero',
 ];
 
+export function cinematicRecords(manifest) {
+  return [
+    ...Object.values(manifest.videos),
+    ...Object.values(manifest.videos).flatMap((video) =>
+      video.poster ? [video.poster] : [],
+    ),
+    ...Object.values(manifest.references),
+    ...manifest.scenes,
+    manifest.hairMask,
+  ];
+}
+
 // Owner originals have their own provenance. Existing catalogue policy stays intact.
 export function assertCinematicAssets(manifest) {
   if (
@@ -43,13 +55,37 @@ export function assertCinematicAssets(manifest) {
       if (Math.abs(video.width / video.height - w / h) > 0.01)
         throw new Error('Wrong video orientation');
     }
+    if (video.chapters) {
+      let boundary = 0;
+      for (const [index, chapter] of video.chapters.entries()) {
+        if (
+          chapter.id !== sceneOrder[index] ||
+          chapter.start !== boundary ||
+          !Number.isFinite(chapter.end) ||
+          chapter.end <= chapter.start
+        )
+          throw new Error('Invalid orientation-specific chapter timing');
+        boundary = chapter.end;
+      }
+      if (
+        video.chapters.length !== sceneOrder.length ||
+        boundary !== manifest.durationSeconds
+      )
+        throw new Error('Each video timeline must cover all eight chapters');
+    }
   }
-  const records = [
-    ...Object.values(manifest.videos),
-    ...Object.values(manifest.references),
-    ...manifest.scenes,
-    manifest.hairMask,
-  ];
+  const records = cinematicRecords(manifest);
+  for (const [key, asset] of Object.entries(manifest.references)) {
+    if (
+      asset.status === 'ready' &&
+      (asset.source !== 'owner-original' ||
+        asset.contentOrigin !== 'owner-photograph' ||
+        asset.authoritativeFor !== key)
+    )
+      throw new Error(
+        'Product and model authority requires the supplied photographs',
+      );
+  }
   for (const asset of records) {
     if (!['pending', 'ready'].includes(asset.status))
       throw new Error('Invalid asset status');
@@ -63,11 +99,41 @@ export function assertCinematicAssets(manifest) {
     if ((asset.type === 'video/mp4') !== asset.src.endsWith('.mp4'))
       throw new Error('Asset format mismatch');
     if (
-      asset.source !== 'owner-original' ||
+      !['owner-original', 'owner-video-frame', 'owner-photo-mask'].includes(
+        asset.source,
+      ) ||
       !asset.originalFilename ||
       !/^[a-f0-9]{64}$/.test(asset.sha256)
     )
       throw new Error('Original asset provenance is required');
+    if (asset.source !== 'owner-original') {
+      const parent = records.find(
+        (record) =>
+          record.status === 'ready' &&
+          record.src === asset.derivedFrom &&
+          record.sha256 === asset.sourceSha256 &&
+          record.source === 'owner-original',
+      );
+      if (!parent)
+        throw new Error(
+          'A derivative must link to its exact supplied original',
+        );
+      if (
+        asset.source === 'owner-video-frame' &&
+        (parent.type !== 'video/mp4' ||
+          !Number.isFinite(asset.frameTimeSeconds) ||
+          asset.frameTimeSeconds < 0 ||
+          asset.frameTimeSeconds >= manifest.durationSeconds)
+      )
+        throw new Error('Invalid video frame provenance');
+      if (
+        asset.source === 'owner-photo-mask' &&
+        (parent.contentOrigin !== 'owner-photograph' ||
+          asset.width !== parent.width ||
+          asset.height !== parent.height)
+      )
+        throw new Error('A hair mask must align with its original photograph');
+    }
     if (
       !Number.isInteger(asset.width) ||
       !Number.isInteger(asset.height) ||

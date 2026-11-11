@@ -1,3 +1,7 @@
+:root:has(.cinema) {
+  --header-offset: 6rem;
+  scroll-padding-bottom: 5rem;
+}
 .cinema {
   padding: clamp(2rem, 6vw, 6rem) 0 3rem;
   background: #f4f0e5;
@@ -34,6 +38,35 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+.cinema-film {
+  scroll-margin-top: 0;
+}
+.cinema-film-poster {
+  position: absolute;
+  inset: 0;
+}
+.cinema-film-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cinema-film-caption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  max-width: calc(100% - 10rem);
+  padding: 0.45rem 0.65rem;
+  background: #102b24ed;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  pointer-events: none;
+}
+.cinema-film-counter {
+  display: block;
+  color: #dac799;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
 }
 .cinema-film-placeholder {
   position: absolute;
@@ -131,7 +164,7 @@
   min-height: 75svh;
   padding: 4rem 0;
   border-bottom: 1px solid #c7c6b5;
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 1rem;
 }
 .cinema-scene:nth-child(even) .cinema-scene-copy {
   order: 2;
@@ -166,15 +199,26 @@
   overflow: hidden;
 }
 .cinema-originals {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  aspect-ratio: var(--frame-ratio, 16 / 9);
   display: grid;
   place-items: center;
-  padding: 1.5rem;
+  padding: 0;
 }
 .cinema-originals-pair {
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: block;
+}
+.cinema-originals-pair img:first-child {
+  position: absolute;
+  inset: 0;
+}
+.cinema-originals-pair img:last-child {
+  position: absolute;
+  right: 4%;
+  bottom: 9%;
+  width: 31%;
+  height: 75%;
+  filter: drop-shadow(0 8px 16px #0c2c2355);
 }
 .cinema-originals img {
   width: 100%;
@@ -185,7 +229,9 @@
 }
 .cinema-hair-highlight {
   position: absolute;
-  inset: 0;
+  inset: 0 auto auto 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
@@ -220,18 +266,21 @@
   mix-blend-mode: screen;
 }
 .cinema-frame figcaption {
-  position: absolute;
-  inset: auto 1.5rem 1.5rem;
+  position: relative;
+  min-height: 3rem;
+  justify-content: center;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.25rem;
+  padding: 0.5rem 0.85rem;
+  background: #102b24ed;
   font-size: 0.75rem;
-  max-width: 34ch;
+  width: 100%;
   line-height: 1.6;
 }
 .cinema-frame-index {
   font-family: var(--font-display, serif);
-  font-size: 3rem;
+  font-size: 0.75rem;
   color: #d5c392;
 }
 .cinema-scene[data-effect='oil'] .cinema-frame,
@@ -253,6 +302,20 @@
   margin-top: 2rem;
   line-height: 1.8;
 }
+.cinema-watch {
+  margin-top: 1.25rem;
+  display: flex;
+  width: fit-content;
+}
+.cinema-frame {
+  aspect-ratio: var(--frame-ratio, 16 / 9);
+}
+.cinema-frame[data-asset-state='ready'] {
+  aspect-ratio: auto;
+}
+.cinema-frame[data-asset-state='ready'] .cinema-frame-index {
+  display: none;
+}
 @media (max-width: 759px) {
   .cinema-introduction {
     grid-template-columns: 1fr;
@@ -262,8 +325,7 @@
   }
   .cinema-film {
     aspect-ratio: 9 / 16;
-    max-height: 76svh;
-    width: min(100%, 380px);
+    width: min(100%, 380px, 42.75svh);
     justify-self: center;
   }
   .cinema-chapters {
@@ -284,7 +346,10 @@
     order: initial;
   }
   .cinema-frame {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--frame-ratio, 16 / 9);
+  }
+  .cinema-frame[data-asset-state='ready'] {
+    aspect-ratio: auto;
   }
 }
 @media (prefers-reduced-motion: reduce) {

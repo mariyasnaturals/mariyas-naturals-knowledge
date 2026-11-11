@@ -38,6 +38,8 @@ const c = t.cinematic;
         play={c.play}
         pause={c.pause}
         unavailable={c.unavailable}
+        chapters={c.titles}
+        lang={lang}
       />
     </div>
     <div class="cinema-chapter-heading">
@@ -64,6 +66,10 @@ const c = t.cinematic;
           description={c.notes[index]}
           pending={c.imagePending}
           lang={lang}
+          watch={c.watch}
+          sourceLabel={
+            scene.source === 'owner-video-frame' ? c.filmStill : c.originalPhoto
+          }
         >
           {index === 7 && (
             <a

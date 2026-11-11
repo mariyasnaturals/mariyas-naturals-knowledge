@@ -132,26 +132,29 @@
     "play": "Play film",
     "pause": "Pause film",
     "unavailable": "The film is unavailable. Explore the chapters below.",
-    "originals": "Original Mariyas product and model imagery will complete this story. These abstract light studies are placeholders.",
+    "originals": "Google Flow film · Original product and model photographs.",
     "titles": [
       "Botanical ingredients",
       "A moment of golden oil",
       "The Mariyas Naturals reveal",
-      "The original model",
+      "A Mariyas portrait",
       "The application ritual",
       "Light through the lengths",
       "An elegant long-hair sweep",
       "Your Mariyas moment"
     ],
     "notes": [
-      "The story opens in the botanical world. Ingredient imagery awaits the original film; no formula is implied.",
-      "Warm golden light moves gently into the next chapter.",
-      "A dedicated reveal for the authentic Mariyas Naturals pack.",
-      "Space reserved for the original model, with identity and likeness preserved.",
-      "The original footage will show the hair-oil application. Refer to the product label for directions.",
-      "A restrained travelling highlight, ready for the original hair footage.",
-      "A gentle movement through the frame, ready for the original long-hair sequence.",
-      "Botanical atmosphere, the authentic product and the original model come together in the final composition."
-    ]
+      "A botanical world opens the story, with leaves, coconut and hibiscus in warm forest light.",
+      "A golden droplet carries the film into the next moment.",
+      "Meet Mariyas Herbal Hair Care Oil in the original 200 ml product photograph.",
+      "The original portrait, with room for a quiet moment of care.",
+      "Follow the application sequence in the supplied film. For use, refer to the product label.",
+      "A soft highlight follows the lengths of the hair.",
+      "An unhurried movement, a graceful finish.",
+      "The original portrait and signature Mariyas pack, together in one final composition."
+    ],
+    "watch": "Watch this moment",
+    "filmStill": "From the supplied film",
+    "originalPhoto": "Original photography"
   }
 }

@@ -19,6 +19,7 @@ async function attachFilms(page: Page, mobile = true) {
     const current = document.querySelector<HTMLElement>('responsive-film')!;
     const film = current.cloneNode(true) as HTMLElement;
     film.dataset.desktop = '/cinematic/test-desktop.mp4';
+    delete film.dataset.mobile;
     if (hasMobile) film.dataset.mobile = '/cinematic/test-mobile.mp4';
     current.replaceWith(film);
   }, mobile);
@@ -35,9 +36,6 @@ test('Android Chromium emulation supports portrait playback and touch controls',
   try {
     await page.goto('http://127.0.0.1:4321/en/');
     await page.locator('responsive-film').scrollIntoViewIfNeeded();
-    await page.screenshot({
-      path: 'test-results/cinematic-android-pending-originals.png',
-    });
     await attachFilms(page);
     await page.locator('.cinema-play').tap();
     await expect
@@ -68,7 +66,7 @@ test('Android Chromium emulation supports portrait playback and touch controls',
 });
 
 for (const width of [360, 759, 760, 1440]) {
-  test(`${width}px: correct placeholder ratio, ordered chapters and no missing media requests`, async ({
+  test(`${width}px: correct integrated-media ratio, ordered chapters and no missing media requests`, async ({
     page,
   }) => {
     const missing: string[] = [];
@@ -78,8 +76,13 @@ for (const width of [360, 759, 760, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/en/');
     await expect(page.locator('[data-story-scene]')).toHaveCount(8);
-    await expect(page.locator('video')).not.toHaveAttribute('src');
-    await expect(page.locator('.cinema-play')).toBeHidden();
+    await expect(page.locator('video')).toHaveAttribute(
+      'src',
+      width < 760
+        ? '/cinematic/homepage-mobile.mp4'
+        : '/cinematic/homepage-desktop.mp4',
+    );
+    await expect(page.locator('.cinema-play')).toBeVisible();
     expect(
       await page
         .locator('responsive-film')
@@ -105,7 +108,8 @@ test('one orientation loads, playback pauses offscreen, user pause persists, and
 }) => {
   const requested: string[] = [];
   page.on('request', (request) => {
-    if (request.url().includes('/cinematic/')) requested.push(request.url());
+    if (request.url().includes('/cinematic/test-'))
+      requested.push(request.url());
   });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/en/');

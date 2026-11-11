@@ -26,18 +26,7 @@ test('eight chapters cover the 15-second film and pending media never requests a
   );
 });
 test('no pending request, external source, missing provenance or wrong orientation can activate', () => {
-  const ready = () => {
-    const copy = structuredClone(manifest);
-    Object.assign(copy.videos.desktop, {
-      status: 'ready',
-      src: '/cinematic/homepage-desktop.mp4',
-      width: 1920,
-      height: 1080,
-      originalFilename: 'owner-original.mp4',
-      sha256: 'a'.repeat(64),
-    });
-    return copy;
-  };
+  const ready = () => structuredClone(manifest);
   assert.doesNotThrow(() => assertCinematicAssets(ready()));
   for (const change of [
     (m) => {

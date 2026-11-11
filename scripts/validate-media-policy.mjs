@@ -3,16 +3,16 @@ import { createHash } from 'node:crypto';
 import { load } from 'cheerio';
 import assert from 'node:assert/strict';
 import { assertApprovedMedia } from '../src/config/media-policy.mjs';
-import { assertCinematicAssets } from '../src/config/cinematic-assets.mjs';
+import {
+  assertCinematicAssets,
+  cinematicRecords,
+} from '../src/config/cinematic-assets.mjs';
 const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
 const cinematic = json('../src/data/cinematic-assets.json');
 assertCinematicAssets(cinematic);
-const originals = [
-  ...Object.values(cinematic.videos),
-  ...Object.values(cinematic.references),
-  ...cinematic.scenes,
-  cinematic.hairMask,
-].filter((asset) => asset.status === 'ready');
+const originals = cinematicRecords(cinematic).filter(
+  (asset) => asset.status === 'ready',
+);
 for (const asset of originals) {
   const bytes = readFileSync(new URL('../public' + asset.src, import.meta.url));
   assert.equal(
@@ -107,6 +107,18 @@ function walk(directory, prefix = '') {
     const $ = load(text);
     for (const node of $('img').toArray()) {
       imageCount++;
+      if ($(node).is('[data-cinematic-poster]')) {
+        const poster = cinematic.videos.desktop.poster;
+        assert.equal($(node).attr('src'), poster.src);
+        checkImage(poster.src);
+        const picture = $(node).parent('picture');
+        assert.equal(
+          picture.find('source').attr('srcset'),
+          cinematic.videos.mobile.poster.src,
+        );
+        checkImage(cinematic.videos.mobile.poster.src);
+        continue;
+      }
       if ($(node).attr('data-cinematic-asset')) {
         const id = $(node).attr('data-cinematic-asset');
         const asset = id.startsWith('reference-')
