@@ -12,6 +12,7 @@ import subprocess
 import tempfile
 import zipfile
 import pull_deploy as pull
+import media_policy
 
 POLICY = Path(__file__).with_name('owner-media-policy.json')
 CHECKS = ['types', 'lint', 'unit', 'build', 'static', 'media-policy', 'browser']
@@ -24,10 +25,7 @@ def refuse_ci():
 
 
 def policy_images():
-    policy = json.loads(POLICY.read_text())
-    if policy['sourcePolicy'] != 'current-approved-in-only':
-        raise ValueError('Pinned owner media policy is invalid')
-    return policy['approved_images']
+    return media_policy.load(POLICY)
 
 
 @contextlib.contextmanager
@@ -81,6 +79,7 @@ def validate_candidate(directory):
     expected = {f['path']: f for f in m['files']}
     if not expected or len(expected) != len(m['files']) or any(not pull.valid_name(n) for n in expected):
         raise ValueError('Invalid/duplicate manifest paths')
+    media_policy.check_inventory(expected)
     images = policy_images()
     if m['approved_images'] != images or any(n not in expected or expected[n]['sha256'] != h for n, h in images.items()):
         raise ValueError('Image inventory differs from independently installed owner policy')

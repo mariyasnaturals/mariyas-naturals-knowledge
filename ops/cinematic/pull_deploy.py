@@ -16,6 +16,7 @@ import sys
 import tempfile
 import time
 import zipfile
+import media_policy
 
 ORIGIN = 'https://www.mariyasnaturals.cloud'
 REPO = 'git@github.com:mariyasnaturals/mariyas-naturals-knowledge.git'
@@ -68,6 +69,8 @@ def config_load(path):
     if cfg.get('site') != ORIGIN:
         raise ValueError('Only the .cloud staging site is supported')
     root = no_symlinks(cfg['document_root'])
+    if root != pathlib.Path('/home/mariyascloud/htdocs/www.mariyasnaturals.cloud'):
+        raise ValueError('Incorrect cinematic staging document root')
     state = no_symlinks(cfg['state_dir'])
     if not root.is_absolute() or not root.is_dir() or root == pathlib.Path('/') or root.stat().st_uid != os.geteuid() or root.stat().st_mode & 0o022:
         raise ValueError('Verify an existing site-user-owned document root first')
@@ -124,7 +127,7 @@ def inventory_hash(files):
 
 def valid_name(name):
     parts = name.split('/')
-    return (name in read_json(POLICY)['approved_images'] if name.startswith('cinematic/') else bool(parts) and all(re.fullmatch(r'[A-Za-z0-9_][A-Za-z0-9_.-]*', p) and p not in {'.', '..'} for p in parts) and pathlib.PurePosixPath(name).suffix in EXTENSIONS)
+    return (name in media_policy.load(POLICY) if name.startswith('cinematic/') else bool(parts) and all(re.fullmatch(r'[A-Za-z0-9_][A-Za-z0-9_.-]*', p) and p not in {'.', '..'} for p in parts) and pathlib.PurePosixPath(name).suffix in EXTENSIONS)
 
 
 class PageCheck(html.parser.HTMLParser):
@@ -166,8 +169,9 @@ def verify_release(directory, cfg):
         raise ValueError('Invalid/duplicate manifest path')
     if m.get('approved_ui_baseline') != BASELINE:
         raise ValueError('Unapproved cinematic source baseline')
+    media_policy.check_inventory(expected)
     approved_images = m['approved_images']
-    if approved_images != read_json(POLICY)['approved_images']:
+    if approved_images != media_policy.load(POLICY):
         raise ValueError('Pinned cinematic media policy mismatch')
     if not approved_images or any(not n.startswith(('images/', 'cinematic/')) or n not in expected or expected[n]['sha256'] != h for n, h in approved_images.items()):
         raise ValueError('Invalid approved image inventory')

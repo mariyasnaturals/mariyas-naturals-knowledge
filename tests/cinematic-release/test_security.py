@@ -46,6 +46,8 @@ class CinematicRelease(unittest.TestCase):
         subprocess.run(['openssl','pkeyutl','-sign','-inkey',str(self.key),'-rawin','-in',str(self.release/'manifest.json'),'-out',str(self.release/'manifest.sig')],check=True,capture_output=True)
 
     def verify(self):
+        import shutil
+        shutil.rmtree(self.release/'site', ignore_errors=True)  # Fresh disposable extraction per attempt.
         return pull.verify_release(self.release,{'release_public_key':str(self.pub)})
 
     def test_legitimate_cinematic_candidate_and_signature_are_accepted(self):
@@ -84,3 +86,71 @@ class CinematicRelease(unittest.TestCase):
         for line in (folder/'owner-tools.sha256').read_text().splitlines():
             digest,name=line.split()
             self.assertEqual(hashlib.sha256((folder/name).read_bytes()).hexdigest(),digest)
+
+    def test_mp4_tamper_and_missing_photograph_are_refused(self):
+        for name in ['cinematic/homepage-desktop.mp4', 'cinematic/original-model.jpg']:
+            with self.subTest(name=name):
+                original=self.files[name]; self.files[name]=original+b'changed'; self.write_archive()
+                self.manifest['archive_sha256']=pull.digest((self.release/'release.zip').read_bytes()); self.sign()
+                with self.assertRaises(ValueError): self.verify()
+                self.files[name]=original
+        del self.files['cinematic/original-product.jpg']; self.write_archive()
+        self.manifest['archive_sha256']=pull.digest((self.release/'release.zip').read_bytes()); self.sign()
+        with self.assertRaises(ValueError): self.verify()
+
+    def test_unapproved_branch_source_and_policy_metadata_are_refused(self):
+        import media_policy
+        for field,value in [('branch','main'),('source_sha','not-a-sha')]:
+            saved=copy.deepcopy(self.manifest); self.manifest[field]=value; self.sign()
+            with self.assertRaises(ValueError): self.verify()
+            self.manifest=saved
+        bundle=self.root/'bundle'; bundle.mkdir()
+        (bundle/'review-manifest.json').write_text(json.dumps({'sourceSha':'a'*40,'origin':pull.ORIGIN,'robots':'noindex, nofollow','purchasingEnabled':False}))
+        with self.assertRaisesRegex(ValueError,'selected source'):
+            owner.inspect(bundle,self.root/'out','b'*40,1,'42')
+        policy=copy.deepcopy(self.policy); policy['cinematicProvenance'][0]['width']=1
+        with self.assertRaises(ValueError): media_policy.validate(policy)
+        policy=copy.deepcopy(self.policy)
+        for r in policy['cinematicProvenance']:
+            if r.get('derivedFrom'): r['sourceSha256']='0'*64; break
+        with self.assertRaises(ValueError): media_policy.validate(policy)
+
+    def test_oversized_archive_and_symlink_entry_are_refused(self):
+        from unittest.mock import patch
+        with patch.object(pull,'MAX_ZIP',1), self.assertRaisesRegex(ValueError,'size'): self.verify()
+        with zipfile.ZipFile(self.release/'release.zip','a') as z:
+            entry=zipfile.ZipInfo('evil.js'); entry.external_attr=0o120777<<16
+            z.writestr(entry,'/etc/passwd')
+        self.manifest['files'].append({'path':'evil.js','bytes':11,'sha256':pull.digest(b'/etc/passwd')})
+        self.manifest['archive_sha256']=pull.digest((self.release/'release.zip').read_bytes()); self.sign()
+        with self.assertRaises(ValueError): self.verify()
+        alias=self.root/'alias'; alias.mkdir()
+        (alias/'manifest.json').symlink_to(self.release/'manifest.json')
+        with self.assertRaises(ValueError): owner.validate_candidate(alias)
+
+    def test_wrong_root_unauthorized_apply_and_replay_are_refused(self):
+        from unittest.mock import patch
+        import types
+        cfgfile=self.root/'config.json'
+        cfgfile.write_text(json.dumps({'site':pull.ORIGIN,'document_root':str(self.root),'state_dir':str(self.root/'state')}));cfgfile.chmod(0o600)
+        with patch.object(pull.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_name='mariyascloud')):
+            with self.assertRaisesRegex(ValueError,'document root'): pull.config_load(cfgfile)
+        m,h,staged=self.verify(); web=self.root/'web';web.mkdir();(web/'index.html').write_text('OLD')
+        state=self.root/'state';state.mkdir(mode=0o700)
+        cfg={'_root':web,'_state':state,'enabled':False}
+        with self.assertRaisesRegex(ValueError,'disabled'):pull.apply_release(cfg,m,h,staged,'a'*40,True)
+        cfg['enabled']=True
+        with self.assertRaises(FileNotFoundError):pull.apply_release(cfg,m,h,staged,'a'*40,True)
+        pull.atomic_json(state/'current.json',{'max_sequence':m['sequence']+1})
+        pull.apply_release(cfg,m,h,staged,'a'*40,True)
+        self.assertEqual((web/'index.html').read_text(),'OLD')
+        self.assertFalse((state/'backups').exists())
+
+    def test_rollback_backup_and_first_apply_algorithms_remain_identical_to_trusted_ops(self):
+        import ast
+        old=ast.parse((ROOT/'ops/pull_deploy.py').read_text())
+        new=ast.parse((ROOT/'ops/cinematic/pull_deploy.py').read_text())
+        for name in ['backup','verify_backup','reconcile','restore','apply_release','rollback','git_fetch']:
+            before=next(n for n in old.body if isinstance(n,ast.FunctionDef) and n.name==name)
+            after=next(n for n in new.body if isinstance(n,ast.FunctionDef) and n.name==name)
+            self.assertEqual(ast.dump(before),ast.dump(after), name)

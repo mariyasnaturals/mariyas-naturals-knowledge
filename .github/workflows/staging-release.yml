@@ -52,6 +52,7 @@ jobs:
       - run: npm test
       - run: python3 -m unittest discover -s tests/pull -v
       - run: python3 -m unittest discover -s tests/cinematic-release -v
+      - run: python3 -m unittest discover -s tests/readiness -v
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
