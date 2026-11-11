@@ -108,9 +108,10 @@ function walk(directory, prefix = '') {
     for (const node of $('img').toArray()) {
       imageCount++;
       if ($(node).attr('data-cinematic-asset')) {
-        const asset = cinematic.scenes.find(
-          (scene) => scene.id === $(node).attr('data-cinematic-asset'),
-        );
+        const id = $(node).attr('data-cinematic-asset');
+        const asset = id.startsWith('reference-')
+          ? cinematic.references[id.slice('reference-'.length)]
+          : cinematic.scenes.find((scene) => scene.id === id);
         assert.ok(
           asset?.status === 'ready' && asset.src === $(node).attr('src'),
           'Only recorded owner originals may render',

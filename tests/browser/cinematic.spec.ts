@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, devices, type Page } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 
 async function attachFilms(page: Page, mobile = true) {
@@ -23,6 +23,49 @@ async function attachFilms(page: Page, mobile = true) {
     current.replaceWith(film);
   }, mobile);
 }
+
+test('Android Chromium emulation supports portrait playback and touch controls', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    ...devices['Pixel 7'],
+    reducedMotion: 'reduce',
+  });
+  const page = await context.newPage();
+  try {
+    await page.goto('http://127.0.0.1:4321/en/');
+    await page.locator('responsive-film').scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: 'test-results/cinematic-android-pending-originals.png',
+    });
+    await attachFilms(page);
+    await page.locator('.cinema-play').tap();
+    await expect
+      .poll(() =>
+        page
+          .locator('video')
+          .evaluate(
+            (el: HTMLVideoElement) => !el.paused && el.videoWidth === 90,
+          ),
+      )
+      .toBe(true);
+    await expect(page.locator('video')).toHaveAttribute('playsinline');
+    expect(
+      await page.evaluate(() => matchMedia('(pointer: coarse)').matches),
+    ).toBe(true);
+    expect(
+      await page.evaluate(() => navigator.userAgent.includes('Android')),
+    ).toBe(true);
+    await page.locator('.cinema-play').tap();
+    await expect
+      .poll(() =>
+        page.locator('video').evaluate((el: HTMLVideoElement) => el.paused),
+      )
+      .toBe(true);
+  } finally {
+    await context.close();
+  }
+});
 
 for (const width of [360, 759, 760, 1440]) {
   test(`${width}px: correct placeholder ratio, ordered chapters and no missing media requests`, async ({

@@ -165,9 +165,22 @@
   inset: 0;
   overflow: hidden;
 }
-.cinema-frame > img {
+.cinema-originals {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+.cinema-originals-pair {
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.cinema-originals img {
   width: 100%;
   height: 100%;
+  min-height: 0;
+  min-width: 0;
   object-fit: contain;
 }
 .cinema-hair-highlight {

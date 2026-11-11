@@ -8,7 +8,7 @@ import {
 const manifest = JSON.parse(
   readFileSync(new URL('../src/data/cinematic-assets.json', import.meta.url)),
 );
-test('eight chapters cover the 15-second film and all media is pending', () => {
+test('eight chapters cover the 15-second film and pending media never requests a source', () => {
   assertCinematicAssets(manifest);
   assert.deepEqual(
     manifest.scenes.map((scene) => scene.id),
@@ -20,7 +20,9 @@ test('eight chapters cover the 15-second film and all media is pending', () => {
       ...Object.values(manifest.references),
       ...manifest.scenes,
       manifest.hairMask,
-    ].every((asset) => asset.src === null && asset.status === 'pending'),
+    ]
+      .filter((asset) => asset.status === 'pending')
+      .every((asset) => asset.src === null),
   );
 });
 test('no pending request, external source, missing provenance or wrong orientation can activate', () => {

@@ -58,7 +58,7 @@ export function assertCinematicAssets(manifest) {
         throw new Error('Pending assets must not request media');
       continue;
     }
-    if (!/^\/cinematic\/[a-z0-9-]+\.(mp4|webp|png)$/.test(asset.src))
+    if (!/^\/cinematic\/[a-z0-9-]+\.(mp4|webp|png|jpe?g)$/.test(asset.src))
       throw new Error('Only local cinematic paths are allowed');
     if ((asset.type === 'video/mp4') !== asset.src.endsWith('.mp4'))
       throw new Error('Asset format mismatch');

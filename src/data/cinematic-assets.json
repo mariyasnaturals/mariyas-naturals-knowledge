@@ -13,7 +13,8 @@
       "originalFilename": null,
       "sha256": null,
       "width": null,
-      "height": null
+      "height": null,
+      "expectedOriginalFilename": "714482450_1794338494564178.mp4"
     },
     "mobile": {
       "status": "pending",
@@ -25,7 +26,8 @@
       "originalFilename": null,
       "sha256": null,
       "width": null,
-      "height": null
+      "height": null,
+      "expectedOriginalFilename": "496978374_1794339270167488.mp4"
     }
   },
   "references": {
@@ -59,7 +61,8 @@
         "ml": "",
         "hi": "",
         "ta": ""
-      }
+      },
+      "expectedOriginalFilename": "8573.png"
     }
   },
   "scenes": [
@@ -239,5 +242,6 @@
       "hi": "",
       "ta": ""
     }
-  }
+  },
+  "timingStatus": "awaiting-footage-review"
 }

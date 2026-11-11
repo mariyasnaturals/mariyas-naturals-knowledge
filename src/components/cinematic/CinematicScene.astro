@@ -1,5 +1,6 @@
 ---
 import assets from '../../data/cinematic-assets.json';
+import { sceneVisuals } from '../../data/cinematic-visuals.mjs';
 import type { Locale } from '../../i18n';
 interface Props {
   scene: (typeof assets.scenes)[number];
@@ -10,7 +11,8 @@ interface Props {
   lang: Locale;
 }
 const { scene, index, title, description, pending, lang } = Astro.props;
-const ready = scene.status === 'ready' && scene.src;
+const visuals = sceneVisuals(assets, scene);
+const ready = visuals.length > 0;
 ---
 
 <li
@@ -28,17 +30,26 @@ const ready = scene.status === 'ready' && scene.src;
     <p>{description}</p>
     <slot />
   </div>
-  <figure class="cinema-frame" data-asset-state={scene.status}>
+  <figure class="cinema-frame" data-asset-state={ready ? 'ready' : 'pending'}>
     {ready && (
-      <img
-        src={scene.src!}
-        width={scene.width!}
-        height={scene.height!}
-        alt={scene.alt[lang]}
-        loading="lazy"
-        decoding="async"
-        data-cinematic-asset={scene.id}
-      />
+      <div
+        class:list={[
+          'cinema-originals',
+          { 'cinema-originals-pair': visuals.length > 1 },
+        ]}
+      >
+        {visuals.map(({ id, asset }) => (
+          <img
+            src={asset.src}
+            width={asset.width}
+            height={asset.height}
+            alt={asset.alt[lang]}
+            loading="lazy"
+            decoding="async"
+            data-cinematic-asset={id}
+          />
+        ))}
+      </div>
     )}
     <!-- Abstract light only: no stand-in packaging, faces or synthetic hair. -->
     {!ready && (
