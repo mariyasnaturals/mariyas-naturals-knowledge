@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24.22.1'
@@ -32,16 +34,17 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: python3 -m unittest discover -s tests/pull -v
+      - run: python3 -m unittest discover -s tests/readiness -v
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
-      - name: Package approved staging review (PR artifacts only)
+      - name: Package UNAPPROVED PR preview (NOT FOR DEPLOYMENT)
         if: github.event_name == 'pull_request'
-        run: npm run package:staging
+        run: npm run package:pr-preview
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'pull_request'
         with:
-          name: mariyas-cloud-staging-review-${{ github.event.pull_request.head.sha }}
-          path: review-artifacts/
+          name: UNAPPROVED-cinematic-pr-preview-${{ github.event.pull_request.head.sha }}
+          path: pr-preview-artifacts/
           retention-days: 30
           if-no-files-found: error
