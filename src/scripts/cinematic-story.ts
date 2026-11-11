@@ -85,29 +85,29 @@ export function mountCinematicStory(root: HTMLElement) {
         if (originals && effect === 'botanical')
           timeline.fromTo(
             originals,
-            { y: 5 },
-            { y: -5, ease: 'sine.inOut' },
+            { scale: 1.04 },
+            { scale: 1, ease: 'sine.inOut' },
             0,
           );
         if (originals && effect === 'oil')
           timeline.fromTo(
             originals,
-            { opacity: 0.9, y: -4 },
-            { opacity: 1, y: 4, ease: 'sine.inOut' },
+            { opacity: 0.9, scale: 1.04 },
+            { opacity: 1, scale: 1, ease: 'sine.inOut' },
             0,
           );
         if (originals && effect === 'reveal')
           timeline.fromTo(
             originals,
-            { y: 14, opacity: 0.85 },
-            { y: 0, opacity: 1, ease: 'power2.out' },
+            { scale: 1.04, opacity: 0.85 },
+            { scale: 1, opacity: 1, ease: 'power2.out' },
             0,
           );
         if (originals && effect === 'sweep')
           timeline.fromTo(
             originals,
-            { x: -5 },
-            { x: 5, ease: 'sine.inOut' },
+            { scale: 1.04 },
+            { scale: 1, ease: 'sine.inOut' },
             0,
           );
         if (
@@ -143,13 +143,6 @@ export function mountCinematicStory(root: HTMLElement) {
               duration: 0.45,
               ease: 'sine.inOut',
             });
-        if (effect === 'reveal' || effect === 'portrait')
-          timeline.fromTo(
-            scene.querySelector('.cinema-frame'),
-            { y: 8 },
-            { y: -8, ease: 'none' },
-            0,
-          );
       });
       gsap.fromTo(
         root.querySelector('.cinema-progress span'),

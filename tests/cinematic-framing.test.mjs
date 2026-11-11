@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { filmCompositionFit } from '../src/data/cinematic-framing.mjs';
-test('faces, hands and product chapters always retain the whole video frame', () => {
+test('every chapter remains full bleed at desktop, mobile and ultrawide sizes', () => {
   for (const chapter of [
+    'botanicals',
+    'golden-oil',
     'product-reveal',
     'original-model',
     'application',
@@ -16,11 +18,5 @@ test('faces, hands and product chapters always retain the whole video frame', ()
       [360, 800],
       [2560, 600],
     ])
-      assert.equal(filmCompositionFit(w, h, chapter, w < 760), 'contain');
-});
-test('atmospheric cover is bounded and unusually shaped viewports remain uncropped', () => {
-  assert.equal(filmCompositionFit(1440, 900, 'botanicals', false), 'cover');
-  assert.equal(filmCompositionFit(390, 844, 'golden-oil', true), 'cover');
-  assert.equal(filmCompositionFit(2560, 600, 'botanicals', false), 'contain');
-  assert.equal(filmCompositionFit(0, 0, 'botanicals', false), 'contain');
+      assert.equal(filmCompositionFit(w, h, chapter, w < 760), 'cover');
 });

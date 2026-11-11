@@ -1,0 +1,6 @@
+{
+  "enabled": false,
+  "profile": "/home/mariyascloud/.local/share/mariyas-pull/versions/REVIEWED_PROFILE_COMMIT",
+  "profile_checksums_sha256": "INDEPENDENTLY_REVIEWED_CHECKSUM_INVENTORY_SHA256",
+  "pull_config": "/home/mariyascloud/.config/mariyas-pull/config.json"
+}

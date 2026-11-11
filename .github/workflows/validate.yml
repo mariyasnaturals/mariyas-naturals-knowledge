@@ -2,7 +2,7 @@ name: Validate foundation
 on:
   pull_request:
   push:
-    branches: [main, feature/astro-foundation]
+    branches: [main, feature/astro-foundation, feature/cinematic-homepage]
 permissions:
   contents: read
 jobs:
@@ -36,16 +36,21 @@ jobs:
       - run: python3 -m unittest discover -s tests/pull -v
       - run: python3 -m unittest discover -s tests/cinematic-release -v
       - run: python3 -m unittest discover -s tests/readiness -v
+      - run: python3 -m unittest discover -s tests/staging-auto -v
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
+      - name: Browser and accessibility checks
+        run: |
+          npx playwright install --with-deps chromium
+          CHROMIUM_PATH="$(node --input-type=module -e 'import {chromium} from "@playwright/test"; console.log(chromium.executablePath())')" npm run test:browser
       - name: Package UNAPPROVED PR preview (NOT FOR DEPLOYMENT)
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/feature/cinematic-homepage'
         run: npm run package:pr-preview
       - uses: actions/upload-artifact@v4
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/feature/cinematic-homepage'
         with:
-          name: UNAPPROVED-cinematic-pr-preview-${{ github.event.pull_request.head.sha }}
+          name: UNAPPROVED-cinematic-pr-preview-${{ github.event.pull_request.head.sha || github.sha }}
           path: pr-preview-artifacts/
           retention-days: 30
           if-no-files-found: error

@@ -93,6 +93,26 @@ export function previewContext(root, env = process.env) {
     event: 'local-review',
   };
   if (env.GITHUB_ACTIONS === 'true') {
+    if (env.GITHUB_EVENT_NAME === 'push') {
+      const event = json(env.GITHUB_EVENT_PATH);
+      assert.equal(env.GITHUB_REPOSITORY, REPOSITORY);
+      assert.equal(event.repository.full_name, REPOSITORY);
+      assert.equal(event.ref, `refs/heads/${BRANCH}`);
+      assert.equal(env.GITHUB_REF, event.ref);
+      assert.equal(event.after, sha, 'Push checkout must match its event SHA');
+      assert.equal(env.GITHUB_SHA, sha);
+      assert.ok(
+        /^\d+$/.test(env.GITHUB_RUN_ID || '') &&
+          /^\d+$/.test(env.GITHUB_RUN_ATTEMPT || ''),
+      );
+      return {
+        ...context,
+        event: 'push',
+        runId: env.GITHUB_RUN_ID,
+        runAttempt: env.GITHUB_RUN_ATTEMPT,
+        workflow: env.GITHUB_WORKFLOW_REF,
+      };
+    }
     assert.equal(
       env.GITHUB_EVENT_NAME,
       'pull_request',

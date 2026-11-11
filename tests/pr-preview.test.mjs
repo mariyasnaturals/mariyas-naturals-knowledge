@@ -315,6 +315,23 @@ test('preview context rejects dirty, wrong-branch/repository, stale-head and for
   };
   writeFileSync(eventFile, JSON.stringify(event));
   assert.equal(previewContext(repo, env).pullRequest, 3);
+  const pushEvent = {
+    repository: { full_name: name },
+    ref: 'refs/heads/feature/cinematic-homepage',
+    after: sha,
+  };
+  writeFileSync(eventFile, JSON.stringify(pushEvent));
+  const pushEnv = {
+    ...env,
+    GITHUB_EVENT_NAME: 'push',
+    GITHUB_REF: pushEvent.ref,
+    GITHUB_SHA: sha,
+  };
+  assert.equal(previewContext(repo, pushEnv).event, 'push');
+  pushEvent.after = '0'.repeat(40);
+  writeFileSync(eventFile, JSON.stringify(pushEvent));
+  assert.throws(() => previewContext(repo, pushEnv), /event SHA/);
+  writeFileSync(eventFile, JSON.stringify(event));
   event.pull_request.head.sha = '0'.repeat(40);
   writeFileSync(eventFile, JSON.stringify(event));
   assert.throws(() => previewContext(repo, env), /exact PR head/);

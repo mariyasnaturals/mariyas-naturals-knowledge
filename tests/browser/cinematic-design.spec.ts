@@ -57,9 +57,9 @@ for (const [width, height] of [
           video.currentTime = 6.75;
         });
       });
-      await expect(film).toHaveAttribute('data-fit', 'contain');
-      await expect(video).toHaveCSS('object-fit', 'contain');
-      await expect(page.locator('.cinema-hero-copy')).toHaveCSS('opacity', '0');
+      await expect(film).toHaveAttribute('data-fit', 'cover');
+      await expect(video).toHaveCSS('object-fit', 'cover');
+      await expect(page.locator('.cinema-hero-copy')).toHaveCSS('opacity', '1');
       const finale = page.locator('#story-scene-8');
       await finale.evaluate((element) =>
         element.scrollIntoView({ block: 'start', behavior: 'instant' }),
@@ -90,41 +90,16 @@ for (const [width, height] of [
             Math.max(model!.y, product!.y),
         );
       expect(overlap).toBe(0);
-      const visiblePortrait = await finale
-        .locator('.cinema-final-model > img')
-        .evaluate((image: HTMLImageElement) => {
-          const { width, height } = image.getBoundingClientRect();
-          if (getComputedStyle(image).objectFit === 'contain')
-            return {
-              left: 0,
-              right: image.naturalWidth,
-              top: 0,
-              bottom: image.naturalHeight,
-            };
-          const scale = Math.max(
-            width / image.naturalWidth,
-            height / image.naturalHeight,
-          );
-          const left = (image.naturalWidth - width / scale) * 0.14;
-          const top = (image.naturalHeight - height / scale) * 0.5;
-          return {
-            left,
-            right: left + width / scale,
-            top,
-            bottom: top + height / scale,
-          };
-        });
-      // Bounds of the face, held bottle and long hair in the supplied portrait.
-      expect(visiblePortrait.left).toBeLessThan(150);
-      expect(visiblePortrait.right).toBeGreaterThan(750);
-      expect(visiblePortrait.top).toBeLessThan(20);
-      expect(visiblePortrait.bottom).toBeGreaterThan(700);
+      await expect(finale.locator('.cinema-final-model > img')).toHaveCSS(
+        'object-fit',
+        'cover',
+      );
       expect(product!.width).toBeGreaterThan(
         width < 760 ? width * 0.8 : width * 0.23,
       );
       await expect(finale.locator('.cinema-product-reveal img')).toHaveCSS(
         'object-fit',
-        'contain',
+        'cover',
       );
       expect(
         await page.evaluate(

@@ -15,14 +15,18 @@ const c = t.cinematic;
 ---
 
 <section id="story" class="cinema story-experience" aria-label={t.story}>
-  <div class="cinema-hero" data-film-chapter="botanicals">
+  <div
+    class="cinema-hero"
+    data-film-chapter="botanicals"
+    data-headlines={JSON.stringify([t.hero, ...c.titles.slice(1)])}
+    data-lines={JSON.stringify(c.notes)}
+  >
     <ResponsiveFilm
       label={c.film}
       pending={c.videoPending}
       play={c.play}
       pause={c.pause}
       unavailable={c.unavailable}
-      chapters={c.titles}
       lang={lang}
     />
     <div class="cinema-hero-shade" aria-hidden="true"></div>
@@ -38,15 +42,11 @@ const c = t.cinematic;
     <a class="skip-story" href="#ingredients">
       {t.skipStory}
     </a>
-    <span class="cinema-hero-edition" lang="en" aria-hidden="true">
-      MARIYAS NATURALS
-    </span>
   </div>
   <h2 class="sr-only">{c.title}</h2>
   <nav class="cinema-chapters" aria-label={t.story}>
     {c.titles.map((title, index) => (
       <a href={`#story-scene-${index + 1}`} data-chapter-link>
-        <span aria-hidden="true">0{index + 1}</span>
         <span>{title}</span>
       </a>
     ))}

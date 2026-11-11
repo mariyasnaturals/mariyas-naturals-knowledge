@@ -4,7 +4,7 @@
   --cinema-ink: #092d21;
   --cinema-cream: #f6efdf;
   --cinema-gold: #d6bd83;
-  scroll-padding-bottom: 5rem;
+  scroll-padding-bottom: 0;
 }
 body:has(.cinema) {
   background: var(--cinema-ink);
@@ -58,6 +58,7 @@ body:has(.cinema) .mobile-menu summary {
   background: var(--cinema-ink);
   color: var(--cinema-cream);
   overflow: clip;
+  overflow-anchor: none;
 }
 .cinema [hidden] {
   display: none !important;
@@ -107,9 +108,6 @@ body:has(.cinema) .mobile-menu summary {
 .cinema-film-poster img {
   object-fit: cover;
   object-position: 50% 50%;
-}
-.cinema-film[data-fit='contain'] video {
-  object-fit: contain;
 }
 .cinema-hero-shade {
   position: absolute;
@@ -183,36 +181,6 @@ body:has(.cinema) .mobile-menu summary {
   writing-mode: vertical-rl;
   color: #f6efdfad;
 }
-.cinema-hero[data-protected='true'] .cinema-hero-copy {
-  opacity: 0;
-  translate: 0 8px;
-  pointer-events: none;
-}
-.cinema-hero[data-protected='true'] .cinema-hero-shade {
-  opacity: 0.1;
-}
-.cinema-film-caption {
-  position: absolute;
-  z-index: 3;
-  left: 50%;
-  bottom: 2.65rem;
-  translate: -50% 0;
-  max-width: 45%;
-  text-align: center;
-  font-size: 0.63rem;
-  letter-spacing: 0.02em;
-  color: #f6efdf;
-  background: #062319c9;
-  border-radius: 2rem;
-  padding: 0.4rem 0.8rem;
-  pointer-events: none;
-}
-.cinema-film-counter {
-  color: var(--cinema-gold);
-  margin-right: 0.55rem;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-}
 .cinema-play {
   position: absolute;
   z-index: 4;
@@ -284,7 +252,7 @@ body:has(.cinema) .mobile-menu summary {
   font-size: 0.64rem;
   color: #f6efdfc9;
 }
-.cinema-chapters a > span:first-child {
+.cinema-chapters a > .chapter-number {
   color: var(--cinema-gold);
   font-family: var(--font-display);
   font-size: 1.3rem;
@@ -543,6 +511,7 @@ body:has(.cinema) .mobile-menu summary {
 @media (max-width: 759px) {
   :root:has(.cinema) {
     --header-offset: 4.1rem;
+    scroll-padding-bottom: 5rem;
   }
   body:has(.cinema) .site-header {
     min-height: 64px;
@@ -624,11 +593,6 @@ body:has(.cinema) .mobile-menu summary {
     font-size: 0.59rem;
     padding-inline: 0.65rem;
   }
-  .cinema-film-caption {
-    bottom: 9rem;
-    max-width: calc(100% - 48px);
-    font-size: 0.6rem;
-  }
   .cinema-hero-edition {
     display: none;
   }
@@ -642,7 +606,7 @@ body:has(.cinema) .mobile-menu summary {
     padding: 0.6rem;
     font-size: 0.59rem;
   }
-  .cinema-chapters a > span:first-child {
+  .cinema-chapters a > .chapter-number {
     font-size: 1.12rem;
   }
   .cinema-scene {
@@ -787,4 +751,113 @@ html:not(:lang(en)) .cinema h3 {
 html.cinema-past-hero body:has(.cinema) .header-shell {
   background: #082d22f5;
   backdrop-filter: blur(16px);
+}
+
+/* Unified full-bleed chapter presentation on every viewport. */
+.cinema-scene,
+.cinema-scene[data-reference='model']:not(.cinema-final-scene) {
+  display: flex;
+  align-items: end;
+  justify-content: start;
+  min-height: 100svh;
+  color: var(--cinema-cream);
+}
+.cinema-scene[data-reference='model']:not(.cinema-final-scene) .cinema-frame {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+}
+.cinema-originals img,
+.cinema-scene[data-reference='model'] .cinema-originals img {
+  object-fit: cover;
+  object-position: 27% 50%;
+}
+.cinema-scene[data-effect='reveal'] .cinema-originals img {
+  object-position: 50% 48%;
+}
+.cinema-scene:not(.cinema-final-scene)::after,
+.cinema-scene[data-reference='model']:not(.cinema-final-scene)::after {
+  display: block;
+  background: linear-gradient(0deg, #031e17ed, #031e1799 30%, transparent 75%);
+}
+.cinema-scene .cinema-scene-copy,
+.cinema-scene[data-reference='model']:not(.cinema-final-scene)
+  .cinema-scene-copy {
+  max-width: min(650px, 100%);
+  padding: clamp(24px, 5vw, 72px);
+  padding-bottom: max(100px, 12svh);
+}
+.cinema-scene[data-reference='model']:not(.cinema-final-scene) .eyebrow,
+.cinema-scene[data-reference='model']:not(.cinema-final-scene) .cinema-watch {
+  color: var(--cinema-gold);
+}
+.cinema-scene h3 {
+  color: var(--cinema-cream);
+}
+.cinema-hair-highlight {
+  mask-size: cover;
+  mask-position: 27% 50%;
+}
+.cinema-final-scene {
+  display: block;
+}
+.cinema-finale {
+  min-height: 100svh;
+  grid-template-columns: 1.3fr 1fr;
+}
+.cinema-final-model {
+  min-height: 100svh;
+  aspect-ratio: auto;
+}
+.cinema-final-model > img {
+  object-fit: cover;
+  object-position: 27% 50%;
+}
+.cinema-final-product {
+  position: relative;
+  min-height: 100svh;
+  padding: 0;
+  justify-content: end;
+  isolation: isolate;
+}
+.cinema-product-reveal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  max-width: none;
+  z-index: -2;
+}
+.cinema-product-reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
+}
+.cinema-final-product::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, #031e17f5, #031e1799 35%, transparent 75%);
+}
+.cinema-final-product .cinema-scene-copy {
+  padding: 32px 32px 0;
+}
+.cinema-final-actions {
+  padding: 0 32px max(100px, 12svh);
+}
+@media (max-width: 759px) {
+  .cinema-finale {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  .cinema-final-model,
+  .cinema-final-product {
+    min-height: 100svh;
+  }
+  .cinema-hero-copy {
+    bottom: 25%;
+  }
 }

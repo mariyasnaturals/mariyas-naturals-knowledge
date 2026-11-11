@@ -1,6 +1,6 @@
 # Mariyas Naturals Knowledge
 
-A four-language, static Mariyas Naturals website with a premium editorial layout and current approved imagery from [mariyasnaturals.in](https://mariyasnaturals.in). The current rebrand supersedes the earlier dual-store image direction: no legacy .com visual is served or rendered. See the [rebrand report](docs/rebrand-report.md), [source policy](docs/product-assets.md) and [current catalogue](docs/rebrand-catalogue.md). Purchasing is disabled and .cloud remains a noindex staging environment.
+A four-language, static Mariyas Naturals website with a cinematic full-bleed layout and current approved imagery from [mariyasnaturals.in](https://mariyasnaturals.in). The current rebrand supersedes the earlier dual-store image direction: no legacy .com visual is served or rendered. See the [rebrand report](docs/rebrand-report.md), [source policy](docs/product-assets.md) and [current catalogue](docs/rebrand-catalogue.md). Purchasing is disabled and .cloud remains a noindex staging environment.
 
 ## Stack and architecture
 
@@ -48,7 +48,7 @@ Malayalam, Hindi and Tamil are starter translations requiring native-speaker rev
 
 ## Storytelling and products
 
-`HeroSection` uses the current .in 200 ml product image in a warm editorial composition, with edition discovery links. The mobile order puts the actual pack photograph ahead of the longer intro/actions. `StorytellingSection` retains five semantic HTML chapters, reworked around the current 200 ml and 500 ml editions. It uses restrained crossfades, a light halo and abstract oil drops. Pinning remains limited to wide, tall fine-pointer desktops and at most 650px; mobile retains native scrolling. Skip Story, no-JavaScript content and reduced-motion cleanup remain available.
+`StorytellingSection` presents the supplied responsive desktop/mobile film followed by eight naturally scrolling photographic chapters. All film chapters use full-bleed cover framing and unique localized headline overlays; scene numbers and the centered caption chip are removed. Dark-green gradient protection keeps white serif text readable, including the portrait scenes. The finale retains independent full-height model and product panels. Original files remain byte-identical; CSS cover framing intentionally crops the edges. Playback, save-data and reduced-motion behavior remain available. No scroll interception or desktop pinning is used.
 
 `CampaignCard` and `CollectionHighlights` provide reusable cards and a feature banner for homepage, category and future promotional layouts. Only current .in category artwork is used. `/{lang}/collections/{category}/` supplies six localized static collections with truthful metadata and ItemList structure. No unverified “best,” purity, medical or certification claim is inserted to target a keyword.
 
@@ -106,3 +106,7 @@ Future migration to `.in` requires approved content, exact store URLs, domain/ca
 The prepared [pull deployment architecture](docs/pull-deployment.md) uses GitHub-hosted validation/build, an independently owner-signed static release branch, and site-user CloudPanel cron with an outbound read-only GitHub deploy key. It defaults to dry-run and requires a verified backup and exact local approval before the first live apply. No inbound VPS SSH, FTP, source builds on the VPS or self-hosted runner is used. GitHub Free private repositories need no paid deployment protection: Actions creates unsigned candidates; the owner reviews/signs/publishes exact builds using pinned local Android tools, with the signing key kept out of GitHub and the VPS. Preparation does not deploy or change VPS configuration. [Local security/rehearsal results](docs/pull-validation.md).
 
 First activation: follow the [Phase 2 readiness report](docs/activation-readiness.md), [Android owner setup](docs/android-owner-setup.md) and [Hostinger Web Console guide](docs/vps-first-activation.md). The immediate owner action is read-only root verification; registration, signing, publication and first deployment remain separate approval stages.
+
+## Cinematic full-bleed hero and staging automation
+
+Feature-branch pushes run CI and produce an exact-source unapproved preview after all checks pass. The eight film chapters now use full-bleed media and unique overlay headlines without a numbered center chip. See [automatic staging](docs/automatic-staging.md) for the signed-release poller, Cloudflare settings, one-time setup and the pending unattended-deployment approval boundary. The owner signing key stays offline and production WordPress remains protected.

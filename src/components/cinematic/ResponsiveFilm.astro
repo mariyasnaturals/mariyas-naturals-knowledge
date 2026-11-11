@@ -9,11 +9,9 @@ interface Props {
   play: string;
   pause: string;
   unavailable: string;
-  chapters: string[];
   lang: Locale;
 }
-const { label, pending, play, pause, unavailable, chapters, lang } =
-  Astro.props;
+const { label, pending, play, pause, unavailable, lang } = Astro.props;
 ---
 
 <responsive-film
@@ -55,14 +53,6 @@ const { label, pending, play, pause, unavailable, chapters, lang } =
     <span class="cinema-orbit" aria-hidden="true"></span>
     <p class="eyebrow">MARIYAS NATURALS</p>
     <p data-film-status>{pending}</p>
-  </div>
-  <div class="cinema-film-caption" aria-hidden="true" hidden>
-    {chapters.map((chapter, index) => (
-      <span data-film-caption={index} hidden>
-        <span class="cinema-film-counter">0{index + 1} / 08</span>
-        {chapter}
-      </span>
-    ))}
   </div>
   <button
     class="cinema-play"

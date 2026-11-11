@@ -14,8 +14,6 @@ export class ResponsiveFilm extends HTMLElement {
       '.cinema-film-placeholder',
     )!;
     const status = this.querySelector<HTMLElement>('[data-film-status]')!;
-    const caption = this.querySelector<HTMLElement>('.cinema-film-caption')!;
-    const captions = this.querySelectorAll<HTMLElement>('[data-film-caption]');
     const mobile = matchMedia(
       `(max-width: ${Number(this.dataset.breakpoint) - 1}px)`,
     );
@@ -40,22 +38,20 @@ export class ResponsiveFilm extends HTMLElement {
     let lastChapter = -1;
     const hero = this.closest<HTMLElement>('.cinema-hero');
     const composition = () => {
-      const bounds = this.getBoundingClientRect();
       const chapter = this.dataset.currentChapter || 'botanicals';
-      this.dataset.fit = filmCompositionFit(
-        bounds.width,
-        bounds.height,
-        chapter,
-        mobile.matches,
-      );
-      const protectedShot = !['botanicals', 'golden-oil'].includes(chapter);
+      this.dataset.fit = filmCompositionFit();
       if (hero) {
         hero.dataset.filmChapter = chapter;
-        hero.dataset.protected = String(protectedShot);
-        const action = hero.querySelector<HTMLAnchorElement>(
-          '.cinema-hero-copy a',
+        const index = Math.max(
+          0,
+          timeline.findIndex((item) => item.id === chapter),
         );
-        if (action) action.tabIndex = protectedShot ? -1 : 0;
+        const headlines: string[] = JSON.parse(hero.dataset.headlines || '[]');
+        const lines: string[] = JSON.parse(hero.dataset.lines || '[]');
+        const title = hero.querySelector('h1');
+        const line = hero.querySelector('.cinema-hero-line');
+        if (title && headlines[index]) title.textContent = headlines[index];
+        if (line && lines[index]) line.textContent = lines[index];
       }
     };
     const pendingText = status.textContent;
@@ -69,7 +65,6 @@ export class ResponsiveFilm extends HTMLElement {
       const index = chapterAtTime(timeline, video.currentTime);
       if (index === lastChapter) return;
       lastChapter = index;
-      captions.forEach((item, i) => (item.hidden = i !== index));
       if (index < 0) {
         delete this.dataset.currentChapter;
         return;
@@ -110,7 +105,6 @@ export class ResponsiveFilm extends HTMLElement {
       video.hidden = true;
       poster.hidden = false;
       fallback.hidden = true;
-      caption.hidden = true;
       status.textContent = pendingText;
       const src = mobile.matches ? this.dataset.mobile : this.dataset.desktop;
       button.hidden = !src;
@@ -141,7 +135,6 @@ export class ResponsiveFilm extends HTMLElement {
       video.hidden = false;
       poster.hidden = true;
       fallback.hidden = true;
-      caption.hidden = false;
       updateTime();
     };
     const error = () => {
@@ -149,7 +142,6 @@ export class ResponsiveFilm extends HTMLElement {
       video.pause();
       video.hidden = true;
       poster.hidden = true;
-      caption.hidden = true;
       fallback.hidden = false;
       status.textContent = this.dataset.unavailable!;
       button.hidden = true;
