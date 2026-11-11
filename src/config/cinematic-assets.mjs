@@ -18,6 +18,7 @@ export function cinematicRecords(manifest) {
     ),
     ...Object.values(manifest.references),
     ...manifest.scenes,
+    ...manifest.scenes.flatMap((scene) => (scene.mobile ? [scene.mobile] : [])),
     manifest.hairMask,
   ];
 }

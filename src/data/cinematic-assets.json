@@ -247,7 +247,28 @@
       "identityAccuracy": "not-asserted",
       "derivedFrom": "/cinematic/homepage-desktop.mp4",
       "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
-      "frameTimeSeconds": 1.5
+      "frameTimeSeconds": 1.5,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/poster-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "a46727fff7192bc40162c98ed286966bdd0faac0e596f26aac8da5111bcf141a",
+        "bytes": 87707,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 0.25,
+        "alt": {
+          "en": "Botanical opening from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സസ്യദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म का वनस्पति दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியின் தாவரக் காட்சி"
+        }
+      }
     },
     {
       "id": "golden-oil",
@@ -273,7 +294,28 @@
       "identityAccuracy": "not-asserted",
       "derivedFrom": "/cinematic/homepage-desktop.mp4",
       "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
-      "frameTimeSeconds": 3.5
+      "frameTimeSeconds": 3.5,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/scene-golden-oil-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "d3af9044e7657eb8b4346ea15e277a0ef7fb7f04759fd51840fefb4fccc5d9b7",
+        "bytes": 52737,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 3.5,
+        "alt": {
+          "en": "Golden oil droplet from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സ്വർണനിറമുള്ള എണ്ണത്തുള്ളി",
+          "hi": "दी गई मरियास फ़िल्म में सुनहरी तेल की बूँद",
+          "ta": "வழங்கிய மரியாஸ் காணொளியில் பொன்னிற எண்ணெய்த்துளி"
+        }
+      }
     },
     {
       "id": "product-reveal",
@@ -348,7 +390,28 @@
       "identityAccuracy": "not-asserted",
       "derivedFrom": "/cinematic/homepage-desktop.mp4",
       "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
-      "frameTimeSeconds": 8
+      "frameTimeSeconds": 8,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/scene-application-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "b378511a683c7c37b7146f16c521d506d2e55affb8a90e566627d862d47fc071",
+        "bytes": 60553,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 8,
+        "alt": {
+          "en": "Oil application moment from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ എണ്ണ ഉപയോഗിക്കുന്ന ദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म में तेल लगाने का दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியில் எண்ணெய் பயன்படுத்தும் காட்சி"
+        }
+      }
     },
     {
       "id": "hair-shine",

@@ -1,4 +1,5 @@
 import { chapterAtTime, correspondingTime } from '../data/cinematic-timing.mjs';
+import { filmCompositionFit } from '../data/cinematic-framing.mjs';
 type Chapter = { id: string; start: number; end: number };
 
 // One original cut at a time. Time follows the corresponding story beat on resize.
@@ -37,11 +38,32 @@ export class ResponsiveFilm extends HTMLElement {
     let failed = false;
     let pendingSeek: number | undefined;
     let lastChapter = -1;
+    const hero = this.closest<HTMLElement>('.cinema-hero');
+    const composition = () => {
+      const bounds = this.getBoundingClientRect();
+      const chapter = this.dataset.currentChapter || 'botanicals';
+      this.dataset.fit = filmCompositionFit(
+        bounds.width,
+        bounds.height,
+        chapter,
+        mobile.matches,
+      );
+      const protectedShot = !['botanicals', 'golden-oil'].includes(chapter);
+      if (hero) {
+        hero.dataset.filmChapter = chapter;
+        hero.dataset.protected = String(protectedShot);
+        const action = hero.querySelector<HTMLAnchorElement>(
+          '.cinema-hero-copy a',
+        );
+        if (action) action.tabIndex = protectedShot ? -1 : 0;
+      }
+    };
     const pendingText = status.textContent;
     const updateButton = () => {
       const text = video.paused ? this.dataset.play! : this.dataset.pause!;
       button.textContent = text;
       button.setAttribute('aria-label', text);
+      button.dataset.paused = String(video.paused);
     };
     const updateTime = () => {
       const index = chapterAtTime(timeline, video.currentTime);
@@ -53,6 +75,7 @@ export class ResponsiveFilm extends HTMLElement {
         return;
       }
       this.dataset.currentChapter = timeline[index].id;
+      composition();
       this.dispatchEvent(
         new CustomEvent('cinematic:chapter-change', {
           bubbles: true,
@@ -79,6 +102,8 @@ export class ResponsiveFilm extends HTMLElement {
         : 0;
       timeline = nextTimeline;
       lastChapter = -1;
+      delete this.dataset.currentChapter;
+      composition();
       failed = false;
       manualPlay = false;
       video.pause();
@@ -175,9 +200,12 @@ export class ResponsiveFilm extends HTMLElement {
     video.addEventListener('play', updateButton);
     video.addEventListener('pause', updateButton);
     observer.observe(this);
+    const resize = new ResizeObserver(composition);
+    resize.observe(this);
     select();
     this.dispose = () => {
       observer.disconnect();
+      resize.disconnect();
       mobile.removeEventListener('change', select);
       reduced.removeEventListener('change', preferences);
       connection?.removeEventListener('change', preferences);

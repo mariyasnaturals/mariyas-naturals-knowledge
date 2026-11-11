@@ -15,76 +15,62 @@ const c = t.cinematic;
 ---
 
 <section id="story" class="cinema story-experience" aria-label={t.story}>
-  <div class="wrap">
-    <div class="cinema-introduction">
-      <div>
-        <p class="eyebrow">{t.journal}</p>
-        <h1 id="hero-title">{t.hero}</h1>
-        <p class="lede">{t.intro}</p>
-        <div class="actions">
-          <a class="button button-gold" href="#story-scene-1">
-            {t.scrollInvitation}
-            <ArrowIcon direction="down" />
-          </a>
-          <a class="text-link skip-story" href="#ingredients">
-            {t.skipStory}
-            <ArrowIcon />
-          </a>
-        </div>
-      </div>
-      <ResponsiveFilm
-        label={c.film}
-        pending={c.videoPending}
-        play={c.play}
-        pause={c.pause}
-        unavailable={c.unavailable}
-        chapters={c.titles}
-        lang={lang}
-      />
+  <div class="cinema-hero" data-film-chapter="botanicals">
+    <ResponsiveFilm
+      label={c.film}
+      pending={c.videoPending}
+      play={c.play}
+      pause={c.pause}
+      unavailable={c.unavailable}
+      chapters={c.titles}
+      lang={lang}
+    />
+    <div class="cinema-hero-shade" aria-hidden="true"></div>
+    <div class="cinema-hero-copy">
+      <p class="eyebrow">{c.heroKicker}</p>
+      <h1 id="hero-title">{t.hero}</h1>
+      <p class="cinema-hero-line">{c.heroLine}</p>
+      <a class="cinema-hero-action" href="#story-scene-1">
+        {t.discover}
+        <ArrowIcon direction="down" />
+      </a>
     </div>
-    <div class="cinema-chapter-heading">
-      <p class="eyebrow">{t.heritageLabel}</p>
-      <h2>{c.title}</h2>
-    </div>
-    <nav class="cinema-chapters" aria-label={t.story}>
-      {c.titles.map((title, index) => (
-        <a href={`#story-scene-${index + 1}`} data-chapter-link>
-          <span aria-hidden="true">0{index + 1}</span>
-          <span>{title}</span>
-        </a>
-      ))}
-    </nav>
-    <div class="cinema-progress" aria-hidden="true">
-      <span></span>
-    </div>
-    <ol class="cinema-scenes">
-      {assets.scenes.map((scene, index) => (
-        <CinematicScene
-          scene={scene}
-          index={index}
-          title={c.titles[index]}
-          description={c.notes[index]}
-          pending={c.imagePending}
-          lang={lang}
-          watch={c.watch}
-          sourceLabel={
-            scene.source === 'owner-video-frame' ? c.filmStill : c.originalPhoto
-          }
-        >
-          {index === 7 && (
-            <a
-              class="button button-gold"
-              href={productPath(lang, featuredProduct)}
-            >
-              {t.viewDetails}
-              <ArrowIcon />
-            </a>
-          )}
-        </CinematicScene>
-      ))}
-    </ol>
-    <p class="cinema-endnote">{c.originals}</p>
+    <a class="skip-story" href="#ingredients">
+      {t.skipStory}
+    </a>
+    <span class="cinema-hero-edition" lang="en" aria-hidden="true">
+      MARIYAS NATURALS
+    </span>
   </div>
+  <h2 class="sr-only">{c.title}</h2>
+  <nav class="cinema-chapters" aria-label={t.story}>
+    {c.titles.map((title, index) => (
+      <a href={`#story-scene-${index + 1}`} data-chapter-link>
+        <span aria-hidden="true">0{index + 1}</span>
+        <span>{title}</span>
+      </a>
+    ))}
+  </nav>
+  <div class="cinema-progress" aria-hidden="true">
+    <span></span>
+  </div>
+  <ol class="cinema-scenes">
+    {assets.scenes.map((scene, index) => (
+      <CinematicScene
+        scene={scene}
+        index={index}
+        title={c.titles[index]}
+        description={c.notes[index]}
+        pending={c.imagePending}
+        lang={lang}
+        watch={c.watch}
+        finalLine={c.finalLine}
+        productLabel={t.heroNote}
+        productAction={t.viewDetails}
+        productHref={productPath(lang, featuredProduct)}
+      />
+    ))}
+  </ol>
 </section>
 <script>
   import { mountCinematicStory } from '../scripts/cinematic-story';

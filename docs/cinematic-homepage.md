@@ -1,6 +1,8 @@
-# Integrated cinematic homepage
+# Immersive cinematic homepage
 
-Development branch: `feature/cinematic-homepage`. Phase 2 continues from `54a9941`.
+Development branch: `feature/cinematic-homepage`. Original media integration was
+completed at `e774740`; the immersive design correction builds on that commit.
+See the [visual comparison and current captures](cinematic-design-correction.md).
 The supplied media is integrated locally. Nothing has been merged, pushed,
 deployed or published, and the VPS is untouched.
 
@@ -29,7 +31,7 @@ files; the cinematic player uses muted playback.
 poster and mask records are ready. Google Flow video records use
 `identityAccuracy: "not-asserted"`; original photographs are authoritative for
 identity and packaging in the still compositions. Derived film stills are
-labelled in the interface and link to their source video's exact SHA-256 and
+traced in the manifest to their source video's exact SHA-256 and
 capture time. The separate feathered alpha mask traces only the lower hair sweep
 in `9468.jpg`; it does not change the photograph's bytes.
 
@@ -59,7 +61,8 @@ scroll pinning or continuous video seeking is used.
 ## Presentation and loading
 
 - The 760 px breakpoint selects one original MP4. The other orientation is not
-  requested. Images and the video use containment to preserve their composition.
+  requested. The film fills the first viewport. Atmospheric shots may use safe
+  cover; protected model, hand, hair and product chapters retain the entire frame.
 - Lightweight, orientation-specific botanical posters show real footage before
   playback. `preload="none"` defers video data until visibility or explicit intent.
 - Reduced motion and save-data disable automatic playback. Explicit playback and
@@ -67,14 +70,18 @@ scroll pinning or continuous video seeking is used.
 - GSAP adds restrained botanical drift, golden-light movement, product reveal,
   portrait movement and a masked, low-opacity hair highlight. Reduced motion
   removes these effects and restores their resting styles.
-- The final still composition layers the two original photographs without
-  altering their files. The model and product remain visible for as long as the
-  visitor chooses to view the final chapter.
+- The finale presents the two original photographs in independent panels, with
+  a large portrait and a dedicated product reveal. Mobile follows the portrait
+  with the product reveal on natural scroll. No thumbnail is pasted on the model.
 - Original catalogue routes, local fonts, commerce restrictions and `.in` media
   policy remain in place. Cinematic originals and derivatives are separately
   audited by their provenance and file hashes.
 
 ## Visual review
+
+Current owner-review captures at 1440, 390 and 360 px, with before/after
+comparisons, are in [the design correction report](cinematic-design-correction.md).
+The captures linked below record the earlier integration baseline.
 
 Review captures show actual integrated media, not placeholders. Android captures
 use Chromium's Pixel 7 profile with an Android user agent, mobile viewport, DPR
@@ -108,10 +115,10 @@ Verified on 2026-11-11: all checks passed.
 
 | Check                             | Result                                         |
 | --------------------------------- | ---------------------------------------------- |
-| Astro check                       | 65 files; zero errors, warnings or hints       |
+| Astro check                       | 68 files; zero errors, warnings or hints       |
 | Formatting                        | Passed                                         |
-| Node unit tests                   | 20 passed; no skips                            |
-| Full Chromium browser suite       | 37 passed                                      |
+| Node unit tests                   | 22 passed; no skips                            |
+| Full Chromium browser suite       | 40 passed                                      |
 | Local pull-deployment simulations | 31 passed; no VPS access                       |
 | Readiness simulations             | Six passed                                     |
 | Build and static checks           | 377 pages passed                               |

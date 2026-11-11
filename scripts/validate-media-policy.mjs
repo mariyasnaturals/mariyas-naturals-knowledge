@@ -129,6 +129,15 @@ function walk(directory, prefix = '') {
           'Only recorded owner originals may render',
         );
         checkImage($(node).attr('src'));
+        const source = $(node).parent('picture').find('source').attr('srcset');
+        if (source) {
+          assert.equal(
+            source,
+            asset.mobile?.src,
+            'Responsive still must be a recorded derivative',
+          );
+          checkImage(source);
+        }
         continue;
       }
       const id = $(node).attr('data-media-id');

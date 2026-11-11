@@ -83,11 +83,9 @@ for (const width of [360, 759, 760, 1440]) {
         : '/cinematic/homepage-desktop.mp4',
     );
     await expect(page.locator('.cinema-play')).toBeVisible();
-    expect(
-      await page
-        .locator('responsive-film')
-        .evaluate((el) => getComputedStyle(el).aspectRatio),
-    ).toBe(width < 760 ? '9 / 16' : '16 / 9');
+    const heroBox = await page.locator('.cinema-hero').boundingBox();
+    expect(heroBox!.width).toBe(width);
+    expect(heroBox!.height).toBe(900);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,

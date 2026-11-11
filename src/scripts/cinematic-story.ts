@@ -20,6 +20,17 @@ export function mountCinematicStory(root: HTMLElement) {
       );
   };
   root.addEventListener('click', watch);
+  const hero = root.querySelector('.cinema-hero');
+  const headerObserver = new IntersectionObserver(
+    ([entry]) => {
+      document.documentElement.classList.toggle(
+        'cinema-past-hero',
+        !entry.isIntersecting,
+      );
+    },
+    { threshold: 0 },
+  );
+  if (hero) headerObserver.observe(hero);
   const setChapter = (index: number) => {
     root.dataset.chapter = String(index + 1);
     links.forEach((link, i) =>
@@ -32,6 +43,13 @@ export function mountCinematicStory(root: HTMLElement) {
   media.add(
     '(prefers-reduced-motion: no-preference)',
     () => {
+      gsap.from(root.querySelectorAll('.cinema-hero-copy > *'), {
+        y: 14,
+        opacity: 0,
+        duration: 1.1,
+        stagger: 0.1,
+        ease: 'power2.out',
+      });
       scenes.forEach((scene, index) => {
         ScrollTrigger.create({
           trigger: scene,
@@ -125,11 +143,11 @@ export function mountCinematicStory(root: HTMLElement) {
               duration: 0.45,
               ease: 'sine.inOut',
             });
-        if (effect === 'reveal' || effect === 'portrait' || effect === 'hero')
+        if (effect === 'reveal' || effect === 'portrait')
           timeline.fromTo(
             scene.querySelector('.cinema-frame'),
-            { y: 18 },
-            { y: -18, ease: 'none' },
+            { y: 8 },
+            { y: -8, ease: 'none' },
             0,
           );
       });
@@ -157,6 +175,8 @@ export function mountCinematicStory(root: HTMLElement) {
   const cleanup = () => {
     media.revert();
     root.removeEventListener('click', watch);
+    headerObserver.disconnect();
+    document.documentElement.classList.remove('cinema-past-hero');
   };
   document.addEventListener('astro:before-swap', cleanup, { once: true });
   window.addEventListener('pagehide', (event) => {

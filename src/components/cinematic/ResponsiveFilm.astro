@@ -19,6 +19,7 @@ const { label, pending, play, pause, unavailable, chapters, lang } =
 <responsive-film
   class="cinema-film"
   id="cinema-film"
+  data-fit="cover"
   data-desktop={assets.videos.desktop.src ?? undefined}
   data-mobile={assets.videos.mobile.src ?? undefined}
   data-breakpoint={assets.breakpoint}
@@ -52,21 +53,24 @@ const { label, pending, play, pause, unavailable, chapters, lang } =
   ></video>
   <div class="cinema-film-placeholder" hidden>
     <span class="cinema-orbit" aria-hidden="true"></span>
-    <p class="eyebrow">MARIYAS NATURALS · 15 SEC</p>
+    <p class="eyebrow">MARIYAS NATURALS</p>
     <p data-film-status>{pending}</p>
-    <span class="cinema-format" lang="en">
-      16:9 DESKTOP / 9:16 MOBILE
-    </span>
   </div>
   <div class="cinema-film-caption" aria-hidden="true" hidden>
     {chapters.map((chapter, index) => (
       <span data-film-caption={index} hidden>
-        <span class="cinema-film-counter">0{index + 1} / 08 · GOOGLE FLOW</span>
+        <span class="cinema-film-counter">0{index + 1} / 08</span>
         {chapter}
       </span>
     ))}
   </div>
-  <button class="cinema-play" type="button" aria-label={play} hidden>
+  <button
+    class="cinema-play"
+    type="button"
+    aria-label={play}
+    data-paused="true"
+    hidden
+  >
     {play}
   </button>
 </responsive-film>
