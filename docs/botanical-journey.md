@@ -2,19 +2,19 @@
 
 The additional Astro/GSAP journey follows the existing `#story` section (approved film and eight photographic chapters), before the existing care notes and catalogue. The hero component, footage, captions, model, typography, navigation, source-media manifest, protected media policy and deployment/signing/backup tools are unchanged.
 
-Work is isolated on `feature/botanical-journey-review`, based on `c6cf669ff63856ed6fcb5cdaf2f9174534b1594a`. No deployment, credential change, policy upgrade or automatic-staging activation is included.
+Work is isolated on `feature/botanical-journey-review`, based on `c6cf669ff63856ed6fcb5cdaf2f9174534b1594a`. The journey is part of the ordinary `npm run build`; no separate review build exists any more.
 
-## Run the complete interactive review
+## Run the journey locally
 
 ```sh
 npm ci
 npm run test:botanical-assets
-npm run build:botanical-review
-npm run preview:botanical-review
-# Open http://127.0.0.1:4322/en/#botanical-journey
+npm run build
+npm run preview
+# Open http://127.0.0.1:4321/en/#botanical-journey
 ```
 
-English, Malayalam, Hindi and Tamil are present. The review build renders the actual new section after the untouched existing story; it is not a planning document or a slideshow. Native scrolling drives one persistent environment, thirty separate botanical images, convergence, mortar/pestle motion, botanical fragments, receiving-glass fill, near-black green oil, copper-surface reflections, a separate pouring vessel, continuous oil stream, droplets and the authentic bottle. Scroll reversal reverses the same timeline; stopping leaves it at the current position. CSS sticky positioning is used without a ScrollTrigger pin, wheel handler or scroll hijacking.
+English, Malayalam, Hindi and Tamil are present. The normal build renders the actual section after the untouched existing story; it is not a planning document or a slideshow. Native scrolling drives one persistent environment, thirty separate botanical images, convergence, mortar/pestle motion, botanical fragments, receiving-glass fill, near-black green oil, copper-surface reflections, a separate pouring vessel, continuous oil stream, droplets and the authentic bottle. Scroll reversal reverses the same timeline; stopping leaves it at the current position. CSS sticky positioning is used without a ScrollTrigger pin, wheel handler or scroll hijacking.
 
 The stage keeps captions in a readable overlay rather than allowing them to move behind the header. Responsive matchMedia contexts recreate normalized object paths on resize. Changing to reduced motion restores all eight semantic stages to normal document flow. Save-data and no-JavaScript presentations use static compositions with accessible headings and the final product/CTA. Inactive animated caption links are inert. Mobile displays no more than ten studies simultaneously; desktop no more than fifteen. All thirty are introduced progressively in six groups of five.
 
@@ -28,7 +28,7 @@ The thirty generated botanical studies are **unnamed artistic representations**,
 
 The genuine 200 ml product photograph remains authoritative and byte-identical. A traced alpha matte extracts its existing bottle for the new reveal. All RGB channels in the crop are copied from the decoded original; no generative model, repaint, color adjustment, label reconstruction or product rotation is used. Independent validation compares more than 140,000 opaque cutout pixels directly with the original. The original full photograph, transparent PNG and lossless WebP are supplied. The SVG matte is editable for any subsequent edge refinement.
 
-The official product landing page was actually fetched on 2026-11-12 with HTTP 200. Its canonical URL is `https://www.mariyasnaturals.com/product/hair-care-oil-1l/`; the page offers 200ML, 500ML and 1LTR. The final review CTA links there. It does not implement cart, checkout or payments. Existing global commerce configuration remains disabled.
+The official product landing page was actually fetched on 2026-11-12 with HTTP 200. Its canonical URL is `https://www.mariyasnaturals.com/product/hair-care-oil-1l/`; the page offers 200ML, 500ML and 1LTR. That record stays unchanged in `review/botanical/asset-manifest.json` as provenance. The rendered CTA links to this site's own reviewed product route, `/{lang}/products/mariyas-hair-oil-200-ml/`, so the release never leaves the verified origin; no cart, checkout or payment is implemented and global commerce stays disabled.
 
 ## Asset collection
 
@@ -49,7 +49,7 @@ To reproduce exports from supplied masters, use an isolated Python environment w
 python3 scripts/export-botanical-review.py
 node scripts/create-botanical-product-cutout.mjs
 npm run test:botanical-assets
-npm run build:botanical-review
+npm run build
 ```
 
 The exporter rebuilds the generic assets; the second command restores the independently verified photographic alpha derivative and its provenance. Avoid running the exporter alone and assuming the product derivative is registered.
@@ -65,7 +65,6 @@ npm run build
 npm run test:static
 npm run test:media-policy
 npm run test:browser
-npm run build:botanical-review
 npx playwright test --config playwright.botanical.config.ts
 # With the local review server running:
 node scripts/record-botanical-review.mjs
@@ -75,9 +74,9 @@ The recording script uses real browser scroll input (touch gestures under Pixel 
 
 ## Publication boundary
 
-The default build does **not** render the new media. `BOTANICAL_JOURNEY_REVIEW=true` is confined to the separate `botanical-review-site/` output, with a conspicuous UNAPPROVED marker; normal builds retain noindex, disabled purchasing and the existing strict media validation. This is deliberate compatibility with the instruction not to alter protected policy or signing controls.
+The default build renders the journey. Exactly 43 served media files are registered in `src/data/botanical-media.json` with owner visual approval, hashes, dimensions and alpha; `npm run test:media-policy` fails if the rendered set and the registered set ever differ. Normal builds keep noindex, disabled purchasing and the existing strict media validation.
 
-The new generated media, product alpha derivative and explicit `.com` reference are not in the installed approved-release inventory. They cannot be deployed by merely copying this review build or passing CI. Visual acceptance and a separately reviewed addition to the existing approved media/source policy are required before activation through the established pipeline. No such policy changes were performed here. The current trusted automatic-staging branch/gate will reject an unreviewed source/tool/media addition; it has not been bypassed.
+Activation still goes through the established pipeline only: the trusted automatic-staging gate pins this release as a reviewed trust upgrade (`ops/ci_staging/trust.py` plus `bundle.sha256`), and the owner signs the artifact independently. Nothing here bypasses the CI gate, the signing path or the deployment policy.
 
 ## Targeted PR #4 refinement
 
@@ -85,4 +84,4 @@ The mobile final composition now keeps the original bottle above the localized t
 
 Stage five now shows prepared botanical material draining through a separately layered, photorealistic mesh/glass filter into the existing receiving glass, with a fine herbal-green stream. Stage seven retains the existing copper pouring vessel and original thicker dark-oil stream, with an explicit near-black green receiving-liquid reset. The filter is a new unbranded artistic-process prop, registered as a generated master plus PNG/WebP derivatives; all previous 110 asset records, including thirty independent botanical studies and the photographic product, retain their hashes. It is not a claim about actual Mariyas manufacturing equipment. No protected release policy is changed.
 
-Fourteen botanical browser tests now cover the two visual distinctions, timed mobile bottle/claim/CTA sequence, reverse restoration, all four localized final compositions, native touch scrolling, 360/390/1440 viewports, resizing and accessible static fallbacks. Refreshed PR recordings and screenshots supersede the initial a2c7c8a visual captures.
+Fourteen botanical browser tests cover the two visual distinctions, timed mobile bottle/claim/CTA sequence, reverse restoration, all four localized final compositions, native touch scrolling, 360/390/1440 viewports, resizing and accessible static fallbacks. Refreshed PR recordings and screenshots supersede the initial a2c7c8a visual captures.

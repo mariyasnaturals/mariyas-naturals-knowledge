@@ -23,7 +23,7 @@ try {
       const failures = [];
       page.on('pageerror', (e) => failures.push(e.message));
       try {
-        await page.goto('http://127.0.0.1:4322/en/');
+        await page.goto('http://127.0.0.1:4321/en/');
         await page.evaluate(() => document.fonts.ready);
         await page.locator('.cinema-play').click();
         const video = page.locator('video');

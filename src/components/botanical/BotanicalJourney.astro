@@ -5,15 +5,43 @@ import BotanicalExtractor from './BotanicalExtractor.astro';
 import { journeyCopy } from './content';
 import { studies } from './motion.mjs';
 import originals from '../../data/cinematic-assets.json';
+import botanicalManifest from '../../data/botanical-media.json';
+import { featuredProduct } from '../../data/products';
 import './journey.css';
 interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
+const registered = new Set(
+  botanicalManifest.media.map((m) => m.localAssetPath),
+);
+const authenticProduct = botanicalManifest.media.find(
+  (m) => m.role === 'photographic-product-cutout',
+)!;
+if (!originals.references.product.src.includes('original-product'))
+  throw new Error(
+    'The photographic product reveal must stay the owner original',
+  );
 const t = journeyCopy[lang];
-const asset = (name: string) => `/_botanical-assets/${name}`;
-// Verified official product landing page; this component is confined to the local media review build.
-const destination = 'https://www.mariyasnaturals.com/product/hair-care-oil-1l/';
+// Truthful localized alt text comes from the same registered review record.
+const altFor = (name: string) => {
+  const record = botanicalManifest.media.find(
+    (m) => m.localAssetPath === `/_botanical-assets/${name}`,
+  );
+  if (!record) throw new Error(`Unregistered botanical media: ${name}`);
+  return record.alt[lang];
+};
+// Every served layer must be one of the 43 reviewed botanical registrations.
+const asset = (name: string) => {
+  const path = `/_botanical-assets/${name}`;
+  if (!registered.has(path))
+    throw new Error(`Unregistered botanical media: ${path}`);
+  return path;
+};
+
+// Approved call to action stays inside the reviewed static site. The current .in
+// product page remains the visible source reference; purchasing stays disabled.
+const destination = `/${lang}/products/${featuredProduct.slug}/`;
 const staticLayers = [
   'ingredient-01.webp',
   'ingredient-07.webp',
@@ -48,10 +76,11 @@ const staticLayers = [
           srcset={asset('botanical-origin-mobile.webp')}
         />
         <img
+          data-botanical-media
           src={asset('botanical-origin-desktop.webp')}
           width="1920"
           height="1080"
-          alt=""
+          alt={altFor('botanical-origin-desktop.webp')}
           loading="lazy"
           decoding="async"
         />
@@ -61,10 +90,11 @@ const staticLayers = [
       <div class="botanical-studies">
         {studies.map((study) => (
           <img
+            data-botanical-media
             src={asset(`${study.id}.webp`)}
             width="320"
             height="420"
-            alt=""
+            alt={altFor(`${study.id}.webp`)}
             loading="lazy"
             decoding="async"
             class="botanical-study"
@@ -76,28 +106,31 @@ const staticLayers = [
       </div>
       <div class="botanical-apparatus botanical-mortar" data-layer="mortar">
         <img
+          data-botanical-media
           src={asset('preparation-device.webp')}
           width="760"
           height="620"
-          alt=""
+          alt={altFor('preparation-device.webp')}
           loading="lazy"
         />
         <img
+          data-botanical-media
           class="botanical-pestle"
           data-layer="pestle"
           src={asset('preparation-pestle.webp')}
           width="280"
           height="680"
-          alt=""
+          alt={altFor('preparation-pestle.webp')}
           loading="lazy"
         />
       </div>
       <div class="botanical-fragments" data-layer="fragments">
         <img
+          data-botanical-media
           src={asset('preparation-fragments.webp')}
           width="420"
           height="280"
-          alt=""
+          alt={altFor('preparation-fragments.webp')}
           loading="lazy"
         />
       </div>
@@ -107,14 +140,15 @@ const staticLayers = [
         data-vessel="brass-kinnam"
       >
         <img
+          data-botanical-media
           src={asset('brass-kinnam.webp')}
           width="1400"
           height="875"
-          alt=""
+          alt={altFor('brass-kinnam.webp')}
           loading="lazy"
         />
       </div>
-      <BotanicalExtractor animated />
+      <BotanicalExtractor animated lang={lang} />
       <div class="botanical-extract-stream" data-layer="extract-stream"></div>
       <div
         class="botanical-pourer"
@@ -122,10 +156,11 @@ const staticLayers = [
         data-vessel="brass-pourer"
       >
         <img
+          data-botanical-media
           src={asset('brass-pourer.webp')}
           width="800"
           height="600"
-          alt=""
+          alt={altFor('brass-pourer.webp')}
           loading="lazy"
         />
       </div>
@@ -138,10 +173,11 @@ const staticLayers = [
           <div class="botanical-fill" data-layer="fill"></div>
         </div>
         <img
+          data-botanical-media
           src={asset('brass-kinnam.webp')}
           width="600"
           height="600"
-          alt=""
+          alt={altFor('brass-kinnam.webp')}
           loading="lazy"
         />
       </div>
@@ -151,18 +187,20 @@ const staticLayers = [
         data-vessel="brass-uruli"
       >
         <img
+          data-botanical-media
           src={asset('brass-uruli.webp')}
           width="900"
           height="600"
-          alt=""
+          alt={altFor('brass-uruli.webp')}
           loading="lazy"
         />
         <div class="botanical-ripples" data-layer="ripples">
           <img
+            data-botanical-media
             src={asset('liquid-reflections.webp')}
             width="600"
             height="280"
-            alt=""
+            alt={altFor('liquid-reflections.webp')}
             loading="lazy"
           />
           <i></i>
@@ -171,29 +209,32 @@ const staticLayers = [
         </div>
       </div>
       <img
+        data-botanical-media
         class="botanical-stream"
         data-layer="stream"
         src={asset('dark-oil-stream.webp')}
         width="150"
         height="800"
-        alt=""
+        alt={altFor('dark-oil-stream.webp')}
         loading="lazy"
       />
       <img
+        data-botanical-media
         class="botanical-drop"
         data-layer="drop"
         src={asset('dark-oil-droplet.webp')}
         width="160"
         height="240"
-        alt=""
+        alt={altFor('dark-oil-droplet.webp')}
         loading="lazy"
       />
       <div class="botanical-product" data-layer="product">
         <img
+          data-botanical-media
           src={asset('authentic-product-cutout.webp')}
           width="245"
           height="745"
-          alt=""
+          alt={altFor('authentic-product-cutout.webp')}
           loading="lazy"
           decoding="async"
         />
@@ -217,26 +258,28 @@ const staticLayers = [
                 srcset={asset('botanical-origin-mobile.webp')}
               />
               <img
+                data-botanical-media
                 src={asset('botanical-origin-desktop.webp')}
                 width="1600"
                 height="900"
-                alt=""
+                alt={altFor('botanical-origin-desktop.webp')}
                 loading="lazy"
               />
             </picture>
             {index === 4 ? (
               <>
-                <BotanicalExtractor />
+                <BotanicalExtractor lang={lang} />
                 <div class="botanical-extract-stream"></div>
                 <div class="botanical-apparatus botanical-receiver botanical-extract-receiver">
                   <div class="botanical-liquid-aperture">
                     <div class="botanical-fill"></div>
                   </div>
                   <img
+                    data-botanical-media
                     src={asset('brass-kinnam.webp')}
                     width="600"
                     height="600"
-                    alt=""
+                    alt={altFor('brass-kinnam.webp')}
                     loading="lazy"
                   />
                 </div>
@@ -245,10 +288,11 @@ const staticLayers = [
               <div class="botanical-static-transfer">
                 <div class="botanical-pourer">
                   <img
+                    data-botanical-media
                     src={asset('brass-pourer.webp')}
                     width="800"
                     height="600"
-                    alt=""
+                    alt={altFor('brass-pourer.webp')}
                     loading="lazy"
                   />
                 </div>
@@ -257,32 +301,31 @@ const staticLayers = [
                     <div class="botanical-fill"></div>
                   </div>
                   <img
+                    data-botanical-media
                     src={asset('brass-kinnam.webp')}
                     width="600"
                     height="600"
-                    alt=""
+                    alt={altFor('brass-kinnam.webp')}
                     loading="lazy"
                   />
                 </div>
                 <img
+                  data-botanical-media
                   class="botanical-stream"
                   src={asset('dark-oil-stream.webp')}
                   width="150"
                   height="800"
-                  alt=""
+                  alt={altFor('dark-oil-stream.webp')}
                   loading="lazy"
                 />
               </div>
             ) : (
               <img
-                src={
-                  staticLayers[index]
-                    ? asset(staticLayers[index]!)
-                    : originals.references.product.src
-                }
+                data-botanical-media
+                src={staticLayers[index] ? asset(staticLayers[index]!) : ''}
                 width="900"
                 height="900"
-                alt=""
+                alt={staticLayers[index] ? altFor(staticLayers[index]!) : ''}
                 loading="lazy"
               />
             )}
@@ -293,10 +336,11 @@ const staticLayers = [
               aria-hidden="true"
             >
               <img
+                data-botanical-media
                 src={asset('brass-kinnam.webp')}
                 width="1400"
                 height="875"
-                alt=""
+                alt={altFor('brass-kinnam.webp')}
                 loading="lazy"
               />
             </div>
@@ -307,9 +351,7 @@ const staticLayers = [
             <p>{t.lines[index]}</p>
             {index === 7 && (
               <>
-                <span class="sr-only">
-                  {originals.references.product.alt[lang]}
-                </span>
+                <span class="sr-only">{authenticProduct.alt[lang]}</span>
                 <p class="botanical-claim">
                   <span>60</span> <span>Natural Ingredients</span>
                 </p>

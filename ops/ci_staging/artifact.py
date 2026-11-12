@@ -5,7 +5,7 @@ from pathlib import Path
 import stat
 import zipfile
 from html.parser import HTMLParser
-from .trust import ORIGIN, BRANCH, HERO_ORIGIN, WORKFLOW_ID, MAX_TOTAL, MAX_ZIP, require, valid_sha, safe_name, digest
+from .trust import ORIGIN, BRANCH, HERO_ORIGIN, WORKFLOW_ID, MAX_TOTAL, MAX_ZIP, BOTANICAL_ROOT, require, valid_sha, safe_name, digest
 
 
 class Page(HTMLParser):
@@ -99,6 +99,10 @@ def validate(m,archive,policy,sha,run):
             require(not any('mariyasnaturals.com' in href for href in page.links), 'Purchasing link is forbidden')
         elif name=='robots.txt':require(data==b'User-agent: *\nDisallow: /\n', 'Unsafe robots policy')
         elif name in ('sitemap-index.xml','sitemap-0.xml'):require(ORIGIN.encode() in data and b'mariyasnaturals.in' not in data, 'Wrong sitemap origin')
+        elif name.startswith(BOTANICAL_ROOT):
+            import re
+            require(re.fullmatch(r'_botanical-assets/[A-Za-z0-9_.-]+\.webp',name), 'Unexpected botanical release file')
+            require(name in policy['public_files'], 'Botanical media must be pinned in the reviewed policy')
         else:
             import re
             require(re.fullmatch(r'_astro/[A-Za-z0-9_.-]+\.(css|js)',name), 'Unexpected release file')

@@ -17,7 +17,10 @@ import {
   commerceConfig,
   commerceDestinations,
 } from '../src/config/commerce.mjs';
-import { assertApprovedMedia } from '../src/config/media-policy.mjs';
+import {
+  assertApprovedBotanicalMedia,
+  assertApprovedMedia,
+} from '../src/config/media-policy.mjs';
 import {
   assertCinematicAssets,
   cinematicRecords,
@@ -246,6 +249,13 @@ function approvedPublic(root) {
     for (const asset of manifest.media.flatMap((m) => m.derivatives))
       expected.set(asset.localAssetPath.slice(1), asset.sha256);
   }
+  // The reviewed botanical release set is pinned exactly like owner originals.
+  const botanical = json(resolve(root, 'src/data/botanical-media.json'));
+  const botanicalPaths = assertApprovedBotanicalMedia(botanical);
+  for (const asset of botanical.media.flatMap((m) => m.derivatives))
+    expected.set(asset.localAssetPath.slice(1), asset.sha256);
+  if (expected.size === 0 || botanicalPaths.size !== botanical.media.length)
+    throw new Error('Reviewed botanical media inventory is incomplete');
   const files = tree(resolve(root, 'public'));
   for (const [path, data] of files) {
     if (expected.has(path))

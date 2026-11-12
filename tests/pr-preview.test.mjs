@@ -34,7 +34,13 @@ function temporary(t) {
 function fixture(t) {
   const path = temporary(t);
   mkdirSync(resolve(path, 'src/data'), { recursive: true });
-  for (const name of ['cinematic-assets', 'media-manifest', 'brand-media'])
+  for (const name of [
+    'cinematic-assets',
+    'media-manifest',
+    'brand-media',
+    // The reviewed botanical release set is now part of the approved public tree.
+    'botanical-media',
+  ])
     cpSync(
       resolve(root, `src/data/${name}.json`),
       resolve(path, `src/data/${name}.json`),
