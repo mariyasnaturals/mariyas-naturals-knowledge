@@ -315,6 +315,28 @@ test('preview context rejects dirty, wrong-branch/repository, stale-head and for
   };
   writeFileSync(eventFile, JSON.stringify(event));
   assert.equal(previewContext(repo, env).pullRequest, 3);
+  const botanicalEvent = structuredClone(event);
+  botanicalEvent.pull_request.head.ref = 'feature/botanical-journey-review';
+  botanicalEvent.pull_request.base.ref = 'feature/cinematic-homepage';
+  const botanicalEnv = {
+    ...env,
+    GITHUB_HEAD_REF: 'feature/botanical-journey-review',
+  };
+  writeFileSync(eventFile, JSON.stringify(botanicalEvent));
+  assert.equal(
+    previewContext(repo, botanicalEnv).branch,
+    'feature/botanical-journey-review',
+  );
+  for (const baseRef of ['main', 'feature/authentic-media-typography']) {
+    botanicalEvent.pull_request.base.ref = baseRef;
+    writeFileSync(eventFile, JSON.stringify(botanicalEvent));
+    assert.throws(() => previewContext(repo, botanicalEnv), /review base/);
+  }
+  botanicalEvent.pull_request.base.ref = 'feature/cinematic-homepage';
+  botanicalEvent.pull_request.head.repo.full_name = 'other/fork';
+  writeFileSync(eventFile, JSON.stringify(botanicalEvent));
+  assert.throws(() => previewContext(repo, botanicalEnv), /Fork context/);
+  writeFileSync(eventFile, JSON.stringify(event));
   const pushEvent = {
     repository: { full_name: name },
     ref: 'refs/heads/feature/cinematic-homepage',
@@ -328,6 +350,12 @@ test('preview context rejects dirty, wrong-branch/repository, stale-head and for
     GITHUB_SHA: sha,
   };
   assert.equal(previewContext(repo, pushEnv).event, 'push');
+  pushEvent.ref = 'refs/heads/feature/botanical-journey-review';
+  writeFileSync(eventFile, JSON.stringify(pushEvent));
+  assert.throws(() =>
+    previewContext(repo, { ...pushEnv, GITHUB_REF: pushEvent.ref }),
+  );
+  pushEvent.ref = 'refs/heads/feature/cinematic-homepage';
   pushEvent.after = '0'.repeat(40);
   writeFileSync(eventFile, JSON.stringify(pushEvent));
   assert.throws(() => previewContext(repo, pushEnv), /event SHA/);
