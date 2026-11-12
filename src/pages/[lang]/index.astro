@@ -3,6 +3,7 @@ import ArrowIcon from '../../components/ArrowIcon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import StorytellingSection from '../../components/StorytellingSection.astro';
+import BotanicalJourney from '../../components/botanical/BotanicalJourney.astro';
 import IngredientPreview from '../../components/IngredientPreview.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import ProductCard from '../../components/ProductCard.astro';
@@ -27,6 +28,7 @@ const t = dictionaries[lang];
   <SiteHeader lang={lang} t={t} />
   <main id="main" tabindex="-1">
     <StorytellingSection t={t} lang={lang} />
+    <BotanicalJourney lang={lang} />
     <IngredientPreview t={t} />
     <CollectionHighlights t={t} lang={lang} />
     <section id="products" class="product-section section">

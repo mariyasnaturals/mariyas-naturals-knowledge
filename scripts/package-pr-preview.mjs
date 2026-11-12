@@ -17,7 +17,10 @@ import {
   commerceConfig,
   commerceDestinations,
 } from '../src/config/commerce.mjs';
-import { assertApprovedMedia } from '../src/config/media-policy.mjs';
+import {
+  assertApprovedBotanicalMedia,
+  assertApprovedMedia,
+} from '../src/config/media-policy.mjs';
 import {
   assertCinematicAssets,
   cinematicRecords,
@@ -28,6 +31,10 @@ const ORIGIN = 'https://www.mariyasnaturals.cloud';
 const REPOSITORY = 'mariyasnaturals/mariyas-naturals-knowledge';
 const BRANCH = 'feature/cinematic-homepage';
 const BASE = 'feature/authentic-media-typography';
+const REVIEW_PAIRS = new Map([
+  [BRANCH, BASE],
+  ['feature/botanical-journey-review', BRANCH],
+]);
 const sha256 = (data) => createHash('sha256').update(data).digest('hex');
 const json = (path) => JSON.parse(readFileSync(path, 'utf8'));
 const git = (root, ...args) =>
@@ -132,9 +139,13 @@ export function previewContext(root, env = process.env) {
       'Fork context is not admitted',
     );
     assert.equal(pr.base.repo.full_name, REPOSITORY);
-    assert.equal(pr.head.ref, BRANCH);
-    assert.equal(env.GITHUB_HEAD_REF, BRANCH);
-    assert.equal(pr.base.ref, BASE);
+    assert.ok(REVIEW_PAIRS.has(pr.head.ref), 'Unexpected PR review branch');
+    assert.equal(env.GITHUB_HEAD_REF, pr.head.ref);
+    assert.equal(
+      pr.base.ref,
+      REVIEW_PAIRS.get(pr.head.ref),
+      'Unexpected PR review base',
+    );
     assert.equal(
       pr.head.sha,
       sha,
@@ -153,7 +164,8 @@ export function previewContext(root, env = process.env) {
     Object.assign(context, {
       event: 'pull_request',
       pullRequest: event.number,
-      baseBranch: BASE,
+      branch: pr.head.ref,
+      baseBranch: pr.base.ref,
       baseSha: pr.base.sha,
       triggerSha: env.GITHUB_SHA,
       runId: env.GITHUB_RUN_ID,
@@ -162,10 +174,11 @@ export function previewContext(root, env = process.env) {
     });
   } else {
     assert.equal(
-      git(root, 'branch', '--show-current'),
-      BRANCH,
+      REVIEW_PAIRS.has(git(root, 'branch', '--show-current')),
+      true,
       'Local preview requires the intended feature branch',
     );
+    context.branch = git(root, 'branch', '--show-current');
   }
   return context;
 }
@@ -236,6 +249,13 @@ function approvedPublic(root) {
     for (const asset of manifest.media.flatMap((m) => m.derivatives))
       expected.set(asset.localAssetPath.slice(1), asset.sha256);
   }
+  // The reviewed botanical release set is pinned exactly like owner originals.
+  const botanical = json(resolve(root, 'src/data/botanical-media.json'));
+  const botanicalPaths = assertApprovedBotanicalMedia(botanical);
+  for (const asset of botanical.media.flatMap((m) => m.derivatives))
+    expected.set(asset.localAssetPath.slice(1), asset.sha256);
+  if (expected.size === 0 || botanicalPaths.size !== botanical.media.length)
+    throw new Error('Reviewed botanical media inventory is incomplete');
   const files = tree(resolve(root, 'public'));
   for (const [path, data] of files) {
     if (expected.has(path))
@@ -363,7 +383,17 @@ export function previewInventory(
   };
 }
 
-export function writePreview(directory, output, source, inventory) {
+export function writePreview(
+  directory,
+  output,
+  source,
+  inventory,
+  reviewKind = 'cinematic',
+) {
+  assert.ok(
+    ['cinematic', 'botanical'].includes(reviewKind),
+    'Unknown review artifact type',
+  );
   assert.ok(validSha(source.sha), 'Invalid preview source SHA');
   assert.equal(
     new Set(inventory.files.map((f) => f.path)).size,
@@ -377,7 +407,7 @@ export function writePreview(directory, output, source, inventory) {
         .every((part) => /^[A-Za-z0-9_][A-Za-z0-9_.-]*$/.test(part)),
       'Unsafe archive path',
     );
-  const archive = `UNAPPROVED-cinematic-pr-preview-${source.sha}.zip`;
+  const archive = `UNAPPROVED-${reviewKind}-pr-preview-${source.sha}.zip`;
   mkdirSync(output); // Refuse an existing output directory, including symlinks/stale bundles.
   const notice = `${WARNING}\n\nLocal review only. Serve UNAPPROVED-PREVIEW/site/ on loopback.\nNot a release candidate, owner approval, signed manifest or deployment package.\nNever upload to a VPS or rename this bundle into release tooling.\n`;
   const result = JSON.parse(
