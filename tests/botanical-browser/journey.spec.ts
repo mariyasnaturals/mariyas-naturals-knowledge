@@ -125,10 +125,16 @@ for (const [width, height] of [
       await expect(journey.locator('.botanical-claim')).toHaveText(
         '60 Natural Ingredients',
       );
+      // The reviewed route is on-site; purchasing and store guards stay disabled.
       await expect(journey.locator('.botanical-cta')).toHaveAttribute(
         'href',
-        'https://www.mariyasnaturals.com/product/hair-care-oil-1l/',
+        '/en/products/mariyas-hair-oil-200-ml/',
       );
+      await expect(
+        journey.locator(
+          'a[href*="mariyasnaturals.com"]:not([data-source-reference])',
+        ),
+      ).toHaveCount(0);
       const seekTime = async (time: number) => {
         await page.evaluate(
           ({ top, height, progress }) =>

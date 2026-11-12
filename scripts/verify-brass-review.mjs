@@ -1,6 +1,6 @@
 // Unsigned artistic-media review checks. This does not register a trusted release policy.
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -21,8 +21,23 @@ export async function verifyBrassReview(manifest) {
     assert.equal(digest(readFileSync(prefix + old.file)), old.sha256);
   }
   assert.equal(report.previousAssets.length, 113);
-  for (const file of report.preservedFiles)
+  // The reviewed release integration records exactly which files change and why.
+  const integration = JSON.parse(
+    readFileSync(prefix + 'release-integration.json'),
+  );
+  const superseded = new Map(
+    integration.changedReviewFiles.map((item) => [item.file, item]),
+  );
+  for (const file of report.preservedFiles) {
+    if (superseded.has(file.file)) continue;
     assert.equal(digest(readFileSync(file.file)), file.sha256, file.file);
+  }
+  for (const path of superseded.keys())
+    assert.equal(
+      existsSync(path),
+      true,
+      'Superseded file must stay present: ' + path,
+    );
   const code = readFileSync('src/components/botanical/journey.ts', 'utf8');
   for (const block of report.preservedChoreography)
     assert.equal(

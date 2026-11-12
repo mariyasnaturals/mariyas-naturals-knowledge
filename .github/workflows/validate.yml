@@ -2,7 +2,13 @@ name: Validate foundation
 on:
   pull_request:
   push:
-    branches: [main, feature/astro-foundation, feature/cinematic-homepage]
+    branches:
+      [
+        main,
+        feature/astro-foundation,
+        feature/cinematic-homepage,
+        feature/botanical-journey-review,
+      ]
 permissions:
   contents: read
 jobs:
@@ -41,6 +47,8 @@ jobs:
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
+      - name: Verify the reviewed botanical release set
+        run: npm run test:botanical-assets
       - name: Browser and accessibility checks
         run: |
           npx playwright install --with-deps chromium

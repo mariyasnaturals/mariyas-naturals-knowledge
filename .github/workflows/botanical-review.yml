@@ -38,44 +38,22 @@ jobs:
         run: node --input-type=module -e 'import {previewContext} from "./scripts/package-pr-preview.mjs"; const c=previewContext(process.cwd()); if(c.event!=="pull_request" || c.branch!=="feature/botanical-journey-review" || c.baseBranch!=="feature/cinematic-homepage") throw new Error("Wrong review context"); console.log(c.sha);'
       - name: Check registered botanical layers and original product pixels
         run: npm run test:botanical-assets
-      - name: Validate unchanged default release build and media policy
+      - name: Build and validate the integrated release build
         run: |
           npm run build
           npm run test:static
           npm run test:media-policy
-      - name: Build the separate unapproved botanical review
-        run: npm run build:botanical-review
-      - name: Review packaging security regression tests
-        run: node --test tests/botanical-ci/*.test.mjs
       - name: Botanical browser, touch and accessibility tests
         run: |
-          npx playwright install --with-deps chromium ffmpeg
+          npx playwright install --with-deps chromium
           CHROMIUM_PATH="$(node --input-type=module -e 'import {chromium} from "@playwright/test"; console.log(chromium.executablePath())')" npx playwright test --config playwright.botanical.config.ts
-      - name: Record measured desktop and mobile scroll demonstrations
-        run: |
-          npm run preview:botanical-review > "$RUNNER_TEMP/botanical-review-server.log" 2>&1 &
-          REVIEW_SERVER_PID=$!
-          trap 'kill "$REVIEW_SERVER_PID" 2>/dev/null || true' EXIT
-          curl --retry 30 --retry-connrefused --retry-delay 1 --retry-max-time 45 -fsS http://127.0.0.1:4322/en/ -o /dev/null
-          CHROMIUM_PATH="$(node --input-type=module -e 'import {chromium} from "@playwright/test"; console.log(chromium.executablePath())')" node scripts/record-botanical-review.mjs
-      - name: Package exact-source UNAPPROVED botanical preview
-        run: node scripts/package-botanical-pr-preview.mjs
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: UNAPPROVED-botanical-preview-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
-          path: botanical-review-results/preview/
-          retention-days: 7
-          if-no-files-found: error
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: botanical-visual-evidence-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
           path: |
-            botanical-review-results/*.png
-            botanical-review-results/botanical-*.webm
-            botanical-review-results/browser-evidence.json
-            botanical-review-results/validation-report.json
+            botanical-review-results/recordings/
             review/botanical/asset-manifest.json
             review/botanical/reference-provenance.json
-            review/botanical/placement-map.json
+            review/botanical/release-integration.json
           retention-days: 7
-          if-no-files-found: error
+          if-no-files-found: warn

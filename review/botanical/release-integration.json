@@ -1,0 +1,73 @@
+{
+  "schema": "botanical-release-integration-supersession/v1",
+  "reviewedSource": "7c06805a51dce079bb37b559b1b3df532e0abe74",
+  "baselineSource": "c6cf669ff63856ed6fcb5cdaf2f9174534b1594a",
+  "purpose": "The reviewed PR #4 botanical work (commit 2c270de, reviewed head 7c06805) is integrated on the protected integration branch. This records which previously byte-identical review files necessarily change, the reviewed digest each replaces, and where the unchanged security controls are still proven.",
+  "approval": {
+    "ownerVisualApproval": "2026-11-12",
+    "scope": "Exactly the reviewed eight-stage journey, the 43 reviewed botanical media and the reviewed Kerala brass family. No new creative work."
+  },
+  "changedReviewFiles": [
+    {
+      "file": "src/config/media-policy.mjs",
+      "reviewSha256": "8c9db1aa8839de2ba1d72fd2827f1de96e7c0663dcc53d0b857c393dea581969",
+      "reason": "Adds the separately reviewed botanical release validator; the current .in image rules, commerce separation and product association checks are unchanged.",
+      "integratedSha256": "8d60313f48f6b0f09ee0f5b0ae5e72d0b48f09db05ebab0331cc4a0ec01c0433"
+    },
+    {
+      "file": "scripts/validate-media-policy.mjs",
+      "reviewSha256": "review-report-did-not-pin-this-file",
+      "reason": "Enforces the exact 43-file botanical set in generated output in addition to the existing .in checks.",
+      "integratedSha256": "b5f8736e4a379adbd8b075f3d2db072ecd77b3cc211c0c009b63b468ce40d603"
+    },
+    {
+      "file": ".github/workflows/validate.yml",
+      "reviewSha256": "7e4196ea74c7429cec444c57faec7546dd4692126fe70879cda17b52af73121d",
+      "reason": "Adds the integration branch to the existing push validation list and one hash-verification step. No step, permission or security job was removed.",
+      "integratedSha256": "9ef42db15a152ab8ccc95c89cfb0697ea2f334d97bdccc8ae8100cdf6e25ade5"
+    },
+    {
+      "file": "ops/ci_staging/trust.py",
+      "reviewSha256": "a1553835fbbf6d6d8002478600181433d4097e5630a90b2646949217ea93bbdb",
+      "reason": "Reviewed trust-version upgrade: the protected source branch and the botanical gate pins move to this release. Signature, replay, protection and inventory checks are unchanged.",
+      "integratedSha256": "283d24b69c52de2e483c3173ea21c0117d551eed4c09e45967885ad4aafe02e3"
+    },
+    {
+      "file": "ops/ci_staging/artifact.py",
+      "reviewSha256": "11478f379ec224311c6203accd822d54a00b3fe41cfa1eb3f9d8b44c59d33bff",
+      "reason": "Reviewed trust-version upgrade: authenticated archives may contain the pinned botanical derivatives and nothing else.",
+      "integratedSha256": "b8c2b197df45e9eb7bd9766bf29fcce84b16c2be031c31e694df1d0753ff9bfc"
+    },
+    {
+      "file": "ops/ci_staging/bundle.sha256",
+      "reviewSha256": "82bed463302f546fde16e6be826519aacb9654cb6f2e847f291d774e934d0ea0",
+      "reason": "Checksum inventory regenerated for the two upgraded runtime modules only.",
+      "integratedSha256": "8083bbd23fc21c0d33eddafbf37f0fb4dd10361ce48f6792200f2b2d496c8a51"
+    },
+    {
+      "file": ".github/workflows/botanical-review.yml",
+      "reviewSha256": null,
+      "reason": "Repointed at the integrated release build: the separate review-only build and its unsigned preview artifact were retired, while the required botanical-review check keeps verifying the 43 registered media and the fourteen browser tests against the pages that actually ship.",
+      "integratedSha256": "9353c71b4c801f246a22a950d997c5f919d63b29b639b7b2553ff8da84633707"
+    }
+  ],
+  "unchangedSecurityControls": [
+    "ops/cinematic/owner-media-policy.json",
+    "ops/cinematic/media_policy.py",
+    "ops/cinematic/pull_deploy.py",
+    "ops/automatic_staging.py",
+    "src/config/commerce.mjs",
+    "public/cinematic/homepage-desktop.mp4",
+    "public/cinematic/homepage-mobile.mp4",
+    "public/cinematic/original-model.jpg",
+    "public/cinematic/original-product.jpg",
+    "src/components/StorytellingSection.astro",
+    "src/data/cinematic-assets.json"
+  ],
+  "integratedRelease": {
+    "branch": "feature/botanical-journey-review",
+    "trustModule": "ops/ci_staging/trust.py",
+    "bundleDigest": "8083bbd23fc21c0d33eddafbf37f0fb4dd10361ce48f6792200f2b2d496c8a51",
+    "servedBotanicalMedia": 43
+  }
+}

@@ -3,6 +3,7 @@ import ArrowIcon from '../../components/ArrowIcon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import StorytellingSection from '../../components/StorytellingSection.astro';
+import BotanicalJourney from '../../components/botanical/BotanicalJourney.astro';
 import IngredientPreview from '../../components/IngredientPreview.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import ProductCard from '../../components/ProductCard.astro';
@@ -16,12 +17,6 @@ export function getStaticPaths() {
 }
 const lang = Astro.params.lang as Locale;
 const t = dictionaries[lang];
-// Review-only until new media receive approval under the existing release policy.
-const BotanicalJourney =
-  import.meta.env.BOTANICAL_JOURNEY_REVIEW === 'true'
-    ? (await import('../../components/botanical/BotanicalJourney.astro'))
-        .default
-    : undefined;
 ---
 
 <BaseLayout
@@ -33,7 +28,7 @@ const BotanicalJourney =
   <SiteHeader lang={lang} t={t} />
   <main id="main" tabindex="-1">
     <StorytellingSection t={t} lang={lang} />
-    {BotanicalJourney && <BotanicalJourney lang={lang} />}
+    <BotanicalJourney lang={lang} />
     <IngredientPreview t={t} />
     <CollectionHighlights t={t} lang={lang} />
     <section id="products" class="product-section section">

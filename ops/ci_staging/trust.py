@@ -40,6 +40,10 @@ def git(repo, *args):
     return subprocess.check_output(['git', '-c', 'core.hooksPath=/dev/null', '-C', str(repo), *args], stderr=subprocess.PIPE)
 
 
+# Reviewed botanical release media are hash-pinned like other public files.
+BOTANICAL_ROOT = 'public/_botanical-assets/'
+
+
 def is_ui_file(name):
     # Everything else is CI authority. New tests/scripts/dependencies cannot silently weaken it.
     return name == 'README.md' or name == 'src/data/staging-preview-note.json' or any(name.startswith(p) for p in ['src/components/', 'src/styles/', 'src/i18n/', 'src/pages/'])
@@ -65,6 +69,15 @@ def make_trust(repo, sha):
     git(repo,'merge-base','--is-ancestor',HERO_ORIGIN,sha)
     gate = tree_policy(repo, sha)
     public = {name[7:]: {'sha256': value, 'bytes': int(git(repo, 'cat-file', '-s', sha+':'+name))} for name, value in gate.items() if name.startswith('public/')}
+    # In this repository the reviewed botanical release set must be complete and pinned.
+    if 'src/data/botanical-media.json' in gate:
+        botanical = json.loads(git(repo, 'show', sha+':src/data/botanical-media.json'))
+        served = {record['localAssetPath'][1:] for record in botanical['media']}
+        require(len(served) == 43 and botanical.get('status') == 'owner-approved-reviewed-botanical-release-media', 'Incomplete reviewed botanical release')
+        for path in served:
+            require(path.startswith(BOTANICAL_ROOT.removeprefix('public/')) and path in public, 'Reviewed botanical media must be pinned in the gate')
+        for path in gate:
+            require(not path.startswith(BOTANICAL_ROOT) or path.removeprefix('public/') in served, 'Unregistered botanical file in the protected gate')
     require(WORKFLOW in gate and len(public) > 4, 'Incomplete trust source')
     cinematic = json.loads(git(repo, 'show', sha+':src/data/cinematic-assets.json'))
     originals = [*cinematic['videos'].values(), *cinematic['references'].values()]
