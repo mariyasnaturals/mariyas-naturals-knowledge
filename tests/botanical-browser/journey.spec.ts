@@ -32,6 +32,33 @@ for (const [width, height] of [
         top: el.getBoundingClientRect().top + scrollY,
         height: el.getBoundingClientRect().height - innerHeight,
       }));
+      if (width < 760) {
+        await page.evaluate(
+          (top) => scrollTo({ top, behavior: 'instant' }),
+          metrics.top,
+        );
+        const beforeY = await page.evaluate(() => scrollY);
+        const client = await context.newCDPSession(page);
+        await client.send('Input.dispatchTouchEvent', {
+          type: 'touchStart',
+          touchPoints: [{ x: width * 0.6, y: height * 0.77 }],
+        });
+        for (let i = 1; i <= 16; i++) {
+          await client.send('Input.dispatchTouchEvent', {
+            type: 'touchMove',
+            touchPoints: [{ x: width * 0.6, y: height * 0.77 - i * 18 }],
+          });
+          await page.waitForTimeout(16);
+        }
+        await page.waitForTimeout(80);
+        await client.send('Input.dispatchTouchEvent', {
+          type: 'touchEnd',
+          touchPoints: [],
+        });
+        await expect
+          .poll(() => page.evaluate(() => scrollY))
+          .toBeGreaterThan(beforeY + 200);
+      }
       for (let i = 0; i < 8; i++) {
         const progress = i === 7 ? 0.985 : (i + 0.4) / 8;
         await page.evaluate(

@@ -60,16 +60,69 @@ try {
         await page.waitForTimeout(400);
         const client = await context.newCDPSession(page);
         // Actual browser input drives native scrolling; the site contains no autoplay journey.
-        const scroll = async (distance, speed) =>
-          client.send('Input.synthesizeScrollGesture', {
-            x: Math.round(width * 0.6),
-            y: Math.round(height * 0.65),
-            yDistance: -distance,
-            speed,
-            gestureSourceType: width < 760 ? 'touch' : 'mouse',
-            preventFling: true,
-          });
+        const progress = async () =>
+          Number(
+            await page
+              .locator('[data-botanical-journey]')
+              .getAttribute('data-progress'),
+          );
+        const scroll = async (distance, speed) => {
+          if (width >= 760) {
+            await client.send('Input.synthesizeScrollGesture', {
+              x: Math.round(width * 0.6),
+              y: Math.round(height * 0.65),
+              yDistance: -distance,
+              speed,
+              gestureSourceType: 'mouse',
+              preventFling: true,
+            });
+            return;
+          }
+          const target = (await page.evaluate(() => scrollY)) + distance;
+          for (let gesture = 0; gesture < 50; gesture++) {
+            const beforeY = await page.evaluate(() => scrollY);
+            const remaining = target - beforeY;
+            if (Math.abs(remaining) < 25) return;
+            const segment =
+              Math.sign(remaining) *
+              Math.min(Math.abs(remaining), height * 0.42);
+            const startY = height * (segment > 0 ? 0.78 : 0.26);
+            const steps = Math.max(8, Math.ceil(Math.abs(segment) / 20));
+            const delay = Math.max(
+              12,
+              Math.round(((Math.abs(segment) / speed) * 1000) / steps),
+            );
+            await client.send('Input.dispatchTouchEvent', {
+              type: 'touchStart',
+              touchPoints: [{ x: Math.round(width * 0.6), y: startY }],
+            });
+            for (let i = 1; i <= steps; i++) {
+              await client.send('Input.dispatchTouchEvent', {
+                type: 'touchMove',
+                touchPoints: [
+                  {
+                    x: Math.round(width * 0.6),
+                    y: startY - (segment * i) / steps,
+                  },
+                ],
+              });
+              await page.waitForTimeout(delay);
+            }
+            await page.waitForTimeout(80);
+            await client.send('Input.dispatchTouchEvent', {
+              type: 'touchEnd',
+              touchPoints: [],
+            });
+            await page.waitForTimeout(40);
+            const afterY = await page.evaluate(() => scrollY);
+            if (Math.abs(afterY - beforeY) < 2)
+              throw new Error('Native touch gesture did not move the document');
+          }
+          throw new Error('Native touch target was not reached');
+        };
         await scroll(metrics.distance * 0.985, 300);
+        await expect.poll(progress).toBeGreaterThan(0.96);
+        const forwardProgress = await progress();
         await page.waitForTimeout(1800);
         await page.screenshot({
           path: `${output}/${width}-final-full-resolution.png`,
@@ -84,9 +137,15 @@ try {
             .locator('[data-botanical-journey]')
             .getAttribute('data-progress'));
         await scroll(-metrics.distance * 0.55, 500);
+        await expect.poll(progress).toBeLessThan(0.5);
+        const reverseProgress = await progress();
         await page.waitForTimeout(600);
         await scroll(metrics.distance * 0.55, 500);
+        await expect.poll(progress).toBeGreaterThan(0.95);
+        const restoredProgress = await progress();
         await page.waitForTimeout(1200);
+        expect(paused).toBe(true);
+        expect(failures).toEqual([]);
         evidence.push({
           width,
           height,
@@ -95,8 +154,9 @@ try {
               ? 'Pixel 7 Chromium touch; not physical Android'
               : 'Desktop Chromium',
           nativeInput: true,
-          forward: true,
-          reverse: true,
+          forwardProgress,
+          reverseProgress,
+          restoredProgress,
           paused,
           errors: failures,
         });
