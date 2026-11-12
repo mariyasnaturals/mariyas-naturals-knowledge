@@ -120,8 +120,28 @@ try {
           }
           throw new Error('Native touch target was not reached');
         };
-        await scroll(metrics.distance * 0.985, 300);
-        await expect.poll(progress).toBeGreaterThan(0.96);
+        if (width < 760) {
+          // Native touch checkpoints make the approved bottle → feature → CTA order reviewable.
+          const advanceTo = async (target) =>
+            scroll(
+              metrics.top +
+                metrics.distance * target -
+                (await page.evaluate(() => scrollY)),
+              300,
+            );
+          await advanceTo(7.66 / 8.01);
+          await page.waitForTimeout(1000);
+          await page.screenshot({
+            path: `${output}/${width}-bottle-first-full-resolution.png`,
+          });
+          await advanceTo(7.79 / 8.01);
+          await page.waitForTimeout(1000);
+          await page.screenshot({
+            path: `${output}/${width}-claim-second-full-resolution.png`,
+          });
+          await advanceTo(0.995);
+        } else await scroll(metrics.distance * 0.995, 300);
+        await expect.poll(progress).toBeGreaterThan(0.985);
         const forwardProgress = await progress();
         await page.waitForTimeout(1800);
         await page.screenshot({
@@ -141,7 +161,7 @@ try {
         const reverseProgress = await progress();
         await page.waitForTimeout(600);
         await scroll(metrics.distance * 0.55, 500);
-        await expect.poll(progress).toBeGreaterThan(0.95);
+        await expect.poll(progress).toBeGreaterThan(0.98);
         const restoredProgress = await progress();
         await page.waitForTimeout(1200);
         expect(paused).toBe(true);
