@@ -16,5 +16,9 @@
   "group-E": "masters/group-E.png",
   "group-F": "masters/group-F.png",
   "pourer": "masters/pourer.png",
-  "extraction-filter": "masters/extraction-filter.png"
+  "extraction-filter": "masters/extraction-filter.png",
+  "brass-uruli": "masters/brass-uruli.png",
+  "brass-kinnam": "masters/brass-kinnam.png",
+  "brass-pourer": "masters/brass-pourer.png",
+  "brass-filter": "masters/brass-filter.png"
 }

@@ -772,3 +772,180 @@
     height: 42%;
   }
 }
+
+/* Heritage brass: opaque bowls expose only a bounded, top-facing liquid surface. */
+.botanical-receiver {
+  left: 50%;
+  top: 57%;
+  width: 40%;
+  height: auto;
+  aspect-ratio: 1393 / 877;
+}
+.botanical-liquid-aperture {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: ellipse(42% 22% at 50% 29%);
+  overflow: hidden;
+}
+.botanical-liquid-aperture .botanical-fill {
+  left: 8%;
+  top: 7%;
+  bottom: auto;
+  width: 84%;
+  height: 44%;
+  border-radius: 50%;
+  clip-path: none;
+  opacity: calc(0.25 + var(--collection, 1) * 0.75);
+  transform: scale(
+    calc(0.88 + var(--collection, 1) * 0.12),
+    calc(0.86 + var(--collection, 1) * 0.14)
+  );
+  transform-origin: 50% 50%;
+}
+.botanical-liquid-aperture .botanical-fill::before {
+  height: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px #344735;
+}
+.botanical-pourer {
+  left: 65.5%;
+  top: 13%;
+}
+.botanical-extract-stream {
+  height: 20.5%;
+}
+.botanical-static .botanical-extract-stream {
+  height: 19.4%;
+}
+.botanical-static-transfer .botanical-stream {
+  height: 26.7%;
+}
+.botanical-drop {
+  top: 62%;
+}
+.botanical-copper {
+  top: 33%;
+  height: auto;
+  aspect-ratio: 1400 / 811;
+}
+.botanical-copper .botanical-ripples {
+  left: 17%;
+  top: 19%;
+  width: 66%;
+  height: 40%;
+}
+.botanical-prep-bowl {
+  position: absolute;
+  left: 44%;
+  top: 73%;
+  width: 18%;
+  aspect-ratio: 1393 / 877;
+  z-index: 7;
+}
+.botanical-prep-bowl img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.botanical-journey[data-motion='scroll'] .botanical-static-prep {
+  display: none;
+}
+.botanical-extractor .botanical-filter-botanicals {
+  width: 48%;
+  height: 22%;
+  left: 26%;
+  top: 19%;
+}
+@media (max-width: 759px) {
+  .botanical-receiver {
+    left: 7%;
+    top: 60%;
+    width: 86%;
+    height: auto;
+  }
+  .botanical-pourer {
+    left: 47.5%;
+    top: 30.8%;
+  }
+  .botanical-extract-stream {
+    height: 14.8%;
+  }
+  .botanical-static .botanical-extract-stream {
+    height: 13%;
+  }
+  .botanical-static-transfer .botanical-stream {
+    height: 15.3%;
+  }
+  .botanical-drop {
+    top: 61%;
+  }
+  .botanical-copper {
+    left: 3%;
+    width: 94%;
+    height: auto;
+    top: 49%;
+  }
+  .botanical-prep-bowl {
+    left: 4%;
+    top: 72%;
+    width: 32%;
+  }
+  .botanical-extractor .botanical-filter-botanicals {
+    width: 64%;
+    left: 18%;
+  }
+}
+
+/* Anchor native-aspect utensil outlets to the streams across tall/tablet viewports. */
+.botanical-pourer {
+  --pour-width: min(27vw, calc(32svh * 1107 / 1163));
+  width: var(--pour-width);
+  height: auto;
+  aspect-ratio: 1107 / 1163;
+  left: calc(70.8% - var(--pour-width) * 0.022);
+  top: calc(41% - var(--pour-width) * 1163 / 1107 * 0.88);
+}
+.botanical-extractor {
+  --filter-width: min(28vw, calc(24svh * 1164 / 1024));
+  width: var(--filter-width);
+  height: auto;
+  aspect-ratio: 1164 / 1024;
+  left: calc(70.125% - var(--filter-width) * 0.5);
+  top: calc(48% - var(--filter-width) * 1024 / 1164);
+}
+@media (max-width: 759px) {
+  .botanical-pourer {
+    --pour-width: min(48vw, calc(24svh * 1107 / 1163));
+    left: calc(49.9% - var(--pour-width) * 0.022);
+    top: calc(51.5% - var(--pour-width) * 1163 / 1107 * 0.88);
+  }
+  .botanical-extractor {
+    --filter-width: min(50vw, calc(22svh * 1164 / 1024));
+    left: calc(50% - var(--filter-width) * 0.5);
+    top: calc(55% - var(--filter-width) * 1024 / 1164);
+  }
+}
+@media (max-height: 500px) and (min-width: 760px) {
+  .botanical-receiver {
+    width: min(40vw, calc(35svh * 1393 / 877));
+    left: calc(70% - min(40vw, calc(35svh * 1393 / 877)) / 2);
+  }
+  .botanical-copper {
+    width: min(58vw, calc(57svh * 1400 / 811));
+    left: calc(69% - min(58vw, calc(57svh * 1400 / 811)) / 2);
+  }
+  .botanical-pourer {
+    top: calc(49% - var(--pour-width) * 1163 / 1107 * 0.88);
+  }
+  .botanical-stream {
+    top: 49%;
+  }
+  .botanical-extractor {
+    top: calc(55% - var(--filter-width) * 1024 / 1164);
+  }
+  .botanical-extract-stream {
+    top: 55%;
+  }
+}

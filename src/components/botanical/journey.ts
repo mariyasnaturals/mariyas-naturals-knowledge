@@ -26,7 +26,7 @@ export function mountBotanicalJourney(root: HTMLElement) {
       root.dataset.motion = reduced ? 'reduced' : 'scroll';
       if (reduced) return;
       const elements = root.querySelectorAll(
-        '.botanical-study,.botanical-apparatus,.botanical-fragments,.botanical-stream,.botanical-drop,.botanical-product,.botanical-pourer,.botanical-extractor,.botanical-extract-stream',
+        '.botanical-study,.botanical-apparatus,.botanical-fragments,.botanical-stream,.botanical-drop,.botanical-product,.botanical-pourer,.botanical-extractor,.botanical-extract-stream,.botanical-prep-bowl',
       );
       gsap.set(elements, { autoAlpha: 0 });
       const stage = root.querySelector<HTMLElement>('.botanical-stage')!;
@@ -176,6 +176,19 @@ export function mountBotanicalJourney(root: HTMLElement) {
           { autoAlpha: 1, yPercent: 0, scale: 1, duration },
           start,
         );
+      // Layout-only geometry: native aspect ratios and the visible opaque-bowl opening.
+      // Evaluated on timeline initialization/resize, never on each scroll frame.
+      const flowHeight =
+        (name: string, extra = 0) =>
+        () =>
+          `${
+            ((layer('receiver').offsetTop +
+              layer('receiver').offsetHeight * 0.29 -
+              layer(name).offsetTop) /
+              stage.clientHeight) *
+              100 +
+            extra
+          }%`;
       reveal('mortar', 2.1, 0.6);
       tl.to(
         layer('pestle'),
@@ -183,6 +196,8 @@ export function mountBotanicalJourney(root: HTMLElement) {
         3.05,
       );
       reveal('fragments', 3.25, 0.2);
+      reveal('prep-bowl', 3.25, 0.2);
+      tl.to(layer('prep-bowl'), { autoAlpha: 0, duration: 0.4 }, 3.9);
       tl.to(
         layer('fragments'),
         { yPercent: 110, scale: 0.3, autoAlpha: 0, duration: 0.65 },
@@ -199,13 +214,13 @@ export function mountBotanicalJourney(root: HTMLElement) {
       tl.fromTo(
         layer('fill'),
         {
-          height: '8%',
+          '--collection': 0,
           backgroundColor: '#244a31',
           '--liquid-surface': '#244a31',
           '--liquid-edge': '#123827',
         },
         {
-          height: '56%',
+          '--collection': 1,
           backgroundColor: '#123827',
           '--liquid-surface': '#244a31',
           '--liquid-edge': '#123827',
@@ -220,9 +235,9 @@ export function mountBotanicalJourney(root: HTMLElement) {
       );
       tl.fromTo(
         layer('extract-stream'),
-        { height: mobile ? '27%' : '39.6%' },
+        { height: flowHeight('extract-stream', 1) },
         {
-          height: mobile ? '13.6%' : '20.4%',
+          height: flowHeight('extract-stream'),
           duration: 0.85,
           immediateRender: false,
         },
@@ -248,13 +263,13 @@ export function mountBotanicalJourney(root: HTMLElement) {
       tl.fromTo(
         layer('fill'),
         {
-          height: '8%',
+          '--collection': 0,
           backgroundColor: '#071a13',
           '--liquid-surface': '#071a13',
           '--liquid-edge': '#020a06',
         },
         {
-          height: '50%',
+          '--collection': 1,
           backgroundColor: '#071a13',
           '--liquid-surface': '#071a13',
           '--liquid-edge': '#020a06',
@@ -265,9 +280,9 @@ export function mountBotanicalJourney(root: HTMLElement) {
       );
       tl.fromTo(
         layer('stream'),
-        { height: mobile ? '30.5%' : '46.6%' },
+        { height: flowHeight('stream', 1) },
         {
-          height: mobile ? '18.9%' : '30.2%',
+          height: flowHeight('stream'),
           duration: 0.65,
           immediateRender: false,
         },

@@ -6,6 +6,8 @@ for (const [width, height] of [
   [1440, 900],
   [390, 844],
   [360, 800],
+  [414, 896],
+  [768, 1024],
 ]) {
   test(`${width}: continuous layers, forward/reverse/pause/resize, authentic final claim`, async ({
     browser,
@@ -77,6 +79,23 @@ for (const [width, height] of [
           )
           .toBeGreaterThan(0);
         await page.waitForTimeout(180);
+        for (const vessel of await journey
+          .locator('.botanical-stage [data-vessel]')
+          .all()) {
+          if (
+            await vessel.evaluate(
+              (el) => Number(getComputedStyle(el).opacity) > 0.8,
+            )
+          ) {
+            const v = await vessel.boundingBox();
+            expect(v!.x).toBeGreaterThanOrEqual(0);
+            expect(v!.x + v!.width).toBeLessThanOrEqual(width + 1);
+            expect(v!.y).toBeGreaterThan(75);
+            expect(v!.y + v!.height).toBeLessThan(
+              height - (width < 760 ? 65 : 5),
+            );
+          }
+        }
         await page.screenshot({
           path: `${output}/${width}-stage-${i + 1}.png`,
         });
@@ -122,6 +141,11 @@ for (const [width, height] of [
         journey
           .locator(selector)
           .evaluate((el) => Number(getComputedStyle(el).opacity));
+      await expect(
+        journey.locator(
+          '.botanical-stage img[src*="glass-receiving"],.botanical-stage img[src*="copper-oil-vessel"],.botanical-stage img[src*="extraction-filter"],.botanical-stage img[src*="/pouring-vessel"]',
+        ),
+      ).toHaveCount(0);
       // Fine green extraction from a botanical filter is distinct from finished-oil transfer.
       await seekTime(4.55);
       expect(await opacity('[data-layer="extractor"]')).toBe(1);
@@ -365,4 +389,56 @@ for (const lang of ['en', 'ml', 'hi', 'ta'])
     expect(copy!.y + copy!.height).toBeLessThan(844 - 65);
     await expect(page.locator('.botanical-cta')).toHaveCSS('opacity', '1');
     await page.screenshot({ path: `${output}/${lang}-mobile-final.png` });
+  });
+
+for (const [width, height] of [
+  [390, 844],
+  [768, 1024],
+])
+  test(`${width}: brass geometry survives orientation changes and image decoding`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height });
+    await page.goto('/en/');
+    await page.locator('#botanical-journey').scrollIntoViewIfNeeded();
+    const initial = await page.locator('.botanical-track').boundingBox();
+    await page
+      .locator('.botanical-stage img')
+      .evaluateAll((imgs) =>
+        Promise.all(imgs.map((img) => (img as HTMLImageElement).decode())),
+      );
+    expect(await page.locator('.botanical-track').boundingBox()).toEqual(
+      initial,
+    );
+    await page.setViewportSize({ width: height, height: width });
+    await page.waitForTimeout(200);
+    for (const time of [4.55, 5.55, 6.55]) {
+      await page.locator('.botanical-track').evaluate(
+        (el, time) =>
+          scrollTo({
+            top:
+              el.getBoundingClientRect().top +
+              scrollY +
+              ((el.getBoundingClientRect().height - innerHeight) * time) / 8.01,
+            behavior: 'instant',
+          }),
+        time,
+      );
+      await page.waitForTimeout(120);
+      for (const vessel of await page
+        .locator('.botanical-stage [data-vessel]')
+        .all()) {
+        if (
+          await vessel.evaluate(
+            (el) => Number(getComputedStyle(el).opacity) > 0.8,
+          )
+        ) {
+          const v = await vessel.boundingBox();
+          expect(v!.x).toBeGreaterThanOrEqual(0);
+          expect(v!.x + v!.width).toBeLessThanOrEqual(height + 1);
+          expect(v!.y).toBeGreaterThan(75);
+          expect(v!.y + v!.height).toBeLessThan(width - 5);
+        }
+      }
+    }
   });

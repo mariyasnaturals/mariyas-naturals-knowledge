@@ -19,8 +19,8 @@ const staticLayers = [
   'ingredient-07.webp',
   'ingredient-12.webp',
   'preparation-device.webp',
-  'glass-receiving-vessel.webp',
-  'copper-oil-vessel.webp',
+  'brass-kinnam.webp',
+  'brass-uruli.webp',
   'dark-oil-stream.webp',
   'authentic-product-cutout.webp',
 ];
@@ -101,30 +101,57 @@ const staticLayers = [
           loading="lazy"
         />
       </div>
+      <div
+        class="botanical-prep-bowl"
+        data-layer="prep-bowl"
+        data-vessel="brass-kinnam"
+      >
+        <img
+          src={asset('brass-kinnam.webp')}
+          width="1400"
+          height="875"
+          alt=""
+          loading="lazy"
+        />
+      </div>
       <BotanicalExtractor animated />
       <div class="botanical-extract-stream" data-layer="extract-stream"></div>
-      <div class="botanical-pourer" data-layer="pourer">
+      <div
+        class="botanical-pourer"
+        data-layer="pourer"
+        data-vessel="brass-pourer"
+      >
         <img
-          src={asset('pouring-vessel.webp')}
+          src={asset('brass-pourer.webp')}
           width="800"
           height="600"
           alt=""
           loading="lazy"
         />
       </div>
-      <div class="botanical-apparatus botanical-receiver" data-layer="receiver">
-        <div class="botanical-fill" data-layer="fill"></div>
+      <div
+        class="botanical-apparatus botanical-receiver"
+        data-layer="receiver"
+        data-vessel="brass-kinnam"
+      >
+        <div class="botanical-liquid-aperture">
+          <div class="botanical-fill" data-layer="fill"></div>
+        </div>
         <img
-          src={asset('glass-receiving-vessel.webp')}
+          src={asset('brass-kinnam.webp')}
           width="600"
           height="600"
           alt=""
           loading="lazy"
         />
       </div>
-      <div class="botanical-apparatus botanical-copper" data-layer="copper">
+      <div
+        class="botanical-apparatus botanical-copper"
+        data-layer="copper"
+        data-vessel="brass-uruli"
+      >
         <img
-          src={asset('copper-oil-vessel.webp')}
+          src={asset('brass-uruli.webp')}
           width="900"
           height="600"
           alt=""
@@ -202,9 +229,11 @@ const staticLayers = [
                 <BotanicalExtractor />
                 <div class="botanical-extract-stream"></div>
                 <div class="botanical-apparatus botanical-receiver botanical-extract-receiver">
-                  <div class="botanical-fill"></div>
+                  <div class="botanical-liquid-aperture">
+                    <div class="botanical-fill"></div>
+                  </div>
                   <img
-                    src={asset('glass-receiving-vessel.webp')}
+                    src={asset('brass-kinnam.webp')}
                     width="600"
                     height="600"
                     alt=""
@@ -216,7 +245,7 @@ const staticLayers = [
               <div class="botanical-static-transfer">
                 <div class="botanical-pourer">
                   <img
-                    src={asset('pouring-vessel.webp')}
+                    src={asset('brass-pourer.webp')}
                     width="800"
                     height="600"
                     alt=""
@@ -224,9 +253,11 @@ const staticLayers = [
                   />
                 </div>
                 <div class="botanical-apparatus botanical-receiver">
-                  <div class="botanical-fill"></div>
+                  <div class="botanical-liquid-aperture">
+                    <div class="botanical-fill"></div>
+                  </div>
                   <img
-                    src={asset('glass-receiving-vessel.webp')}
+                    src={asset('brass-kinnam.webp')}
                     width="600"
                     height="600"
                     alt=""
@@ -256,6 +287,20 @@ const staticLayers = [
               />
             )}
           </div>
+          {index === 3 && (
+            <div
+              class="botanical-prep-bowl botanical-static-prep"
+              aria-hidden="true"
+            >
+              <img
+                src={asset('brass-kinnam.webp')}
+                width="1400"
+                height="875"
+                alt=""
+                loading="lazy"
+              />
+            </div>
+          )}
           <div class="botanical-copy">
             <p class="eyebrow">{t.label}</p>
             <h3>{title}</h3>

@@ -1,0 +1,1323 @@
+{
+  "schema": "botanical-brass-review/v1",
+  "baselineSource": "94cb61ed1344122629c7023a77fe4201abaef5b6",
+  "deploymentAllowed": false,
+  "authorization": "Owner instruction: Kerala heritage brass vessel upgrade for PR #4 visual review. Final visual acceptance and trusted media/source promotion remain separate.",
+  "references": [
+    {
+      "file": "references/10541.jpg",
+      "sha256": "2cdb319e6b4dc69ff7bab979ea2deb59847aa60c37f5819225d0a0f331b19d40",
+      "bytes": 134036,
+      "width": 1280,
+      "height": 896,
+      "provenance": "owner-supplied visual direction, 2026-11-12",
+      "usage": "Vessel material/silhouette reference only; not verified factory or ingredient evidence; not served."
+    },
+    {
+      "file": "references/10540.jpg",
+      "sha256": "163d35fdd4c05f17ca579494571cc2fe208430c08be8e02fabb580f2c970bf3e",
+      "bytes": 131183,
+      "width": 1280,
+      "height": 1280,
+      "provenance": "owner-supplied visual direction, 2026-11-12",
+      "usage": "Vessel material/silhouette reference only; not verified factory or ingredient evidence; not served."
+    }
+  ],
+  "previousAssets": [
+    {
+      "file": "masters/landscape.png",
+      "sha256": "39519b59c9ba93733f068a687b5635b636d23b79c2b3f3e57281c28731a797a7",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1977896
+    },
+    {
+      "file": "masters/portrait.png",
+      "sha256": "c463babcac3d19570e5ac5e4622cd5faa84f583b5a1cd890f932d4d72f1a00b6",
+      "width": 941,
+      "height": 1672,
+      "bytes": 1816476
+    },
+    {
+      "file": "masters/mortar.png",
+      "sha256": "fbfb758d6c2c9d6eec286033379859cc3650427f8137be607887e23ffc7bed78",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2470962
+    },
+    {
+      "file": "masters/pestle.png",
+      "sha256": "0221233a53e0bd22c3df7856a7476a44e8ab044a78a363c3a9c15790228db1b3",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1984207
+    },
+    {
+      "file": "masters/glass.png",
+      "sha256": "92e3f949e011ab736cf38411faf0a461b2ed9ba99bcc28e512477ede53914e5e",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1878780
+    },
+    {
+      "file": "masters/copper.png",
+      "sha256": "0f994f0133232ce569e051b324153b8a90125437df3c741f5c81d9df6a7f8fc0",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2136271
+    },
+    {
+      "file": "masters/droplet.png",
+      "sha256": "396543ba6b64f91c09f219cfa717c22b6203e15e4c63eaa39b1696194713d07e",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1279871
+    },
+    {
+      "file": "masters/reflections.png",
+      "sha256": "161b99c2866e9268009037b83c4290fa267720a012533edf00e168790d0c42cb",
+      "width": 1774,
+      "height": 887,
+      "bytes": 910002
+    },
+    {
+      "file": "masters/fragments.png",
+      "sha256": "2aa161f4a8012e27cdf366f12227bb33c8df7e933ee9b030b433b39ccfaaec23",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2301731
+    },
+    {
+      "file": "masters/group-A.png",
+      "sha256": "de545c41aec52b0a464cd833b49db37e661e3ddd01f3821f1de1d58d36c42d0a",
+      "width": 2172,
+      "height": 724,
+      "bytes": 1159904
+    },
+    {
+      "file": "masters/group-B.png",
+      "sha256": "2b72ac48824f1900cfa2630976fc5739e1b656898d354f378a3146de824299a1",
+      "width": 2172,
+      "height": 724,
+      "bytes": 969219
+    },
+    {
+      "file": "masters/group-C.png",
+      "sha256": "64e82c18f18cf5dca2dcdc1ed4beaac1a6b129a034738a4706decab7c82d14e7",
+      "width": 2172,
+      "height": 724,
+      "bytes": 1191512
+    },
+    {
+      "file": "masters/group-D.png",
+      "sha256": "5c05f2e6f5d2001308113dbe4564823210e24728f321e862715cd344b933df89",
+      "width": 2172,
+      "height": 724,
+      "bytes": 994180
+    },
+    {
+      "file": "masters/group-E.png",
+      "sha256": "49be2ffe479dfcd6ee07729297d81a249074f3723ab1e9ebed1035f8f508ca01",
+      "width": 1774,
+      "height": 887,
+      "bytes": 1239119
+    },
+    {
+      "file": "masters/group-F.png",
+      "sha256": "277538997100596586ff0a5bd04edfa637bc4fc840af76873d022de6f6a3cb4f",
+      "width": 2172,
+      "height": 724,
+      "bytes": 869371
+    },
+    {
+      "file": "assets/botanical-origin-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/ingredient-world-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/preparation-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/extraction-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/dark-oil-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/final-reveal-desktop.webp",
+      "sha256": "bdad4d2d71f3946066f461c67ba011d03ad946f4021c37f19c2af75c2d082c1c",
+      "width": 1600,
+      "height": 900,
+      "bytes": 110954
+    },
+    {
+      "file": "assets/botanical-origin-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/ingredient-world-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/preparation-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/extraction-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/dark-oil-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/final-reveal-mobile.webp",
+      "sha256": "5d95e716bcbc2c17a4384b9717ddc6385adb273efbe8d3c1c9b9fef374cf3bb4",
+      "width": 900,
+      "height": 1600,
+      "bytes": 84940
+    },
+    {
+      "file": "assets/preparation-device.png",
+      "sha256": "0cf93dbd4b083d8ca8f742a9213fccb757455dee00629af19329af5b71a0bb03",
+      "width": 1100,
+      "height": 1022,
+      "bytes": 2018658
+    },
+    {
+      "file": "assets/preparation-device.webp",
+      "sha256": "35a28f82f628f10e09fa5da35ace0db7cbc99691f14f2d392570f29c526bd7b4",
+      "width": 1100,
+      "height": 1022,
+      "bytes": 369722
+    },
+    {
+      "file": "assets/preparation-pestle.png",
+      "sha256": "c9d55051ae86c163209118075f24f28fb24588571a5cd5db4a830aa1662965f5",
+      "width": 606,
+      "height": 1100,
+      "bytes": 766544
+    },
+    {
+      "file": "assets/preparation-pestle.webp",
+      "sha256": "cc98d1f131b9eb47e8b60b004625f4aba2dd594885757092e9c96e72dd39c2b9",
+      "width": 606,
+      "height": 1100,
+      "bytes": 146260
+    },
+    {
+      "file": "assets/glass-receiving-vessel.png",
+      "sha256": "dc6b8b91718961219049c721615d2ea709bbabb3f8be26f17eadf42a629a6f9a",
+      "width": 1100,
+      "height": 883,
+      "bytes": 1044794
+    },
+    {
+      "file": "assets/glass-receiving-vessel.webp",
+      "sha256": "869fc3e1c639ffa0b148274e6303fe8c7a5ddaf3cd19e8243b5a9039f560ffe4",
+      "width": 1100,
+      "height": 883,
+      "bytes": 407062
+    },
+    {
+      "file": "assets/copper-oil-vessel.png",
+      "sha256": "1fab0c25a7e825eedb11a95ca0ca26698cfb97d006afb5fdb2c7b01cb799a45c",
+      "width": 1100,
+      "height": 582,
+      "bytes": 933670
+    },
+    {
+      "file": "assets/copper-oil-vessel.webp",
+      "sha256": "6af86e7045b8c7a377a15e08e0f5da1a5a3aec2b00aaf8a5784148769c69a45f",
+      "width": 1100,
+      "height": 582,
+      "bytes": 147394
+    },
+    {
+      "file": "assets/dark-oil-droplet.png",
+      "sha256": "135e43a3c590196b612a0feef3e5bf7f5d8645558676eed4c9334d5fb595d6ef",
+      "width": 527,
+      "height": 1100,
+      "bytes": 418273
+    },
+    {
+      "file": "assets/dark-oil-droplet.webp",
+      "sha256": "bf8627233e91f8d5a38db3f541e568aae9bbbe2e7079909188a13018ae6372d5",
+      "width": 527,
+      "height": 1100,
+      "bytes": 62692
+    },
+    {
+      "file": "assets/liquid-reflections.png",
+      "sha256": "0f076506853899221889b64feddf6b67fe30ad2bd57d193ccfaa060bb9bfe87a",
+      "width": 1100,
+      "height": 343,
+      "bytes": 336525
+    },
+    {
+      "file": "assets/liquid-reflections.webp",
+      "sha256": "b09e40bd367559c3f4657bbda777ef4304d976495f0ef4c333763a06f398d77a",
+      "width": 1100,
+      "height": 343,
+      "bytes": 116760
+    },
+    {
+      "file": "assets/preparation-fragments.png",
+      "sha256": "ebdccd8e548cd3da1a902e475ed6f97564299bdc24f7032b701f7299019af1ce",
+      "width": 1100,
+      "height": 711,
+      "bytes": 958006
+    },
+    {
+      "file": "assets/preparation-fragments.webp",
+      "sha256": "ee00b592b45db4c2d0538e7fd0cd42eb96c3adde842b08504a275ec2c0ef9650",
+      "width": 1100,
+      "height": 711,
+      "bytes": 234358
+    },
+    {
+      "file": "assets/ingredient-01.png",
+      "sha256": "8d4e4e71c84f6626ded86263cc101cb5a4e4ecffc39b0f29ce6eadb55c0c028a",
+      "width": 402,
+      "height": 497,
+      "bytes": 229527
+    },
+    {
+      "file": "assets/ingredient-01.webp",
+      "sha256": "a1f277074a363924173adcc64a3f8b882aa6cd4aee5039d06b2054bfcef7cc5d",
+      "width": 402,
+      "height": 497,
+      "bytes": 45022
+    },
+    {
+      "file": "assets/ingredient-02.png",
+      "sha256": "8dd18031107e8d49fd13c74369c6c9f598a4c1a307e42c821b380f9834a344f3",
+      "width": 384,
+      "height": 584,
+      "bytes": 221608
+    },
+    {
+      "file": "assets/ingredient-02.webp",
+      "sha256": "5650b17d17c5567a6a30b54f0cf5f07774e4e631d671c6ac34e5064676b5f044",
+      "width": 384,
+      "height": 584,
+      "bytes": 81660
+    },
+    {
+      "file": "assets/ingredient-03.png",
+      "sha256": "9da9cd7fbc2a8e34b707fcc0355066fdfa817a7979c9234bbbc6a955377cea4c",
+      "width": 373,
+      "height": 584,
+      "bytes": 172486
+    },
+    {
+      "file": "assets/ingredient-03.webp",
+      "sha256": "a6c9d04261752571a1b3ddf5ef043a73118828f4dc2a77f2497e10c800d71e32",
+      "width": 373,
+      "height": 584,
+      "bytes": 36888
+    },
+    {
+      "file": "assets/ingredient-04.png",
+      "sha256": "325536c46ea63fed15b95b1be4962df8e56b911dec1cb9e463ace6eba4195465",
+      "width": 431,
+      "height": 563,
+      "bytes": 239726
+    },
+    {
+      "file": "assets/ingredient-04.webp",
+      "sha256": "4e5942ecbb93e9b16a78d230026fb158084eccffb5b51c6775ff5ab0315f29f2",
+      "width": 431,
+      "height": 563,
+      "bytes": 59984
+    },
+    {
+      "file": "assets/ingredient-05.png",
+      "sha256": "a40a5f638f8d842d9b6970ec27ed11ca0dd12312a40e395e3e6d7234e55dcaa1",
+      "width": 414,
+      "height": 515,
+      "bytes": 205872
+    },
+    {
+      "file": "assets/ingredient-05.webp",
+      "sha256": "45245c2d223d900ff30f3e655c31f06cede19a48faf3e7061b494843163a0bc9",
+      "width": 414,
+      "height": 515,
+      "bytes": 39678
+    },
+    {
+      "file": "assets/ingredient-06.png",
+      "sha256": "7b3d5082c87332e336152ca499959d3d812c5453d55269242939a7f3b43ed7f4",
+      "width": 414,
+      "height": 429,
+      "bytes": 199539
+    },
+    {
+      "file": "assets/ingredient-06.webp",
+      "sha256": "7dd037bc87e08abbb159562d047ccb565dff38e4c615a61ceac7f0a2e82e4a2d",
+      "width": 414,
+      "height": 429,
+      "bytes": 32484
+    },
+    {
+      "file": "assets/ingredient-07.png",
+      "sha256": "1c9b157c1e0396cfd698eb21006f63e7aebf3030173f5f33f8902031f0aff912",
+      "width": 401,
+      "height": 407,
+      "bytes": 147384
+    },
+    {
+      "file": "assets/ingredient-07.webp",
+      "sha256": "74579d80125e5f4246eda86fd5e40d27784742ce25fc32bb58bd44d0834c1fd5",
+      "width": 401,
+      "height": 407,
+      "bytes": 36088
+    },
+    {
+      "file": "assets/ingredient-08.png",
+      "sha256": "119fabd0af5b74d3af79fa71cc87f933a3fb9d6f4b6c1189fadaeeca3aadfc43",
+      "width": 426,
+      "height": 391,
+      "bytes": 209708
+    },
+    {
+      "file": "assets/ingredient-08.webp",
+      "sha256": "6e6a71ebc5c40e6d393d691d359357b50d7eb87ee1eddb62b3f735a21901d5d9",
+      "width": 426,
+      "height": 391,
+      "bytes": 34438
+    },
+    {
+      "file": "assets/ingredient-09.png",
+      "sha256": "0202cb7e85925c9562e19b5eff2e978d97b3a7917106bef5e00c96aaee1d9355",
+      "width": 392,
+      "height": 461,
+      "bytes": 177705
+    },
+    {
+      "file": "assets/ingredient-09.webp",
+      "sha256": "bff973f4dfe93568611f9721801b6fc59e0667a81882e5e27e30e033a17d1029",
+      "width": 392,
+      "height": 461,
+      "bytes": 51118
+    },
+    {
+      "file": "assets/ingredient-10.png",
+      "sha256": "2bc5f3a9ed050491590c214aa240d7fc208b997c9ac7d9e18bbdd0e658d587ba",
+      "width": 395,
+      "height": 437,
+      "bytes": 160492
+    },
+    {
+      "file": "assets/ingredient-10.webp",
+      "sha256": "f2d78c33389566a2b5c163ca13f6eefbefa7f0c0dc91d89ac23a8f4a0e71cbb8",
+      "width": 395,
+      "height": 437,
+      "bytes": 48954
+    },
+    {
+      "file": "assets/ingredient-11.png",
+      "sha256": "82e4def85ca35f57ebe3023b255b6488712935aaa2cc4385fce0618cde8a6639",
+      "width": 436,
+      "height": 538,
+      "bytes": 167733
+    },
+    {
+      "file": "assets/ingredient-11.webp",
+      "sha256": "932177d8bc1b20a8ef527433f662f09e64acb3d8c75fa36171516f46b1c021ec",
+      "width": 436,
+      "height": 538,
+      "bytes": 72448
+    },
+    {
+      "file": "assets/ingredient-12.png",
+      "sha256": "a2a79ec4fdd0aa970000cbee93ef73a20048b464919b1f67c5c8ae7ec076dd0d",
+      "width": 278,
+      "height": 584,
+      "bytes": 76163
+    },
+    {
+      "file": "assets/ingredient-12.webp",
+      "sha256": "4f168ec72840ca9c8d200ce02bd244920e288029522fcc41340eb0adf973286f",
+      "width": 278,
+      "height": 584,
+      "bytes": 24338
+    },
+    {
+      "file": "assets/ingredient-13.png",
+      "sha256": "68ac37407ea6503990927fcd9e63d19f800e60d1cc0a28668eb2440921ea9b81",
+      "width": 454,
+      "height": 559,
+      "bytes": 355401
+    },
+    {
+      "file": "assets/ingredient-13.webp",
+      "sha256": "af7526cc157d65d0cfe4e79c9541114da43f47200de4a833be3b78782b4863e3",
+      "width": 454,
+      "height": 559,
+      "bytes": 75242
+    },
+    {
+      "file": "assets/ingredient-14.png",
+      "sha256": "0904bbe81bdb907e9925faa915c675352e51c28802115601318a00af6235f407",
+      "width": 420,
+      "height": 496,
+      "bytes": 219063
+    },
+    {
+      "file": "assets/ingredient-14.webp",
+      "sha256": "58e29269eea081cbe0bd82de41300659ce54534b7da493d949a8a8a3b3031afb",
+      "width": 420,
+      "height": 496,
+      "bytes": 58088
+    },
+    {
+      "file": "assets/ingredient-15.png",
+      "sha256": "09d760174081c642ecf94b164e28c7fa2d2e7495019b1dedc9d0a0f78f24d11c",
+      "width": 334,
+      "height": 476,
+      "bytes": 235954
+    },
+    {
+      "file": "assets/ingredient-15.webp",
+      "sha256": "d4e61db561cff5fc0145852b54c818e1e164c6b2473cac9f3388f1cb53fcbb13",
+      "width": 334,
+      "height": 476,
+      "bytes": 49328
+    },
+    {
+      "file": "assets/ingredient-16.png",
+      "sha256": "8c4c4f6d7cd8b6a713101c0382eda6c49885808b757a9c8a18dbb22f02007b77",
+      "width": 390,
+      "height": 360,
+      "bytes": 190380
+    },
+    {
+      "file": "assets/ingredient-16.webp",
+      "sha256": "7b53d289913843bcead7d6cd21eea0c9f8d1b87d93c1f4690d4cd0e3239641a4",
+      "width": 390,
+      "height": 360,
+      "bytes": 41354
+    },
+    {
+      "file": "assets/ingredient-17.png",
+      "sha256": "9c40a9e3be76cd6a11864c62e58c27131b3ed0f514bd5780ee254fa757be2496",
+      "width": 348,
+      "height": 315,
+      "bytes": 156492
+    },
+    {
+      "file": "assets/ingredient-17.webp",
+      "sha256": "4d98b205f68fe39f1f21dff4a5cf6b0b141ae489baff05698d8daafdd7a81c6b",
+      "width": 348,
+      "height": 315,
+      "bytes": 30592
+    },
+    {
+      "file": "assets/ingredient-18.png",
+      "sha256": "ecc36e23714994220836c7aa528d0b2153461e81275af1997ec736174bf2a395",
+      "width": 403,
+      "height": 381,
+      "bytes": 254219
+    },
+    {
+      "file": "assets/ingredient-18.webp",
+      "sha256": "876f938ea0b8eaa4b84c7a065f1b2c4310835953c66656e014a4f7beb00d6523",
+      "width": 403,
+      "height": 381,
+      "bytes": 48638
+    },
+    {
+      "file": "assets/ingredient-19.png",
+      "sha256": "803c9038b1d25f343bf6b5c0b670d9c6773b5add5c66c3dc430f4a835d91759f",
+      "width": 380,
+      "height": 337,
+      "bytes": 189681
+    },
+    {
+      "file": "assets/ingredient-19.webp",
+      "sha256": "26590c68fbc8ecac46bc10731b4f572e81237da22e042f260ff1aba30618ee88",
+      "width": 380,
+      "height": 337,
+      "bytes": 41670
+    },
+    {
+      "file": "assets/ingredient-20.png",
+      "sha256": "d4d0a9669e2c4a00cce08f034e3fb2383b17d7e793f558805c75975518473ee0",
+      "width": 378,
+      "height": 256,
+      "bytes": 110758
+    },
+    {
+      "file": "assets/ingredient-20.webp",
+      "sha256": "b76e479429bf308da44e8deb3ce6b90ec43f150eda8b5d5508556d4bfa803ecb",
+      "width": 378,
+      "height": 256,
+      "bytes": 24752
+    },
+    {
+      "file": "assets/ingredient-21.png",
+      "sha256": "bdf35beefbd7b31517613510c2eefddf5ee9c3a0df625341d4eda242e8be6fb1",
+      "width": 287,
+      "height": 584,
+      "bytes": 216233
+    },
+    {
+      "file": "assets/ingredient-21.webp",
+      "sha256": "9c9d11a9cb40c8051d412a48f9ff474aa85b37b273f019b12586ee5f3b273ee1",
+      "width": 287,
+      "height": 584,
+      "bytes": 75992
+    },
+    {
+      "file": "assets/ingredient-22.png",
+      "sha256": "1a46095b58ff7fe4c24244433478ac936929f36edcd819b03bbf0b9b61a7e68d",
+      "width": 361,
+      "height": 584,
+      "bytes": 235233
+    },
+    {
+      "file": "assets/ingredient-22.webp",
+      "sha256": "ba64ff5d4a44f85332cb897a7c3f5119160f881fa6012bfe199fd08542644c3f",
+      "width": 361,
+      "height": 584,
+      "bytes": 66876
+    },
+    {
+      "file": "assets/ingredient-23.png",
+      "sha256": "9dac3091db47bb6b8b3ab4b75e608b135ffbd7e55767cad7cd2c30cd8c3746df",
+      "width": 357,
+      "height": 584,
+      "bytes": 277130
+    },
+    {
+      "file": "assets/ingredient-23.webp",
+      "sha256": "a5b01e515da6e44b19e64b5b6acc0db42067a956e404e9333cf332a01cf19eff",
+      "width": 357,
+      "height": 584,
+      "bytes": 49474
+    },
+    {
+      "file": "assets/ingredient-24.png",
+      "sha256": "d7982f30eb537a3a6a890df1d044dd33df0a6bfae68a831618f05117e724a9f2",
+      "width": 388,
+      "height": 581,
+      "bytes": 183068
+    },
+    {
+      "file": "assets/ingredient-24.webp",
+      "sha256": "3ab010fe3d19bbf95847bd9c10a74ca72159a07187528e6d84ff7e5234ffe88d",
+      "width": 388,
+      "height": 581,
+      "bytes": 57414
+    },
+    {
+      "file": "assets/ingredient-25.png",
+      "sha256": "d8ddc57e7fb63ffab01b5c88a81316cf4aa5c2c998a4cb67b58b7f40329cb74c",
+      "width": 202,
+      "height": 584,
+      "bytes": 67056
+    },
+    {
+      "file": "assets/ingredient-25.webp",
+      "sha256": "ee52cdd25d86d9cb9b1e2e35c1f813824dd71aec24dccfd81db5f76e766d84ba",
+      "width": 202,
+      "height": 584,
+      "bytes": 21934
+    },
+    {
+      "file": "assets/ingredient-26.png",
+      "sha256": "2458ea94d6daad921120f38b5105d373d26f0f14c8f9017405ff34689e3dfff7",
+      "width": 404,
+      "height": 413,
+      "bytes": 188728
+    },
+    {
+      "file": "assets/ingredient-26.webp",
+      "sha256": "bcf0a8caffdc751cf1aff76baa2e532f4f548d33473fb518766163ecab34b5c8",
+      "width": 404,
+      "height": 413,
+      "bytes": 36052
+    },
+    {
+      "file": "assets/ingredient-27.png",
+      "sha256": "337f1ec1971a80f7daf6f2b644cbdf52333bff07763a3a2a34ab0ca6d6c3be11",
+      "width": 374,
+      "height": 455,
+      "bytes": 188160
+    },
+    {
+      "file": "assets/ingredient-27.webp",
+      "sha256": "428ec4cfc566034108b66e60c83d48eeb612ff34e4521cf2ebcf2c5d0e45ab3a",
+      "width": 374,
+      "height": 455,
+      "bytes": 42978
+    },
+    {
+      "file": "assets/ingredient-28.png",
+      "sha256": "e9ab32f9d1113c33f171c6441935fc53177453a9250527977e0ebe4e28bd91bd",
+      "width": 399,
+      "height": 547,
+      "bytes": 167551
+    },
+    {
+      "file": "assets/ingredient-28.webp",
+      "sha256": "8e56d4ead1f7b6cb0605275a691826267e5dc0fabf8b2040a13b65795e620d62",
+      "width": 399,
+      "height": 547,
+      "bytes": 54766
+    },
+    {
+      "file": "assets/ingredient-29.png",
+      "sha256": "d7b66d1e0b86e516c9788650243646711a1c6df26445a17c392c878b73be5d7c",
+      "width": 309,
+      "height": 389,
+      "bytes": 124496
+    },
+    {
+      "file": "assets/ingredient-29.webp",
+      "sha256": "bc2a622063b8b930caf6b44e1de93686a325a465019287a45558759196891c02",
+      "width": 309,
+      "height": 389,
+      "bytes": 29742
+    },
+    {
+      "file": "assets/ingredient-30.png",
+      "sha256": "146182fe692268ccc9ac4f9e2b61b749743e24c1a50ad29c5dad6195b4ddc7d0",
+      "width": 369,
+      "height": 351,
+      "bytes": 133470
+    },
+    {
+      "file": "assets/ingredient-30.webp",
+      "sha256": "6103f9470e354eb24ee483b3085f29b33feefd2d478b0c95f35bfc644a323da8",
+      "width": 369,
+      "height": 351,
+      "bytes": 32276
+    },
+    {
+      "file": "assets/authentic-product.jpg",
+      "sha256": "be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65",
+      "width": 1280,
+      "height": 1108,
+      "bytes": 219940
+    },
+    {
+      "file": "assets/authentic-product-cutout.png",
+      "sha256": "c40e13bfb781b53f6fa1a73455e9bcf269591c482bc5b44131cae78f926a2854",
+      "width": 245,
+      "height": 745,
+      "bytes": 436963
+    },
+    {
+      "file": "assets/authentic-product-cutout.webp",
+      "sha256": "ce2a3916e461b4b7d36febb46e05b7c6ca702e2c07b7acf1c35f9c6e4ce44acb",
+      "width": 245,
+      "height": 745,
+      "bytes": 173680
+    },
+    {
+      "file": "masters/stream.png",
+      "sha256": "96e5c8b45294935f65cc85fe0f0d3c28e5e489aeb79ef7dd74445cb39992368a",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 800348
+    },
+    {
+      "file": "assets/dark-oil-stream.png",
+      "sha256": "5a37aa95ae3ed4bd269eaee82159ffe457b8dfb3522e020eab4bcdd5ccb276ef",
+      "width": 132,
+      "height": 1100,
+      "bytes": 67469
+    },
+    {
+      "file": "assets/dark-oil-stream.webp",
+      "sha256": "60719a98faa4a0c966537c00b0f7352bc72c34753d3b86d76354d01f3a542a5d",
+      "width": 132,
+      "height": 1100,
+      "bytes": 19230
+    },
+    {
+      "file": "masters/pourer.png",
+      "sha256": "ac3c18dfcc7b5de56b5ab77b788e77ac4feb36d28bc933f4180c73d2dcea64e3",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2075273
+    },
+    {
+      "file": "assets/pouring-vessel.png",
+      "sha256": "3011127cdbce58e258ec8ac204918538ad9fd759fa613cfc44e6b1804429d10a",
+      "width": 1082,
+      "height": 989,
+      "bytes": 1610651
+    },
+    {
+      "file": "assets/pouring-vessel.webp",
+      "sha256": "045cc18ae63daad538cc341702732ef25d64402c2052dde6ddfce3af014d7524",
+      "width": 1082,
+      "height": 989,
+      "bytes": 198340
+    },
+    {
+      "file": "masters/extraction-filter.png",
+      "sha256": "4eefcd50ddf483476abae564573169d9b4533276231f72125eb6afb2c862581a",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1352727
+    },
+    {
+      "file": "assets/extraction-filter.png",
+      "sha256": "c94c79ce4a091ad7f85b05a43d8bfab6071b50efa4020ffcf7f0eb25d35b705d",
+      "width": 903,
+      "height": 1100,
+      "bytes": 1051282
+    },
+    {
+      "file": "assets/extraction-filter.webp",
+      "sha256": "00e3534b2fadbe01f5866f63586a5e5f93e7d033846c4f47864cef2d98eaf41e",
+      "width": 903,
+      "height": 1100,
+      "bytes": 169004
+    }
+  ],
+  "beforeScreenshots": [
+    {
+      "file": "docs/screenshots/brass-review/before/1440-stage-4.png",
+      "sha256": "8c96bf14a3a1e0b1bf2bd2c933eb779586750cef0608e20f48534b88c68a4f76"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/1440-stage-5.png",
+      "sha256": "a529b2c1f7be4867a8330be2b6b4eb21db28ecc12830259fcf009b2a14d74ef0"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/1440-stage-6.png",
+      "sha256": "829db1c1a09464e137514b7aa31226ecc1a8e81d3da7d7dd28f2bae26ad4425d"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/1440-stage-7.png",
+      "sha256": "4236ae58df8ea50ea4e8982aace8c8398d7206c642030150303aa51904635842"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/390-stage-4.png",
+      "sha256": "949273d6b2e0a46b271a04280b259cb3c48f1ef3b0f7c1238f52cab9940c9361"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/390-stage-5.png",
+      "sha256": "7d0ab04ed8617dcc9e262773e840801ee88ff3c7d39030804da06078d9022f45"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/390-stage-6.png",
+      "sha256": "7e64446f0dd88b1e5b2c826f59838faa496de633db8a7fb202d87c817fbfc285"
+    },
+    {
+      "file": "docs/screenshots/brass-review/before/390-stage-7.png",
+      "sha256": "4014905f1ac29cc9c0f963e632aadf532761b38e80cbae227a60be6f12d2cbf8"
+    }
+  ],
+  "replaces": {
+    "glass-receiving-vessel.webp": "brass-kinnam.webp",
+    "copper-oil-vessel.webp": "brass-uruli.webp",
+    "pouring-vessel.webp": "brass-pourer.webp",
+    "extraction-filter.webp": "brass-filter.webp"
+  },
+  "newAssets": [
+    "masters/brass-uruli.png",
+    "assets/brass-uruli.png",
+    "assets/brass-uruli.webp",
+    "masters/brass-kinnam.png",
+    "assets/brass-kinnam.png",
+    "assets/brass-kinnam.webp",
+    "masters/brass-pourer.png",
+    "assets/brass-pourer.png",
+    "assets/brass-pourer.webp",
+    "masters/brass-filter.png",
+    "assets/brass-filter.png",
+    "assets/brass-filter.webp"
+  ],
+  "preservedFiles": [
+    {
+      "file": ".github/workflows/botanical-review.yml",
+      "sha256": "4cb31138c6a3c6f168c0d879bc2ba55484991507f6360c6b00eecd34f4ae8fb2"
+    },
+    {
+      "file": ".github/workflows/staging-release.yml",
+      "sha256": "bbe393af3611a5e803b2c59a8ada6e5908115c8e5836eeff6d6a44c05890c479"
+    },
+    {
+      "file": ".github/workflows/staging-review.yml",
+      "sha256": "d71c322681e992865e0d1545ad606e14128b0e394743c2d37952727cd7f37253"
+    },
+    {
+      "file": ".github/workflows/validate.yml",
+      "sha256": "7e4196ea74c7429cec444c57faec7546dd4692126fe70879cda17b52af73121d"
+    },
+    {
+      "file": "ops/automatic-staging.example.json",
+      "sha256": "15869012d353ed3c052e73881eff01293295e663ee05a7f79ae8a5443a5d5613"
+    },
+    {
+      "file": "ops/automatic_staging.py",
+      "sha256": "fe7e4a9154f3a40ce8c3221f2c208713402c30c6d39cc7d3a338249841a31cb9"
+    },
+    {
+      "file": "ops/ci_staging/__init__.py",
+      "sha256": "6bfc59e674c4f373e68b588067bd8fd4164522f6250f9b3c37b9c2c9ca9267d4"
+    },
+    {
+      "file": "ops/ci_staging/artifact.py",
+      "sha256": "11478f379ec224311c6203accd822d54a00b3fe41cfa1eb3f9d8b44c59d33bff"
+    },
+    {
+      "file": "ops/ci_staging/bootstrap.py",
+      "sha256": "56b3414448bba8f3ae3c5bcdc9ad97a217bb4d8cdc1b8c562e4e37ebf059b3be"
+    },
+    {
+      "file": "ops/ci_staging/bundle.sha256",
+      "sha256": "82bed463302f546fde16e6be826519aacb9654cb6f2e847f291d774e934d0ea0"
+    },
+    {
+      "file": "ops/ci_staging/cli.py",
+      "sha256": "61b2c7a594f353c37dca7e96d47bced0d430d48fda833f414f91a168ce002e6a"
+    },
+    {
+      "file": "ops/ci_staging/github.py",
+      "sha256": "551cf32218306bc1ea633f0a3a2b88e1e064f7c8c66bfc895c0de18df2ef9bfe"
+    },
+    {
+      "file": "ops/ci_staging/github_setup.py",
+      "sha256": "83e4561c0862294b9fe0502590cfc180095a2e5acef9fd66dc184b621f6f5fea"
+    },
+    {
+      "file": "ops/ci_staging/health.py",
+      "sha256": "1ce1c361c73fc051870a37d4409acda93712964f2d7e09a1130a5183e943729f"
+    },
+    {
+      "file": "ops/ci_staging/install.py",
+      "sha256": "aefabf1e9413cfd1d44e2956bbfc27fb5a0ac368c5ee0b8ac8e261a506bc2d90"
+    },
+    {
+      "file": "ops/ci_staging/runtime.py",
+      "sha256": "b72bc04f3ddbed84fa5ea257ba89ee0a3912b54a8ab280e92ca77b70ff8f03c4"
+    },
+    {
+      "file": "ops/ci_staging/schedule.py",
+      "sha256": "01c341361daca8f4cea7cae5c4686b59714b691d85bac36d36e1a2812be1b1af"
+    },
+    {
+      "file": "ops/ci_staging/trust.py",
+      "sha256": "a1553835fbbf6d6d8002478600181433d4097e5630a90b2646949217ea93bbdb"
+    },
+    {
+      "file": "ops/ci_staging/verify_next_push.py",
+      "sha256": "192c4ddc182966b9f63986428a5745d43d4d9226fbd37fe57f6338a58fbd3a05"
+    },
+    {
+      "file": "ops/cinematic/media_policy.py",
+      "sha256": "c8702f64d4e75118bbb2d5be7b06d63398a7183a26e318acdc7d58758dd6447c"
+    },
+    {
+      "file": "ops/cinematic/owner-media-policy.json",
+      "sha256": "33b4da045bfabbcd89ea9070dc03f524c558ebc21fffc6995cb54a4e76ea7789"
+    },
+    {
+      "file": "ops/cinematic/owner-tools.sha256",
+      "sha256": "82cec1751bf9fdefb4de2fc9ee80bf3e5cef7f8ccb5aeb040cb8eb72232b2405"
+    },
+    {
+      "file": "ops/cinematic/prepare_release.py",
+      "sha256": "bfc6b5a8518f46d5ae5a294cb6f2fd777615c8e26d2d65ca114a55d6998965b9"
+    },
+    {
+      "file": "ops/cinematic/publish_release.py",
+      "sha256": "bebc888fd21811bdaacef223b2a25ce60b282bf44fdcd34fed347f59b21f7a36"
+    },
+    {
+      "file": "ops/cinematic/pull_deploy.py",
+      "sha256": "71f3b132b7b4f2d2cbc4b3e6a71c2c13535793010a9ef4285d849696ce6eb61f"
+    },
+    {
+      "file": "ops/dry_run_local.py",
+      "sha256": "2b2117331a93b39d8fdb762af5c009e1dd4db4d1757ecb673cc19a94e6c6cc8e"
+    },
+    {
+      "file": "ops/owner-media-policy.json",
+      "sha256": "760e2510c600266c85eb8e6f51f1eb7c6b1ac6d16c335644782c49102258e426"
+    },
+    {
+      "file": "ops/owner-tools.sha256",
+      "sha256": "8acd1f92d870281a85d5ded1f18ed1cca0be2da0e7855c515a0d9e47cb04fe46"
+    },
+    {
+      "file": "ops/prepare_release.py",
+      "sha256": "192449a52a5e92fd08bf37440fd1ac65fc95d14a4a56fff2decff3f9271260d6"
+    },
+    {
+      "file": "ops/publish_release.py",
+      "sha256": "bebc888fd21811bdaacef223b2a25ce60b282bf44fdcd34fed347f59b21f7a36"
+    },
+    {
+      "file": "ops/pull-config.example.json",
+      "sha256": "61812f3bb4d7536c64391c0ad3dbbccaef3a23f3ef3c48d6449ba45a45559b20"
+    },
+    {
+      "file": "ops/pull_deploy.py",
+      "sha256": "67fd3e74398d9b9a58ebc47d8d5ffcfa03c03d1ad9348665f76c46d1721b0bf3"
+    },
+    {
+      "file": "public/cinematic/homepage-desktop.mp4",
+      "sha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641"
+    },
+    {
+      "file": "public/cinematic/homepage-mobile.mp4",
+      "sha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92"
+    },
+    {
+      "file": "public/cinematic/original-hair-mask.png",
+      "sha256": "1b0132439f159bc7745df78e0dff149c0e56ba6c4769be25ea18202d5af4a1ee"
+    },
+    {
+      "file": "public/cinematic/original-model.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46"
+    },
+    {
+      "file": "public/cinematic/original-product.jpg",
+      "sha256": "be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65"
+    },
+    {
+      "file": "public/cinematic/poster-desktop.jpg",
+      "sha256": "cf565d59ee51945416db38dff22b97b555140e84937a3e85cc69c505d092bb03"
+    },
+    {
+      "file": "public/cinematic/poster-mobile.jpg",
+      "sha256": "a46727fff7192bc40162c98ed286966bdd0faac0e596f26aac8da5111bcf141a"
+    },
+    {
+      "file": "public/cinematic/scene-application-mobile.jpg",
+      "sha256": "b378511a683c7c37b7146f16c521d506d2e55affb8a90e566627d862d47fc071"
+    },
+    {
+      "file": "public/cinematic/scene-application.jpg",
+      "sha256": "70d90d23e9e4e98dccd69a28fe6006641feb9da6922475d53fb426ba282758e2"
+    },
+    {
+      "file": "public/cinematic/scene-botanicals.jpg",
+      "sha256": "44a8eaa703ff14fef33a433d8ca6f1b6d26e7cdf3f0ae560173edac20a20a35b"
+    },
+    {
+      "file": "public/cinematic/scene-golden-oil-mobile.jpg",
+      "sha256": "d3af9044e7657eb8b4346ea15e277a0ef7fb7f04759fd51840fefb4fccc5d9b7"
+    },
+    {
+      "file": "public/cinematic/scene-golden-oil.jpg",
+      "sha256": "e8057dc8f9539c23af8505415a11b8afb064dee961578ad1f5c6634e1861357b"
+    },
+    {
+      "file": "public/favicon.svg",
+      "sha256": "ccdd02b5148b32fe2b3f2bd1aed3eee8bcb4a5caad77c99d2efc683f62937792"
+    },
+    {
+      "file": "public/fonts/cormorant-garamond-latin-wght-normal.woff2",
+      "sha256": "d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235"
+    },
+    {
+      "file": "public/fonts/inter-latin-wght-normal.woff2",
+      "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+    },
+    {
+      "file": "public/fonts/licenses/cormorant-garamond.txt",
+      "sha256": "732f37009943e7f4378cf37113c9bcc4716af002a8583511aa91ed5d37683e73"
+    },
+    {
+      "file": "public/fonts/licenses/inter.txt",
+      "sha256": "3b0a5fca3d17942cde889069889dedbbbd075e9b599968c82a95f4d944e9b345"
+    },
+    {
+      "file": "public/fonts/licenses/noto-sans-devanagari.txt",
+      "sha256": "79c44862256af9a67fc23df7c45ae289e730c7f6d4f8fb8ef593bd3c314b6d6d"
+    },
+    {
+      "file": "public/fonts/licenses/noto-sans-malayalam.txt",
+      "sha256": "29b7a0d250007948e23d1d2c734fdcf0bf6c3e278c98d6ad2c7c6bb9fedbd11c"
+    },
+    {
+      "file": "public/fonts/licenses/noto-sans-tamil.txt",
+      "sha256": "8127ad10afbdf273676361de0b3a486e1c30ac5711458309b2cbb51a4a7ea8cb"
+    },
+    {
+      "file": "public/fonts/licenses/noto-serif-devanagari.txt",
+      "sha256": "79c44862256af9a67fc23df7c45ae289e730c7f6d4f8fb8ef593bd3c314b6d6d"
+    },
+    {
+      "file": "public/fonts/licenses/noto-serif-malayalam.txt",
+      "sha256": "29b7a0d250007948e23d1d2c734fdcf0bf6c3e278c98d6ad2c7c6bb9fedbd11c"
+    },
+    {
+      "file": "public/fonts/licenses/noto-serif-tamil.txt",
+      "sha256": "4f1340c92df9f530ce34ea4c6b68bdea91636a3217415b0fd5bb99d6e50be2ad"
+    },
+    {
+      "file": "public/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2",
+      "sha256": "3b3cae4d2600cb502286577fcfbc7f0caa05d9bb3c28d6699aeb56302d35e730"
+    },
+    {
+      "file": "public/fonts/noto-sans-malayalam-malayalam-wght-normal.woff2",
+      "sha256": "c21d9e855daa5f1e3e8aeccc53fe469d98a7dc41abb4d85bd6d8574341559eec"
+    },
+    {
+      "file": "public/fonts/noto-sans-tamil-tamil-wght-normal.woff2",
+      "sha256": "98e5b968b0e64d56a5833e1f8059453784190564ceeeda96613fd87282d3d8a1"
+    },
+    {
+      "file": "public/fonts/noto-serif-devanagari-devanagari-wght-normal.woff2",
+      "sha256": "bab9ee27c0141b4ccfcbea74684d4707ac97d4eaf0640ec1663c6e161b9eeb1f"
+    },
+    {
+      "file": "public/fonts/noto-serif-malayalam-malayalam-wght-normal.woff2",
+      "sha256": "4bade43046fb1db739a55b1e08ef9b67f202b9f3033b4d6b2b7aef6a60cfd151"
+    },
+    {
+      "file": "public/fonts/noto-serif-tamil-tamil-wght-normal.woff2",
+      "sha256": "33e0fcfb7c9d8d011c39cee2021ba015d348b02e9f32b3098ba91c015efd6bd2"
+    },
+    {
+      "file": "public/images/brand/baby-care-edit/brand-in-3225-320.webp",
+      "sha256": "28c58a1f4b915a0f3cd50444c4c8b864a18386ade3a7e7ac8f5cfa1299416f6b"
+    },
+    {
+      "file": "public/images/brand/baby-care-edit/brand-in-3225-640.webp",
+      "sha256": "73d25d047af3fe22bed69c639d6f3721b57889998b855e65143faa9ebd4b6694"
+    },
+    {
+      "file": "public/images/brand/baby-care-edit/brand-in-3225-800.webp",
+      "sha256": "81bbcee0b5ad3216dcc8eb94b3deed80a110e844e45eabfc28626d16d05889cf"
+    },
+    {
+      "file": "public/images/brand/hair-care-edit/brand-in-3252-320.webp",
+      "sha256": "78fb861e9d9b4257abccb6262eb246fadc26b2d19623f9b43f89f878537011a0"
+    },
+    {
+      "file": "public/images/brand/hair-care-edit/brand-in-3252-640.webp",
+      "sha256": "fe82b80e105f0e4632b166c959add1fe7faa15781120e2daef0e4c4a0a735ef6"
+    },
+    {
+      "file": "public/images/brand/hair-care-edit/brand-in-3252-800.webp",
+      "sha256": "8351658d1c9d437c70cf578951bd436bcea3485371d841266cd76c213951373a"
+    },
+    {
+      "file": "public/images/brand/herbal-wellness-edit/brand-in-3221-320.webp",
+      "sha256": "3a438d8a91bad27e73f6e7b5e027e42e338085d63d344888ccd7f36be44f39b9"
+    },
+    {
+      "file": "public/images/brand/herbal-wellness-edit/brand-in-3221-640.webp",
+      "sha256": "d3897c2362765e427ac56a2c814246a4741ff299b50073184ff2cbf1bcd47eea"
+    },
+    {
+      "file": "public/images/brand/herbal-wellness-edit/brand-in-3221-800.webp",
+      "sha256": "1307988eee04cfa35e47c035c715d380ab2cd72284926334b940b77c1fcc6fae"
+    },
+    {
+      "file": "public/images/brand/skin-care-edit/brand-in-3272-320.webp",
+      "sha256": "4e2b2442d02bdaca98b6fdbd010d8dee8eb45aa6849e4a04f1e4c2d83db56a60"
+    },
+    {
+      "file": "public/images/brand/skin-care-edit/brand-in-3272-640.webp",
+      "sha256": "0aa02e528809cb1e0a1c9a9e17964285c6df4e2a5fc392ea5fe159b31a06ac64"
+    },
+    {
+      "file": "public/images/brand/skin-care-edit/brand-in-3272-800.webp",
+      "sha256": "4b53368c5b09dac535ec1e3e3de0d5fbb8b43ad7504df73e8591a005a36890c1"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4294-320.webp",
+      "sha256": "2f59d01b6d7727ebc595d8792d3f5129b108ddb249df31fd67b4deef4519cbac"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4294-640.webp",
+      "sha256": "7439a74080b4de0a3de731bede563a74fbe3473d6b248537361f2447b7593cbd"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4294-960.webp",
+      "sha256": "2fcf94dd36a90358446a8a64a9c760002293ef7288564acde19727827d766ff9"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4295-320.webp",
+      "sha256": "40d8cc316e3ae7237cb7a37ef7578cd08d4d715be494844e1f41ba94e633a267"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4295-640.webp",
+      "sha256": "fe539af74b525a52391d264d76a7c6f0c3a9663bf2afdaba8381b665e2f0573d"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4295-960.webp",
+      "sha256": "a3c30fe2b09ca9c2288e6609727e4b912d4ba3bef71ba1930e691da9a1becc2d"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4296-320.webp",
+      "sha256": "ac6cd2602dd81e82b95b9a120c37be2592536cfe61b16ebc14bd8738bc68da05"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4296-640.webp",
+      "sha256": "dfc380b0915830624ada35e645236f7f51fa82742a919222d1a9ea2f5087c37f"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4296-960.webp",
+      "sha256": "508d3bea7f5ac6cd918e5b149bb82288e1003e64f8393cb55b971d0354839162"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4297-320.webp",
+      "sha256": "b9483a5f408b72e6d072a7cc4e0afde2c2c665199908596fa9385690a319b5ab"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4297-640.webp",
+      "sha256": "b928aa1b49580dd9e04328fc9e52161ddf08640585e9c4810dcd16248211792e"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-200-ml/media-in-4297-960.webp",
+      "sha256": "0de440b43b371ecfa19077d6b776402aaef93645655ca2993d686e24b4e3a10b"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4290-320.webp",
+      "sha256": "be7e3bf48382d9b2d5304dc3e6bb0c6e7199479502f8ae96367f77a887e26aaf"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4290-640.webp",
+      "sha256": "f6052d56be8b57f99829b118a00a3ea9f12c169f7ee2f93490a3e66ab28cc861"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4290-960.webp",
+      "sha256": "f391e4836df51ceeb5ddbbe25ac7c445cf719d195fe69955fb8d844c17f536ec"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4291-320.webp",
+      "sha256": "7dfa35d9bf6724ec42768188cea8f4e1e0a6b5556e71ff487f14e17bc6af4819"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4291-640.webp",
+      "sha256": "be21e4798060bc6efa999328ee7a8caf591750f7a3f5aa8d3667bde24b59eb87"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4291-960.webp",
+      "sha256": "ac728fb48b15db9e99ddc529ec8c0ddcdf46cafc98baae610fcd6da7a4d96b86"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4292-320.webp",
+      "sha256": "c052106eb9fb75122bce754d49be32ed89cfc30160a2dc4a3b6e8987908398ea"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4292-640.webp",
+      "sha256": "28ce5d750008d996521847a90ab87f890ef80e23d2ffd8fa768ff6fddabdbf8f"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4292-960.webp",
+      "sha256": "8ae883b9c5c70154316a4aba1e66fe1e7bbee10664ec32996ec88864686d9aef"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4293-320.webp",
+      "sha256": "ef59468dfd871faef51a5ef3711d70877625cd849ec2d9151f2b391a9475b92b"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4293-640.webp",
+      "sha256": "8b6b761a83a7e18ef2c25cd29a18f3ff8969914c3d867ba5dcb3bab0050f0f40"
+    },
+    {
+      "file": "public/images/products/mariyas-hair-oil-500-ml/media-in-4293-960.webp",
+      "sha256": "bc21b269a86696145c8bddb6ec858136db94246def4fb0bee9e56d87969ed7d1"
+    },
+    {
+      "file": "src/components/StorytellingSection.astro",
+      "sha256": "7f5dc49c95f75c3df517a20fefb101577e293faa934c598416f36ec710bbeb1b"
+    },
+    {
+      "file": "src/components/botanical/content.ts",
+      "sha256": "f0323a7ce7fed01a028bd023f1913377384f5b93800b4330ed17439e16da3ebe"
+    },
+    {
+      "file": "src/components/botanical/motion.mjs",
+      "sha256": "72c0a37d4683b886357b9614e1317adb561192c53e1371e86ac7a005f53250ba"
+    },
+    {
+      "file": "src/config/cinematic-assets.mjs",
+      "sha256": "af0065158d0c7157841d2180de808c18218ad0f258f5dd9ad1e82ea763eca717"
+    },
+    {
+      "file": "src/config/commerce.mjs",
+      "sha256": "642ae54a4748b0e321082406e375d5f25eb9683983816156539a558d675d155a"
+    },
+    {
+      "file": "src/config/media-policy.mjs",
+      "sha256": "8c9db1aa8839de2ba1d72fd2827f1de96e7c0663dcc53d0b857c393dea581969"
+    },
+    {
+      "file": "src/config/resolve-site.mjs",
+      "sha256": "ec19decfa706b279605a13e838a2d636e0f58f0e693ae60f4bd742f2aa7146e2"
+    },
+    {
+      "file": "src/config/site.ts",
+      "sha256": "62cfb61db9bc33903e099bde04e22d9c6725fba31070974fbd8bed6a7aa952b3"
+    },
+    {
+      "file": "src/data/cinematic-assets.json",
+      "sha256": "e1e2fe84d3ac6e58ab141f7d3ec9ce41e456554940d4e53e5b8aacb4aabe7539"
+    },
+    {
+      "file": "src/scripts/cinematic-story.ts",
+      "sha256": "a60931ca4e4d9f4d2fc24caeac37f40a86e671d3b49aacf7025dd51ba0970601"
+    },
+    {
+      "file": "src/scripts/responsive-film.ts",
+      "sha256": "87644293481562d2ad01ce57e9ea06b9b230282e5f4ec5643ae9b276941cecbe"
+    },
+    {
+      "file": "src/styles/cinematic.css",
+      "sha256": "a864c0edc7139e53f66911d26210dc5cdf6dcf63d52aa8a3b7ebd5eaad2faf6a"
+    }
+  ],
+  "preservedChoreography": [
+    {
+      "start": "studies.forEach",
+      "end": "const reveal",
+      "sha256": "e30e0cf1ebb24b7fa79a84c18261ff6c6d2aade0705f50196c68accc282404b2"
+    },
+    {
+      "start": "reveal('product'",
+      "end": "// Explicit duration",
+      "sha256": "a5ef84c59ac1c8c7ab1288ff38dd1486da632179436f92787d141a6e6c6c7c6f"
+    }
+  ]
+}

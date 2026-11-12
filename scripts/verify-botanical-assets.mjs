@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, lstatSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
+import { verifyBrassReview } from './verify-brass-review.mjs';
 export async function verifyBotanicalAssets() {
   const root = resolve('review/botanical');
   const m = JSON.parse(readFileSync(resolve(root, 'asset-manifest.json')));
@@ -86,6 +87,7 @@ export async function verifyBotanicalAssets() {
       readFileSync(resolve(root, 'assets/authentic-product.jpg')),
     ),
   );
+  if (m.vesselFamily) await verifyBrassReview(m);
   console.log(
     `PASS ${m.assets.length} asset hashes/dimensions, 30 independent alpha studies, exact original product and owner-confirmed claim`,
   );

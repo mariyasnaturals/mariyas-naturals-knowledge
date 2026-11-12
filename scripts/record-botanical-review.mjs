@@ -19,6 +19,7 @@ try {
         recordVideo: { dir: `${output}/demos`, size: { width, height } },
       });
       const page = await context.newPage();
+      const videoStarted = Date.now();
       const failures = [];
       page.on('pageerror', (e) => failures.push(e.message));
       try {
@@ -120,6 +121,7 @@ try {
           }
           throw new Error('Native touch target was not reached');
         };
+        const forwardStart = (Date.now() - videoStarted) / 1000;
         if (width < 760) {
           // Native touch checkpoints make the approved bottle → feature → CTA order reviewable.
           const advanceTo = async (target) =>
@@ -156,11 +158,13 @@ try {
           (await page
             .locator('[data-botanical-journey]')
             .getAttribute('data-progress'));
-        await scroll(-metrics.distance * 0.55, 500);
-        await expect.poll(progress).toBeLessThan(0.5);
+        const reverseStart = (Date.now() - videoStarted) / 1000;
+        await scroll(-metrics.distance * 0.985, 500);
+        await expect.poll(progress).toBeLessThan(0.03);
         const reverseProgress = await progress();
         await page.waitForTimeout(600);
-        await scroll(metrics.distance * 0.55, 500);
+        const reverseEnd = (Date.now() - videoStarted) / 1000;
+        await scroll(metrics.distance * 0.985, 500);
         await expect.poll(progress).toBeGreaterThan(0.98);
         const restoredProgress = await progress();
         await page.waitForTimeout(1200);
@@ -179,6 +183,12 @@ try {
           restoredProgress,
           paused,
           errors: failures,
+          videoSegments: {
+            forwardStart,
+            forwardEnd: reverseStart,
+            reverseStart,
+            reverseEnd,
+          },
         });
         console.log(
           `Recorded actual ${width}px forward/reverse scroll and pause`,
@@ -213,6 +223,39 @@ try {
     .evaluateAll((imgs) => Promise.all(imgs.map((i) => i.decode())));
   await page.screenshot({ path: `${output}/storyboard.png`, fullPage: true });
   await page.close();
+  const board = await browser.newPage({
+    viewport: { width: 1440, height: 1900 },
+    deviceScaleFactor: 1,
+  });
+  const encoded = (path) =>
+    `data:image/png;base64,${readFileSync(path).toString('base64')}`;
+  await board.setContent(
+    `<html><head><style>body{margin:0;padding:38px;background:#071a13;color:#f5f0e5;font-family:Georgia}h1{font-weight:400;font-size:38px}main{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}article{background:#0c251a;border:1px solid #c5a46a66;border-radius:10px;overflow:hidden}img{width:100%;display:block}h2{font-size:18px;font-weight:400;margin:14px}p{color:#c5a46a;font-family:Arial;font-size:14px}</style></head><body><h1>Mariyas Naturals · Mobile browser storyboard</h1><p>Eight native-scroll stages · Kerala-inspired artistic brass preparation · Original product pixels retained</p><main>${labels.map((label, i) => `<article><img src="${encoded(`${output}/390-stage-${i + 1}.png`)}"><h2>${i + 1}. ${label}</h2></article>`).join('')}</main></body></html>`,
+  );
+  await board
+    .locator('img')
+    .evaluateAll((imgs) => Promise.all(imgs.map((img) => img.decode())));
+  await board.screenshot({
+    path: `${output}/storyboard-mobile.png`,
+    fullPage: true,
+  });
+  for (const width of [1440, 390]) {
+    await board.setViewportSize({
+      width: width === 1440 ? 1440 : 1000,
+      height: 1000,
+    });
+    await board.setContent(
+      `<html><head><style>body{margin:0;padding:32px;background:#071a13;color:#f5f0e5;font-family:Georgia}h1,h2{font-weight:400}main{display:grid;grid-template-columns:1fr 1fr;gap:20px}img{width:100%;display:block}p{color:#c5a46a;font:14px Arial}</style></head><body><h1>Kerala brass upgrade · ${width}px browser comparison</h1><p>LEFT: 94cb61e before · RIGHT: current review · screenshots from the implemented website</p><main>${[4, 5, 6, 7].map((stage) => `<section><h2>Stage ${stage} · Before</h2><img src="${encoded(`docs/screenshots/brass-review/before/${width}-stage-${stage}.png`)}"></section><section><h2>Stage ${stage} · Brass review</h2><img src="${encoded(`${output}/${width}-stage-${stage}.png`)}"></section>`).join('')}</main></body></html>`,
+    );
+    await board
+      .locator('img')
+      .evaluateAll((imgs) => Promise.all(imgs.map((img) => img.decode())));
+    await board.screenshot({
+      path: `${output}/before-after-${width}.png`,
+      fullPage: true,
+    });
+  }
+  await board.close();
   if (evidence.length)
     writeFileSync(
       `${output}/browser-evidence.json`,
