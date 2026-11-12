@@ -1,0 +1,71 @@
+---
+import assets from '../../data/cinematic-assets.json';
+import { assertCinematicAssets } from '../../config/cinematic-assets.mjs';
+import type { Locale } from '../../i18n';
+assertCinematicAssets(assets);
+interface Props {
+  label: string;
+  pending: string;
+  play: string;
+  pause: string;
+  unavailable: string;
+  lang: Locale;
+}
+const { label, pending, play, pause, unavailable, lang } = Astro.props;
+---
+
+<responsive-film
+  class="cinema-film"
+  id="cinema-film"
+  data-fit="cover"
+  data-desktop={assets.videos.desktop.src ?? undefined}
+  data-mobile={assets.videos.mobile.src ?? undefined}
+  data-breakpoint={assets.breakpoint}
+  data-play={play}
+  data-pause={pause}
+  data-unavailable={unavailable}
+  data-timeline-desktop={JSON.stringify(assets.videos.desktop.chapters)}
+  data-timeline-mobile={JSON.stringify(assets.videos.mobile.chapters)}
+>
+  <picture class="cinema-film-poster">
+    <source
+      media={`(max-width: ${assets.breakpoint - 1}px)`}
+      srcset={assets.videos.mobile.poster.src}
+    />
+    <img
+      src={assets.videos.desktop.poster.src}
+      width={assets.videos.desktop.poster.width}
+      height={assets.videos.desktop.poster.height}
+      alt={assets.videos.desktop.poster.alt[lang]}
+      data-cinematic-poster
+      fetchpriority="high"
+    />
+  </picture>
+  <video
+    muted
+    playsinline
+    loop
+    preload="none"
+    aria-label={label}
+    hidden
+  ></video>
+  <div class="cinema-film-placeholder" hidden>
+    <span class="cinema-orbit" aria-hidden="true"></span>
+    <p class="eyebrow">MARIYAS NATURALS</p>
+    <p data-film-status>{pending}</p>
+  </div>
+  <button
+    class="cinema-play"
+    type="button"
+    aria-label={play}
+    data-paused="true"
+    hidden
+  >
+    {play}
+  </button>
+</responsive-film>
+<script>
+  import { ResponsiveFilm } from '../../scripts/responsive-film';
+  if (!customElements.get('responsive-film'))
+    customElements.define('responsive-film', ResponsiveFilm);
+</script>

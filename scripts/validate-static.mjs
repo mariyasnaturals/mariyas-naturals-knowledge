@@ -31,7 +31,7 @@ for (const lang of locales) {
   assert.ok($('meta[name="description"]').attr('content').length > 30);
   titles.add($('title').text());
   JSON.parse($('script[type="application/ld+json"]').text());
-  assert.equal($('[data-story-scene]').length, 5);
+  assert.equal($('[data-story-scene]').length, 8);
   for (const a of $('a[href]').toArray()) {
     const href = $(a).attr('href');
     if (href.startsWith('#'))

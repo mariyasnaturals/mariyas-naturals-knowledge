@@ -2,8 +2,30 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { load } from 'cheerio';
 import assert from 'node:assert/strict';
-import { assertApprovedMedia } from '../src/config/media-policy.mjs';
+import {
+  assertApprovedBotanicalMedia,
+  assertApprovedMedia,
+  botanicalMediaRoot,
+} from '../src/config/media-policy.mjs';
+import {
+  assertCinematicAssets,
+  cinematicRecords,
+} from '../src/config/cinematic-assets.mjs';
 const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
+const cinematic = json('../src/data/cinematic-assets.json');
+assertCinematicAssets(cinematic);
+const originals = cinematicRecords(cinematic).filter(
+  (asset) => asset.status === 'ready',
+);
+for (const asset of originals) {
+  const bytes = readFileSync(new URL('../public' + asset.src, import.meta.url));
+  assert.equal(
+    createHash('sha256').update(bytes).digest('hex'),
+    asset.sha256,
+    'Original asset hash must match provenance',
+  );
+}
+const originalImages = originals.filter((asset) => !asset.src.endsWith('.mp4'));
 const expectedOrigin =
   process.env.EXPECT_SITE_URL || 'https://www.mariyasnaturals.cloud';
 const manifests = [
@@ -11,15 +33,50 @@ const manifests = [
   json('../src/data/brand-media.json'),
 ];
 manifests.forEach(assertApprovedMedia);
+// The reviewed botanical release is a separate, explicitly approved manifest.
+const botanical = json('../src/data/botanical-media.json');
+const botanicalPaths = assertApprovedBotanicalMedia(botanical);
+for (const record of botanical.media) {
+  const bytes = readFileSync(
+    new URL('../public' + record.localAssetPath, import.meta.url),
+  );
+  assert.equal(
+    createHash('sha256').update(bytes).digest('hex'),
+    record.sourceSha256,
+    'Reviewed botanical asset hash must match its registration',
+  );
+  assert.equal(bytes.length, record.sourceBytes);
+  assert.equal(
+    bytes.length,
+    record.derivatives.reduce((total, d) => total + d.bytes, 0),
+    'Reviewed botanical asset is served exactly once',
+  );
+}
+const served = new Set(
+  readdirSync(new URL('../public' + botanicalMediaRoot, import.meta.url)),
+);
+assert.equal(
+  served.size,
+  botanicalPaths.size,
+  'Only the 43 reviewed botanical media may be published',
+);
+for (const path of botanicalPaths)
+  assert.ok(
+    served.has(path.slice(botanicalMediaRoot.length)),
+    `Registered botanical media is missing from public/: ${path}`,
+  );
 const retired = new Set(
   json('../tests/fixtures/retired-media-hashes.json').hashes,
 );
 const media = manifests.flatMap((m) => m.media);
 const byId = new Map(media.map((m) => [m.id, m]));
-const approved = new Set(
-  media.flatMap((m) => m.derivatives.map((d) => d.localAssetPath)),
-);
+const approved = new Set([
+  ...media.flatMap((m) => m.derivatives.map((d) => d.localAssetPath)),
+  ...originalImages.map((asset) => asset.src),
+  ...botanicalPaths,
+]);
 const used = new Set();
+const botanicalUsed = new Set();
 let htmlCount = 0,
   imageCount = 0;
 function checkImage(value) {
@@ -86,8 +143,75 @@ function walk(directory, prefix = '') {
       'Legacy local image path in active HTML',
     );
     const $ = load(text);
+    // Responsive <source> alternatives of the reviewed journey are registered media too.
+    for (const node of $('picture source[srcset]').toArray()) {
+      const value = $(node).attr('srcset');
+      if (!value.startsWith(botanicalMediaRoot)) continue;
+      const registered = botanical.media.find(
+        (m) => m.localAssetPath === value,
+      );
+      assert.ok(
+        registered && $(node).closest('[data-botanical-journey]').length === 1,
+        'Only registered reviewed botanical media may render responsively',
+      );
+      checkImage(value);
+      botanicalUsed.add(registered.id);
+    }
     for (const node of $('img').toArray()) {
       imageCount++;
+      if ($(node).is('[data-cinematic-poster]')) {
+        const poster = cinematic.videos.desktop.poster;
+        assert.equal($(node).attr('src'), poster.src);
+        checkImage(poster.src);
+        const picture = $(node).parent('picture');
+        assert.equal(
+          picture.find('source').attr('srcset'),
+          cinematic.videos.mobile.poster.src,
+        );
+        checkImage(cinematic.videos.mobile.poster.src);
+        continue;
+      }
+      if ($(node).attr('data-cinematic-asset')) {
+        const id = $(node).attr('data-cinematic-asset');
+        const asset = id.startsWith('reference-')
+          ? cinematic.references[id.slice('reference-'.length)]
+          : cinematic.scenes.find((scene) => scene.id === id);
+        assert.ok(
+          asset?.status === 'ready' && asset.src === $(node).attr('src'),
+          'Only recorded owner originals may render',
+        );
+        checkImage($(node).attr('src'));
+        const source = $(node).parent('picture').find('source').attr('srcset');
+        if (source) {
+          assert.equal(
+            source,
+            asset.mobile?.src,
+            'Responsive still must be a recorded derivative',
+          );
+          checkImage(source);
+        }
+        continue;
+      }
+      // Reviewed botanical layers carry their own exact registration marker.
+      if ($(node).is('[data-botanical-media]')) {
+        const registered = botanical.media.find(
+          (m) => m.localAssetPath === $(node).attr('src'),
+        );
+        assert.ok(
+          registered &&
+            registered.derivatives.some(
+              (d) => d.localAssetPath === $(node).attr('src'),
+            ),
+          'Only registered reviewed botanical media may render',
+        );
+        assert.ok(
+          !$(node).attr('srcset'),
+          'Reviewed botanical media are served as a single exact derivative',
+        );
+        checkImage($(node).attr('src'));
+        botanicalUsed.add(registered.id);
+        continue;
+      }
       const id = $(node).attr('data-media-id');
       const record = byId.get(id);
       assert.ok(
@@ -127,6 +251,11 @@ assert.equal(
   used.size,
   media.length,
   'All reported approved images must actually be used',
+);
+assert.equal(
+  botanicalUsed.size,
+  botanical.media.length,
+  'All 43 reviewed botanical media must actually be used',
 );
 console.log(
   `PASS source policy: ${htmlCount} HTML pages, ${imageCount} image elements, ${used.size} approved .in images, ${approved.size} local derivatives; no legacy files, hashes, hotlinks, CSS/JS, social or schema images.`,

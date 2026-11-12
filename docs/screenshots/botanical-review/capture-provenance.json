@@ -1,0 +1,144 @@
+{
+  "schema": "botanical-browser-capture/v1",
+  "sourceSha": "65d3b39f28b7622c5b09228dfeee4f44d2408549",
+  "status": "UNAPPROVED visual review; not deployment evidence",
+  "captureDate": "2026-11-12T14:12:34.090456+00:00",
+  "note": "Actual browser captures of the targeted PR #4 refinements. Subsequent evidence-only commit retains the same application visuals. Mobile is Chromium Pixel touch emulation, not physical Android. CI creates additional exact-head evidence.",
+  "recorderSha256": "57303915a9a12e020297042213952cd437ea88b26a74ac9e998759b5cc32d07e",
+  "scrollEvidence": [
+    {
+      "width": 1440,
+      "height": 900,
+      "emulation": "Desktop Chromium",
+      "nativeInput": true,
+      "forwardProgress": 0.9949,
+      "reverseProgress": 0.4451,
+      "restoredProgress": 0.9949,
+      "paused": true,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "emulation": "Pixel 7 Chromium touch; not physical Android",
+      "nativeInput": true,
+      "forwardProgress": 0.9924,
+      "reverseProgress": 0.445,
+      "restoredProgress": 0.9924,
+      "paused": true,
+      "errors": []
+    }
+  ],
+  "changes": [
+    "Mobile original bottle appears above the localized text and completes its reveal before the feature and official-store CTA.",
+    "Stage five uses a realistic mesh/glass filter and fine green extraction flow. Stage seven retains copper transfer and finished black-green oil."
+  ],
+  "assetVerification": {
+    "previous110Records": "byte/hash metadata unchanged",
+    "records": 113,
+    "independentBotanicalStudies": 30,
+    "productPixels": "original RGB and existing cutout bytes unchanged",
+    "newProp": "only the unbranded extraction filter; master and derivatives registered as review-only"
+  },
+  "validation": {
+    "astro": "0 errors, 0 warnings; 1 pre-existing hint",
+    "formatting": "pass",
+    "nodeTests": 32,
+    "botanicalBrowserTests": 14,
+    "reviewPackagingSecurityTests": 9,
+    "defaultBuildStaticAndMediaPolicy": "pass",
+    "botanicalReviewBuild": "pass"
+  },
+  "files": [
+    {
+      "path": "1440-final-full-resolution.png",
+      "bytes": 1118838,
+      "sha256": "9afa63bbaf0cf407808821966a124c41418cb5e64d239b96649fcc9238ea90e0"
+    },
+    {
+      "path": "1440-stage-5.png",
+      "bytes": 1048847,
+      "sha256": "a529b2c1f7be4867a8330be2b6b4eb21db28ecc12830259fcf009b2a14d74ef0"
+    },
+    {
+      "path": "1440-stage-7.png",
+      "bytes": 1121464,
+      "sha256": "4236ae58df8ea50ea4e8982aace8c8398d7206c642030150303aa51904635842"
+    },
+    {
+      "path": "360-stage-5.png",
+      "bytes": 1206485,
+      "sha256": "f2f4bdda7901048f78c1dd1a6a3fd43b35ecc810b7509cb691438ae560aca7a2"
+    },
+    {
+      "path": "360-stage-7.png",
+      "bytes": 1288902,
+      "sha256": "ba7a4b9241162e3b82942ed3d67f59c13f01a2db360ec0599555cd1c27a163f1"
+    },
+    {
+      "path": "360-stage-8.png",
+      "bytes": 1031337,
+      "sha256": "f72333a5ea42b35c25c6554d8e6f015ca048f63c7540f4738411bfc7d2b9f9f4"
+    },
+    {
+      "path": "390-bottle-first-full-resolution.png",
+      "bytes": 1108593,
+      "sha256": "5601ede60622968e749013ddf6f2ee898c6493c42c765bf334af05cbbf1e1abc"
+    },
+    {
+      "path": "390-claim-second-full-resolution.png",
+      "bytes": 1158372,
+      "sha256": "86fa859bceddd6482a9630842de663c993b1edcfccae35ca785b3b065cffb6d8"
+    },
+    {
+      "path": "390-final-full-resolution.png",
+      "bytes": 1339459,
+      "sha256": "8dfbc2150d7a1f9c7bedd961ad2ec562dd5c7726e6b5fe268a95707b99783f7a"
+    },
+    {
+      "path": "390-stage-5.png",
+      "bytes": 1178718,
+      "sha256": "7d0ab04ed8617dcc9e262773e840801ee88ff3c7d39030804da06078d9022f45"
+    },
+    {
+      "path": "390-stage-7.png",
+      "bytes": 1290501,
+      "sha256": "4014905f1ac29cc9c0f963e632aadf532761b38e80cbae227a60be6f12d2cbf8"
+    },
+    {
+      "path": "desktop-preview.mp4",
+      "bytes": 6918204,
+      "sha256": "41d6d1002329c1fc941519b8233bacea062ffc76afb1ca9fffe9ff9232a2ed06"
+    },
+    {
+      "path": "en-mobile-final.png",
+      "bytes": 298135,
+      "sha256": "b0a9a316802e4e668b30773852e5afe601973fcd84478b64f442b277dffc2302"
+    },
+    {
+      "path": "hi-mobile-final.png",
+      "bytes": 298477,
+      "sha256": "504a3d7f23591d0d4a08bcca566371ceb8646dd22db24b83bb55b419ce168364"
+    },
+    {
+      "path": "ml-mobile-final.png",
+      "bytes": 302036,
+      "sha256": "943400119583e89758dfec023930731a7599939dbff7b1c52c783cf9efac0f4e"
+    },
+    {
+      "path": "mobile-preview.mp4",
+      "bytes": 3387761,
+      "sha256": "3dab3bebb8316ad81dc7cc91bc9ab1560c584a0ba9eec100ab5e1a4bc85a1f58"
+    },
+    {
+      "path": "storyboard.png",
+      "bytes": 1014987,
+      "sha256": "02fe00e22c0f9b8232f0b485eb7a775dfad8d3d243b379efe1ffc2aee1e2d1a2"
+    },
+    {
+      "path": "ta-mobile-final.png",
+      "bytes": 282680,
+      "sha256": "7a34a79b6d3394a2947014e4555232cc30081c857c294c2edf47581efe99ca7c"
+    }
+  ]
+}

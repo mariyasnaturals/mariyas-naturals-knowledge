@@ -1,0 +1,59 @@
+name: Botanical visual review
+on:
+  pull_request:
+    branches: [feature/cinematic-homepage]
+permissions:
+  contents: read
+concurrency:
+  group: botanical-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  botanical-review:
+    if: github.head_ref == 'feature/botanical-journey-review' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://www.mariyasnaturals.cloud
+      SITE_ENV: development
+      ALLOW_INDEXING: 'false'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+          cache: npm
+      - name: Install and verify FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          command -v ffprobe
+          ffprobe -version
+      - run: npm ci
+      - name: Verify exact botanical PR source
+        run: node --input-type=module -e 'import {previewContext} from "./scripts/package-pr-preview.mjs"; const c=previewContext(process.cwd()); if(c.event!=="pull_request" || c.branch!=="feature/botanical-journey-review" || c.baseBranch!=="feature/cinematic-homepage") throw new Error("Wrong review context"); console.log(c.sha);'
+      - name: Check registered botanical layers and original product pixels
+        run: npm run test:botanical-assets
+      - name: Build and validate the integrated release build
+        run: |
+          npm run build
+          npm run test:static
+          npm run test:media-policy
+      - name: Botanical browser, touch and accessibility tests
+        run: |
+          npx playwright install --with-deps chromium
+          CHROMIUM_PATH="$(node --input-type=module -e 'import {chromium} from "@playwright/test"; console.log(chromium.executablePath())')" npx playwright test --config playwright.botanical.config.ts
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: botanical-visual-evidence-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          path: |
+            botanical-review-results/recordings/
+            review/botanical/asset-manifest.json
+            review/botanical/reference-provenance.json
+            review/botanical/release-integration.json
+          retention-days: 7
+          if-no-files-found: warn

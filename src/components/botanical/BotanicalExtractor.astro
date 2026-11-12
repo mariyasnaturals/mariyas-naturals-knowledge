@@ -1,0 +1,37 @@
+---
+import botanicalManifest from '../../data/botanical-media.json';
+import type { Locale } from '../../i18n';
+interface Props {
+  animated?: boolean;
+  lang: Locale;
+}
+const { animated = false, lang } = Astro.props;
+const altFor = (path: string) =>
+  botanicalManifest.media.find((m) => m.localAssetPath === path)!.alt[lang];
+---
+
+<div
+  class="botanical-extractor"
+  data-layer={animated ? 'extractor' : undefined}
+  data-vessel="brass-filter"
+>
+  <!-- Artistic filter prop; no specific Mariyas factory equipment is asserted. -->
+  <img
+    data-botanical-media
+    class="botanical-filter-body"
+    src="/_botanical-assets/brass-filter.webp"
+    width="1100"
+    height="1100"
+    alt={altFor('/_botanical-assets/brass-filter.webp')}
+    loading="lazy"
+  />
+  <img
+    data-botanical-media
+    class="botanical-filter-botanicals"
+    src="/_botanical-assets/preparation-fragments.webp"
+    width="420"
+    height="280"
+    alt={altFor('/_botanical-assets/preparation-fragments.webp')}
+    loading="lazy"
+  />
+</div>

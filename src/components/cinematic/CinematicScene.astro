@@ -1,0 +1,153 @@
+---
+import assets from '../../data/cinematic-assets.json';
+import { sceneVisuals } from '../../data/cinematic-visuals.mjs';
+import type { Locale } from '../../i18n';
+import ArrowIcon from '../ArrowIcon.astro';
+interface Props {
+  scene: (typeof assets.scenes)[number];
+  index: number;
+  title: string;
+  description: string;
+  pending: string;
+  lang: Locale;
+  watch: string;
+  finalLine: string;
+  productLabel: string;
+  productAction: string;
+  productHref: string;
+}
+const {
+  scene,
+  index,
+  title,
+  description,
+  pending,
+  lang,
+  watch,
+  finalLine,
+  productLabel,
+  productAction,
+  productHref,
+} = Astro.props;
+const visuals = sceneVisuals(assets, scene);
+const ready = visuals.length > 0;
+const finale = scene.id === 'final-hero';
+const model = assets.references.model;
+const product = assets.references.product;
+const mobileStill = 'mobile' in scene ? scene.mobile : undefined;
+---
+
+<li
+  id={`story-scene-${index + 1}`}
+  class:list={['cinema-scene', { 'cinema-final-scene': finale }]}
+  data-story-scene
+  data-effect={scene.effect}
+  data-scene-id={scene.id}
+  data-reference={scene.reference ?? undefined}
+>
+  {finale ? (
+    <div
+      class="cinema-frame cinema-finale"
+      data-asset-state={ready ? 'ready' : 'pending'}
+    >
+      <figure class="cinema-final-model">
+        <img
+          src={model.src}
+          width={model.width}
+          height={model.height}
+          alt={model.alt[lang]}
+          loading="lazy"
+          decoding="async"
+          data-cinematic-asset="reference-model"
+        />
+        <figcaption>
+          <span class="eyebrow" aria-hidden="true">
+            MARIYAS NATURALS
+          </span>
+          <p>{finalLine}</p>
+        </figcaption>
+      </figure>
+      <div class="cinema-final-product">
+        <div class="cinema-scene-copy">
+          <p class="eyebrow">{productLabel}</p>
+          <h3>{title}</h3>
+        </div>
+        <figure class="cinema-product-reveal">
+          <img
+            src={product.src}
+            width={product.width}
+            height={product.height}
+            alt={product.alt[lang]}
+            loading="lazy"
+            decoding="async"
+            data-cinematic-asset="reference-product"
+          />
+        </figure>
+        <div class="cinema-final-actions">
+          <a class="cinema-hero-action" href={productHref}>
+            {productAction}
+            <ArrowIcon />
+          </a>
+          <a
+            class="cinema-watch"
+            href="#cinema-film"
+            data-watch-scene={scene.id}
+          >
+            {watch}
+            <ArrowIcon />
+          </a>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <>
+      <figure
+        class="cinema-frame"
+        data-asset-state={ready ? 'ready' : 'pending'}
+      >
+        {ready ? (
+          <div class="cinema-originals">
+            {visuals.map(({ id, asset }) => (
+              <picture>
+                {mobileStill && (
+                  <source media="(max-width: 759px)" srcset={mobileStill.src} />
+                )}
+                <img
+                  src={asset.src}
+                  width={asset.width}
+                  height={asset.height}
+                  alt={asset.alt[lang]}
+                  loading="lazy"
+                  decoding="async"
+                  data-cinematic-asset={id}
+                />
+              </picture>
+            ))}
+          </div>
+        ) : (
+          <figcaption>{pending}</figcaption>
+        )}
+        {ready &&
+          scene.effect === 'shine' &&
+          assets.hairMask.status === 'ready' && (
+            <div
+              class="cinema-hair-highlight"
+              style={{ maskImage: `url(${assets.hairMask.src})` }}
+              aria-hidden="true"
+            >
+              <span class="cinema-sweep"></span>
+            </div>
+          )}
+      </figure>
+      <div class="cinema-scene-copy">
+        <p class="eyebrow">MARIYAS NATURALS</p>
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <a class="cinema-watch" href="#cinema-film" data-watch-scene={scene.id}>
+          {watch}
+          <ArrowIcon />
+        </a>
+      </div>
+    </>
+  )}
+</li>

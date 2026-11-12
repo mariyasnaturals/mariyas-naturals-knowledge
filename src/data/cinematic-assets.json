@@ -1,0 +1,520 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 15,
+  "breakpoint": 760,
+  "videos": {
+    "desktop": {
+      "status": "ready",
+      "src": "/cinematic/homepage-desktop.mp4",
+      "expectedPath": "/cinematic/homepage-desktop.mp4",
+      "aspectRatio": "16:9",
+      "type": "video/mp4",
+      "source": "owner-original",
+      "originalFilename": "714482450_1794338494564178-1.mp4",
+      "sha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
+      "width": 1280,
+      "height": 720,
+      "expectedOriginalFilename": "714482450_1794338494564178-1.mp4",
+      "bytes": 7849962,
+      "durationSeconds": 15.04,
+      "codec": "h264",
+      "encodedWidth": 1280,
+      "encodedHeight": 720,
+      "rotation": 0,
+      "contentOrigin": "google-flow",
+      "identityAccuracy": "not-asserted",
+      "hasAudio": true,
+      "videoDurationSeconds": 15,
+      "chapters": [
+        {
+          "id": "botanicals",
+          "start": 0,
+          "end": 2.916667
+        },
+        {
+          "id": "golden-oil",
+          "start": 2.916667,
+          "end": 4.125
+        },
+        {
+          "id": "product-reveal",
+          "start": 4.125,
+          "end": 6.125
+        },
+        {
+          "id": "original-model",
+          "start": 6.125,
+          "end": 7.5
+        },
+        {
+          "id": "application",
+          "start": 7.5,
+          "end": 9
+        },
+        {
+          "id": "hair-shine",
+          "start": 9,
+          "end": 12
+        },
+        {
+          "id": "hair-sweep",
+          "start": 12,
+          "end": 14.5
+        },
+        {
+          "id": "final-hero",
+          "start": 14.5,
+          "end": 15
+        }
+      ],
+      "receivedFilename": "1-714482450_1794338494564178-1.mp4",
+      "poster": {
+        "status": "ready",
+        "src": "/cinematic/poster-desktop.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "714482450_1794338494564178-1.mp4",
+        "sha256": "cf565d59ee51945416db38dff22b97b555140e84937a3e85cc69c505d092bb03",
+        "bytes": 69171,
+        "width": 1280,
+        "height": 720,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-desktop.mp4",
+        "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
+        "frameTimeSeconds": 0.25,
+        "alt": {
+          "en": "Botanical opening from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സസ്യദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म का वनस्पति दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியின் தாவரக் காட்சி"
+        }
+      }
+    },
+    "mobile": {
+      "status": "ready",
+      "src": "/cinematic/homepage-mobile.mp4",
+      "expectedPath": "/cinematic/homepage-mobile.mp4",
+      "aspectRatio": "9:16",
+      "type": "video/mp4",
+      "source": "owner-original",
+      "originalFilename": "496978374_1794339270167488-1.mp4",
+      "sha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+      "width": 720,
+      "height": 1280,
+      "expectedOriginalFilename": "496978374_1794339270167488-1.mp4",
+      "bytes": 7594716,
+      "durationSeconds": 15.04,
+      "codec": "h264",
+      "encodedWidth": 720,
+      "encodedHeight": 1280,
+      "rotation": 0,
+      "contentOrigin": "google-flow",
+      "identityAccuracy": "not-asserted",
+      "hasAudio": true,
+      "videoDurationSeconds": 15,
+      "chapters": [
+        {
+          "id": "botanicals",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "id": "golden-oil",
+          "start": 3,
+          "end": 4
+        },
+        {
+          "id": "product-reveal",
+          "start": 4,
+          "end": 6.125
+        },
+        {
+          "id": "original-model",
+          "start": 6.125,
+          "end": 7.5
+        },
+        {
+          "id": "application",
+          "start": 7.5,
+          "end": 9
+        },
+        {
+          "id": "hair-shine",
+          "start": 9,
+          "end": 12.125
+        },
+        {
+          "id": "hair-sweep",
+          "start": 12.125,
+          "end": 13.5
+        },
+        {
+          "id": "final-hero",
+          "start": 13.5,
+          "end": 15
+        }
+      ],
+      "receivedFilename": "2-496978374_1794339270167488-1.mp4",
+      "poster": {
+        "status": "ready",
+        "src": "/cinematic/poster-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "a46727fff7192bc40162c98ed286966bdd0faac0e596f26aac8da5111bcf141a",
+        "bytes": 87707,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 0.25,
+        "alt": {
+          "en": "Botanical opening from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സസ്യദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म का वनस्पति दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியின் தாவரக் காட்சி"
+        }
+      }
+    }
+  },
+  "references": {
+    "product": {
+      "status": "ready",
+      "src": "/cinematic/original-product.jpg",
+      "expectedPath": "/cinematic/original-product.jpg",
+      "source": "owner-original",
+      "originalFilename": "9456.jpg",
+      "sha256": "be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65",
+      "width": 1280,
+      "height": 1108,
+      "alt": {
+        "en": "Original Mariyas Naturals product photograph supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മരിയാസ് നാച്ചുറൽസ് ഉൽപ്പന്ന ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मरियास नैचुरल्स उत्पाद की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மரியாஸ் நேச்சுரல்ஸ் தயாரிப்புப் படம்"
+      },
+      "bytes": 219940,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "product",
+      "receivedFilename": "4-9456.jpg",
+      "expectedOriginalFilename": "9456.jpg"
+    },
+    "model": {
+      "status": "ready",
+      "src": "/cinematic/original-model.jpg",
+      "expectedPath": "/cinematic/original-model.jpg",
+      "source": "owner-original",
+      "originalFilename": "9468.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Original model reference supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മോഡൽ ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मॉडल की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மாடல் படம்"
+      },
+      "expectedOriginalFilename": "9468.jpg",
+      "bytes": 64291,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "model",
+      "receivedFilename": "3-9468.jpg"
+    }
+  },
+  "scenes": [
+    {
+      "id": "botanicals",
+      "start": 0,
+      "end": 2.916667,
+      "effect": "botanical",
+      "status": "ready",
+      "src": "/cinematic/scene-botanicals.jpg",
+      "expectedPath": "/cinematic/scene-botanicals.jpg",
+      "source": "owner-video-frame",
+      "originalFilename": "714482450_1794338494564178-1.mp4",
+      "sha256": "44a8eaa703ff14fef33a433d8ca6f1b6d26e7cdf3f0ae560173edac20a20a35b",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Botanical opening from the supplied Mariyas film",
+        "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സസ്യദൃശ്യം",
+        "hi": "दी गई मरियास फ़िल्म का वनस्पति दृश्य",
+        "ta": "வழங்கிய மரியாஸ் காணொளியின் தாவரக் காட்சி"
+      },
+      "bytes": 91211,
+      "contentOrigin": "google-flow-frame",
+      "identityAccuracy": "not-asserted",
+      "derivedFrom": "/cinematic/homepage-desktop.mp4",
+      "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
+      "frameTimeSeconds": 1.5,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/poster-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "a46727fff7192bc40162c98ed286966bdd0faac0e596f26aac8da5111bcf141a",
+        "bytes": 87707,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 0.25,
+        "alt": {
+          "en": "Botanical opening from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സസ്യദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म का वनस्पति दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியின் தாவரக் காட்சி"
+        }
+      }
+    },
+    {
+      "id": "golden-oil",
+      "start": 2.916667,
+      "end": 4.125,
+      "effect": "oil",
+      "status": "ready",
+      "src": "/cinematic/scene-golden-oil.jpg",
+      "expectedPath": "/cinematic/scene-golden-oil.jpg",
+      "source": "owner-video-frame",
+      "originalFilename": "714482450_1794338494564178-1.mp4",
+      "sha256": "e8057dc8f9539c23af8505415a11b8afb064dee961578ad1f5c6634e1861357b",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Golden oil droplet from the supplied Mariyas film",
+        "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സ്വർണനിറമുള്ള എണ്ണത്തുള്ളി",
+        "hi": "दी गई मरियास फ़िल्म में सुनहरी तेल की बूँद",
+        "ta": "வழங்கிய மரியாஸ் காணொளியில் பொன்னிற எண்ணெய்த்துளி"
+      },
+      "bytes": 58290,
+      "contentOrigin": "google-flow-frame",
+      "identityAccuracy": "not-asserted",
+      "derivedFrom": "/cinematic/homepage-desktop.mp4",
+      "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
+      "frameTimeSeconds": 3.5,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/scene-golden-oil-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "d3af9044e7657eb8b4346ea15e277a0ef7fb7f04759fd51840fefb4fccc5d9b7",
+        "bytes": 52737,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 3.5,
+        "alt": {
+          "en": "Golden oil droplet from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ സ്വർണനിറമുള്ള എണ്ണത്തുള്ളി",
+          "hi": "दी गई मरियास फ़िल्म में सुनहरी तेल की बूँद",
+          "ta": "வழங்கிய மரியாஸ் காணொளியில் பொன்னிற எண்ணெய்த்துளி"
+        }
+      }
+    },
+    {
+      "id": "product-reveal",
+      "start": 4.125,
+      "end": 6.125,
+      "effect": "reveal",
+      "status": "ready",
+      "src": "/cinematic/original-product.jpg",
+      "expectedPath": "/cinematic/original-product.jpg",
+      "source": "owner-original",
+      "originalFilename": "9456.jpg",
+      "sha256": "be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65",
+      "width": 1280,
+      "height": 1108,
+      "alt": {
+        "en": "Original Mariyas Naturals product photograph supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മരിയാസ് നാച്ചുറൽസ് ഉൽപ്പന്ന ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मरियास नैचुरल्स उत्पाद की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மரியாஸ் நேச்சுரல்ஸ் தயாரிப்புப் படம்"
+      },
+      "bytes": 219940,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "product",
+      "reference": "product"
+    },
+    {
+      "id": "original-model",
+      "start": 6.125,
+      "end": 7.5,
+      "effect": "portrait",
+      "status": "ready",
+      "src": "/cinematic/original-model.jpg",
+      "expectedPath": "/cinematic/original-model.jpg",
+      "source": "owner-original",
+      "originalFilename": "9468.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Original model reference supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മോഡൽ ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मॉडल की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மாடல் படம்"
+      },
+      "expectedOriginalFilename": "8573.png",
+      "bytes": 64291,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "model",
+      "reference": "model"
+    },
+    {
+      "id": "application",
+      "start": 7.5,
+      "end": 9,
+      "effect": "application",
+      "status": "ready",
+      "src": "/cinematic/scene-application.jpg",
+      "expectedPath": "/cinematic/scene-application.jpg",
+      "source": "owner-video-frame",
+      "originalFilename": "714482450_1794338494564178-1.mp4",
+      "sha256": "70d90d23e9e4e98dccd69a28fe6006641feb9da6922475d53fb426ba282758e2",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Oil application moment from the supplied Mariyas film",
+        "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ എണ്ണ ഉപയോഗിക്കുന്ന ദൃശ്യം",
+        "hi": "दी गई मरियास फ़िल्म में तेल लगाने का दृश्य",
+        "ta": "வழங்கிய மரியாஸ் காணொளியில் எண்ணெய் பயன்படுத்தும் காட்சி"
+      },
+      "bytes": 32377,
+      "contentOrigin": "google-flow-frame",
+      "identityAccuracy": "not-asserted",
+      "derivedFrom": "/cinematic/homepage-desktop.mp4",
+      "sourceSha256": "b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641",
+      "frameTimeSeconds": 8,
+      "mobile": {
+        "status": "ready",
+        "src": "/cinematic/scene-application-mobile.jpg",
+        "source": "owner-video-frame",
+        "originalFilename": "496978374_1794339270167488-1.mp4",
+        "sha256": "b378511a683c7c37b7146f16c521d506d2e55affb8a90e566627d862d47fc071",
+        "bytes": 60553,
+        "width": 720,
+        "height": 1280,
+        "contentOrigin": "google-flow-frame",
+        "identityAccuracy": "not-asserted",
+        "derivedFrom": "/cinematic/homepage-mobile.mp4",
+        "sourceSha256": "faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92",
+        "frameTimeSeconds": 8,
+        "alt": {
+          "en": "Oil application moment from the supplied Mariyas film",
+          "ml": "നൽകിയ മരിയാസ് വീഡിയോയിലെ എണ്ണ ഉപയോഗിക്കുന്ന ദൃശ്യം",
+          "hi": "दी गई मरियास फ़िल्म में तेल लगाने का दृश्य",
+          "ta": "வழங்கிய மரியாஸ் காணொளியில் எண்ணெய் பயன்படுத்தும் காட்சி"
+        }
+      }
+    },
+    {
+      "id": "hair-shine",
+      "start": 9,
+      "end": 12,
+      "effect": "shine",
+      "status": "ready",
+      "src": "/cinematic/original-model.jpg",
+      "expectedPath": "/cinematic/original-model.jpg",
+      "source": "owner-original",
+      "originalFilename": "9468.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Original model reference supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മോഡൽ ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मॉडल की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மாடல் படம்"
+      },
+      "expectedOriginalFilename": "8573.png",
+      "bytes": 64291,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "model",
+      "reference": "model"
+    },
+    {
+      "id": "hair-sweep",
+      "start": 12,
+      "end": 14.5,
+      "effect": "sweep",
+      "status": "ready",
+      "src": "/cinematic/original-model.jpg",
+      "expectedPath": "/cinematic/original-model.jpg",
+      "source": "owner-original",
+      "originalFilename": "9468.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Original model reference supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മോഡൽ ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मॉडल की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மாடல் படம்"
+      },
+      "expectedOriginalFilename": "8573.png",
+      "bytes": 64291,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "model",
+      "reference": "model"
+    },
+    {
+      "id": "final-hero",
+      "start": 14.5,
+      "end": 15,
+      "effect": "hero",
+      "status": "ready",
+      "src": "/cinematic/original-model.jpg",
+      "expectedPath": "/cinematic/original-model.jpg",
+      "source": "owner-original",
+      "originalFilename": "9468.jpg",
+      "sha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+      "width": 1280,
+      "height": 720,
+      "alt": {
+        "en": "Original model reference supplied by the owner",
+        "ml": "ഉടമ നൽകിയ യഥാർത്ഥ മോഡൽ ചിത്രം",
+        "hi": "मालिक द्वारा दी गई मूल मॉडल की तस्वीर",
+        "ta": "உரிமையாளர் வழங்கிய அசல் மாடல் படம்"
+      },
+      "expectedOriginalFilename": "8573.png",
+      "bytes": 64291,
+      "contentOrigin": "owner-photograph",
+      "authoritativeFor": "model",
+      "reference": "model"
+    }
+  ],
+  "hairMask": {
+    "status": "ready",
+    "src": "/cinematic/original-hair-mask.png",
+    "expectedPath": "/cinematic/original-hair-mask.png",
+    "source": "owner-photo-mask",
+    "originalFilename": "9468.jpg",
+    "sha256": "1b0132439f159bc7745df78e0dff149c0e56ba6c4769be25ea18202d5af4a1ee",
+    "width": 1280,
+    "height": 720,
+    "alt": {
+      "en": "Technical highlight mask for the supplied model photograph",
+      "ml": "നൽകിയ മോഡൽ ചിത്രത്തിനുള്ള പ്രകാശ മാസ്ക്",
+      "hi": "दी गई मॉडल तस्वीर के लिए प्रकाश मास्क",
+      "ta": "வழங்கிய மாடல் படத்திற்கான ஒளி முகமூடி"
+    },
+    "bytes": 20462,
+    "derivedFrom": "/cinematic/original-model.jpg",
+    "sourceSha256": "0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46",
+    "contentOrigin": "technical-alpha-mask",
+    "method": "Feathered vector mask limited to the lower hair sweep in the supplied model photograph; original photograph is unchanged."
+  },
+  "timingStatus": "reviewed-source-footage",
+  "timingReview": {
+    "date": "2026-11-11",
+    "method": "Both supplied cuts inspected using half-second contact sheets and quarter-second boundary samples; chapter starts follow visible transitions. Crossfades are retained.",
+    "desktopFinalHeroSeconds": 0.5,
+    "note": "The cuts differ. Each has its own chapter boundaries. The original still composition provides an unhurried final hero without extending either video."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "role": "Owner-supplied design and motion references only. Not formulation evidence, production footage, authoritative packaging or website media.",
+  "files": [
+    {
+      "name": "1-SVID_20261112_152726_1.mp4",
+      "width": 766,
+      "height": 1280,
+      "duration": 8.638708,
+      "bytes": 4039870,
+      "sha256": "ef3ebc0d6543f21b80d363ff703f746bfdebb704e546b3c76269ca853c83d63a"
+    },
+    {
+      "name": "2-SVID_20261112_152653_1.mp4",
+      "width": 766,
+      "height": 1280,
+      "duration": 9.427959,
+      "bytes": 6098078,
+      "sha256": "b9579bab4dec531102c05c1b4da37d88a103951257f09a0b74c5af221f48e65e"
+    },
+    {
+      "name": "3-HnVideoEditor_2026_11_12_150645939.mp4",
+      "width": 766,
+      "height": 904,
+      "duration": 11.233333,
+      "bytes": 8491875,
+      "sha256": "34dfce6f2074dde24333d1544af529dda75dff7f00e10ab3e56a4cefd9d651d7"
+    },
+    {
+      "name": "4-9583.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 205371,
+      "sha256": "1873553ee6e0d955f3cbeba3405a1552678fb44f1283c77fa4c8d65c3ed3194d"
+    },
+    {
+      "name": "5-9582.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 200495,
+      "sha256": "015bfb26897934f0682eaeffb0d44e369bd89956101c37dd0d3799c53169df23"
+    }
+  ]
+}

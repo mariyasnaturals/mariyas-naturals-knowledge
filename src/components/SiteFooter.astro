@@ -8,6 +8,7 @@ interface Props {
   t: Dictionary;
 }
 const { lang, t } = Astro.props;
+const cinematicHomepage = Astro.url.pathname === `/${lang}/`;
 ---
 
 <section id="store" class="store-section section" aria-label={t.storeShort}>
@@ -33,7 +34,7 @@ const { lang, t } = Astro.props;
   </div>
   <LanguageSwitcher lang={lang} label={t.language} compact />
   <p class="footer-note">
-    © {new Date().getFullYear()} {t.rights}. {t.preview}
+    © {new Date().getFullYear()} {t.rights}. {!cinematicHomepage && t.preview}
   </p>
 </footer>
 <MobileNavigation lang={lang} t={t} />

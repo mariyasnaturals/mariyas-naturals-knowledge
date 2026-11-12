@@ -123,5 +123,41 @@
     "wellness": "Discover the other herbal wellness and everyday-care listings in the current Mariyas Naturals catalogue."
   },
   "collectionLocation": "in Kerala",
-  "collectionBack": "All collections"
+  "collectionBack": "All collections",
+  "cinematic": {
+    "title": "From nature. Into your ritual.",
+    "film": "The Mariyas Naturals film",
+    "videoPending": "The original film will appear here.",
+    "imagePending": "Original scene imagery pending",
+    "play": "Play film",
+    "pause": "Pause film",
+    "unavailable": "The film is unavailable. Explore the chapters below.",
+    "originals": "Google Flow film · Original product and model photographs.",
+    "titles": [
+      "A daily ritual. Rooted in nature.",
+      "A moment of golden oil.",
+      "Nourishment from root to tip.",
+      "A Mariyas portrait.",
+      "Soft care for every strand.",
+      "Shine, strength, and calm.",
+      "An elegant long-hair sweep.",
+      "Discover the full ritual."
+    ],
+    "notes": [
+      "Where the light falls, the story begins.",
+      "A golden moment. A softer rhythm.",
+      "The Mariyas signature. Your everyday ritual.",
+      "A moment to slow down. A ritual to make your own.",
+      "Make a little space for daily care.",
+      "Soft light, through every length.",
+      "Grace in every movement.",
+      "Find your Mariyas moment."
+    ],
+    "watch": "Watch this moment",
+    "filmStill": "From the supplied film",
+    "originalPhoto": "Original photography",
+    "heroKicker": "THE MARIYAS RITUAL",
+    "heroLine": "Nature. A little closer.",
+    "finalLine": "A little time. Entirely yours."
+  }
 }

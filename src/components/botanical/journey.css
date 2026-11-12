@@ -1,0 +1,951 @@
+.botanical-journey {
+  --forest: #071a13;
+  --emerald: #123827;
+  --gold: #c5a46a;
+  color: #f5f0e5;
+  background: var(--forest);
+  position: relative;
+  isolation: isolate;
+}
+.botanical-intro {
+  padding: clamp(4rem, 10vw, 9rem) max(6vw, calc((100vw - 1300px) / 2));
+  background: linear-gradient(180deg, #071a13, #0a2118);
+}
+.botanical-intro h2 {
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 400;
+  line-height: 1.05;
+  margin: 1rem 0 1.8rem;
+  max-width: 14ch;
+}
+.botanical-intro .eyebrow,
+.botanical-copy .eyebrow {
+  color: #e2cb91;
+  font-size: 0.69rem;
+  letter-spacing: 0.18em;
+}
+.botanical-concept-note {
+  max-width: 47rem;
+  color: #bac6ba;
+  font-size: 0.87rem;
+  line-height: 1.7;
+}
+.botanical-skip {
+  display: inline-block;
+  margin-top: 1.8rem;
+  padding: 0.8rem 0;
+  color: #e2cb91;
+  text-underline-offset: 0.4rem;
+}
+.botanical-track {
+  position: relative;
+}
+.botanical-stage {
+  display: none;
+}
+.botanical-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.botanical-step {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 8rem 6vw;
+  scroll-margin-top: 6rem;
+}
+.botanical-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 29rem;
+}
+.botanical-copy h3 {
+  font-size: clamp(2.7rem, 4.4vw, 5rem);
+  line-height: 1.05;
+  font-weight: 400;
+  text-wrap: balance;
+  margin: 1.3rem 0;
+}
+.botanical-copy > p:not(.eyebrow, .botanical-claim) {
+  color: #d1d9ce;
+  max-width: 28ch;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+.botanical-claim {
+  display: flex;
+  flex-direction: column;
+  color: #e2cb91;
+  margin: 1.8rem 0;
+  line-height: 1.15;
+  font-family: var(--font-display, serif);
+  font-size: clamp(1.6rem, 2.5vw, 2.6rem);
+}
+.botanical-claim span:first-child {
+  font-size: clamp(4rem, 7vw, 7rem);
+  font-style: italic;
+  letter-spacing: -0.04em;
+}
+.botanical-cta {
+  display: inline-flex;
+  gap: 2rem;
+  align-items: center;
+  min-height: 48px;
+  background: #e2cb91;
+  color: #071a13;
+  border-radius: 99px;
+  padding: 0.9rem 1.5rem;
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+.botanical-cta:hover {
+  background: #f5f0e5;
+}
+.botanical-journey a:focus-visible {
+  outline: 3px solid #e2cb91;
+  outline-offset: 6px;
+}
+.botanical-static {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.botanical-static picture,
+.botanical-static picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+.botanical-static::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #071a13ed 0%, #071a1366 52%, transparent);
+}
+.botanical-static > img {
+  position: absolute;
+  width: 42%;
+  height: 63%;
+  object-fit: contain;
+  left: 51%;
+  top: 19%;
+}
+.botanical-journey[data-motion='scroll'] .botanical-stage {
+  position: sticky;
+  display: block;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  pointer-events: none;
+}
+.botanical-journey[data-motion='scroll'] .botanical-steps {
+  margin-top: -100svh;
+}
+.botanical-journey[data-motion='scroll'] .botanical-static {
+  display: none;
+}
+.botanical-environment {
+  position: absolute;
+  inset: 0;
+}
+.botanical-environment img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.botanical-light {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, #e2cb9117, transparent 60%);
+  opacity: 0.3;
+}
+.botanical-depth {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #071a13eb 0%,
+      #071a13c2 27%,
+      #071a1322 68%,
+      #071a1344
+    ),
+    linear-gradient(0deg, #071a1399, transparent 40%);
+}
+.botanical-studies {
+  position: absolute;
+  inset: 0;
+}
+.botanical-study {
+  position: absolute;
+  left: var(--study-x);
+  top: var(--study-y);
+  width: clamp(70px, 11vw, 170px);
+  height: clamp(90px, 18vw, 220px);
+  object-fit: contain;
+  filter: drop-shadow(6px 14px 16px #0005);
+}
+.botanical-apparatus {
+  position: absolute;
+  left: 40%;
+  width: 58%;
+  height: 66%;
+  top: 26%;
+  transform-origin: 50% 45%;
+}
+.botanical-apparatus > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.botanical-mortar {
+  z-index: 4;
+}
+.botanical-mortar .botanical-pestle {
+  position: absolute;
+  width: 24%;
+  height: 74%;
+  right: 27%;
+  top: -25%;
+  transform-origin: 50% 80%;
+}
+.botanical-fragments {
+  position: absolute;
+  left: 60%;
+  top: 41%;
+  width: 14%;
+  display: flex;
+  z-index: 5;
+}
+.botanical-fragments img {
+  width: 24%;
+  height: 80px;
+  object-fit: contain;
+  transform: rotate(-20deg);
+}
+.botanical-receiver {
+  z-index: 5;
+  top: 28%;
+  height: 64%;
+}
+.botanical-receiver > img {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.botanical-fill {
+  position: absolute;
+  left: 15%;
+  width: 68%;
+  top: 22%;
+  height: 58%;
+  border-radius: 10% 10% 25% 25% / 8% 8% 13% 13%;
+  background: linear-gradient(
+    110deg,
+    #020a06,
+    #123827 40%,
+    #071a13 60%,
+    #020a06
+  );
+  clip-path: inset(92% 0 0 0);
+}
+.botanical-copper {
+  z-index: 6;
+  top: 25%;
+}
+.botanical-ripples {
+  position: absolute;
+  left: 23%;
+  top: 36%;
+  width: 52%;
+  height: 24%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.botanical-ripples i {
+  display: block;
+  border: 1px solid #344735b3;
+  position: absolute;
+  border-radius: 50%;
+  inset: 5% 5%;
+  box-shadow: 0 1px 1px #70805d50;
+}
+.botanical-ripples i:nth-child(2) {
+  inset: 18% 16%;
+}
+.botanical-ripples i:nth-child(3) {
+  inset: 32% 30%;
+}
+.botanical-stream {
+  position: absolute;
+  left: 65%;
+  top: 16%;
+  width: 9%;
+  height: 55%;
+  object-fit: fill;
+  transform-origin: 50% 0;
+  z-index: 6;
+}
+.botanical-drop {
+  position: absolute;
+  left: 68%;
+  top: 45%;
+  width: 4%;
+  height: 13%;
+  object-fit: contain;
+  z-index: 7;
+}
+.botanical-product {
+  position: absolute;
+  right: 0;
+  width: 56%;
+  height: 90%;
+  top: 7%;
+  z-index: 8;
+}
+.botanical-product img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.botanical-progress {
+  position: absolute;
+  left: 6vw;
+  right: 6vw;
+  bottom: 3rem;
+  height: 1px;
+  background: #e2cb9129;
+}
+.botanical-progress i {
+  display: block;
+  height: 100%;
+  background: #c5a46a;
+  transform-origin: 0 50%;
+}
+@media (max-width: 759px) {
+  .botanical-intro {
+    padding: 4rem 1.5rem 3rem;
+  }
+  .botanical-intro h2 {
+    font-size: 3.1rem;
+  }
+  .botanical-step {
+    align-items: flex-start;
+    padding: 6.5rem 1.5rem 5.5rem;
+  }
+  .botanical-copy {
+    max-width: 100%;
+  }
+  .botanical-copy h3 {
+    font-size: clamp(2.1rem, 8vw, 2.9rem);
+    max-width: 15ch;
+    margin: 0.75rem 0;
+  }
+  .botanical-copy > p:not(.eyebrow, .botanical-claim) {
+    font-size: 0.85rem;
+    max-width: 31ch;
+  }
+  .botanical-copy .eyebrow {
+    font-size: 0.59rem;
+  }
+  .botanical-depth {
+    background: linear-gradient(
+      180deg,
+      #071a13eb 0%,
+      #071a13b0 29%,
+      transparent 58%,
+      #071a1390
+    );
+  }
+  .botanical-study {
+    width: 21vw;
+    height: 27vw;
+  }
+  .botanical-apparatus {
+    left: 0;
+    width: 100%;
+    height: 50%;
+    top: 41%;
+  }
+  .botanical-receiver {
+    top: 43%;
+    height: 44%;
+  }
+  .botanical-stream {
+    left: 46%;
+    width: 12%;
+    height: 34%;
+    top: 37%;
+  }
+  .botanical-drop {
+    left: 49%;
+    top: 65%;
+    width: 7%;
+    height: 8%;
+  }
+  .botanical-fragments {
+    left: 43%;
+    top: 52%;
+    width: 28%;
+  }
+  .botanical-product {
+    top: 43%;
+    height: 44%;
+    width: 100%;
+    right: 0;
+  }
+  .botanical-claim {
+    flex-direction: row;
+    gap: 0.65rem;
+    align-items: center;
+    margin: 0.8rem 0;
+    font-size: 1.4rem;
+    max-width: 20rem;
+  }
+  .botanical-claim span:first-child {
+    font-size: 3.4rem;
+  }
+  .botanical-cta {
+    font-size: 0.78rem;
+    padding: 0.7rem 1.25rem;
+    min-height: 45px;
+  }
+  .botanical-progress {
+    bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  .botanical-static::after {
+    background: linear-gradient(
+      180deg,
+      #071a13f2 0%,
+      #071a13c9 32%,
+      transparent 65%
+    );
+  }
+  .botanical-static > img {
+    width: 94%;
+    height: 44%;
+    left: 3%;
+    top: 47%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .botanical-journey * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Captions share the persistent stage; they cannot scroll underneath the header. */
+.botanical-caption-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+.botanical-caption-layer .botanical-copy {
+  position: absolute;
+  top: 50%;
+  left: 6vw;
+  width: 34%;
+  pointer-events: auto;
+}
+.botanical-product {
+  right: 6%;
+  width: 42%;
+  height: 74%;
+  top: 17%;
+  filter: drop-shadow(0 20px 28px #0008);
+}
+.botanical-product::after {
+  content: '';
+  position: absolute;
+  left: 23%;
+  right: 23%;
+  bottom: 0;
+  height: 3%;
+  border-radius: 50%;
+  box-shadow: 0 10px 12px #0009;
+}
+.botanical-ripples img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+@media (max-width: 759px) {
+  .botanical-caption-layer .botanical-copy {
+    top: 13%;
+    left: 1.5rem;
+    width: calc(100% - 3rem);
+  }
+  .botanical-product {
+    top: 49%;
+    height: 38%;
+    width: 100%;
+    right: 0;
+  }
+}
+@media (max-width: 759px) {
+  .botanical-caption-layer .botanical-copy:has(.botanical-claim) h3 {
+    font-size: clamp(1.65rem, 6.8vw, 2rem);
+    max-width: 100%;
+    margin: 0.4rem 0;
+  }
+  .botanical-caption-layer
+    .botanical-copy:has(.botanical-claim)
+    > p:not(.eyebrow, .botanical-claim) {
+    margin: 0.3rem 0;
+    font-size: 0.8rem;
+  }
+  .botanical-product {
+    top: 47%;
+    height: 42%;
+  }
+}
+.botanical-cta svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+/* Coherent source → narrow continuous stream → elliptical receiving volume. */
+.botanical-pourer {
+  position: absolute;
+  left: 68%;
+  top: 15%;
+  width: 27%;
+  height: 32%;
+  z-index: 7;
+}
+.botanical-pourer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.botanical-receiver {
+  left: 49%;
+  width: 44%;
+  top: 49%;
+  height: 46%;
+}
+.botanical-stream {
+  left: 69.2%;
+  top: 37%;
+  width: 2.2%;
+  height: 41%;
+}
+.botanical-drop {
+  left: 69.5%;
+  top: 69%;
+  width: 2%;
+  height: 6%;
+}
+.botanical-fill {
+  left: 12%;
+  width: 77%;
+  top: 26%;
+  height: 56%;
+  border-radius: 50% 50% 44% 44% / 12% 12% 12% 12%;
+  clip-path: none;
+  transform-origin: 50% 100%;
+}
+.botanical-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 30% 30%,
+    #244a31,
+    #071a13 45%,
+    #020a06 80%
+  );
+  box-shadow: inset 0 1px 1px #344735;
+}
+@media (max-width: 759px) {
+  .botanical-pourer {
+    left: 45%;
+    top: 32%;
+    width: 48%;
+    height: 24%;
+  }
+  .botanical-receiver {
+    left: 7%;
+    width: 86%;
+    top: 56%;
+    height: 31%;
+  }
+  .botanical-stream {
+    left: 49.2%;
+    top: 48%;
+    width: 3.2%;
+    height: 35%;
+  }
+  .botanical-drop {
+    left: 49.5%;
+    top: 74%;
+    width: 3%;
+    height: 5%;
+  }
+}
+
+.botanical-product::after {
+  left: 33%;
+  right: 33%;
+}
+
+.botanical-fragments img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+}
+
+.botanical-stream {
+  left: 69.7%;
+  top: 41%;
+  height: 43.7%;
+}
+.botanical-fill {
+  left: 20%;
+  width: 63%;
+  z-index: 3;
+}
+@media (max-width: 759px) {
+  .botanical-stream {
+    left: 48.3%;
+    top: 51.5%;
+    height: 28.5%;
+  }
+}
+
+/* Constant perspective of the liquid surface as volume rises, rather than scaling a flat cap. */
+.botanical-fill {
+  top: auto;
+  bottom: 12%;
+  height: 8%;
+  border-radius: 50% / 44px;
+}
+.botanical-fill::before {
+  height: 88px;
+  max-height: 100%;
+}
+@media (max-width: 759px) {
+  .botanical-fill {
+    border-radius: 50% / 24px;
+  }
+  .botanical-fill::before {
+    height: 48px;
+  }
+}
+
+/* Stage five: botanical material in a glass filter releases fine herbal liquid.
+   Stage seven keeps the copper jug and the original, thicker black-green oil. */
+.botanical-extractor {
+  position: absolute;
+  left: 56%;
+  top: 24%;
+  width: 28%;
+  height: 24%;
+  z-index: 7;
+  transform-origin: 50% 100%;
+}
+.botanical-extractor .botanical-filter-body {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.botanical-extractor .botanical-filter-botanicals {
+  position: absolute;
+  width: 42%;
+  height: 17%;
+  object-fit: contain;
+  left: 29%;
+  top: 9%;
+  transform: rotate(-6deg);
+}
+.botanical-extract-stream {
+  position: absolute;
+  left: 69.8%;
+  top: 48%;
+  width: 0.65%;
+  height: 36.6%;
+  z-index: 6;
+  border-radius: 40% 30% 35% 20%;
+  background: linear-gradient(
+    90deg,
+    #12382766,
+    #344735c9 35%,
+    #244a31,
+    #12382788
+  );
+  box-shadow: inset 1px 0 #c5a46a33;
+  transform-origin: 50% 0;
+}
+.botanical-fill::before {
+  background: radial-gradient(
+    ellipse at 30% 30%,
+    #244a31,
+    var(--liquid-surface, #071a13) 45%,
+    var(--liquid-edge, #020a06) 80%
+  );
+}
+.botanical-static-transfer {
+  position: absolute;
+  inset: 0;
+}
+.botanical-static-transfer .botanical-fill {
+  height: 50%;
+}
+.botanical-static-transfer .botanical-stream {
+  height: 30.2%;
+}
+.botanical-extract-receiver .botanical-fill {
+  height: 56%;
+  background: #123827;
+  --liquid-surface: #244a31;
+  --liquid-edge: #123827;
+}
+.botanical-static .botanical-extract-stream {
+  height: 20.4%;
+}
+@media (max-width: 759px) {
+  .botanical-extractor {
+    left: 25%;
+    top: 34%;
+    width: 50%;
+    height: 22%;
+  }
+  .botanical-extractor .botanical-filter-botanicals {
+    width: 64%;
+    left: 18%;
+  }
+  .botanical-extract-stream {
+    left: 49.5%;
+    top: 55%;
+    width: 1%;
+    height: 27%;
+  }
+  .botanical-static .botanical-extract-stream {
+    height: 13.6%;
+  }
+  .botanical-static-transfer .botanical-stream {
+    height: 18.9%;
+  }
+  /* Keep the same 42%-height, undistorted bottle above the final text stack. */
+  .botanical-product {
+    top: 13%;
+  }
+  .botanical-caption-layer .botanical-copy:has(.botanical-claim) {
+    top: 58%;
+  }
+  .botanical-copy:has(.botanical-claim) .eyebrow {
+    display: none;
+  }
+  .botanical-caption-layer .botanical-copy:has(.botanical-claim) h3,
+  #botanical-finale .botanical-copy h3 {
+    font-size: clamp(1.3rem, 5.5vw, 1.55rem);
+    max-width: 100%;
+    margin: 0.35rem 0;
+  }
+  .botanical-copy:has(.botanical-claim) .botanical-claim {
+    font-size: 1.2rem;
+    margin: 0.6rem 0;
+  }
+  .botanical-copy:has(.botanical-claim) .botanical-claim span:first-child {
+    font-size: 2.7rem;
+  }
+  .botanical-journey:not([data-motion='scroll'])
+    #botanical-finale
+    .botanical-copy {
+    margin-top: 44svh;
+  }
+  #botanical-finale .botanical-static > img {
+    top: 13%;
+    height: 42%;
+  }
+}
+
+/* Heritage brass: opaque bowls expose only a bounded, top-facing liquid surface. */
+.botanical-receiver {
+  left: 50%;
+  top: 57%;
+  width: 40%;
+  height: auto;
+  aspect-ratio: 1393 / 877;
+}
+.botanical-liquid-aperture {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: ellipse(42% 22% at 50% 29%);
+  overflow: hidden;
+}
+.botanical-liquid-aperture .botanical-fill {
+  left: 8%;
+  top: 7%;
+  bottom: auto;
+  width: 84%;
+  height: 44%;
+  border-radius: 50%;
+  clip-path: none;
+  opacity: calc(0.25 + var(--collection, 1) * 0.75);
+  transform: scale(
+    calc(0.88 + var(--collection, 1) * 0.12),
+    calc(0.86 + var(--collection, 1) * 0.14)
+  );
+  transform-origin: 50% 50%;
+}
+.botanical-liquid-aperture .botanical-fill::before {
+  height: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px #344735;
+}
+.botanical-pourer {
+  left: 65.5%;
+  top: 13%;
+}
+.botanical-extract-stream {
+  height: 20.5%;
+}
+.botanical-static .botanical-extract-stream {
+  height: 19.4%;
+}
+.botanical-static-transfer .botanical-stream {
+  height: 26.7%;
+}
+.botanical-drop {
+  top: 62%;
+}
+.botanical-copper {
+  top: 33%;
+  height: auto;
+  aspect-ratio: 1400 / 811;
+}
+.botanical-copper .botanical-ripples {
+  left: 17%;
+  top: 19%;
+  width: 66%;
+  height: 40%;
+}
+.botanical-prep-bowl {
+  position: absolute;
+  left: 44%;
+  top: 73%;
+  width: 18%;
+  aspect-ratio: 1393 / 877;
+  z-index: 7;
+}
+.botanical-prep-bowl img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.botanical-journey[data-motion='scroll'] .botanical-static-prep {
+  display: none;
+}
+.botanical-extractor .botanical-filter-botanicals {
+  width: 48%;
+  height: 22%;
+  left: 26%;
+  top: 19%;
+}
+@media (max-width: 759px) {
+  .botanical-receiver {
+    left: 7%;
+    top: 60%;
+    width: 86%;
+    height: auto;
+  }
+  .botanical-pourer {
+    left: 47.5%;
+    top: 30.8%;
+  }
+  .botanical-extract-stream {
+    height: 14.8%;
+  }
+  .botanical-static .botanical-extract-stream {
+    height: 13%;
+  }
+  .botanical-static-transfer .botanical-stream {
+    height: 15.3%;
+  }
+  .botanical-drop {
+    top: 61%;
+  }
+  .botanical-copper {
+    left: 3%;
+    width: 94%;
+    height: auto;
+    top: 49%;
+  }
+  .botanical-prep-bowl {
+    left: 4%;
+    top: 72%;
+    width: 32%;
+  }
+  .botanical-extractor .botanical-filter-botanicals {
+    width: 64%;
+    left: 18%;
+  }
+}
+
+/* Anchor native-aspect utensil outlets to the streams across tall/tablet viewports. */
+.botanical-pourer {
+  --pour-width: min(27vw, calc(32svh * 1107 / 1163));
+  width: var(--pour-width);
+  height: auto;
+  aspect-ratio: 1107 / 1163;
+  left: calc(70.8% - var(--pour-width) * 0.022);
+  top: calc(41% - var(--pour-width) * 1163 / 1107 * 0.88);
+}
+.botanical-extractor {
+  --filter-width: min(28vw, calc(24svh * 1164 / 1024));
+  width: var(--filter-width);
+  height: auto;
+  aspect-ratio: 1164 / 1024;
+  left: calc(70.125% - var(--filter-width) * 0.5);
+  top: calc(48% - var(--filter-width) * 1024 / 1164);
+}
+@media (max-width: 759px) {
+  .botanical-pourer {
+    --pour-width: min(48vw, calc(24svh * 1107 / 1163));
+    left: calc(49.9% - var(--pour-width) * 0.022);
+    top: calc(51.5% - var(--pour-width) * 1163 / 1107 * 0.88);
+  }
+  .botanical-extractor {
+    --filter-width: min(50vw, calc(22svh * 1164 / 1024));
+    left: calc(50% - var(--filter-width) * 0.5);
+    top: calc(55% - var(--filter-width) * 1024 / 1164);
+  }
+}
+@media (max-height: 500px) and (min-width: 760px) {
+  .botanical-receiver {
+    width: min(40vw, calc(35svh * 1393 / 877));
+    left: calc(70% - min(40vw, calc(35svh * 1393 / 877)) / 2);
+  }
+  .botanical-copper {
+    width: min(58vw, calc(57svh * 1400 / 811));
+    left: calc(69% - min(58vw, calc(57svh * 1400 / 811)) / 2);
+  }
+  .botanical-pourer {
+    top: calc(49% - var(--pour-width) * 1163 / 1107 * 0.88);
+  }
+  .botanical-stream {
+    top: 49%;
+  }
+  .botanical-extractor {
+    top: calc(55% - var(--filter-width) * 1024 / 1164);
+  }
+  .botanical-extract-stream {
+    top: 55%;
+  }
+}
