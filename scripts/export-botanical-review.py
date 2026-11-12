@@ -32,7 +32,7 @@ for key,size,name in [('landscape',(1600,900),'desktop'),('portrait',(900,1600),
     for background in backgrounds:
         path=ASSETS/(background+'-'+name+'.webp');image.save(path,'WEBP',quality=84,method=6)
         record(path,'masters/'+key+'.png','shared-continuity-background',composition=name,sharedPlate=True)
-props={'mortar':'preparation-device','pestle':'preparation-pestle','glass':'glass-receiving-vessel','copper':'copper-oil-vessel','stream':'dark-oil-stream','droplet':'dark-oil-droplet','reflections':'liquid-reflections','fragments':'preparation-fragments','pourer':'pouring-vessel'}
+props={'mortar':'preparation-device','pestle':'preparation-pestle','glass':'glass-receiving-vessel','copper':'copper-oil-vessel','stream':'dark-oil-stream','droplet':'dark-oil-droplet','reflections':'liquid-reflections','fragments':'preparation-fragments','pourer':'pouring-vessel','extraction-filter':'extraction-filter'}
 for key,name in props.items():
     image=Image.open(MASTERS/(key+'.png')).convert('RGBA')
     # Tighten transparent borders without repainting any generated object pixels.

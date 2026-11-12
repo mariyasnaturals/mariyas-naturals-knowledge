@@ -644,3 +644,131 @@
     height: 48px;
   }
 }
+
+/* Stage five: botanical material in a glass filter releases fine herbal liquid.
+   Stage seven keeps the copper jug and the original, thicker black-green oil. */
+.botanical-extractor {
+  position: absolute;
+  left: 56%;
+  top: 24%;
+  width: 28%;
+  height: 24%;
+  z-index: 7;
+  transform-origin: 50% 100%;
+}
+.botanical-extractor .botanical-filter-body {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.botanical-extractor .botanical-filter-botanicals {
+  position: absolute;
+  width: 42%;
+  height: 17%;
+  object-fit: contain;
+  left: 29%;
+  top: 9%;
+  transform: rotate(-6deg);
+}
+.botanical-extract-stream {
+  position: absolute;
+  left: 69.8%;
+  top: 48%;
+  width: 0.65%;
+  height: 36.6%;
+  z-index: 6;
+  border-radius: 40% 30% 35% 20%;
+  background: linear-gradient(
+    90deg,
+    #12382766,
+    #344735c9 35%,
+    #244a31,
+    #12382788
+  );
+  box-shadow: inset 1px 0 #c5a46a33;
+  transform-origin: 50% 0;
+}
+.botanical-fill::before {
+  background: radial-gradient(
+    ellipse at 30% 30%,
+    #244a31,
+    var(--liquid-surface, #071a13) 45%,
+    var(--liquid-edge, #020a06) 80%
+  );
+}
+.botanical-static-transfer {
+  position: absolute;
+  inset: 0;
+}
+.botanical-static-transfer .botanical-fill {
+  height: 50%;
+}
+.botanical-static-transfer .botanical-stream {
+  height: 30.2%;
+}
+.botanical-extract-receiver .botanical-fill {
+  height: 56%;
+  background: #123827;
+  --liquid-surface: #244a31;
+  --liquid-edge: #123827;
+}
+.botanical-static .botanical-extract-stream {
+  height: 20.4%;
+}
+@media (max-width: 759px) {
+  .botanical-extractor {
+    left: 25%;
+    top: 34%;
+    width: 50%;
+    height: 22%;
+  }
+  .botanical-extractor .botanical-filter-botanicals {
+    width: 64%;
+    left: 18%;
+  }
+  .botanical-extract-stream {
+    left: 49.5%;
+    top: 55%;
+    width: 1%;
+    height: 27%;
+  }
+  .botanical-static .botanical-extract-stream {
+    height: 13.6%;
+  }
+  .botanical-static-transfer .botanical-stream {
+    height: 18.9%;
+  }
+  /* Keep the same 42%-height, undistorted bottle above the final text stack. */
+  .botanical-product {
+    top: 13%;
+  }
+  .botanical-caption-layer .botanical-copy:has(.botanical-claim) {
+    top: 58%;
+  }
+  .botanical-copy:has(.botanical-claim) .eyebrow {
+    display: none;
+  }
+  .botanical-caption-layer .botanical-copy:has(.botanical-claim) h3,
+  #botanical-finale .botanical-copy h3 {
+    font-size: clamp(1.3rem, 5.5vw, 1.55rem);
+    max-width: 100%;
+    margin: 0.35rem 0;
+  }
+  .botanical-copy:has(.botanical-claim) .botanical-claim {
+    font-size: 1.2rem;
+    margin: 0.6rem 0;
+  }
+  .botanical-copy:has(.botanical-claim) .botanical-claim span:first-child {
+    font-size: 2.7rem;
+  }
+  .botanical-journey:not([data-motion='scroll'])
+    #botanical-finale
+    .botanical-copy {
+    margin-top: 44svh;
+  }
+  #botanical-finale .botanical-static > img {
+    top: 13%;
+    height: 42%;
+  }
+}

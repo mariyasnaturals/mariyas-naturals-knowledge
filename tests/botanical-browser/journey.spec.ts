@@ -110,6 +110,80 @@ for (const [width, height] of [
         'href',
         'https://www.mariyasnaturals.com/product/hair-care-oil-1l/',
       );
+      const seekTime = async (time: number) => {
+        await page.evaluate(
+          ({ top, height, progress }) =>
+            scrollTo({ top: top + height * progress, behavior: 'instant' }),
+          { ...metrics, progress: time / 8.01 },
+        );
+        await page.waitForTimeout(150);
+      };
+      const opacity = (selector: string) =>
+        journey
+          .locator(selector)
+          .evaluate((el) => Number(getComputedStyle(el).opacity));
+      // Fine green extraction from a botanical filter is distinct from finished-oil transfer.
+      await seekTime(4.55);
+      expect(await opacity('[data-layer="extractor"]')).toBe(1);
+      expect(await opacity('[data-layer="extract-stream"]')).toBe(1);
+      expect(await opacity('[data-layer="pourer"]')).toBe(0);
+      expect(await opacity('[data-layer="stream"]')).toBe(0);
+      const extractionSurface = await journey
+        .locator('[data-layer="fill"]')
+        .evaluate((el) =>
+          getComputedStyle(el).getPropertyValue('--liquid-surface'),
+        );
+      await seekTime(6.55);
+      expect(await opacity('[data-layer="extractor"]')).toBe(0);
+      expect(await opacity('[data-layer="pourer"]')).toBe(1);
+      expect(await opacity('[data-layer="stream"]')).toBe(1);
+      expect(
+        await journey
+          .locator('[data-layer="fill"]')
+          .evaluate((el) =>
+            getComputedStyle(el).getPropertyValue('--liquid-surface'),
+          ),
+      ).not.toBe(extractionSurface);
+      await seekTime(4.55);
+      expect(
+        await journey
+          .locator('[data-layer="fill"]')
+          .evaluate((el) =>
+            getComputedStyle(el).getPropertyValue('--liquid-surface'),
+          ),
+      ).toBe(extractionSurface);
+      expect(await opacity('[data-layer="extractor"]')).toBe(1);
+      expect(await opacity('[data-layer="pourer"]')).toBe(0);
+      if (width < 760) {
+        await seekTime(7.655);
+        expect(await opacity('[data-layer="product"]')).toBe(1);
+        expect(await opacity('.botanical-claim')).toBe(0);
+        expect(await opacity('.botanical-cta')).toBe(0);
+        await page.screenshot({ path: `${output}/${width}-bottle-first.png` });
+        await seekTime(7.79);
+        expect(await opacity('.botanical-claim')).toBeGreaterThan(0.6);
+        expect(await opacity('.botanical-cta')).toBe(0);
+        await page.screenshot({ path: `${output}/${width}-claim-second.png` });
+      }
+      await seekTime(7.94);
+      if (width < 760) {
+        const bottleBox = await journey
+          .locator('[data-layer="product"]')
+          .boundingBox();
+        const claimBox = await journey
+          .locator('.botanical-claim')
+          .boundingBox();
+        expect(bottleBox!.y + bottleBox!.height).toBeLessThan(claimBox!.y);
+        expect(bottleBox!.height).toBeCloseTo(height * 0.42, 0);
+        expect(await opacity('.botanical-cta')).toBe(1);
+        await seekTime(7.79);
+        expect(await opacity('.botanical-cta')).toBe(0);
+        expect(await opacity('.botanical-claim')).toBeGreaterThan(0.6);
+        await seekTime(7.655);
+        expect(await opacity('.botanical-claim')).toBe(0);
+        expect(await opacity('[data-layer="product"]')).toBe(1);
+        await seekTime(7.94);
+      }
       const product = journey.locator('[data-layer="product"] img');
       await expect(product).toHaveAttribute(
         'src',
@@ -188,6 +262,11 @@ for (const lang of ['en', 'ml', 'hi', 'ta'])
       await expect(page.locator('.botanical-stage')).toBeHidden();
       await page.locator('#botanical-finale').scrollIntoViewIfNeeded();
       await expect(page.locator('.botanical-claim')).toBeVisible();
+      const bottle = await page
+        .locator('#botanical-finale .botanical-static > img')
+        .boundingBox();
+      const claim = await page.locator('.botanical-claim').boundingBox();
+      expect(bottle!.y + bottle!.height).toBeLessThan(claim!.y);
       await page.screenshot({ path: `${output}/${lang}-reduced-final.png` });
     } finally {
       await context.close();
@@ -259,3 +338,31 @@ test('botanical journey passes automated accessibility checks', async ({
     await context.close();
   }
 });
+
+for (const lang of ['en', 'ml', 'hi', 'ta'])
+  test(`${lang}: mobile final bottle precedes readable localized feature and CTA`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/${lang}/`);
+    await page.evaluate(() => document.fonts.ready);
+    await page.locator('.botanical-track').evaluate((el) =>
+      scrollTo({
+        top:
+          el.getBoundingClientRect().top +
+          scrollY +
+          (el.getBoundingClientRect().height - innerHeight) * 0.99,
+        behavior: 'instant',
+      }),
+    );
+    await page.waitForTimeout(200);
+    const product = await page.locator('[data-layer="product"]').boundingBox();
+    const copy = await page
+      .locator('.botanical-caption-layer .botanical-copy')
+      .last()
+      .boundingBox();
+    expect(product!.y + product!.height).toBeLessThan(copy!.y);
+    expect(copy!.y + copy!.height).toBeLessThan(844 - 65);
+    await expect(page.locator('.botanical-cta')).toHaveCSS('opacity', '1');
+    await page.screenshot({ path: `${output}/${lang}-mobile-final.png` });
+  });

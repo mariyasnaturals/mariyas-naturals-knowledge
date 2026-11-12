@@ -1657,6 +1657,41 @@
       "source": "assets/pouring-vessel.png",
       "role": "optimized-independent-prop",
       "reviewStatus": "pending-visual-approval"
+    },
+    {
+      "file": "masters/extraction-filter.png",
+      "sha256": "4eefcd50ddf483476abae564573169d9b4533276231f72125eb6afb2c862581a",
+      "bytes": 1352727,
+      "width": 1254,
+      "height": 1254,
+      "alpha": true,
+      "source": "image-generation-tool",
+      "role": "native-generated-master",
+      "reviewStatus": "pending-visual-approval",
+      "generationId": "exec-03aa1322-a02f-4490-b12d-9c34426ff0cc",
+      "generationPrompt": "Isolated realistic empty smoked-green glass filter with fine metallic mesh and antique-brass rim; upper-left natural key light, transparent background. No ingredients, labels, bottle, model or branding. Artistic process prop, not verified factory equipment."
+    },
+    {
+      "file": "assets/extraction-filter.png",
+      "sha256": "c94c79ce4a091ad7f85b05a43d8bfab6071b50efa4020ffcf7f0eb25d35b705d",
+      "bytes": 1051282,
+      "width": 903,
+      "height": 1100,
+      "alpha": true,
+      "source": "masters/extraction-filter.png",
+      "role": "independent-generated-prop",
+      "reviewStatus": "pending-visual-approval"
+    },
+    {
+      "file": "assets/extraction-filter.webp",
+      "sha256": "00e3534b2fadbe01f5866f63586a5e5f93e7d033846c4f47864cef2d98eaf41e",
+      "bytes": 169004,
+      "width": 903,
+      "height": 1100,
+      "alpha": true,
+      "source": "assets/extraction-filter.png",
+      "role": "optimized-independent-prop",
+      "reviewStatus": "pending-visual-approval"
     }
   ]
 }

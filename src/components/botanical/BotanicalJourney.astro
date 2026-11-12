@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n';
 import ArrowIcon from '../ArrowIcon.astro';
+import BotanicalExtractor from './BotanicalExtractor.astro';
 import { journeyCopy } from './content';
 import { studies } from './motion.mjs';
 import originals from '../../data/cinematic-assets.json';
@@ -100,6 +101,8 @@ const staticLayers = [
           loading="lazy"
         />
       </div>
+      <BotanicalExtractor animated />
+      <div class="botanical-extract-stream" data-layer="extract-stream"></div>
       <div class="botanical-pourer" data-layer="pourer">
         <img
           src={asset('pouring-vessel.webp')}
@@ -194,17 +197,64 @@ const staticLayers = [
                 loading="lazy"
               />
             </picture>
-            <img
-              src={
-                staticLayers[index]
-                  ? asset(staticLayers[index]!)
-                  : originals.references.product.src
-              }
-              width="900"
-              height="900"
-              alt=""
-              loading="lazy"
-            />
+            {index === 4 ? (
+              <>
+                <BotanicalExtractor />
+                <div class="botanical-extract-stream"></div>
+                <div class="botanical-apparatus botanical-receiver botanical-extract-receiver">
+                  <div class="botanical-fill"></div>
+                  <img
+                    src={asset('glass-receiving-vessel.webp')}
+                    width="600"
+                    height="600"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+              </>
+            ) : index === 6 ? (
+              <div class="botanical-static-transfer">
+                <div class="botanical-pourer">
+                  <img
+                    src={asset('pouring-vessel.webp')}
+                    width="800"
+                    height="600"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <div class="botanical-apparatus botanical-receiver">
+                  <div class="botanical-fill"></div>
+                  <img
+                    src={asset('glass-receiving-vessel.webp')}
+                    width="600"
+                    height="600"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <img
+                  class="botanical-stream"
+                  src={asset('dark-oil-stream.webp')}
+                  width="150"
+                  height="800"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <img
+                src={
+                  staticLayers[index]
+                    ? asset(staticLayers[index]!)
+                    : originals.references.product.src
+                }
+                width="900"
+                height="900"
+                alt=""
+                loading="lazy"
+              />
+            )}
           </div>
           <div class="botanical-copy">
             <p class="eyebrow">{t.label}</p>

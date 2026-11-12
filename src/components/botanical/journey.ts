@@ -26,7 +26,7 @@ export function mountBotanicalJourney(root: HTMLElement) {
       root.dataset.motion = reduced ? 'reduced' : 'scroll';
       if (reduced) return;
       const elements = root.querySelectorAll(
-        '.botanical-study,.botanical-apparatus,.botanical-fragments,.botanical-stream,.botanical-drop,.botanical-product,.botanical-pourer',
+        '.botanical-study,.botanical-apparatus,.botanical-fragments,.botanical-stream,.botanical-drop,.botanical-product,.botanical-pourer,.botanical-extractor,.botanical-extract-stream',
       );
       gsap.set(elements, { autoAlpha: 0 });
       const stage = root.querySelector<HTMLElement>('.botanical-stage')!;
@@ -76,7 +76,7 @@ export function mountBotanicalJourney(root: HTMLElement) {
             copy,
             { autoAlpha: 0, y: 16 },
             { autoAlpha: 1, y: 0, duration: 0.15 },
-            index + 0.03,
+            mobile && index === 7 ? 7.66 : index + 0.03,
           );
         if (index < 7)
           tl.to(copy, { autoAlpha: 0, y: -12, duration: 0.12 }, index + 0.86);
@@ -194,35 +194,42 @@ export function mountBotanicalJourney(root: HTMLElement) {
         3.9,
       );
       reveal('receiver', 4.0, 0.4);
-      reveal('pourer', 4.0, 0.4);
-      reveal('stream', 4.15, 0.3);
+      reveal('extractor', 4.0, 0.4);
+      reveal('extract-stream', 4.15, 0.3);
       tl.fromTo(
         layer('fill'),
-        { height: '8%', backgroundColor: '#244a31' },
+        {
+          height: '8%',
+          backgroundColor: '#244a31',
+          '--liquid-surface': '#244a31',
+          '--liquid-edge': '#123827',
+        },
         {
           height: '56%',
-          backgroundColor: '#071a13',
+          backgroundColor: '#123827',
+          '--liquid-surface': '#244a31',
+          '--liquid-edge': '#123827',
           duration: 0.85,
         },
         4.2,
       );
       tl.to(
-        layer('stream'),
+        layer('extract-stream'),
         { autoAlpha: 0, scaleY: 0.1, duration: 0.22 },
         4.85,
       );
       tl.fromTo(
-        layer('stream'),
-        { height: mobile ? '30.5%' : '46.6%' },
+        layer('extract-stream'),
+        { height: mobile ? '27%' : '39.6%' },
         {
-          height: mobile ? '17.1%' : '27.4%',
+          height: mobile ? '13.6%' : '20.4%',
           duration: 0.85,
           immediateRender: false,
         },
         4.2,
       );
       tl.to(
-        [layer('receiver'), layer('pourer')],
+        [layer('receiver'), layer('extractor')],
         { autoAlpha: 0, duration: 0.35 },
         4.95,
       );
@@ -240,8 +247,20 @@ export function mountBotanicalJourney(root: HTMLElement) {
       reveal('stream', 6.2, 0.2);
       tl.fromTo(
         layer('fill'),
-        { height: '8%' },
-        { height: '50%', duration: 0.65 },
+        {
+          height: '8%',
+          backgroundColor: '#071a13',
+          '--liquid-surface': '#071a13',
+          '--liquid-edge': '#020a06',
+        },
+        {
+          height: '50%',
+          backgroundColor: '#071a13',
+          '--liquid-surface': '#071a13',
+          '--liquid-edge': '#020a06',
+          duration: 0.65,
+          immediateRender: false,
+        },
         6.2,
       );
       tl.fromTo(
@@ -269,15 +288,20 @@ export function mountBotanicalJourney(root: HTMLElement) {
       const claim = root.querySelector('.botanical-claim')!;
       tl.fromTo(
         claim,
-        { opacity: 0, y: 24, filter: 'blur(5px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.45 },
-        7.25,
+        { autoAlpha: 0, y: 24, filter: 'blur(5px)' },
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: mobile ? 0.12 : 0.45,
+        },
+        mobile ? 7.68 : 7.25,
       );
       tl.fromTo(
         root.querySelector('.botanical-cta'),
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.25 },
-        7.65,
+        { autoAlpha: 0, y: 14 },
+        { autoAlpha: 1, y: 0, duration: mobile ? 0.08 : 0.25 },
+        mobile ? 7.8 : 7.65,
       );
       [0, 5, 20].forEach((index, order) => {
         const study = studies[index];
