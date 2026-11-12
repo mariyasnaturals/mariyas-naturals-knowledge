@@ -110,3 +110,7 @@ First activation: follow the [Phase 2 readiness report](docs/activation-readines
 ## Cinematic full-bleed hero and staging automation
 
 Feature-branch pushes run CI and produce an exact-source unapproved preview after all checks pass. The eight film chapters now use full-bleed media and unique overlay headlines without a numbered center chip. The separately authorized CI staging identity, pinned outbound verifier, one-time activation, scoped Cloudflare handling, rollback and next-push proof are implemented in [automatic staging](docs/automatic-staging.md). Activation requires a successful authenticated apply on the actual VPS; it is not inferred from passing CI. The original owner signing key stays offline and production WordPress remains protected.
+
+## Additional botanical journey review
+
+The eight-stage layered botanical journey and 30 independent artistic studies are implemented after the untouched cinematic story. The owner-confirmed **60 Natural Ingredients** reveal uses an RGB-preserving cutout of the original product photograph. Run `npm run build:botanical-review` and `npm run preview:botanical-review`; see [asset provenance, validation, recordings and publication boundaries](docs/botanical-journey.md). The existing media policy and deployment tools are unchanged; this separate local review output is not an approved release.

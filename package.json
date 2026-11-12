@@ -24,7 +24,10 @@
     "package:ci-staging": "node scripts/package-ci-staging.mjs",
     "verify:staging": "node scripts/verify-live-staging.mjs",
     "package:staging": "node scripts/package-staging.mjs",
-    "package:pr-preview": "node scripts/package-pr-preview.mjs"
+    "package:pr-preview": "node scripts/package-pr-preview.mjs",
+    "build:botanical-review": "node scripts/build-botanical-review.mjs",
+    "preview:botanical-review": "node scripts/serve-botanical-review.mjs",
+    "test:botanical-assets": "node scripts/verify-botanical-assets.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

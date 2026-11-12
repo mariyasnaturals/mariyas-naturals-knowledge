@@ -15,3 +15,6 @@ signed-release/
 cinematic-candidate-artifacts/
 ci-staging-unsigned/
 ci-staging-bootstrap/
+
+botanical-review-site/
+botanical-review-results/

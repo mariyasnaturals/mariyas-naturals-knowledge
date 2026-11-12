@@ -1,0 +1,237 @@
+---
+import type { Locale } from '../../i18n';
+import ArrowIcon from '../ArrowIcon.astro';
+import { journeyCopy } from './content';
+import { studies } from './motion.mjs';
+import originals from '../../data/cinematic-assets.json';
+import './journey.css';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = journeyCopy[lang];
+const asset = (name: string) => `/_botanical-assets/${name}`;
+// Verified official product landing page; this component is confined to the local media review build.
+const destination = 'https://www.mariyasnaturals.com/product/hair-care-oil-1l/';
+const staticLayers = [
+  'ingredient-01.webp',
+  'ingredient-07.webp',
+  'ingredient-12.webp',
+  'preparation-device.webp',
+  'glass-receiving-vessel.webp',
+  'copper-oil-vessel.webp',
+  'dark-oil-stream.webp',
+  'authentic-product-cutout.webp',
+];
+---
+
+<section
+  class="botanical-journey"
+  id="botanical-journey"
+  aria-labelledby="botanical-title"
+  data-botanical-journey
+>
+  <header class="botanical-intro">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h2 id="botanical-title">{t.intro}</h2>
+    <p class="botanical-concept-note">{t.note}</p>
+    <a href="#botanical-finale" class="botanical-skip">
+      {t.skip} ↓
+    </a>
+  </header>
+  <div class="botanical-track">
+    <div class="botanical-stage" aria-hidden="true">
+      <picture class="botanical-environment">
+        <source
+          media="(max-width: 759px)"
+          srcset={asset('botanical-origin-mobile.webp')}
+        />
+        <img
+          src={asset('botanical-origin-desktop.webp')}
+          width="1920"
+          height="1080"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <div class="botanical-light"></div>
+      <div class="botanical-depth"></div>
+      <div class="botanical-studies">
+        {studies.map((study) => (
+          <img
+            src={asset(`${study.id}.webp`)}
+            width="320"
+            height="420"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class="botanical-study"
+            data-study={study.id}
+            data-group={study.group}
+            style={`--study-x:${study.x}%;--study-y:${study.y}%`}
+          />
+        ))}
+      </div>
+      <div class="botanical-apparatus botanical-mortar" data-layer="mortar">
+        <img
+          src={asset('preparation-device.webp')}
+          width="760"
+          height="620"
+          alt=""
+          loading="lazy"
+        />
+        <img
+          class="botanical-pestle"
+          data-layer="pestle"
+          src={asset('preparation-pestle.webp')}
+          width="280"
+          height="680"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+      <div class="botanical-fragments" data-layer="fragments">
+        <img
+          src={asset('preparation-fragments.webp')}
+          width="420"
+          height="280"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+      <div class="botanical-pourer" data-layer="pourer">
+        <img
+          src={asset('pouring-vessel.webp')}
+          width="800"
+          height="600"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+      <div class="botanical-apparatus botanical-receiver" data-layer="receiver">
+        <div class="botanical-fill" data-layer="fill"></div>
+        <img
+          src={asset('glass-receiving-vessel.webp')}
+          width="600"
+          height="600"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+      <div class="botanical-apparatus botanical-copper" data-layer="copper">
+        <img
+          src={asset('copper-oil-vessel.webp')}
+          width="900"
+          height="600"
+          alt=""
+          loading="lazy"
+        />
+        <div class="botanical-ripples" data-layer="ripples">
+          <img
+            src={asset('liquid-reflections.webp')}
+            width="600"
+            height="280"
+            alt=""
+            loading="lazy"
+          />
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+      </div>
+      <img
+        class="botanical-stream"
+        data-layer="stream"
+        src={asset('dark-oil-stream.webp')}
+        width="150"
+        height="800"
+        alt=""
+        loading="lazy"
+      />
+      <img
+        class="botanical-drop"
+        data-layer="drop"
+        src={asset('dark-oil-droplet.webp')}
+        width="160"
+        height="240"
+        alt=""
+        loading="lazy"
+      />
+      <div class="botanical-product" data-layer="product">
+        <img
+          src={asset('authentic-product-cutout.webp')}
+          width="245"
+          height="745"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="botanical-progress">
+        <i></i>
+      </div>
+    </div>
+    <ol class="botanical-steps">
+      {t.titles.map((title, index) => (
+        <li
+          class="botanical-step"
+          id={index === 7 ? 'botanical-finale' : `botanical-stage-${index + 1}`}
+          data-botanical-step={index}
+          aria-label={title}
+        >
+          <div class="botanical-static" aria-hidden="true">
+            <picture>
+              <source
+                media="(max-width: 759px)"
+                srcset={asset('botanical-origin-mobile.webp')}
+              />
+              <img
+                src={asset('botanical-origin-desktop.webp')}
+                width="1600"
+                height="900"
+                alt=""
+                loading="lazy"
+              />
+            </picture>
+            <img
+              src={
+                staticLayers[index]
+                  ? asset(staticLayers[index]!)
+                  : originals.references.product.src
+              }
+              width="900"
+              height="900"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="botanical-copy">
+            <p class="eyebrow">{t.label}</p>
+            <h3>{title}</h3>
+            <p>{t.lines[index]}</p>
+            {index === 7 && (
+              <>
+                <span class="sr-only">
+                  {originals.references.product.alt[lang]}
+                </span>
+                <p class="botanical-claim">
+                  <span>60</span> <span>Natural Ingredients</span>
+                </p>
+                <a class="botanical-cta" href={destination}>
+                  {t.discover} <ArrowIcon />
+                </a>
+              </>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<script>
+  import { mountBotanicalJourney } from './journey';
+  document
+    .querySelectorAll<HTMLElement>('[data-botanical-journey]')
+    .forEach(mountBotanicalJourney);
+</script>
