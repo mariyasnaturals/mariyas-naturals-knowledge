@@ -24,7 +24,7 @@
       "file": ".github/workflows/validate.yml",
       "reviewSha256": "7e4196ea74c7429cec444c57faec7546dd4692126fe70879cda17b52af73121d",
       "reason": "Adds the integration branch to the existing push validation list and one hash-verification step. No step, permission or security job was removed.",
-      "integratedSha256": "9ef42db15a152ab8ccc95c89cfb0697ea2f334d97bdccc8ae8100cdf6e25ade5"
+      "integratedSha256": "b2a11ff139960361b0f12a30f4b65ba0d5e380300952dc3b044524fd19ef0915"
     },
     {
       "file": "ops/ci_staging/trust.py",

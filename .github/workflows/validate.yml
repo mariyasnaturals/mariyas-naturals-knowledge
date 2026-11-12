@@ -63,11 +63,13 @@ jobs:
           path: ci-staging-unsigned/
           retention-days: 30
           if-no-files-found: error
+      # Only the two admitted review pairs may produce an unsigned preview; the
+      # packager still hard-fails on any other branch instead of degrading.
       - name: Package UNAPPROVED PR preview (NOT FOR DEPLOYMENT)
-        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/feature/cinematic-homepage'
+        if: github.event_name == 'pull_request' && (github.head_ref == 'feature/botanical-journey-review' || github.head_ref == 'feature/cinematic-homepage') || github.ref == 'refs/heads/feature/cinematic-homepage'
         run: npm run package:pr-preview
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/feature/cinematic-homepage'
+        if: github.event_name == 'pull_request' && (github.head_ref == 'feature/botanical-journey-review' || github.head_ref == 'feature/cinematic-homepage') || github.ref == 'refs/heads/feature/cinematic-homepage'
         with:
           name: UNAPPROVED-cinematic-pr-preview-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: pr-preview-artifacts/
