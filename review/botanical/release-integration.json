@@ -91,14 +91,14 @@
       "end": "const reveal",
       "reviewSha256": "e30e0cf1ebb24b7fa79a84c18261ff6c6d2aade0705f50196c68accc282404b2",
       "integratedSha256": "removed",
-      "reason": "Owner correction: the entry\u2192shrink\u2192disappear study loop was replaced by world-space entry, per-study travel arcs that follow the camera, and convergence into the preparation bench. The 30 studies, their unnamed identity and their six progressive groups are unchanged."
+      "reason": "Owner correction: the pinned-stage study loop and the world-box camera were removed entirely. The thirty studies now enter on their own paths inside their own scrolling scene, and no sticky stage or single translated world remains. The 30 studies, their unnamed identity and their six progressive groups are unchanged."
     },
     {
       "start": "reveal('product'",
       "end": "// Explicit duration",
       "reviewSha256": "e30e0cf1ebb24b7fa79a84c18261ff6c6d2aade0705f50196c68accc282404b2",
       "integratedSha256": "removed",
-      "reason": "Owner correction: the stage-by-stage reveal() helper that faded each apparatus into a fixed composition was replaced by continuous dolly staging. The authentic photographic bottle, the owner-confirmed claim and the approved CTA are unchanged."
+      "reason": "Owner correction: the fixed-composition reveal() helper was removed with the pinned architecture. The finale is now a real section in document flow whose own scroll drives the product into place. The authentic photographic bottle, the owner-confirmed claim and the approved CTA are unchanged."
     }
   ]
 }

@@ -7,10 +7,8 @@ import {
   groups,
   oilPalette,
   stages,
-  world,
-  places,
-  worldFocus,
-  verticalFocus,
+  rhythm,
+  journeyTravel,
 } from '../src/components/botanical/motion.mjs';
 import { verifyBotanicalAssets } from '../scripts/verify-botanical-assets.mjs';
 test('thirty independent unnamed studies use six progressive groups and unique depth paths', () => {
@@ -40,12 +38,8 @@ test('the eight stages form one continuous hand-off chain with no gaps', () => {
   assert.equal(stages.length, 8);
   // Every stage hands its material to the next; nothing is introduced twice and
   // nothing disappears without being consumed.
-  for (let i = 1; i < stages.length; i++) {
+  for (let i = 1; i < stages.length; i++)
     assert.equal(stages[i].receives, stages[i - 1].hands, stages[i].name);
-    assert.equal(stages[i].from, stages[i - 1].to, 'Stages must be contiguous');
-  }
-  assert.equal(stages[0].from, 0);
-  assert.equal(stages.at(-1).to, 1);
   // Material flows from the hero, through preparation and liquid, to the bottle.
   assert.equal(stages[0].receives, 'hero');
   assert.equal(stages.at(-1).hands, 'authentic Mariyas product');
@@ -53,25 +47,34 @@ test('the eight stages form one continuous hand-off chain with no gaps', () => {
   assert.ok(stages.some((s) => s.hands === 'deep herbal oil'));
 });
 
-test('camera placement keeps every station inside its own stage', () => {
-  // Each station must be centred in frame exactly when its stage is on screen;
-  // if these drift, vessels that physically touch stop sharing a frame.
-  for (const [name, at] of Object.entries(places)) {
-    const x = worldFocus(at, world.desktopExtent);
-    assert.ok(x > 0 && x < 1, name + ' must stay inside the world');
-    const y = verticalFocus(at, 0.72, world.mobileExtent);
-    assert.ok(y > 0 && y < 1, name + ' must stay inside the portrait world');
+test('scenes are ordered document sections, not a camera moving through a world', () => {
+  // The journey is plain document flow: every stage is its own scene with its own
+  // scroll runway. There is no world box, no camera and no normalised progress
+  // scale to keep in sync — the absence of those is the point of the correction.
+  assert.deepEqual(
+    stages.map((s) => s.scene),
+    [
+      'origin',
+      'studies',
+      'convergence',
+      'preparation',
+      'extraction',
+      'oil',
+      'transfer',
+      'reveal',
+    ],
+  );
+  // Each scene carries a real runway, so its animation plays while the page moves
+  // rather than while the viewport is held still.
+  for (const stage of stages) {
+    assert.equal(typeof stage.travel, 'number');
+    assert.ok(stage.travel >= 1.1 && stage.travel <= 1.6, stage.name);
+    assert.ok(rhythm[stage.travel === rhythm.resolve ? 'resolve' : 'process']);
   }
-  // Consecutive stations stay close enough to be visible in the same frame.
-  const ordered = Object.values(places).sort((a, b) => a - b);
-  // The reveal is deliberately last and far; every process station before it
-  // must stay close enough that touching vessels share a frame.
-  // The grove (stage 1-2) and the reveal (stage 8) are wide establishing beats;
-  // the process stations between them must stay frame-adjacent.
-  for (let i = 2; i < ordered.length - 1; i++)
-    assert.ok(ordered[i] - ordered[i - 1] <= 0.14, 'Stations drifted apart');
-  // Total travel must stay modest, or touching vessels cannot share a frame.
-  assert.ok(world.desktopExtent < 3.2 && world.mobileExtent < 3);
+  // Runways are modest: a long artificial runway is what creates dead green
+  // space and the sense of a held frame.
+  assert.ok(journeyTravel < 20, 'journey must not become a long held scroll');
+  assert.ok(journeyTravel > 8, 'each scene needs room to play');
 });
 
 test(

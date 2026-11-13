@@ -1,28 +1,37 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { studies, camera } from './motion.mjs';
+import { studies } from './motion.mjs';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * One continuous world, one camera.
+ * Natural-scroll botanical journey.
  *
- * The stage is a viewport-sized window onto a much larger world box. Scrolling
- * dollies the camera through that box (horizontally on landscape, vertically on
- * portrait), so the viewer travels through connected environments instead of
- * watching objects fade in and out of a fixed picture. Everything is driven by
- * native scroll position, so it is fully reversible and pausable.
+ * Every scene is a real section in document flow. ScrollTrigger only *observes*
+ * each scene to drive its own local choreography — there is no `pin`, no sticky
+ * stage, no fixed overlay and no single global timeline. The page is what moves:
+ * a scene travels up and out of the viewport while the next enters from below,
+ * and scrolling continues into the rest of the site with no interruption.
  */
 export function mountBotanicalJourney(root: HTMLElement) {
   const media = gsap.matchMedia();
-  const track = root.querySelector<HTMLElement>('.botanical-track')!;
-  const steps = [
-    ...root.querySelectorAll<HTMLElement>('[data-botanical-step]'),
-  ];
+  const scenes = [
+    ...root.querySelectorAll<HTMLElement>('[data-scene]'),
+  ] as HTMLElement[];
   const q = <T extends Element>(selector: string) =>
     root.querySelector<T>(selector);
   const saveData = (
     navigator as Navigator & { connection?: { saveData?: boolean } }
   ).connection?.saveData;
+
+  // Scenes are in flow whether or not JavaScript ever runs.
+  const resetMarkup = () => {
+    root.querySelectorAll<HTMLElement>('[data-scene]').forEach((el) => {
+      el.removeAttribute('inert');
+      el.removeAttribute('aria-hidden');
+    });
+  };
+  resetMarkup();
+
   media.add(
     {
       reduced: '(prefers-reduced-motion: reduce)',
@@ -30,329 +39,288 @@ export function mountBotanicalJourney(root: HTMLElement) {
       all: 'all',
     },
     (context) => {
-      const reduced = context.conditions?.reduced || saveData;
-      const mobile = Boolean(context.conditions?.mobile);
-      root.dataset.motion = reduced ? 'reduced' : 'scroll';
-      root.dataset.layout = mobile ? 'portrait' : 'landscape';
-      if (reduced) return;
-
-      const worldEl = q<HTMLElement>('[data-layer="world"]')!;
-      const stage = q<HTMLElement>('.botanical-stage')!;
-      const animated = root.querySelectorAll<HTMLElement>(
-        '.botanical-study,.botanical-mortar,.botanical-filter-station,.botanical-copper,.botanical-pourer,.botanical-stream,.botanical-drop,.botanical-product,.botanical-paste,.botanical-extract-stream,.botanical-extract-pool,.botanical-ripples',
-      );
-      gsap.set(animated, { autoAlpha: 0 });
-      gsap.set('.botanical-extract-stream,.botanical-stream', {
-        scaleY: 0,
-        transformOrigin: '50% 0%',
-      });
-
-      // Captions live inside the persistent stage so they can never scroll under
-      // the fixed header, and inactive ones stay inert for screen readers.
-      const captionLayer = document.createElement('div');
-      captionLayer.className = 'botanical-caption-layer';
-      const captions = steps.map((step) => {
-        const copy = step.querySelector<HTMLElement>('.botanical-copy')!;
-        captionLayer.append(copy);
-        return copy;
-      });
-      stage.append(captionLayer);
-      stage.removeAttribute('aria-hidden');
-
-      const preload = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return;
-          stage.querySelectorAll('img').forEach((img) => {
-            img.loading = 'eager';
-          });
-          preload.disconnect();
-        },
-        { rootMargin: '900px' },
-      );
-      preload.observe(root);
-
-      // Keep the caption block clear of the fixed header on every viewport.
-      const headerRoom = () => {
-        const header = document.querySelector<HTMLElement>('header');
-        const inset = header
-          ? Math.max(0, header.getBoundingClientRect().bottom)
-          : 0;
-        captionLayer.style.setProperty(
-          '--botanical-header-room',
-          `${Math.round(inset)}px`,
-        );
+      const { reduced, mobile } = context.conditions as {
+        reduced: boolean;
+        mobile: boolean;
       };
-      headerRoom();
+      root.dataset.layout = mobile ? 'portrait' : 'landscape';
 
-      gsap.set(captions, { autoAlpha: 0 });
-      gsap.set(captions[0], { autoAlpha: 1 });
+      /* --------------------------------------------------------------------
+         Reduced motion (and Save-Data): the journey is a static story. Every
+         scene keeps its copy, claim and call to action; nothing is hidden and
+         no scroll animation is created.
+         ------------------------------------------------------------------ */
+      if (reduced || saveData) {
+        root.dataset.motion = 'reduced';
+        return () => {
+          delete root.dataset.motion;
+          delete root.dataset.layout;
+        };
+      }
 
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: {
-          trigger: track,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true,
-          invalidateOnRefresh: true,
-          onRefresh: headerRoom,
+      root.dataset.motion = 'scroll';
+      const triggers: ScrollTrigger[] = [];
+      /** A scrubbed timeline tied to one scene's own travel. */
+      const sceneTimeline = (
+        scene: HTMLElement,
+        build: (tl: gsap.core.Timeline) => void,
+      ) => {
+        const tl = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: scene,
+            // The animation plays across the part of the scene's runway that is
+            // actually on screen, so it feels tied to the page rather than to a
+            // duration.
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+        build(tl);
+        return tl;
+      };
+
+      // Overall journey progress (0..1), published for the progress indicator and
+      // for tests that prove the page — not a hidden clock — drives everything.
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: root.querySelector<HTMLElement>('.botanical-track')!,
+          start: 'top bottom',
+          end: 'bottom top',
           onUpdate: (self) => {
             root.dataset.progress = self.progress.toFixed(4);
-            const active = Math.min(7, Math.floor(self.progress * 8));
-            root.dataset.stage = String(active + 1);
-            captions.forEach((copy, index) => {
-              copy.inert = index !== active;
-              copy.setAttribute('aria-hidden', String(index !== active));
-            });
           },
-        },
-      });
-
-      // Captions fade with their own stage. Each of the eight stages owns one
-      // unit of the timeline, so copy can never lag behind the visuals.
-      captions.forEach((copy, index) => {
-        if (index)
-          tl.fromTo(
-            copy,
-            { autoAlpha: 0, y: 14 },
-            { autoAlpha: 1, y: 0, duration: 0.14 },
-            index + 0.04,
-          );
-        if (index < 7)
-          tl.to(copy, { autoAlpha: 0, y: -10, duration: 0.1 }, index + 0.88);
-      });
-
-      /* ------------------------------------------------------------------ */
-      /* Camera: one dolly move through the whole world, eight keyframes.     */
-      /* ------------------------------------------------------------------ */
-      const box = () => ({
-        w: worldEl.offsetWidth,
-        h: worldEl.offsetHeight,
-        vw: stage.clientWidth,
-        vh: stage.clientHeight,
-      });
-      // Landscape dollies along x, portrait along y. Using the width in both
-      // cases would make the portrait dolly exactly zero, so the axis is explicit.
-      const placeAt = (progress: number) => {
-        const { w, h, vw, vh } = box();
-        return mobile ? -(h - vh) * progress : -(w - vw) * progress;
-      };
-      // Depth planes move at different rates: the canopy barely moves, benches
-      // travel with the camera, foreground props move slightly faster.
-      // The world translation itself is a single scrubbed tween so reverse
-      // scrolling retraces exactly the same path.
-      tl.fromTo(
-        worldEl,
-        { x: () => placeAt(0) },
-        {
-          x: () => (mobile ? 0 : placeAt(1)),
-          y: () => (mobile ? placeAt(1) : 0),
-          duration: 8,
-          immediateRender: false,
-        },
-        0,
-      );
-      // Canopy drift and light travel slower than the camera (parallax).
-      // A slow, continuous push-in: the camera creeps forward through the world
-      // while it dollies, so the scene keeps opening rather than sliding flatly.
-      const zoomFrom = camera[0]!.zoom;
-      const zoomTo = camera[camera.length - 1]!.zoom;
-      tl.fromTo(
-        worldEl,
-        { scale: zoomFrom },
-        { scale: zoomTo, duration: 8, transformOrigin: '50% 50%' },
-        0,
-      );
-      tl.fromTo(
-        q('.botanical-canopy'),
-        { scale: 1.12, xPercent: mobile ? 0 : 4, yPercent: mobile ? 4 : 0 },
-        { scale: 1.02, xPercent: mobile ? 0 : -4, duration: 8 },
-        0,
-      );
-      tl.fromTo(
-        q('.botanical-grove'),
-        { xPercent: mobile ? 0 : 2 },
-        { xPercent: 0, duration: 4 },
-        0,
-      );
-      tl.fromTo(
-        q('.botanical-light'),
-        { xPercent: -8, opacity: 0.35 },
-        { xPercent: 12, opacity: 0.62, duration: 8 },
-        0,
-      );
-      tl.fromTo(
-        q('.botanical-haze'),
-        { opacity: 0.85 },
-        { opacity: 0.35, duration: 6 },
-        0,
-      );
-      tl.fromTo(
-        q('.botanical-progress i'),
-        { scaleX: 0 },
-        { scaleX: 1, duration: 8 },
-        0,
+        }),
       );
 
-      /* ------------------------------------------------------------------ */
-      /* Stage 1–2: botanical material arrives on its own trajectories.       */
-      /* ------------------------------------------------------------------ */
-      studies.forEach((study) => {
-        const el = q<HTMLElement>(`[data-study="${study.id}"]`)!;
-        // Resting position is where the study lives inside the world.
-        const rest = { left: `${study.x}%`, top: `${study.y}%` };
-        const entry = {
-          left: `${study.enterX}%`,
-          top: `${study.enterY}%`,
-          scale: study.depth * 0.72,
-          rotation: study.rotate - 26,
-          autoAlpha: 0,
-        };
-        const start = 0.05 + (study.start / 1.08) * 1.9;
-        tl.fromTo(
-          el,
-          { ...entry, xPercent: -50, yPercent: -50 },
-          {
-            ...rest,
-            scale: study.depth,
-            rotation: study.rotate,
-            autoAlpha: 1,
-            duration: 0.34,
-          },
-          start,
-        );
-        // Organic travel while the camera moves: each study arcs through the
-        // frame rather than sitting still, and its depth decides how far.
-        tl.to(
-          el,
-          {
-            left: `${study.x + study.arc.dx}%`,
-            top: `${study.y + study.arc.dy}%`,
-            rotation: study.rotate + study.arc.spin,
-            duration: 1.1,
-            ease: 'sine.inOut',
-          },
-          start + 0.34,
-        );
-        // Stage 3: every study converges on the preparation bench, then is
-        // taken up by the pestle. Nothing is faded out where it happens to sit.
-        tl.to(
-          el,
-          {
-            left: `${study.converge.x}%`,
-            top: `${study.converge.y}%`,
-            scale: study.depth * 0.42,
-            rotation: study.rotate + 64,
-            duration: 0.82,
-            ease: 'power1.in',
-          },
-          2.55 + study.converge.delay,
-        );
-        tl.to(
-          el,
-          {
-            left: `${study.converge.x + 4}%`,
-            top: '46%',
-            scale: 0.04,
-            rotation: study.rotate + 150,
-            autoAlpha: 0,
-            duration: 0.5,
-            ease: 'power2.in',
-          },
-          3.4 + study.converge.delay,
+      // Scene activation bookkeeping (cheap, toggles only on enter/leave).
+      scenes.forEach((el) => {
+        triggers.push(
+          ScrollTrigger.create({
+            trigger: el,
+            onToggle: (self) => {
+              el.toggleAttribute('data-scene-active', self.isActive);
+              // `data-scene` names a scene, so the root's current scene must use
+              // a different attribute or it would shadow every scene selector.
+              if (self.isActive)
+                root.dataset.activeScene = el.dataset.scene as string;
+            },
+          } as ScrollTrigger.Vars),
         );
       });
 
-      /* ------------------------------------------------------------------ */
-      /* Stage 4: preparation. The pestle works the material; the grinder    */
-      /* receives what the pestle has finished with.                         */
-      /* ------------------------------------------------------------------ */
-      const mortar = q<HTMLElement>('[data-layer="mortar"]')!;
-      tl.fromTo(
-        mortar,
-        { autoAlpha: 0, y: 40, scale: 0.9 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.5 },
-        2.35,
-      );
-      const pestle = q<HTMLElement>('[data-layer="pestle"]')!;
-      tl.fromTo(
-        pestle,
-        { rotation: -14, yPercent: -8 },
-        {
-          rotation: 10,
-          yPercent: 6,
-          duration: 0.26,
-          repeat: 4,
-          yoyo: true,
-          ease: 'sine.inOut',
-        },
-        2.85,
-      );
-      const fragments = q<HTMLElement>('[data-layer="fragments"]')!;
-      tl.fromTo(
-        fragments,
-        { autoAlpha: 0, scale: 0.4, y: -24 },
-        { autoAlpha: 1, scale: 1, y: 0, duration: 0.24 },
-        2.95,
-      );
-      const paste = q<HTMLElement>('[data-layer="paste"]')!;
-      tl.fromTo(
-        paste,
-        { scale: 0.2, autoAlpha: 0 },
-        { scale: 1, autoAlpha: 1, duration: 0.6 },
-        3.25,
-      );
-      // The finished paste leaves the mortar and is carried to the filter.
-      tl.to(
-        paste,
-        {
-          x: () => (mobile ? 22 : 340),
-          y: () => (mobile ? 260 : -40),
-          scale: 0.18,
-          autoAlpha: 0,
-          duration: 0.75,
-        },
-        3.95,
-      );
-      // The bench must be gone before the filter's stream starts (4.35), or the
-      // drifting mortar reads as a second, ghostly vessel beside the real one.
-      tl.to(
-        [mortar, fragments],
-        {
-          x: () => (mobile ? 20 : 320),
-          autoAlpha: 0,
-          scale: 0.86,
-          duration: 0.5,
-        },
-        3.78,
-      );
+      /* --------------------------------------------------------------------
+         Scene 1 · Origin — the plate drifts as the page carries it upward.
+         ------------------------------------------------------------------ */
+      const origin = q<HTMLElement>('[data-scene="origin"]');
+      if (origin) {
+        const canopy = origin.querySelector<HTMLElement>('.botanical-canopy');
+        const grove = origin.querySelector<HTMLElement>('.botanical-grove');
+        const copy = origin.querySelector<HTMLElement>('.botanical-copy');
+        sceneTimeline(origin, (tl) => {
+          if (canopy)
+            tl.fromTo(
+              canopy,
+              { yPercent: -3, scale: 1.04 },
+              { yPercent: 5, scale: 1.1 },
+              0,
+            );
+          if (grove) tl.fromTo(grove, { yPercent: 6 }, { yPercent: -10 }, 0);
+          if (copy)
+            tl.fromTo(
+              copy,
+              { y: mobile ? 24 : 44, autoAlpha: 0.25 },
+              { y: 0, autoAlpha: 1, duration: 0.55 },
+              0,
+            );
+        });
+      }
 
-      /* ------------------------------------------------------------------ */
-      /* Stage 5: extraction. Material falls into the filter; the stream is  */
-      /* measured from the filter's real outlet to the kinnam's real rim.    */
-      /* ------------------------------------------------------------------ */
-      const station = q<HTMLElement>('[data-layer="filter-station"]')!;
-      const receiver = q<HTMLElement>('[data-layer="receiver"]')!;
-      const extractStream = q<HTMLElement>('[data-layer="extract-stream"]')!;
-      const extractPool = q<HTMLElement>('[data-layer="extract-pool"]')!;
-      // Resolved here (not further down) because the geometry pass uses them.
-      const pourer = q<HTMLElement>('[data-layer="pourer"]')!;
-      const stream = q<HTMLElement>('[data-layer="stream"]')!;
-      const drop = q<HTMLElement>('[data-layer="drop"]')!;
-      const copper = q<HTMLElement>('[data-layer="copper"]')!;
-      // `fromTo` here would re-apply visibility on every frame and stomp the
-      // earlier hidden state, so the start values are set once and only the
-      // arrival is tweened.
-      gsap.set(station, { y: 60 });
-      tl.to(station, { autoAlpha: 1, y: 0, duration: 0.45 }, 4.05);
-      // Physical connection, measured from the vessel geometry itself: the fine
-      // stream starts at the filter's own outlet and ends on the receiving
-      // surface inside the station box. Because the artwork, the liquid and the
-      // stream share one box, the join survives dolly, parallax and resize.
-      // Offset of `el` from `ancestor` in untransformed layout space. The camera
-      // scales the whole world, the station carries its own tween transform and
-      // the receiver is an animated child of the station, so getBoundingClientRect
-      // is a moving target; summing offsetParent chains cancels all of it.
+      /* --------------------------------------------------------------------
+         Scene 2 · Thirty studies arrive on distinct organic paths. They belong
+         to this scene, so they travel with the page instead of appearing over a
+         held frame.
+         ------------------------------------------------------------------ */
+      const studyScene = q<HTMLElement>('[data-scene="studies"]');
+      if (studyScene) {
+        const items = [
+          ...studyScene.querySelectorAll<HTMLElement>('.botanical-study'),
+        ];
+        sceneTimeline(studyScene, (tl) => {
+          items.forEach((item, index) => {
+            const meta = studies[index]!;
+            const from = meta.enterX > 50 ? 1 : -1;
+            tl.fromTo(
+              item,
+              {
+                xPercent: from * 26,
+                yPercent: 22 + (index % 4) * 6,
+                rotate: meta.rotate,
+                scale: 0.42,
+                autoAlpha: 0,
+              },
+              {
+                xPercent: (index % 2 ? 1 : -1) * (index % 5) * 1.6,
+                yPercent: 0,
+                rotate: 0,
+                scale: 1,
+                autoAlpha: 1,
+                duration: 0.42,
+              },
+              // Staggered start, but every item finishes well inside the scene.
+              (index / items.length) * 0.3,
+            );
+          });
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 3 · Ingredients physically converge toward the vessel, then the
+         vessel is left holding them as the scene exits downward.
+         ------------------------------------------------------------------ */
+      const convergence = q<HTMLElement>('[data-scene="convergence"]');
+      if (convergence) {
+        const items = [
+          ...convergence.querySelectorAll<HTMLElement>('.botanical-ingredient'),
+        ];
+        const vessel = convergence.querySelector<HTMLElement>(
+          '.botanical-convergence-vessel',
+        );
+        const radius = mobile ? 132 : 208;
+        sceneTimeline(convergence, (tl) => {
+          items.forEach((item, index) => {
+            const angle = (index * 36 * Math.PI) / 180;
+            const spread = 1 + (index % 3) * 0.16;
+            tl.fromTo(
+              item,
+              {
+                x: Math.cos(angle) * radius * spread,
+                y: Math.sin(angle) * radius * 0.8 * spread,
+                rotate: (index % 2 ? 1 : -1) * 18,
+                scale: 0.62,
+                autoAlpha: 0,
+              },
+              {
+                // Converge to the vessel's mouth and disappear into it.
+                x: 0,
+                y: -6,
+                rotate: 0,
+                scale: 0.28,
+                autoAlpha: 0,
+                duration: 0.5,
+              },
+              (index / items.length) * 0.42,
+            );
+            tl.to(
+              item,
+              { autoAlpha: 1, duration: 0.14 },
+              (index / items.length) * 0.42,
+            );
+            tl.to(
+              item,
+              { autoAlpha: 0, duration: 0.18 },
+              0.48 + (index / items.length) * 0.2,
+            );
+          });
+          if (vessel)
+            tl.fromTo(
+              vessel,
+              { scale: 0.92, yPercent: 6 },
+              { scale: 1, yPercent: 0, duration: 0.7 },
+              0.1,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 4 · Preparation: the pestle grinds, botanical pieces are cut and
+         fall, and a paste gathers in the mortar.
+         ------------------------------------------------------------------ */
+      const preparation = q<HTMLElement>('[data-scene="preparation"]');
+      if (preparation) {
+        const mortar = preparation.querySelector<HTMLElement>(
+          '[data-layer="mortar"]',
+        );
+        const pestle = preparation.querySelector<HTMLElement>(
+          '[data-layer="pestle"]',
+        );
+        const fragments = preparation.querySelector<HTMLElement>(
+          '[data-layer="fragments"]',
+        );
+        const paste = preparation.querySelector<HTMLElement>(
+          '[data-layer="paste"]',
+        );
+        const cuts = [
+          ...preparation.querySelectorAll<HTMLElement>('.botanical-cut i'),
+        ];
+        sceneTimeline(preparation, (tl) => {
+          if (mortar)
+            tl.fromTo(
+              mortar,
+              { scale: 0.9, yPercent: 8 },
+              { scale: 1, yPercent: 0, duration: 0.3 },
+              0,
+            );
+          if (pestle) {
+            // A grind is a rotation about the pestle's own head, repeated.
+            tl.fromTo(
+              pestle,
+              { rotate: -12, yPercent: -6 },
+              {
+                rotate: 10,
+                yPercent: 4,
+                duration: 0.22,
+                repeat: 2,
+                yoyo: true,
+              },
+              0.14,
+            );
+          }
+          cuts.forEach((shard, index) => {
+            tl.fromTo(
+              shard,
+              { x: 0, y: 0, rotate: 0, autoAlpha: 0.9, scale: 1 },
+              {
+                x: (index % 2 ? 1 : -1) * (10 + (index % 3) * 12),
+                y: 46 + (index % 4) * 14,
+                rotate: (index % 2 ? 1 : -1) * 120,
+                autoAlpha: 0,
+                scale: 0.5,
+                duration: 0.3,
+              },
+              0.2 + index * 0.05,
+            );
+          });
+          if (fragments)
+            tl.fromTo(
+              fragments,
+              { yPercent: -18, autoAlpha: 0 },
+              { yPercent: 0, autoAlpha: 1, duration: 0.25 },
+              0.3,
+            );
+          if (paste)
+            tl.fromTo(
+              paste,
+              { scale: 0.3, autoAlpha: 0 },
+              { scale: 1, autoAlpha: 1, duration: 0.3 },
+              0.55,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 5 · Extraction. The stream is a static relationship between two
+         vessels measured once, so its length can never drift with scroll.
+         ------------------------------------------------------------------ */
+      const extraction = q<HTMLElement>('[data-scene="extraction"]');
+      const fill = q<HTMLElement>(
+        '[data-scene="extraction"] [data-layer="fill"]',
+      );
+      const extractStream = q<HTMLElement>('[data-layer="extract-stream"]');
+      const extractPool = q<HTMLElement>('[data-layer="extract-pool"]');
+
       const offsetWithin = (el: HTMLElement, ancestor: HTMLElement) => {
         let x = 0;
         let y = 0;
@@ -362,23 +330,26 @@ export function mountBotanicalJourney(root: HTMLElement) {
           y += node.offsetTop;
           node = node.offsetParent as HTMLElement | null;
         }
-        // The walk stops at `ancestor`, so the sum is already an offset inside
-        // it; deducting the ancestor's own offset would count it twice.
         return { x, y };
       };
-      const extractor = q<HTMLElement>('.botanical-extractor')!;
-      const aperture = q<HTMLElement>(
-        '.botanical-receiver .botanical-liquid-aperture',
-      )!;
+
       const connectExtraction = () => {
-        // Everything here is resolved in the station's own untransformed layout
-        // space. The camera scales the world and the station carries its own
-        // tween, so viewport rects move under the measurement and the stream
-        // length would change with the scroll position.
+        if (!extraction || !extractStream || !extractPool) return;
+        const station = extraction.querySelector<HTMLElement>(
+          '.botanical-filter-station',
+        );
+        const extractor = extraction.querySelector<HTMLElement>(
+          '.botanical-extractor',
+        );
+        const aperture = extraction.querySelector<HTMLElement>(
+          '.botanical-receiver .botanical-liquid-aperture',
+        );
+        if (!station || !extractor || !aperture) return;
+        // Resolved in the station's own untransformed layout space: the page
+        // scrolls beneath it, so viewport rects would move under the
+        // measurement and change the stream's length every frame.
         const outletY =
           offsetWithin(extractor, station).y + extractor.offsetHeight;
-        // The stream lands inside the bowl's mouth: a third of the way down the
-        // aperture the artwork itself defines, never a guessed fraction.
         const mouth = offsetWithin(aperture, station);
         const surfaceY = mouth.y + aperture.offsetHeight * 0.35;
         extractStream.style.top = `${outletY - 4}px`;
@@ -387,217 +358,213 @@ export function mountBotanicalJourney(root: HTMLElement) {
         extractPool.style.left = `${mouth.x + aperture.offsetWidth * 0.34}px`;
         extractPool.style.width = `${aperture.offsetWidth * 0.32}px`;
       };
-      // The pour is a *static* relationship between two vessels: the stream is a
-      // child of the pourer, so its length is simply the measured gap from the
-      // spout down to the uruli's receiving surface. Measured on refresh only,
-      // never per scroll frame, so reverse scrolling cannot desynchronise it.
-      const connectTransfer = () => {
-        const p = pourer.getBoundingClientRect();
-        const u = copper.getBoundingClientRect();
-        const spoutY = p.top + p.height * 0.74;
-        const surfaceY = u.top + u.height * 0.3;
-        stream.style.height = `${Math.max(10, surfaceY - spoutY + 6)}px`;
-        drop.style.top = `${Math.max(0, surfaceY - spoutY - 16)}px`;
-      };
-      const layout = () => {
-        connectExtraction();
-        connectTransfer();
-      };
+
+      if (extraction) {
+        const botanicals = extraction.querySelector<HTMLElement>(
+          '.botanical-filter-botanicals',
+        );
+        sceneTimeline(extraction, (tl) => {
+          if (botanicals)
+            tl.fromTo(
+              botanicals,
+              { yPercent: -40, scale: 0.6, autoAlpha: 0 },
+              { yPercent: 0, scale: 1, autoAlpha: 1, duration: 0.28 },
+              0,
+            );
+          if (extractStream)
+            tl.fromTo(
+              extractStream,
+              { scaleY: 0, autoAlpha: 0 },
+              { scaleY: 1, autoAlpha: 1, duration: 0.3 },
+              0.16,
+            );
+          if (extractPool)
+            tl.fromTo(
+              extractPool,
+              { scale: 0.2, autoAlpha: 0 },
+              { scale: 1, autoAlpha: 1, duration: 0.3 },
+              0.4,
+            );
+          if (fill)
+            tl.fromTo(
+              fill,
+              { '--collection': 0 },
+              { '--collection': 0.72, duration: 0.5 },
+              0.32,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 6 · Oil: the green extract becomes near-black forest-green oil.
+         ------------------------------------------------------------------ */
+      const oil = q<HTMLElement>('[data-scene="oil"]');
+      if (oil) {
+        const uruliFill = oil.querySelector<HTMLElement>(
+          '[data-layer="uruli-fill"]',
+        );
+        const ripples = oil.querySelector<HTMLElement>(
+          '[data-layer="ripples"]',
+        );
+        const copper = oil.querySelector<HTMLElement>('[data-layer="copper"]');
+        sceneTimeline(oil, (tl) => {
+          if (copper)
+            tl.fromTo(
+              copper,
+              { yPercent: 7, scale: 0.94 },
+              { yPercent: 0, scale: 1, duration: 0.4 },
+              0,
+            );
+          if (uruliFill)
+            tl.fromTo(
+              uruliFill,
+              {
+                '--collection': 0.14,
+                '--liquid-body': '#2f5a3d',
+                '--liquid-surface': '#244a31',
+              },
+              {
+                // The finished state is reached while the scene is still on
+                // screen, and it holds: the oil is near-black forest green.
+                '--collection': 0.84,
+                '--liquid-body': '#071a13',
+                '--liquid-surface': '#123827',
+                duration: 0.45,
+              },
+              0.1,
+            );
+          if (ripples)
+            tl.fromTo(
+              ripples,
+              { autoAlpha: 0, scale: 0.7 },
+              { autoAlpha: 0.5, scale: 1, duration: 0.4 },
+              0.3,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 7 · Transfer: the filled vessel pours into the receiving uruli.
+         The stream and droplet are children of the pourer, so they can never
+         detach from the spout.
+         ------------------------------------------------------------------ */
+      const transfer = q<HTMLElement>('[data-scene="transfer"]');
+      if (transfer) {
+        const pourer = transfer.querySelector<HTMLElement>(
+          '[data-layer="pourer"]',
+        );
+        const stream = transfer.querySelector<HTMLElement>(
+          '[data-layer="stream"]',
+        );
+        const drop = transfer.querySelector<HTMLElement>('[data-layer="drop"]');
+        const targetFill = transfer.querySelector<HTMLElement>(
+          '[data-layer="target-fill"]',
+        );
+        sceneTimeline(transfer, (tl) => {
+          if (pourer)
+            tl.fromTo(
+              pourer,
+              { rotate: 4, yPercent: -8, autoAlpha: 0.4 },
+              { rotate: 16, yPercent: 0, autoAlpha: 1, duration: 0.3 },
+              0,
+            );
+          if (stream)
+            tl.fromTo(
+              stream,
+              { scaleY: 0 },
+              { scaleY: 1, duration: 0.28 },
+              0.16,
+            );
+          if (drop)
+            tl.fromTo(
+              drop,
+              { y: 0, autoAlpha: 0 },
+              { y: mobile ? 54 : 76, autoAlpha: 1, duration: 0.3 },
+              0.2,
+            );
+          if (targetFill)
+            tl.fromTo(
+              targetFill,
+              { '--collection': 0.2 },
+              { '--collection': 0.8, duration: 0.4 },
+              0.3,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 8 · Reveal. The original bottle rises into place and settles; the
+         CTA and claim are in the document from the start, so they are never
+         gated behind an animation that may not finish.
+         ------------------------------------------------------------------ */
+      const finaleScene = q<HTMLElement>('[data-scene="reveal"]');
+      if (finaleScene) {
+        const product = finaleScene.querySelector<HTMLElement>(
+          '[data-layer="product"]',
+        );
+        const glow = finaleScene.querySelector<HTMLElement>(
+          '.botanical-product-glow',
+        );
+        sceneTimeline(finaleScene, (tl) => {
+          if (product)
+            tl.fromTo(
+              product,
+              { yPercent: 12, scale: 0.9 },
+              { yPercent: 0, scale: 1, duration: 0.5 },
+              0,
+            );
+          if (glow)
+            tl.fromTo(
+              glow,
+              { scale: 0.6, autoAlpha: 0 },
+              { scale: 1, autoAlpha: 1, duration: 0.5 },
+              0.05,
+            );
+        });
+      }
+
+      /* --------------------------------------------------------------------
+         Measurements. Stream geometry is resolved on layout changes only, never
+         per scroll frame, so reverse scrolling cannot desynchronise it.
+         ------------------------------------------------------------------ */
+      const layout = () => connectExtraction();
+      layout();
+      // The vessels are images: their heights arrive after decode, and change
+      // with rotation. Re-measure on every real layout change so the stream is
+      // never left at zero height.
+      const station = extraction?.querySelector<HTMLElement>(
+        '.botanical-filter-station',
+      );
+      let resizeObserver: ResizeObserver | undefined;
+      if (station && typeof ResizeObserver !== 'undefined') {
+        resizeObserver = new ResizeObserver(() => layout());
+        resizeObserver.observe(station);
+      }
+      root.querySelectorAll('img').forEach((img) => {
+        if (!(img as HTMLImageElement).complete)
+          img.addEventListener('load', layout, { once: true });
+      });
       ScrollTrigger.addEventListener('refreshInit', layout);
       ScrollTrigger.addEventListener('refresh', layout);
-      layout();
-
-      tl.to(
-        extractStream,
-        { autoAlpha: 1, scaleY: 1, duration: 0.45, ease: 'none' },
-        4.35,
-      );
-      tl.fromTo(
-        extractPool,
-        { scaleX: 0.1, opacity: 0.2 },
-        { scaleX: 1, opacity: 0.85, duration: 0.5 },
-        4.4,
-      );
-      tl.fromTo(
-        q('.botanical-filter-botanicals'),
-        { autoAlpha: 0.2, y: -10 },
-        { autoAlpha: 1, y: 0, duration: 0.4 },
-        4.15,
-      );
-      // The kinnam fills from the stream while it flows.
-      tl.fromTo(
-        receiver,
-        { '--collection': 0 } as never,
-        { '--collection': 0.62, duration: 0.6 } as never,
-        4.45,
-      );
-      tl.to(extractStream, { scaleY: 0, duration: 0.18 }, 5.02);
-      tl.to(extractStream, { autoAlpha: 0, duration: 0.18 }, 5.02);
-
-      /* ------------------------------------------------------------------ */
-      /* Stage 6: the extract becomes deep herbal oil in the larger uruli.   */
-      /* ------------------------------------------------------------------ */
-      const uruliFill = q<HTMLElement>('[data-layer="uruli-fill"]')!;
-      const ripples = q<HTMLElement>('[data-layer="ripples"]')!;
-      gsap.set(copper, { y: 70, scale: 0.94 });
-      tl.to(copper, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5 }, 4.95);
-      tl.to(
-        [receiver, station],
-        { x: mobile ? -28 : -420, autoAlpha: 0, duration: 0.62 },
-        5.05,
-      );
-      // The kinnam leaves with its measured contents, so the material is
-      // visibly carried from the filter bench into the uruli rather than reset.
-      tl.fromTo(
-        uruliFill,
-        {
-          '--collection': 0,
-          backgroundColor: '#244a31',
-          '--liquid-surface': '#244a31',
-          '--liquid-edge': '#123827',
-        } as never,
-        {
-          '--collection': 0.86,
-          backgroundColor: '#071a13',
-          '--liquid-surface': '#123827',
-          '--liquid-edge': '#020a06',
-          duration: 0.95,
-          ease: 'sine.inOut',
-        } as never,
-        5.1,
-      );
-      tl.fromTo(
-        ripples,
-        { rotation: -12, scale: 0.8, opacity: 0.12 },
-        { rotation: 42, scale: 1.06, opacity: 0.72, duration: 0.9 },
-        5.25,
-      );
-
-      /* ------------------------------------------------------------------ */
-      /* Stage 7: the pour. The stream starts at the pourer's own spout and   */
-      /* lands on the uruli's real receiving surface.                         */
-      /* ------------------------------------------------------------------ */
-      gsap.set(pourer, {
-        x: mobile ? -40 : -260,
-        y: -30,
-        rotation: -8,
-      });
-      tl.to(
-        pourer,
-        {
-          autoAlpha: 1,
-          x: 0,
-          y: 0,
-          rotation: 0,
-          duration: 0.5,
-          ease: 'power1.out',
-        },
-        5.85,
-      );
-      tl.to(pourer, { rotation: -6, y: -6, duration: 0.18 }, 6.3);
-      tl.to(stream, { autoAlpha: 1, scaleY: 1, duration: 0.42 }, 6.34);
-      tl.fromTo(
-        uruliFill,
-        { '--collection': 0.86 } as never,
-        { '--collection': 1, duration: 0.5 } as never,
-        6.4,
-      );
-      tl.fromTo(
-        drop,
-        { autoAlpha: 0, yPercent: 0 },
-        { autoAlpha: 1, yPercent: 40, duration: 0.2 },
-        6.5,
-      );
-      tl.to(drop, { yPercent: 140, autoAlpha: 0, duration: 0.3 }, 6.72);
-      tl.to(stream, { scaleY: 0, duration: 0.2 }, 6.9);
-      tl.to(stream, { autoAlpha: 0, duration: 0.2 }, 6.9);
-      tl.to(
-        [pourer, copper, ripples],
-        { autoAlpha: 0, scale: 0.94, duration: 0.42 },
-        6.92,
-      );
-
-      /* ------------------------------------------------------------------ */
-      /* Stage 8: the authentic bottle, the claim and the approved CTA.       */
-      /* ------------------------------------------------------------------ */
-      const product = q<HTMLElement>('[data-layer="product"]')!;
-      gsap.set(product, { scale: 0.9, y: 40 });
-      tl.to(product, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55 }, 7.02);
-      const claim = root.querySelector('.botanical-claim')!;
-      tl.fromTo(
-        claim,
-        { autoAlpha: 0, y: 24, filter: 'blur(5px)' },
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: mobile ? 0.14 : 0.4,
-        },
-        mobile ? 7.34 : 7.12,
-      );
-      tl.fromTo(
-        root.querySelector('.botanical-cta'),
-        { autoAlpha: 0, y: 14 },
-        { autoAlpha: 1, y: 0, duration: mobile ? 0.1 : 0.25 },
-        mobile ? 7.6 : 7.52,
-      );
-      // Three of the studies return as a wreath behind the finished bottle so
-      // the ingredient story closes visually as well as narratively.
-      [0, 12, 24].forEach((index, order) => {
-        const study = studies[index]!;
-        const el = q<HTMLElement>(`[data-study="${study.id}"]`)!;
-        tl.fromTo(
-          el,
-          {
-            left: `${mobile ? [18, 78, 82][order] : [80, 92, 88][order]}%`,
-            top: `${mobile ? [58, 40, 68][order] : [26, 52, 74][order]}%`,
-            scale: 0.3,
-            rotation: -20 + order * 14,
-            autoAlpha: 0,
-          },
-          {
-            autoAlpha: 0.9,
-            scale: mobile ? 0.6 : 0.78,
-            duration: 0.45,
-            immediateRender: false,
-          },
-          7.1 + order * 0.08,
-        );
-      });
-      // Align the last composition with the end of native document scrolling.
-      tl.to({}, { duration: 0.01 }, 8);
-
-      const stageWatchers = steps.map((step, index) =>
-        ScrollTrigger.create({
-          trigger: step,
-          start: 'top 60%',
-          end: 'bottom 60%',
-          onToggle: (self) => {
-            if (self.isActive) root.dataset.stage = String(index + 1);
-          },
-        }),
-      );
+      const onResize = () => ScrollTrigger.refresh();
+      window.addEventListener('resize', onResize, { passive: true });
 
       return () => {
-        stageWatchers.forEach((watcher) => watcher.kill());
+        triggers.forEach((trigger) => trigger.kill());
         ScrollTrigger.removeEventListener('refreshInit', layout);
         ScrollTrigger.removeEventListener('refresh', layout);
-        captions.forEach((copy, index) => {
-          steps[index]!.append(copy);
-          copy.inert = false;
-          copy.removeAttribute('aria-hidden');
-        });
-        preload.disconnect();
-        captionLayer.remove();
-        stage.setAttribute('aria-hidden', 'true');
-        delete root.dataset.progress;
-        delete root.dataset.stage;
+        window.removeEventListener('resize', onResize);
+        resizeObserver?.disconnect();
+        delete root.dataset.motion;
         delete root.dataset.layout;
-        gsap.set(animated, { clearProps: 'all' });
-        gsap.set(worldEl, { clearProps: 'transform' });
+        delete root.dataset.activeScene;
+        root.querySelectorAll('[data-scene]').forEach((el) => {
+          el.removeAttribute('data-scene-active');
+        });
       };
     },
   );
+
   const cleanup = () => {
     media.revert();
     delete root.dataset.motion;

@@ -3,13 +3,7 @@ import type { Locale } from '../../i18n';
 import ArrowIcon from '../ArrowIcon.astro';
 import BotanicalExtractor from './BotanicalExtractor.astro';
 import { journeyCopy } from './content';
-import {
-  studies,
-  places,
-  worldFocus,
-  verticalFocus,
-  world,
-} from './motion.mjs';
+import { studies, stages } from './motion.mjs';
 import originals from '../../data/cinematic-assets.json';
 import botanicalManifest from '../../data/botanical-media.json';
 import { featuredProduct } from '../../data/products';
@@ -44,41 +38,17 @@ const asset = (name: string) => {
     throw new Error(`Unregistered botanical media: ${path}`);
   return path;
 };
-
-// Stations are placed with the same camera math the choreography uses, so each
-// one is centred in the frame exactly when its own stage is on screen.
-// Offsets are given in viewport widths and converted to world fractions, so a
-// nudge stays a nudge at every screen size.
-// `screenY` is where the station's centre should land in a portrait frame at its
-// own stage; the default keeps it clear of both the caption and the fixed
-// bottom navigation. Stations that touch (uruli / pourer) share a value.
-const layoutStyle = (place: number, dxVw = 0, screenY = 0.72) =>
-  `--w-x:${(
-    (worldFocus(place, world.desktopExtent) + dxVw / world.desktopExtent) *
-    100
-  ).toFixed(3)}%;--m-x:${(
-    (worldFocus(place, world.mobileExtent) + dxVw / world.mobileExtent) *
-    100
-  ).toFixed(3)}%;--m-y:${(
-    verticalFocus(place, screenY, world.mobileExtent) * 100
-  ).toFixed(3)}%`;
-
+// The journey is eight real sections in normal document flow. `travel` is each
+// scene's own scroll runway, expressed as a fraction of a viewport height; it is
+// added to the scene box so the scene's animation has room to play while the
+// page itself keeps moving. Nothing is pinned or sticky.
+const sceneStyle = (travel: number) => `--scene-travel:${travel}`;
+const scene = (name: string) => stages.find((s) => s.scene === name)!;
 // Approved call to action stays inside the reviewed static site. The current .in
 // product page remains the visible source reference; purchasing stays disabled.
 const destination = `/${lang}/products/${featuredProduct.slug}/`;
-
-// Stage one stills, drawn from the same registered set so the accessible
-// reduced-motion and no-JavaScript story never points at unregistered media.
-const stills = [
-  'botanical-origin-desktop.webp',
-  'ingredient-09.webp',
-  'ingredient-22.webp',
-  'preparation-device.webp',
-  'brass-filter.webp',
-  'brass-uruli.webp',
-  'dark-oil-stream.webp',
-  'authentic-product-cutout.webp',
-];
+// Ingredients used in the convergence scene, drawn from the same registered set.
+const converging = studies.filter((_, index) => index % 3 === 0);
 ---
 
 <section
@@ -86,49 +56,78 @@ const stills = [
   id="botanical-journey"
   aria-labelledby="botanical-title"
   data-botanical-journey
-  style={`--world-extent-landscape:${world.desktopExtent};--world-extent-portrait:${world.mobileExtent}`}
 >
   <h2 id="botanical-title" class="sr-only">
     {t.intro}
   </h2>
   <div class="botanical-track">
-    <!-- One continuous world. The camera dollies through it; nothing here is a slide. -->
-    <div class="botanical-stage" aria-hidden="true">
-      <div class="botanical-world" data-layer="world">
-        <div class="botanical-sky"></div>
-        <picture class="botanical-canopy" data-plane="far">
-          <source
-            media="(max-width: 759px)"
-            srcset={asset('botanical-origin-mobile.webp')}
-          />
-          <img
-            data-botanical-media
-            src={asset('botanical-origin-desktop.webp')}
-            width="1920"
-            height="1080"
-            alt={altFor('botanical-origin-desktop.webp')}
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-        <div class="botanical-haze" data-plane="far"></div>
-
-        <!-- Ground the camera travels over, and the grove it starts in. -->
-        <div class="botanical-ground" data-plane="mid"></div>
-        <div
-          class="botanical-grove"
-          data-plane="mid"
-          data-place="grove"
-          style={layoutStyle(places.grove)}
-        >
-          <i class="botanical-stem"></i>
-          <i class="botanical-stem"></i>
-          <i class="botanical-stem"></i>
-          <i class="botanical-stem"></i>
-          <i class="botanical-stem"></i>
+    <!--
+      Eight scenes, each a real section in document flow. Scrolling moves the
+      whole page: a scene travels up and out, the next one physically enters from
+      below. No sticky master stage, no pinned viewport, no translated world box.
+    -->
+    <!-- 1 · Origin ------------------------------------------------ -->
+    <section
+      class="botanical-scene botanical-scene--origin"
+      data-scene="origin"
+      data-botanical-step={0}
+      data-botanical-stage="1"
+      aria-label={t.titles[0]}
+      style={sceneStyle(scene('origin').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art" aria-hidden="true">
+          <picture class="botanical-canopy">
+            <source
+              media="(max-width: 759px)"
+              srcset={asset('botanical-origin-mobile.webp')}
+            />
+            <img
+              data-botanical-media
+              src={asset('botanical-origin-desktop.webp')}
+              width="1920"
+              height="1080"
+              alt={altFor('botanical-origin-desktop.webp')}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <div class="botanical-grove">
+            <i class="botanical-stem"></i>
+            <i class="botanical-stem"></i>
+            <i class="botanical-stem"></i>
+            <i class="botanical-stem"></i>
+            <i class="botanical-stem"></i>
+          </div>
         </div>
+        <div class="botanical-copy">
+          <!-- "From nature. With care." opens the journey itself, never a
+               separate full-height panel above it. -->
+          <p class="botanical-overture" data-scene-intro>
+            {t.intro}
+          </p>
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[0]}</h3>
+          <p>{t.lines[0]}</p>
+          <p class="botanical-note">{t.note}</p>
+        </div>
+      </div>
+    </section>
 
-        <div class="botanical-studies" data-plane="mid">
+    <!-- 2 · Botanical studies ------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--studies"
+      data-scene="studies"
+      data-botanical-step={1}
+      data-botanical-stage="2"
+      aria-label={t.titles[1]}
+      style={sceneStyle(scene('studies').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div
+          class="botanical-scene-art botanical-scene-art--flat"
+          aria-hidden="true"
+        >
           {studies.map((study) => (
             <img
               data-botanical-media
@@ -141,70 +140,48 @@ const stills = [
               class="botanical-study"
               data-study={study.id}
               data-group={study.group}
-              style={`--study-x:${(study.x + 4).toFixed(2)}%;--study-y:${study.y}%`}
+              style={`--study-x:${study.x.toFixed(2)}%;--study-y:${study.y}%;--enter-x:${study.enterX}%`}
             />
           ))}
         </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[1]}</h3>
+          <p>{t.lines[1]}</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- Preparation bench: mortar and pestle, then the grinder the material falls into. -->
+    <!-- 3 · Convergence ------------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--convergence"
+      data-scene="convergence"
+      data-botanical-step={2}
+      data-botanical-stage="3"
+      aria-label={t.titles[2]}
+      style={sceneStyle(scene('convergence').travel)}
+    >
+      <div class="botanical-scene-inner">
         <div
-          class="botanical-mortar"
-          data-plane="near"
-          data-place="bench"
-          data-layer="mortar"
-          style={layoutStyle(places.bench, 0, 0.8)}
+          class="botanical-scene-art botanical-scene-art--flat"
+          aria-hidden="true"
         >
-          <div class="botanical-mortar-body">
+          <div class="botanical-convergence-halo"></div>
+          {converging.map((study, index) => (
             <img
               data-botanical-media
-              src={asset('preparation-device.webp')}
-              width="760"
-              height="620"
-              alt={altFor('preparation-device.webp')}
+              src={asset(`${study.id}.webp`)}
+              width="320"
+              height="420"
+              alt={altFor(`${study.id}.webp`)}
               loading="lazy"
+              decoding="async"
+              class="botanical-ingredient"
+              data-converge={index}
+              style={`--angle:${(index * 36).toFixed(1)}deg`}
             />
-          </div>
-          <img
-            data-botanical-media
-            class="botanical-pestle"
-            data-layer="pestle"
-            src={asset('preparation-pestle.webp')}
-            width="280"
-            height="680"
-            alt={altFor('preparation-pestle.webp')}
-            loading="lazy"
-          />
-          <img
-            data-botanical-media
-            class="botanical-fragments"
-            data-layer="fragments"
-            src={asset('preparation-fragments.webp')}
-            width="420"
-            height="280"
-            alt={altFor('preparation-fragments.webp')}
-            loading="lazy"
-          />
-          <div class="botanical-paste" data-layer="paste"></div>
-        </div>
-
-        <!-- Extraction bench: botanical paste falls into the brass filter, fine
-             green herbal liquid leaves its outlet and enters the kinnam below. -->
-        <div
-          class="botanical-filter-station"
-          data-plane="near"
-          data-place="filter"
-          data-layer="filter-station"
-          style={layoutStyle(places.filter, 0, 0.68)}
-        >
-          <BotanicalExtractor animated lang={lang} />
-          <div
-            class="botanical-apparatus botanical-receiver"
-            data-layer="receiver"
-            data-vessel="brass-kinnam"
-          >
-            <div class="botanical-liquid-aperture">
-              <div class="botanical-fill" data-layer="fill"></div>
-            </div>
+          ))}
+          <div class="botanical-convergence-vessel">
             <img
               data-botanical-media
               src={asset('brass-kinnam.webp')}
@@ -214,174 +191,290 @@ const stills = [
               loading="lazy"
             />
           </div>
-          <div
-            class="botanical-extract-stream"
-            data-layer="extract-stream"
-          ></div>
-          <div class="botanical-extract-pool" data-layer="extract-pool"></div>
         </div>
-
-        <!-- The larger uruli the extract is carried to, where it becomes oil. -->
-        <div
-          class="botanical-apparatus botanical-copper"
-          data-plane="near"
-          data-place="uruli"
-          data-layer="copper"
-          data-vessel="brass-uruli"
-          style={layoutStyle(places.uruli, 0.034, 0.7)}
-        >
-          <img
-            data-botanical-media
-            src={asset('brass-uruli.webp')}
-            width="900"
-            height="600"
-            alt={altFor('brass-uruli.webp')}
-            loading="lazy"
-          />
-          <div class="botanical-liquid-aperture botanical-uruli-aperture">
-            <div class="botanical-fill" data-layer="uruli-fill"></div>
-          </div>
-          <div class="botanical-ripples" data-layer="ripples">
-            <img
-              data-botanical-media
-              src={asset('liquid-reflections.webp')}
-              width="600"
-              height="280"
-              alt={altFor('liquid-reflections.webp')}
-              loading="lazy"
-            />
-            <i></i>
-            <i></i>
-            <i></i>
-          </div>
-        </div>
-
-        <!-- Transfer: the kinnam is lifted beside the uruli and pours into it. -->
-        <div
-          class="botanical-pourer"
-          data-plane="near"
-          data-place="transfer"
-          data-layer="pourer"
-          data-vessel="brass-pourer"
-          style={layoutStyle(places.uruli, 0.034, 0.7)}
-        >
-          <img
-            data-botanical-media
-            src={asset('brass-pourer.webp')}
-            width="800"
-            height="600"
-            alt={altFor('brass-pourer.webp')}
-            loading="lazy"
-          />
-          <!-- The stream and its droplet are children of the pouring vessel, so
-               they can never become detached from the spout that emits them. -->
-          <img
-            data-botanical-media
-            class="botanical-stream"
-            data-layer="stream"
-            src={asset('dark-oil-stream.webp')}
-            width="150"
-            height="800"
-            alt={altFor('dark-oil-stream.webp')}
-            loading="lazy"
-          />
-          <img
-            data-botanical-media
-            class="botanical-drop"
-            data-layer="drop"
-            src={asset('dark-oil-droplet.webp')}
-            width="160"
-            height="240"
-            alt={altFor('dark-oil-droplet.webp')}
-            loading="lazy"
-          />
-        </div>
-
-        <!-- Reveal: the finished oil becomes the authentic photographic bottle. -->
-        <div
-          class="botanical-product"
-          data-plane="near"
-          data-place="reveal"
-          data-layer="product"
-          style={layoutStyle(places.reveal, 0.01, 0.66)}
-        >
-          <div class="botanical-product-glow"></div>
-          <img
-            data-botanical-media
-            src={asset('authentic-product-cutout.webp')}
-            width="245"
-            height="745"
-            alt={altFor('authentic-product-cutout.webp')}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-
-        <div class="botanical-light" data-plane="far"></div>
-        <div class="botanical-progress">
-          <i></i>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[2]}</h3>
+          <p>{t.lines[2]}</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <ol class="botanical-steps">
-      {t.titles.map((title, index) => (
-        <li
-          class="botanical-step"
-          id={index === 7 ? 'botanical-finale' : `botanical-stage-${index + 1}`}
-          data-botanical-step={index}
-          aria-label={title}
-        >
-          <div class="botanical-static" aria-hidden="true">
-            <picture>
-              <source
-                media="(max-width: 759px)"
-                srcset={asset('botanical-origin-mobile.webp')}
-              />
+    <!-- 4 · Preparation ------------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--preparation"
+      data-scene="preparation"
+      data-botanical-step={3}
+      data-botanical-stage="4"
+      aria-label={t.titles[3]}
+      style={sceneStyle(scene('preparation').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art">
+          <!-- Preparation bench: material is cut and ground in the mortar. -->
+          <div
+            class="botanical-mortar"
+            data-layer="mortar"
+            data-vessel="preparation-mortar"
+          >
+            <div class="botanical-mortar-body">
               <img
                 data-botanical-media
-                src={asset('botanical-origin-desktop.webp')}
-                width="1600"
-                height="900"
-                alt={altFor('botanical-origin-desktop.webp')}
+                src={asset('preparation-device.webp')}
+                width="760"
+                height="620"
+                alt={altFor('preparation-device.webp')}
                 loading="lazy"
               />
-            </picture>
+            </div>
             <img
               data-botanical-media
-              class="botanical-static-layer"
-              src={asset(stills[index]!)}
+              class="botanical-pestle"
+              data-layer="pestle"
+              src={asset('preparation-pestle.webp')}
+              width="280"
+              height="680"
+              alt={altFor('preparation-pestle.webp')}
+              loading="lazy"
+            />
+            <img
+              data-botanical-media
+              class="botanical-fragments"
+              data-layer="fragments"
+              src={asset('preparation-fragments.webp')}
+              width="420"
+              height="280"
+              alt={altFor('preparation-fragments.webp')}
+              loading="lazy"
+            />
+            <div class="botanical-cut" aria-hidden="true">
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+            <div class="botanical-paste" data-layer="paste"></div>
+          </div>
+        </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[3]}</h3>
+          <p>{t.lines[3]}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Extraction -------------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--extraction"
+      data-scene="extraction"
+      data-botanical-step={4}
+      data-botanical-stage="5"
+      aria-label={t.titles[4]}
+      style={sceneStyle(scene('extraction').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art">
+          <!-- Extraction bench: ground material feeds the brass filter, fine green
+               herbal liquid leaves its outlet and enters the kinnam below. -->
+          <div class="botanical-filter-station" data-layer="filter-station">
+            <BotanicalExtractor animated lang={lang} />
+            <div
+              class="botanical-apparatus botanical-receiver"
+              data-layer="receiver"
+              data-vessel="brass-kinnam"
+            >
+              <div class="botanical-liquid-aperture">
+                <div class="botanical-fill" data-layer="fill"></div>
+              </div>
+              <img
+                data-botanical-media
+                src={asset('brass-kinnam.webp')}
+                width="600"
+                height="600"
+                alt={altFor('brass-kinnam.webp')}
+                loading="lazy"
+              />
+            </div>
+            <div
+              class="botanical-extract-stream"
+              data-layer="extract-stream"
+            ></div>
+            <div class="botanical-extract-pool" data-layer="extract-pool"></div>
+          </div>
+        </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[4]}</h3>
+          <p>{t.lines[4]}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · Oil --------------------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--oil"
+      data-scene="oil"
+      data-botanical-step={5}
+      data-botanical-stage="6"
+      aria-label={t.titles[5]}
+      style={sceneStyle(scene('oil').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art">
+          <div
+            class="botanical-apparatus botanical-copper"
+            data-layer="copper"
+            data-vessel="brass-uruli"
+          >
+            <img
+              data-botanical-media
+              src={asset('brass-uruli.webp')}
               width="900"
-              height="900"
-              alt={altFor(stills[index]!)}
+              height="600"
+              alt={altFor('brass-uruli.webp')}
+              loading="lazy"
+            />
+            <div class="botanical-liquid-aperture botanical-uruli-aperture">
+              <div class="botanical-fill" data-layer="uruli-fill"></div>
+            </div>
+            <div class="botanical-ripples" data-layer="ripples">
+              <img
+                data-botanical-media
+                src={asset('liquid-reflections.webp')}
+                width="600"
+                height="280"
+                alt={altFor('liquid-reflections.webp')}
+                loading="lazy"
+              />
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+          </div>
+        </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[5]}</h3>
+          <p>{t.lines[5]}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Transfer ---------------------------------------------- -->
+    <section
+      class="botanical-scene botanical-scene--transfer"
+      data-scene="transfer"
+      data-botanical-step={6}
+      data-botanical-stage="7"
+      aria-label={t.titles[6]}
+      style={sceneStyle(scene('transfer').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art">
+          <div
+            class="botanical-apparatus botanical-copper botanical-copper--target"
+            data-layer="target"
+            data-vessel="brass-uruli"
+          >
+            <img
+              data-botanical-media
+              src={asset('brass-uruli.webp')}
+              width="900"
+              height="600"
+              alt={altFor('brass-uruli.webp')}
+              loading="lazy"
+            />
+            <div class="botanical-liquid-aperture botanical-uruli-aperture">
+              <div class="botanical-fill" data-layer="target-fill"></div>
+            </div>
+          </div>
+          <!-- The stream and its droplet are children of the pouring vessel, so
+               they can never detach from the spout that emits them. -->
+          <div
+            class="botanical-pourer"
+            data-layer="pourer"
+            data-vessel="brass-pourer"
+          >
+            <img
+              data-botanical-media
+              src={asset('brass-pourer.webp')}
+              width="800"
+              height="600"
+              alt={altFor('brass-pourer.webp')}
+              loading="lazy"
+            />
+            <img
+              data-botanical-media
+              class="botanical-stream"
+              data-layer="stream"
+              src={asset('dark-oil-stream.webp')}
+              width="150"
+              height="800"
+              alt={altFor('dark-oil-stream.webp')}
+              loading="lazy"
+            />
+            <img
+              data-botanical-media
+              class="botanical-drop"
+              data-layer="drop"
+              src={asset('dark-oil-droplet.webp')}
+              width="160"
+              height="240"
+              alt={altFor('dark-oil-droplet.webp')}
               loading="lazy"
             />
           </div>
-          <div class="botanical-copy">
-            {index === 0 ? (
-              // "From nature. With care." is the opening line of the journey,
-              // not a separate full-height panel above it.
-              <p class="botanical-overture">{t.intro}</p>
-            ) : null}
-            <p class="eyebrow">{t.label}</p>
-            <h3>{title}</h3>
-            <p>{t.lines[index]}</p>
-            {index === 0 && <p class="botanical-note">{t.note}</p>}
-            {index === 7 && (
-              <>
-                <span class="sr-only">{authenticProduct.alt[lang]}</span>
-                <p class="botanical-claim">
-                  <span>60</span> <span>Natural Ingredients</span>
-                </p>
-                <a class="botanical-cta" href={destination}>
-                  {t.discover} <ArrowIcon />
-                </a>
-              </>
-            )}
+        </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[6]}</h3>
+          <p>{t.lines[6]}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · Reveal ------------------------------------------------ -->
+    <section
+      class="botanical-scene botanical-scene--reveal"
+      data-scene="reveal"
+      data-botanical-step={7}
+      data-botanical-stage="8"
+      id="botanical-finale"
+      aria-label={t.titles[7]}
+      style={sceneStyle(scene('reveal').travel)}
+    >
+      <div class="botanical-scene-inner">
+        <div class="botanical-scene-art">
+          <div class="botanical-product" data-layer="product">
+            <div class="botanical-product-glow"></div>
+            <img
+              data-botanical-media
+              src={asset('authentic-product-cutout.webp')}
+              width="245"
+              height="745"
+              alt={altFor('authentic-product-cutout.webp')}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
-        </li>
-      ))}
-    </ol>
+        </div>
+        <div class="botanical-copy">
+          <p class="eyebrow">{t.label}</p>
+          <h3>{t.titles[7]}</h3>
+          <p>{t.lines[7]}</p>
+          <span class="sr-only">{authenticProduct.alt[lang]}</span>
+          <p class="botanical-claim">
+            <span>60</span> <span>Natural Ingredients</span>
+          </p>
+          <a class="botanical-cta" href={destination}>
+            {t.discover} <ArrowIcon />
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 <script>

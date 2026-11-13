@@ -18,8 +18,3 @@ ci-staging-bootstrap/
 
 botanical-review-site/
 botanical-review-results/
-
-# Local verification scratch (probe scripts, screenshots, recordings) stay out of Git.
-.probe/
-shots/
-recordings/

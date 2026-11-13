@@ -170,5 +170,5 @@ test('desktop uses natural scrolling and resets animation for reduced motion', a
   );
   // Reduced motion restores the eight accessible stages to normal flow.
   await expect(journey).toHaveAttribute('data-motion', 'reduced');
-  await expect(page.locator('.botanical-step')).toHaveCount(8);
+  await expect(page.locator('[data-scene]')).toHaveCount(8);
 });

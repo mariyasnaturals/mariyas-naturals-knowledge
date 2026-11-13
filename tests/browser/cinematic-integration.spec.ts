@@ -167,7 +167,7 @@ test('the botanical journey clears its decorative overlay for reduced motion', a
   // Reduced motion must drop the animated overlay and keep every stage readable.
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(journey).toHaveAttribute('data-motion', 'reduced');
-  await expect(page.locator('.botanical-step')).toHaveCount(8);
+  await expect(page.locator('[data-scene]')).toHaveCount(8);
   await expect(page.locator('.botanical-claim')).toContainText(
     /60\s*Natural Ingredients/,
   );
