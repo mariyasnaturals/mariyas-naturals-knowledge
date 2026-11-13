@@ -18,3 +18,9 @@ ci-staging-bootstrap/
 
 botanical-review-site/
 botanical-review-results/
+
+# Local geometry probes and rehearsal artefacts (not part of the release).
+.probe/
+shots/
+recordings/
+evidence/
