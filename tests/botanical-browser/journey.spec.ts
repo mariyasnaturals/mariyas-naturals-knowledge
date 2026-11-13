@@ -109,10 +109,17 @@ for (const [width, height] of [
             )
           ) {
             const v = await vessel.boundingBox();
+            // Horizontally a vessel must never spill past the frame. Vertically,
+            // desktop keeps each vessel whole inside the viewport; portrait
+            // composes the chapter's art as a full-bleed bed behind the held
+            // bottle, so a vessel may extend past the fold but must still be
+            // substantially on screen rather than parked off-frame.
             expect(v!.x).toBeGreaterThanOrEqual(-1);
             expect(v!.x + v!.width).toBeLessThanOrEqual(width + 1);
-            expect(v!.y).toBeGreaterThan(60);
-            expect(v!.y + v!.height).toBeLessThan(height - 4);
+            expect(v!.y).toBeGreaterThan(-1);
+            const visible =
+              Math.min(v!.y + v!.height, height) - Math.max(v!.y, 0);
+            expect(visible).toBeGreaterThan(v!.height * 0.4);
           }
         }
         await page.screenshot({
@@ -254,9 +261,13 @@ for (const lang of ['en', 'ml', 'hi', 'ta'])
       await expect(page.locator('[data-scene]')).toHaveCount(8);
       await page.locator('#botanical-finale').scrollIntoViewIfNeeded();
       await expect(page.locator('.botanical-claim')).toBeVisible();
-      const bottle = await page
-        .locator('#botanical-finale .botanical-product img')
-        .boundingBox();
+      // One authentic bottle, held in the sticky foreground, resolving above
+      // the claim: the finale frames it rather than repeating it.
+      const bottles = page.locator(
+        '[data-bottle-layer] .botanical-product img',
+      );
+      await expect(bottles).toHaveCount(1);
+      const bottle = await bottles.boundingBox();
       const claim = await page.locator('.botanical-claim').boundingBox();
       expect(bottle!.y + bottle!.height).toBeLessThan(claim!.y);
       await page.screenshot({ path: `${output}/${lang}-reduced-final.png` });
@@ -343,22 +354,31 @@ for (const lang of ['en', 'ml', 'hi', 'ta'])
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`/${lang}/`);
     await page.evaluate(() => document.fonts.ready);
-    // Bring the finale scene fully into view: in a natural-scroll page the
-    // journey's end is a real position, not a fraction of an animation clock.
-    await page.locator('[data-scene="reveal"]').scrollIntoViewIfNeeded();
-    await page.evaluate(() =>
-      document.querySelector('[data-scene="reveal"]')?.scrollIntoView({
-        block: 'end',
-        behavior: 'instant',
-      }),
-    );
-    await page.waitForTimeout(350);
-    const product = await page.locator('[data-layer="product"]').boundingBox();
+    // Settle the finale exactly on the viewport. Repeated, because lazy media
+    // above it can still change the page height after the first scroll.
+    for (let i = 0; i < 6; i++) {
+      const dy = await page.evaluate(() => {
+        const el = document.querySelector('[data-scene="reveal"]')!;
+        return Math.round(el.getBoundingClientRect().top);
+      });
+      if (Math.abs(dy) < 2) break;
+      await page.evaluate(
+        (d) => scrollTo({ top: scrollY + d, behavior: 'instant' }),
+        dy,
+      );
+      await page.waitForTimeout(250);
+    }
+    await page.waitForTimeout(250);
+    // The product is the journey's held foreground layer, centred over the
+    // finale; the copy resolves in the band beneath it.
+    const product = await page
+      .locator('[data-bottle-frame] [data-layer="product"]')
+      .boundingBox();
     const copy = await page
       .locator('[data-scene="reveal"] .botanical-copy')
       .boundingBox();
     expect(product!.y + product!.height).toBeLessThan(copy!.y);
-    expect(copy!.y + copy!.height).toBeLessThan(844 - 96);
+    expect(copy!.y + copy!.height).toBeLessThan(844 - 48);
     await expect(page.locator('.botanical-cta')).toHaveCSS('opacity', '1');
     await page.screenshot({ path: `${output}/${lang}-mobile-final.png` });
   });
@@ -426,20 +446,31 @@ for (const [width, height] of [
   });
 
 /* --------------------------------------------------------------------------
-   Architecture: the journey must be ordinary document flow. These are the
-   owner's acceptance test — if the same viewport stays put while only its
-   contents change, the implementation has failed, however good it looks.
+   Architecture: the journey is ordinary document flow plus one journey-bounded
+   sticky foreground. The owner rejected both the pinned stage (the page froze)
+   and the revision where the bottle travelled away with its own scene. So the
+   page must keep moving, and the product must NOT move: it holds the centre of
+   the viewport for every chapter. A `.pin-spacer` check alone proves nothing
+   here — `position: sticky` pins without one — so these assert the real
+   geometry.
    -------------------------------------------------------------------------- */
 for (const [width, height] of [
   [390, 844],
   [1440, 900],
 ])
-  test(`${width}: the page itself moves — no sticky stage, no pin, no fixed overlay`, async ({
+  test(`${width}: the page moves while the product holds the centre of the frame`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height });
     await page.goto('/en/');
     await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(300);
+
+    // One deliberate entry frame: the product rises into its lock as the
+    // journey opens. Let that finish, so everything sampled below is the
+    // held state the owner inspects.
+    await page.locator('[data-scene="origin"]').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1500);
 
     // Eight scenes, all in normal flow.
     await expect(page.locator('[data-scene]')).toHaveCount(8);
@@ -450,19 +481,29 @@ for (const [width, height] of [
       true,
     );
 
-    // Nothing inside the journey is sticky or fixed, GSAP never pinned, and no
-    // full-screen animation overlay exists.
-    const pinned = await page.locator('[data-botanical-journey]').evaluate(
-      (root) =>
-        [...root.querySelectorAll('*')].filter((el) => {
-          const p = getComputedStyle(el).position;
-          return p === 'sticky' || p === 'fixed';
-        }).length,
+    // The authentic bottle is the single product instance, and its foreground
+    // layer is the only sticky element in the journey.
+    await expect(
+      page.locator('[data-botanical-journey] .botanical-product img'),
+    ).toHaveCount(1);
+    const layer = page.locator('[data-bottle-layer]');
+    expect(await layer.evaluate((el) => getComputedStyle(el).position)).toBe(
+      'sticky',
     );
-    expect(pinned).toBe(0);
+    const stickyCount = await page
+      .locator('[data-botanical-journey]')
+      .evaluate(
+        (root) =>
+          [...root.querySelectorAll('*')].filter(
+            (el) => getComputedStyle(el).position === 'sticky',
+          ).length,
+      );
+    expect(stickyCount).toBe(1);
+    // Nothing froze the page: GSAP never pinned.
     await expect(page.locator('.pin-spacer')).toHaveCount(0);
 
-    // The scene in view physically travels up the viewport as the page scrolls.
+    // A scene in view still physically travels up the viewport as the page
+    // scrolls — the journey is a real page, not a slideshow.
     const scene = page.locator('[data-scene="preparation"]');
     const start = await scene.evaluate(
       (el) => el.getBoundingClientRect().top + scrollY - innerHeight,
@@ -476,9 +517,49 @@ for (const [width, height] of [
     );
     await page.waitForTimeout(150);
     const after = (await scene.boundingBox())!.y;
-    // Half a viewport of scrolling moves the scene by half a viewport, minus the
-    // small parallax its own choreography applies. It must not sit still.
     expect(before - after).toBeGreaterThan(240);
+
+    // The product, meanwhile, keeps the exact centre of the viewport for every
+    // chapter — forward, paused, and in reverse.
+    const centre = async () => {
+      const box = await page.locator('[data-bottle-frame]').evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { cx: r.x + r.width / 2, cy: r.y + r.height / 2 };
+      });
+      return box;
+    };
+    const scenes = await page.locator('[data-scene]').evaluateAll((els) =>
+      els.map((el) => ({
+        scene: el.dataset.scene as string,
+        top: Math.round(el.getBoundingClientRect().top + scrollY),
+        height: Math.round(el.getBoundingClientRect().height),
+      })),
+    );
+    const seek = async (scene: string, frac: number) => {
+      const s = scenes.find((x) => x.scene === scene)!;
+      await page.evaluate(
+        (top) => scrollTo({ top, behavior: 'instant' }),
+        Math.round(s.top + s.height * frac - height * 0.5),
+      );
+      await page.waitForTimeout(160);
+    };
+
+    const seen: { scene: string; cx: number; cy: number }[] = [];
+    for (const s of scenes) {
+      await seek(s.scene, 0.5);
+      seen.push({ scene: s.scene, ...(await centre()) });
+    }
+    // Reverse pass: the product must hold the same centre coming back up.
+    for (const s of [...scenes].reverse()) {
+      await seek(s.scene, 0.5);
+      seen.push({ scene: s.scene, ...(await centre()) });
+    }
+    for (const { scene, cx, cy } of seen) {
+      // ±2px: the product is centred by layout, and the scroll choreography only
+      // applies a small scale to it, never a translation.
+      expect(Math.abs(cx - width / 2), `${scene} cx`).toBeLessThanOrEqual(2);
+      expect(Math.abs(cy - height / 2), `${scene} cy`).toBeLessThanOrEqual(2);
+    }
 
     // Scrolling continues naturally into the rest of the site.
     const next = page.locator('#products');

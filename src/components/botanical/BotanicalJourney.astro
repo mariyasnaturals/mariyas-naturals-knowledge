@@ -56,11 +56,38 @@ const converging = studies.filter((_, index) => index % 3 === 0);
   id="botanical-journey"
   aria-labelledby="botanical-title"
   data-botanical-journey
+  data-lang={lang}
 >
   <h2 id="botanical-title" class="sr-only">
     {t.intro}
   </h2>
   <div class="botanical-track">
+    <!--
+      Journey-bounded sticky foreground: the bottle is the stable focal point.
+      It sticks inside this track only — it enters as the journey begins and
+      releases as the journey ends, and the rest of the site scrolls normally.
+      The chapters move behind and around it; it never travels with a scene.
+    -->
+    <div class="botanical-bottle-layer" data-bottle-layer aria-hidden="true">
+      <div class="botanical-bottle-stage">
+        <div class="botanical-bottle-halo" data-bottle-halo></div>
+        <div class="botanical-bottle-frame" data-bottle-frame>
+          <div class="botanical-product-glow"></div>
+          <div class="botanical-product" data-layer="product">
+            <img
+              data-botanical-media
+              src={asset('authentic-product-cutout.webp')}
+              width="245"
+              height="745"
+              alt={altFor('authentic-product-cutout.webp')}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!--
       Eight scenes, each a real section in document flow. Scrolling moves the
       whole page: a scene travels up and out, the next one physically enters from
@@ -448,18 +475,9 @@ const converging = studies.filter((_, index) => index % 3 === 0);
     >
       <div class="botanical-scene-inner">
         <div class="botanical-scene-art">
-          <div class="botanical-product" data-layer="product">
-            <div class="botanical-product-glow"></div>
-            <img
-              data-botanical-media
-              src={asset('authentic-product-cutout.webp')}
-              width="245"
-              height="745"
-              alt={altFor('authentic-product-cutout.webp')}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
+          <!-- The bottle itself is the sticky foreground layer above; this scene
+               frames it with light rather than repeating it. -->
+          <div class="botanical-finale-halo" aria-hidden="true"></div>
         </div>
         <div class="botanical-copy">
           <p class="eyebrow">{t.label}</p>

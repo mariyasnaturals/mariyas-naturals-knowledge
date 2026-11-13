@@ -95,6 +95,74 @@ export function mountBotanicalJourney(root: HTMLElement) {
         }),
       );
 
+      // Portrait: the held bottle owns the middle of the frame (roughly
+      // 262–582 of an 844-tall viewport). Chapter copy is in flow, so it sweeps
+      // upward at 1:1 and would otherwise be read straight through the product.
+      // The only genuinely clear band above the bottle is therefore the reveal
+      // window: copy stays at zero until its top edge is clear of the product,
+      // then holds until it leaves the frame. Triggered on the copy itself, so
+      // the mapping is the copy's own travel — not a guess about scene height.
+      if (mobile)
+        scenes.forEach((el) => {
+          const copy = el.querySelector<HTMLElement>('.botanical-copy');
+          if (!copy) return;
+          // The finale resolves beneath the product for good, so it is never
+          // faded in — only out, once it starts climbing into the held bottle's
+          // band. Geometry: copy top reaches 66% (≈557 of 844) exactly as it
+          // touches the bottle's base, so it is gone before it can overlap.
+          if (el.dataset.scene === 'reveal') {
+            const exit = gsap.timeline({
+              defaults: { ease: 'none' },
+              scrollTrigger: {
+                trigger: copy,
+                start: 'top 66%',
+                end: 'top 60%',
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            });
+            exit.fromTo(copy, { autoAlpha: 1 }, { autoAlpha: 0 });
+            return;
+          }
+          const tl = gsap.timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: copy,
+              start: 'top bottom',
+              end: 'top top',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+          tl.fromTo(
+            copy,
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: 0.06 },
+            0.84,
+          ).to(copy, { autoAlpha: 1, duration: 0.1 }, 0.9);
+        });
+
+      // Chapter art drifts gently behind the held product, so the background
+      // changes around the bottle instead of moving the bottle with it.
+      scenes.forEach((el) => {
+        const art = el.querySelector<HTMLElement>('.botanical-scene-art');
+        if (!art) return;
+        gsap.fromTo(
+          art,
+          { yPercent: mobile ? 3 : 5 },
+          {
+            yPercent: mobile ? -3 : -5,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          },
+        );
+      });
+
       // Scene activation bookkeeping (cheap, toggles only on enter/leave).
       scenes.forEach((el) => {
         triggers.push(
@@ -131,8 +199,8 @@ export function mountBotanicalJourney(root: HTMLElement) {
           if (copy)
             tl.fromTo(
               copy,
-              { y: mobile ? 24 : 44, autoAlpha: 0.25 },
-              { y: 0, autoAlpha: 1, duration: 0.55 },
+              { y: mobile ? 18 : 34 },
+              { y: 0, duration: 0.55 },
               0,
             );
         });
@@ -493,32 +561,114 @@ export function mountBotanicalJourney(root: HTMLElement) {
       }
 
       /* --------------------------------------------------------------------
-         Scene 8 · Reveal. The original bottle rises into place and settles; the
-         CTA and claim are in the document from the start, so they are never
-         gated behind an animation that may not finish.
+         The bottle: the stable focal point.
+
+         Its layer is sticky inside the journey track, so the browser keeps it
+         centred while the chapters scroll past. This timeline only handles its
+         entrance and its graceful release at the journey's bounds — it never
+         translates the product with a scene.
          ------------------------------------------------------------------ */
-      const finaleScene = q<HTMLElement>('[data-scene="reveal"]');
-      if (finaleScene) {
-        const product = finaleScene.querySelector<HTMLElement>(
-          '[data-layer="product"]',
+      const bottleLayer = root.querySelector<HTMLElement>(
+        '[data-bottle-layer]',
+      );
+      const bottleStage = root.querySelector<HTMLElement>(
+        '[data-bottle-frame]',
+      );
+      const bottleHalo = root.querySelector<HTMLElement>(
+        '.botanical-bottle-halo',
+      );
+      const closingScene = q<HTMLElement>('[data-scene="reveal"]');
+      if (bottleLayer && bottleStage) {
+        // Entrance: the bottle rises and settles as the journey opens.
+        gsap.fromTo(
+          bottleStage,
+          { yPercent: 6, scale: 0.94, autoAlpha: 0 },
+          {
+            yPercent: 0,
+            scale: 1,
+            autoAlpha: 1,
+            ease: 'power2.out',
+            duration: 1.1,
+            scrollTrigger: {
+              trigger: bottleLayer,
+              start: 'top 88%',
+              toggleActions: 'play none none reverse',
+            },
+          },
         );
-        const glow = finaleScene.querySelector<HTMLElement>(
-          '.botanical-product-glow',
+        // Presence across the chapters: subtle, so it stays a focal point rather
+        // than a moving object.
+        gsap.fromTo(
+          bottleStage,
+          { scale: 1 },
+          {
+            scale: mobile ? 1.04 : 1.08,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: root.querySelector<HTMLElement>('.botanical-track')!,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: true,
+            },
+          },
         );
-        sceneTimeline(finaleScene, (tl) => {
-          if (product)
+        // Release: as the finale resolves, the bottle settles and the light
+        // behind it warms. It then leaves with the journey, not with a scene.
+        if (closingScene)
+          gsap.fromTo(
+            bottleStage,
+            { filter: 'saturate(1)' },
+            {
+              filter: 'saturate(1.04)',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: closingScene,
+                start: 'top 70%',
+                end: 'top 25%',
+                scrub: true,
+              },
+            },
+          );
+        if (bottleHalo)
+          gsap.fromTo(
+            bottleHalo,
+            { autoAlpha: 0, scale: 0.8 },
+            {
+              autoAlpha: 1,
+              scale: 1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: closingScene ?? bottleLayer,
+                start: 'top 75%',
+                end: 'top 30%',
+                scrub: true,
+              },
+            },
+          );
+      }
+
+      /* --------------------------------------------------------------------
+         Scene 8 · Reveal — copy, claim and CTA resolve around the held bottle.
+         ------------------------------------------------------------------ */
+      if (closingScene) {
+        const copy = closingScene.querySelector<HTMLElement>('.botanical-copy');
+        const halo = closingScene.querySelector<HTMLElement>(
+          '.botanical-finale-halo',
+        );
+        sceneTimeline(closingScene, (tl) => {
+          if (copy)
             tl.fromTo(
-              product,
-              { yPercent: 12, scale: 0.9 },
-              { yPercent: 0, scale: 1, duration: 0.5 },
+              copy,
+              { y: mobile ? 18 : 34 },
+              { y: 0, duration: 0.5 },
               0,
             );
-          if (glow)
+          if (halo)
             tl.fromTo(
-              glow,
-              { scale: 0.6, autoAlpha: 0 },
+              halo,
+              { scale: 0.7, autoAlpha: 0 },
               { scale: 1, autoAlpha: 1, duration: 0.5 },
-              0.05,
+              0,
             );
         });
       }
