@@ -1,3 +1,17 @@
+/* --------------------------------------------------------------------------
+   Eight scenes, in normal document flow.
+
+   The page is the animation. Each scene is a real <section> that occupies one
+   viewport of visible content plus its own scroll runway (`--scene-travel`), so
+   scrolling moves the page itself: the scene above travels up and out, the next
+   one physically enters from below.
+
+   One element is sticky, and only one: the bottle. It is bounded by the journey
+   track, so it enters as the journey begins and releases as the journey ends
+   while everything else — backgrounds, ingredients, vessels, copy — travels
+   behind and around it. There is still no sticky master stage, no pinned
+   viewport, no fixed overlay and no oversized translated world box.
+   -------------------------------------------------------------------------- */
 .botanical-journey {
   --forest: #071a13;
   --emerald: #123827;
@@ -7,654 +21,576 @@
   position: relative;
   isolation: isolate;
 }
-.botanical-intro {
-  padding: clamp(4rem, 10vw, 9rem) max(6vw, calc((100vw - 1300px) / 2));
-  background: linear-gradient(180deg, #071a13, #0a2118);
-}
-.botanical-intro h2 {
-  font-size: clamp(3rem, 6vw, 6rem);
-  font-weight: 400;
-  line-height: 1.05;
-  margin: 1rem 0 1.8rem;
-  max-width: 14ch;
-}
-.botanical-intro .eyebrow,
-.botanical-copy .eyebrow {
-  color: #e2cb91;
-  font-size: 0.69rem;
-  letter-spacing: 0.18em;
-}
-.botanical-concept-note {
-  max-width: 47rem;
-  color: #bac6ba;
-  font-size: 0.87rem;
-  line-height: 1.7;
-}
-.botanical-skip {
-  display: inline-block;
-  margin-top: 1.8rem;
-  padding: 0.8rem 0;
-  color: #e2cb91;
-  text-underline-offset: 0.4rem;
+.botanical-journey[data-motion='scroll'] {
+  /* No introductory panel: the hero scrolls straight into the first scene. */
+  margin-top: 0;
 }
 .botanical-track {
   position: relative;
+  /* Scenes stack in flow; nothing overlaps or is pulled backwards. */
+  display: block;
+  /* The journey has ONE continuous backdrop. Scenes themselves are transparent,
+     so no seam, lighter band or darker strip can appear where two scenes meet —
+     there is nothing to meet. Per-scene lighting is additive only. */
+  background:
+    radial-gradient(120% 70% at 18% 4%, #17402b 0%, transparent 58%),
+    radial-gradient(90% 60% at 82% 92%, #0d2a1d 0%, transparent 62%),
+    linear-gradient(180deg, #0a2118, #071a13 42%, #05130e);
 }
-.botanical-stage {
-  display: none;
+
+/* --------------------------------------------------------------------------
+   The journey-bounded sticky bottle.
+
+   `.botanical-track` is the containing block, so sticky naturally stops at the
+   journey's own bottom edge: the bottle enters with the journey and releases at
+   its end, and normal scrolling resumes immediately afterwards. Nothing else on
+   the page is sticky, and the page is never pinned.
+   -------------------------------------------------------------------------- */
+.botanical-bottle-layer {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  height: 0;
+  pointer-events: none;
 }
-.botanical-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-.botanical-step {
-  position: relative;
-  min-height: 100svh;
+.botanical-bottle-stage {
+  /* Centred by layout, never by a transform: the scroll animation animates
+     transforms, and a transform is exactly what would knock it off centre. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
   display: flex;
   align-items: center;
-  padding: 8rem 6vw;
-  scroll-margin-top: 6rem;
+  justify-content: center;
+  height: 100svh;
+  pointer-events: none;
 }
+.botanical-bottle-stage > * {
+  flex: 0 0 auto;
+}
+.botanical-bottle-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: min(62svh, 34rem);
+  width: clamp(9rem, 15vw, 13rem);
+  aspect-ratio: 245 / 745;
+  will-change: transform, opacity;
+}
+.botanical-bottle-frame .botanical-product {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 245 / 745;
+  z-index: 2;
+}
+.botanical-bottle-frame .botanical-product img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 26px 34px #000b);
+}
+.botanical-bottle-frame .botanical-product-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 230%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #c5a46a2e 0%,
+    #2f7a4d1a 42%,
+    transparent 68%
+  );
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   The light behind the bottle. It lives in the sticky layer and changes with
+   the chapter, so the chapters change *around* the bottle rather than moving
+   the product away with them.
+   -------------------------------------------------------------------------- */
+.botanical-bottle-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* Sized against the viewport, not the full-width stage: 300% of the stage was
+     3456px and forced a page-wide horizontal scrollbar. */
+  width: min(88vw, 40rem);
+  max-width: 100%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    #c5a46a40 0%,
+    #2f7a4d22 40%,
+    transparent 70%
+  );
+}
+
+/* Story surface: chapters read around the centred bottle. */
+.botanical-scene-inner {
+  isolation: isolate;
+}
+
+/* One scene: a viewport of composition plus its own animation runway. */
+.botanical-scene {
+  position: relative;
+  display: block;
+  /* Scene art is deliberately composed to bleed; clip it at the scene edge so a
+     drifting ingredient can never create page-wide horizontal overflow. The
+     sticky bottle lives in a sibling layer, so this cannot affect it. */
+  overflow-x: clip;
+  /* svh keeps the composition honest under mobile browser chrome. */
+  min-height: calc(100svh + var(--scene-travel, 1.35) * 8svh);
+  display: flex;
+  align-items: center;
+  padding: clamp(4.5rem, 9vh, 7rem) 6vw;
+  overflow: clip;
+  isolation: isolate;
+  background: transparent;
+}
+.botanical-scene-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 40ch) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  min-height: min(84svh, 46rem);
+  max-width: 88rem;
+  width: 100%;
+  margin: 0 auto;
+}
+/* The art column holds the scene's own objects; it scrolls with the scene. */
+.botanical-scene-art {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: clamp(22rem, 62svh, 38rem);
+  align-self: center;
+  /* Its own stacking context: a vessel can never paint over the copy. */
+  z-index: 1;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.botanical-scene-art--flat {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-height: clamp(24rem, 58svh, 36rem);
+}
+.botanical-scene .botanical-copy {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Copy
+   -------------------------------------------------------------------------- */
 .botanical-copy {
   position: relative;
   z-index: 3;
   max-width: 29rem;
 }
-.botanical-copy h3 {
-  font-size: clamp(2.7rem, 4.4vw, 5rem);
-  line-height: 1.05;
-  font-weight: 400;
+.botanical-overture {
+  font-family: var(--font-display, serif);
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.6vw, 2.7rem);
+  line-height: 1.1;
+  color: #f5f0e5;
+  margin: 0 0 1.2rem;
   text-wrap: balance;
-  margin: 1.3rem 0;
 }
-.botanical-copy > p:not(.eyebrow, .botanical-claim) {
-  color: #d1d9ce;
-  max-width: 28ch;
-  line-height: 1.7;
-  font-size: 1rem;
+.botanical-note {
+  color: #9fb0a2 !important;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  max-width: 34ch;
+  margin-top: 1.2rem;
+}
+.botanical-copy h3 {
+  font-family: var(--font-display, serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.5vw, 3.4rem);
+  line-height: 1.05;
+  margin: 0.5rem 0 0.7rem;
+  text-wrap: balance;
+}
+.botanical-copy
+  > p:not(.eyebrow, .botanical-claim, .botanical-overture, .botanical-note) {
+  color: #cfd8cd;
+  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+  line-height: 1.6;
+  max-width: 36ch;
+  margin: 0;
+}
+.botanical-copy .eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
 }
 .botanical-claim {
+  font-family: var(--font-display, serif);
+  font-size: clamp(1.7rem, 2.7vw, 2.5rem);
+  line-height: 1.05;
+  color: #e2e8dd;
+  margin: 1.4rem 0 1.5rem;
   display: flex;
   flex-direction: column;
-  color: #e2cb91;
-  margin: 1.8rem 0;
-  line-height: 1.15;
-  font-family: var(--font-display, serif);
-  font-size: clamp(1.6rem, 2.5vw, 2.6rem);
 }
 .botanical-claim span:first-child {
-  font-size: clamp(4rem, 7vw, 7rem);
+  color: var(--gold);
   font-style: italic;
-  letter-spacing: -0.04em;
 }
 .botanical-cta {
   display: inline-flex;
-  gap: 2rem;
   align-items: center;
-  min-height: 48px;
+  gap: 0.6rem;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
   background: #e2cb91;
-  color: #071a13;
-  border-radius: 99px;
-  padding: 0.9rem 1.5rem;
-  text-decoration: none;
-  font-size: 0.84rem;
+  color: #071a13 !important;
   font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease;
 }
 .botanical-cta:hover {
-  background: #f5f0e5;
+  background: #efdcae;
+  transform: translateY(-2px);
+}
+.botanical-cta svg {
+  width: 1.05em;
+  height: 1.05em;
 }
 .botanical-journey a:focus-visible {
-  outline: 3px solid #e2cb91;
-  outline-offset: 6px;
+  outline: 2px solid #e2cb91;
+  outline-offset: 3px;
 }
-.botanical-static {
+
+/* --------------------------------------------------------------------------
+   Scene 1 · Origin
+   -------------------------------------------------------------------------- */
+.botanical-scene--origin {
+  padding-inline: 0;
+  padding-block: 0;
+}
+.botanical-scene--origin .botanical-scene-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  max-width: none;
+  padding: clamp(4.5rem, 9vh, 7rem) 6vw
+    calc(4.5rem + env(safe-area-inset-bottom));
+}
+/* The plate is the scene's own background and bleeds to every edge, ignoring
+   the copy's padding. */
+.botanical-scene--origin .botanical-scene-art {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  pointer-events: none;
+  min-height: 0;
+  margin: 0;
 }
-.botanical-static picture,
-.botanical-static picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-}
-.botanical-static::after {
+/* Legibility scrim: the plate is bright foliage, the copy sits on it. */
+.botanical-scene--origin .botanical-canopy::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #071a13ed 0%, #071a1366 52%, transparent);
+  background:
+    linear-gradient(90deg, #05130ee6 0%, #05130e99 42%, #05130e00 74%),
+    linear-gradient(180deg, #05130e00 42%, #05130ea8 100%);
 }
-.botanical-static > img {
+.botanical-scene--origin .botanical-copy {
+  position: relative;
+  z-index: 2;
+  /* In a column flex, `end` would push the block to the right edge. */
+  align-self: flex-start;
+  max-width: 34rem;
+  /* Sits on the lower band of the plate, clear of the header and the fold. */
+  margin-top: 0;
+}
+.botanical-canopy {
   position: absolute;
-  width: 42%;
-  height: 63%;
-  object-fit: contain;
-  left: 51%;
-  top: 19%;
-}
-.botanical-journey[data-motion='scroll'] .botanical-stage {
-  position: sticky;
+  inset: -4%;
   display: block;
-  top: 0;
-  height: 100svh;
-  overflow: clip;
-  pointer-events: none;
+  z-index: 0;
 }
-.botanical-journey[data-motion='scroll'] .botanical-steps {
-  margin-top: -100svh;
-}
-.botanical-journey[data-motion='scroll'] .botanical-static {
-  display: none;
-}
-.botanical-environment {
+.botanical-canopy img {
   position: absolute;
   inset: 0;
-}
-.botanical-environment img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 45%;
+  /* The plate is pushed to the scene's own darkness so copy stays legible. */
+  filter: saturate(1.08) brightness(0.82) contrast(1.04);
 }
-.botanical-light {
+.botanical-scene--origin .botanical-copy {
+  position: relative;
+  max-width: 34rem;
+}
+.botanical-grove {
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, #e2cb9117, transparent 60%);
-  opacity: 0.3;
+  z-index: 1;
 }
-.botanical-depth {
+.botanical-grove .botanical-stem {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  height: 42%;
+  background: linear-gradient(180deg, #3f7a4d00, #2c5c3a 30%, #123827);
+  transform-origin: 50% 100%;
+  border-radius: 2px;
+  opacity: 0.55;
+}
+.botanical-grove .botanical-stem::before,
+.botanical-grove .botanical-stem::after {
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 26px;
+  border-radius: 60% 10% 60% 10%;
+  background: linear-gradient(140deg, #2f6b43, #123827);
+  opacity: 0.85;
+}
+.botanical-grove .botanical-stem::before {
+  left: 2px;
+  top: 22%;
+  transform: rotate(-18deg);
+}
+.botanical-grove .botanical-stem::after {
+  right: 2px;
+  top: 46%;
+  transform: rotate(196deg);
+}
+.botanical-grove .botanical-stem:nth-child(1) {
+  left: 8%;
+  height: 34%;
+}
+.botanical-grove .botanical-stem:nth-child(2) {
+  left: 22%;
+  height: 46%;
+}
+.botanical-grove .botanical-stem:nth-child(3) {
+  left: 61%;
+  height: 40%;
+}
+.botanical-grove .botanical-stem:nth-child(4) {
+  left: 78%;
+  height: 52%;
+}
+.botanical-grove .botanical-stem:nth-child(5) {
+  left: 91%;
+  height: 36%;
+}
+
+/* --------------------------------------------------------------------------
+   Scene 2 · Botanical studies
+   -------------------------------------------------------------------------- */
+.botanical-scene--studies {
+  padding-inline: 0;
+}
+.botanical-scene--studies .botanical-scene-inner {
+  display: block;
+  position: relative;
+  min-height: 100svh;
+  max-width: none;
+  padding: clamp(4.5rem, 9vh, 7rem) 6vw;
+}
+.botanical-scene--studies .botanical-scene-art--flat {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      #071a13eb 0%,
-      #071a13c2 27%,
-      #071a1322 68%,
-      #071a1344
-    ),
-    linear-gradient(0deg, #071a1399, transparent 40%);
+  min-height: 0;
 }
-.botanical-studies {
-  position: absolute;
-  inset: 0;
+.botanical-scene--studies .botanical-copy {
+  /* Copy sits in the left band; the studies fill the whole scene around it. */
+  position: relative;
+  z-index: 3;
+  max-width: 24rem;
+  padding-top: clamp(1rem, 12svh, 9rem);
 }
 .botanical-study {
   position: absolute;
   left: var(--study-x);
   top: var(--study-y);
-  width: clamp(70px, 11vw, 170px);
-  height: clamp(90px, 18vw, 220px);
+  width: clamp(58px, 7vw, 124px);
+  height: clamp(76px, 11vw, 162px);
   object-fit: contain;
-  filter: drop-shadow(6px 14px 16px #0005);
+  filter: drop-shadow(6px 16px 18px #0007);
+  will-change: transform;
 }
-.botanical-apparatus {
+.botanical-journey[data-layout='landscape']
+  .botanical-scene--studies
+  .botanical-study {
+  /* Nudge specimens out of the copy column without collapsing the spread. */
+  translate: 6% 0;
+}
+.botanical-journey[data-layout='portrait'] .botanical-study {
+  width: clamp(46px, 13vw, 82px);
+  height: clamp(60px, 18vw, 106px);
+}
+
+/* --------------------------------------------------------------------------
+   Scene 3 · Convergence
+   -------------------------------------------------------------------------- */
+.botanical-convergence-halo {
   position: absolute;
-  left: 40%;
-  width: 58%;
-  height: 66%;
-  top: 26%;
-  transform-origin: 50% 45%;
+  left: 50%;
+  top: 52%;
+  width: 62%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #2f7a4d33 0%,
+    #1d4d3311 46%,
+    transparent 72%
+  );
 }
-.botanical-apparatus > img {
+.botanical-convergence-vessel {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: clamp(9rem, 17vw, 15rem);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+.botanical-convergence-vessel img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 28px #000a);
+}
+.botanical-ingredient {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: clamp(48px, 6vw, 104px);
+  height: clamp(64px, 9vw, 136px);
+  object-fit: contain;
+  margin-left: calc(clamp(48px, 6vw, 104px) / -2);
+  margin-top: calc(clamp(64px, 9vw, 136px) / -2);
+  filter: drop-shadow(4px 12px 14px #0008);
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Scene 4 · Preparation
+   -------------------------------------------------------------------------- */
+.botanical-mortar {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: min(clamp(9rem, 46vw, 15rem), 78%);
+  aspect-ratio: 760 / 620;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 90%;
+  z-index: 4;
+}
+.botanical-mortar::after,
+.botanical-copper::after,
+.botanical-filter-station::after {
+  /* Contact shadow: every vessel sits on the ground, never floats. */
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -5%;
+  height: 9%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, #0009 0%, #0000 70%);
+}
+.botanical-mortar-body,
+.botanical-mortar-body img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
-.botanical-mortar {
-  z-index: 4;
-}
-.botanical-mortar .botanical-pestle {
+.botanical-pestle {
   position: absolute;
-  width: 24%;
-  height: 74%;
-  right: 27%;
-  top: -25%;
-  transform-origin: 50% 80%;
+  left: 40%;
+  top: -46%;
+  width: 30%;
+  height: auto;
+  transform-origin: 50% 90%;
+  z-index: 2;
 }
 .botanical-fragments {
   position: absolute;
-  left: 60%;
-  top: 41%;
-  width: 14%;
-  display: flex;
-  z-index: 5;
-}
-.botanical-fragments img {
-  width: 24%;
-  height: 80px;
-  object-fit: contain;
-  transform: rotate(-20deg);
-}
-.botanical-receiver {
-  z-index: 5;
-  top: 28%;
-  height: 64%;
-}
-.botanical-receiver > img {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-.botanical-fill {
-  position: absolute;
-  left: 15%;
-  width: 68%;
-  top: 22%;
-  height: 58%;
-  border-radius: 10% 10% 25% 25% / 8% 8% 13% 13%;
-  background: linear-gradient(
-    110deg,
-    #020a06,
-    #123827 40%,
-    #071a13 60%,
-    #020a06
-  );
-  clip-path: inset(92% 0 0 0);
-}
-.botanical-copper {
-  z-index: 6;
-  top: 25%;
-}
-.botanical-ripples {
-  position: absolute;
-  left: 23%;
-  top: 36%;
-  width: 52%;
-  height: 24%;
-  border-radius: 50%;
-  overflow: hidden;
-}
-.botanical-ripples i {
-  display: block;
-  border: 1px solid #344735b3;
-  position: absolute;
-  border-radius: 50%;
-  inset: 5% 5%;
-  box-shadow: 0 1px 1px #70805d50;
-}
-.botanical-ripples i:nth-child(2) {
-  inset: 18% 16%;
-}
-.botanical-ripples i:nth-child(3) {
-  inset: 32% 30%;
-}
-.botanical-stream {
-  position: absolute;
-  left: 65%;
-  top: 16%;
-  width: 9%;
-  height: 55%;
-  object-fit: fill;
-  transform-origin: 50% 0;
-  z-index: 6;
-}
-.botanical-drop {
-  position: absolute;
-  left: 68%;
-  top: 45%;
-  width: 4%;
-  height: 13%;
-  object-fit: contain;
-  z-index: 7;
-}
-.botanical-product {
-  position: absolute;
-  right: 0;
+  left: 22%;
+  top: 6%;
   width: 56%;
-  height: 90%;
-  top: 7%;
-  z-index: 8;
+  height: auto;
+  z-index: 3;
+  opacity: 0;
 }
-.botanical-product img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.botanical-progress {
-  position: absolute;
-  left: 6vw;
-  right: 6vw;
-  bottom: 3rem;
-  height: 1px;
-  background: #e2cb9129;
-}
-.botanical-progress i {
-  display: block;
-  height: 100%;
-  background: #c5a46a;
-  transform-origin: 0 50%;
-}
-@media (max-width: 759px) {
-  .botanical-intro {
-    padding: 4rem 1.5rem 3rem;
-  }
-  .botanical-intro h2 {
-    font-size: 3.1rem;
-  }
-  .botanical-step {
-    align-items: flex-start;
-    padding: 6.5rem 1.5rem 5.5rem;
-  }
-  .botanical-copy {
-    max-width: 100%;
-  }
-  .botanical-copy h3 {
-    font-size: clamp(2.1rem, 8vw, 2.9rem);
-    max-width: 15ch;
-    margin: 0.75rem 0;
-  }
-  .botanical-copy > p:not(.eyebrow, .botanical-claim) {
-    font-size: 0.85rem;
-    max-width: 31ch;
-  }
-  .botanical-copy .eyebrow {
-    font-size: 0.59rem;
-  }
-  .botanical-depth {
-    background: linear-gradient(
-      180deg,
-      #071a13eb 0%,
-      #071a13b0 29%,
-      transparent 58%,
-      #071a1390
-    );
-  }
-  .botanical-study {
-    width: 21vw;
-    height: 27vw;
-  }
-  .botanical-apparatus {
-    left: 0;
-    width: 100%;
-    height: 50%;
-    top: 41%;
-  }
-  .botanical-receiver {
-    top: 43%;
-    height: 44%;
-  }
-  .botanical-stream {
-    left: 46%;
-    width: 12%;
-    height: 34%;
-    top: 37%;
-  }
-  .botanical-drop {
-    left: 49%;
-    top: 65%;
-    width: 7%;
-    height: 8%;
-  }
-  .botanical-fragments {
-    left: 43%;
-    top: 52%;
-    width: 28%;
-  }
-  .botanical-product {
-    top: 43%;
-    height: 44%;
-    width: 100%;
-    right: 0;
-  }
-  .botanical-claim {
-    flex-direction: row;
-    gap: 0.65rem;
-    align-items: center;
-    margin: 0.8rem 0;
-    font-size: 1.4rem;
-    max-width: 20rem;
-  }
-  .botanical-claim span:first-child {
-    font-size: 3.4rem;
-  }
-  .botanical-cta {
-    font-size: 0.78rem;
-    padding: 0.7rem 1.25rem;
-    min-height: 45px;
-  }
-  .botanical-progress {
-    bottom: calc(5rem + env(safe-area-inset-bottom));
-  }
-  .botanical-static::after {
-    background: linear-gradient(
-      180deg,
-      #071a13f2 0%,
-      #071a13c9 32%,
-      transparent 65%
-    );
-  }
-  .botanical-static > img {
-    width: 94%;
-    height: 44%;
-    left: 3%;
-    top: 47%;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .botanical-journey * {
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Captions share the persistent stage; they cannot scroll underneath the header. */
-.botanical-caption-layer {
+/* The cut: small botanical shards that fall from the pestle into the mortar. */
+.botanical-cut {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 3;
+  pointer-events: none;
 }
-.botanical-caption-layer .botanical-copy {
+.botanical-cut i {
   position: absolute;
-  top: 50%;
-  left: 6vw;
-  width: 34%;
-  pointer-events: auto;
+  left: 50%;
+  top: 30%;
+  width: 14px;
+  height: 10px;
+  border-radius: 60% 10% 60% 10%;
+  background: linear-gradient(140deg, #4a8a58, #1d4a2f);
+  opacity: 0;
 }
-.botanical-product {
-  right: 6%;
-  width: 42%;
-  height: 74%;
-  top: 17%;
-  filter: drop-shadow(0 20px 28px #0008);
-}
-.botanical-product::after {
-  content: '';
+.botanical-paste {
   position: absolute;
-  left: 23%;
-  right: 23%;
-  bottom: 0;
-  height: 3%;
-  border-radius: 50%;
-  box-shadow: 0 10px 12px #0009;
-}
-.botanical-ripples img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-@media (max-width: 759px) {
-  .botanical-caption-layer .botanical-copy {
-    top: 13%;
-    left: 1.5rem;
-    width: calc(100% - 3rem);
-  }
-  .botanical-product {
-    top: 49%;
-    height: 38%;
-    width: 100%;
-    right: 0;
-  }
-}
-@media (max-width: 759px) {
-  .botanical-caption-layer .botanical-copy:has(.botanical-claim) h3 {
-    font-size: clamp(1.65rem, 6.8vw, 2rem);
-    max-width: 100%;
-    margin: 0.4rem 0;
-  }
-  .botanical-caption-layer
-    .botanical-copy:has(.botanical-claim)
-    > p:not(.eyebrow, .botanical-claim) {
-    margin: 0.3rem 0;
-    font-size: 0.8rem;
-  }
-  .botanical-product {
-    top: 47%;
-    height: 42%;
-  }
-}
-.botanical-cta svg {
-  width: 1rem;
-  height: 1rem;
-  flex: none;
-}
-
-/* Coherent source → narrow continuous stream → elliptical receiving volume. */
-.botanical-pourer {
-  position: absolute;
-  left: 68%;
-  top: 15%;
-  width: 27%;
-  height: 32%;
-  z-index: 7;
-}
-.botanical-pourer img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.botanical-receiver {
-  left: 49%;
-  width: 44%;
-  top: 49%;
-  height: 46%;
-}
-.botanical-stream {
-  left: 69.2%;
-  top: 37%;
-  width: 2.2%;
-  height: 41%;
-}
-.botanical-drop {
-  left: 69.5%;
-  top: 69%;
-  width: 2%;
-  height: 6%;
-}
-.botanical-fill {
-  left: 12%;
-  width: 77%;
-  top: 26%;
-  height: 56%;
-  border-radius: 50% 50% 44% 44% / 12% 12% 12% 12%;
-  clip-path: none;
-  transform-origin: 50% 100%;
-}
-.botanical-fill::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 18%;
+  left: 30%;
+  width: 40%;
+  top: 52%;
+  height: 12%;
   border-radius: 50%;
   background: radial-gradient(
-    ellipse at 30% 30%,
-    #244a31,
-    #071a13 45%,
-    #020a06 80%
+    ellipse at 50% 40%,
+    #4d7a3f,
+    #123827 70%,
+    #12382700
   );
-  box-shadow: inset 0 1px 1px #344735;
-}
-@media (max-width: 759px) {
-  .botanical-pourer {
-    left: 45%;
-    top: 32%;
-    width: 48%;
-    height: 24%;
-  }
-  .botanical-receiver {
-    left: 7%;
-    width: 86%;
-    top: 56%;
-    height: 31%;
-  }
-  .botanical-stream {
-    left: 49.2%;
-    top: 48%;
-    width: 3.2%;
-    height: 35%;
-  }
-  .botanical-drop {
-    left: 49.5%;
-    top: 74%;
-    width: 3%;
-    height: 5%;
-  }
-}
-
-.botanical-product::after {
-  left: 33%;
-  right: 33%;
-}
-
-.botanical-fragments img {
-  width: 100%;
-  height: 140px;
-  object-fit: contain;
-}
-
-.botanical-stream {
-  left: 69.7%;
-  top: 41%;
-  height: 43.7%;
-}
-.botanical-fill {
-  left: 20%;
-  width: 63%;
+  opacity: 0;
   z-index: 3;
 }
-@media (max-width: 759px) {
-  .botanical-stream {
-    left: 48.3%;
-    top: 51.5%;
-    height: 28.5%;
-  }
-}
 
-/* Constant perspective of the liquid surface as volume rises, rather than scaling a flat cap. */
-.botanical-fill {
-  top: auto;
-  bottom: 12%;
-  height: 8%;
-  border-radius: 50% / 44px;
-}
-.botanical-fill::before {
-  height: 88px;
-  max-height: 100%;
-}
-@media (max-width: 759px) {
-  .botanical-fill {
-    border-radius: 50% / 24px;
-  }
-  .botanical-fill::before {
-    height: 48px;
-  }
-}
-
-/* Stage five: botanical material in a glass filter releases fine herbal liquid.
-   Stage seven keeps the copper jug and the original, thicker black-green oil. */
-.botanical-extractor {
+/* --------------------------------------------------------------------------
+   Scene 5 · Extraction
+   -------------------------------------------------------------------------- */
+.botanical-filter-station {
   position: absolute;
-  left: 56%;
-  top: 24%;
-  width: 28%;
-  height: 24%;
-  z-index: 7;
-  transform-origin: 50% 100%;
+  left: 50%;
+  top: 48%;
+  width: clamp(11rem, 21vw, 17rem);
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+.botanical-extractor {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1164 / 1024;
+  transform-origin: 50% 20%;
 }
 .botanical-extractor .botanical-filter-body {
   display: block;
@@ -664,288 +600,552 @@
 }
 .botanical-extractor .botanical-filter-botanicals {
   position: absolute;
-  width: 42%;
-  height: 17%;
+  width: 54%;
+  height: 22%;
+  left: 23%;
+  top: 4%;
   object-fit: contain;
-  left: 29%;
-  top: 9%;
   transform: rotate(-6deg);
 }
+.botanical-receiver {
+  position: relative;
+  width: 116%;
+  margin-left: -8%;
+  margin-top: -2%;
+  aspect-ratio: 1400 / 875;
+  z-index: 5;
+}
+.botanical-receiver > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  object-fit: contain;
+}
+/* The visible opening of the kinnam, in the artwork's own coordinates. */
+.botanical-liquid-aperture {
+  position: absolute;
+  left: 26%;
+  width: 48%;
+  top: 21%;
+  height: 34%;
+  border-radius: 50% / 34%;
+  overflow: hidden;
+  z-index: 1;
+  /* The vessel artwork draws over the liquid; the fill only shows in the mouth. */
+  mask-image: radial-gradient(52% 46% at 50% 40%, #000 62%, transparent 100%);
+}
+.botanical-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100% * var(--collection, 0));
+  border-radius: 50% / 12%;
+  background:
+    linear-gradient(104deg, #ffffff00 34%, #cfe6d426 46%, #ffffff00 58%),
+    radial-gradient(
+      120% 90% at 32% 18%,
+      var(--liquid-surface, #071a13) 0%,
+      var(--liquid-body, #123827) 44%,
+      var(--liquid-edge, #020a06) 100%
+    );
+}
+.botanical-fill::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 34% 30%,
+    #2f5a3d 0%,
+    #123827 38%,
+    var(--liquid-surface, #071a13) 68%,
+    var(--liquid-edge, #020a06) 100%
+  );
+  box-shadow: inset 0 1px 2px #70805d55;
+}
+/* Fine herbal liquid leaving the filter's own outlet, inside the station box. */
 .botanical-extract-stream {
   position: absolute;
-  left: 69.8%;
-  top: 48%;
-  width: 0.65%;
-  height: 36.6%;
-  z-index: 6;
+  left: 50%;
+  top: 0;
+  margin-left: -2px;
+  width: 4px;
+  height: 0;
   border-radius: 40% 30% 35% 20%;
   background: linear-gradient(
     90deg,
-    #12382766,
-    #344735c9 35%,
+    #12382799,
+    #3f7a4dcc 35%,
     #244a31,
-    #12382788
+    #12382799
   );
-  box-shadow: inset 1px 0 #c5a46a33;
+  box-shadow: inset 1px 0 #c5a46a44;
   transform-origin: 50% 0;
+  z-index: 4;
 }
-.botanical-fill::before {
-  background: radial-gradient(
-    ellipse at 30% 30%,
-    #244a31,
-    var(--liquid-surface, #071a13) 45%,
-    var(--liquid-edge, #020a06) 80%
-  );
-}
-.botanical-static-transfer {
+.botanical-extract-pool {
   position: absolute;
-  inset: 0;
-}
-.botanical-static-transfer .botanical-fill {
-  height: 50%;
-}
-.botanical-static-transfer .botanical-stream {
-  height: 30.2%;
-}
-.botanical-extract-receiver .botanical-fill {
-  height: 56%;
-  background: #123827;
-  --liquid-surface: #244a31;
-  --liquid-edge: #123827;
-}
-.botanical-static .botanical-extract-stream {
-  height: 20.4%;
-}
-@media (max-width: 759px) {
-  .botanical-extractor {
-    left: 25%;
-    top: 34%;
-    width: 50%;
-    height: 22%;
-  }
-  .botanical-extractor .botanical-filter-botanicals {
-    width: 64%;
-    left: 18%;
-  }
-  .botanical-extract-stream {
-    left: 49.5%;
-    top: 55%;
-    width: 1%;
-    height: 27%;
-  }
-  .botanical-static .botanical-extract-stream {
-    height: 13.6%;
-  }
-  .botanical-static-transfer .botanical-stream {
-    height: 18.9%;
-  }
-  /* Keep the same 42%-height, undistorted bottle above the final text stack. */
-  .botanical-product {
-    top: 13%;
-  }
-  .botanical-caption-layer .botanical-copy:has(.botanical-claim) {
-    top: 58%;
-  }
-  .botanical-copy:has(.botanical-claim) .eyebrow {
-    display: none;
-  }
-  .botanical-caption-layer .botanical-copy:has(.botanical-claim) h3,
-  #botanical-finale .botanical-copy h3 {
-    font-size: clamp(1.3rem, 5.5vw, 1.55rem);
-    max-width: 100%;
-    margin: 0.35rem 0;
-  }
-  .botanical-copy:has(.botanical-claim) .botanical-claim {
-    font-size: 1.2rem;
-    margin: 0.6rem 0;
-  }
-  .botanical-copy:has(.botanical-claim) .botanical-claim span:first-child {
-    font-size: 2.7rem;
-  }
-  .botanical-journey:not([data-motion='scroll'])
-    #botanical-finale
-    .botanical-copy {
-    margin-top: 44svh;
-  }
-  #botanical-finale .botanical-static > img {
-    top: 13%;
-    height: 42%;
-  }
+  left: 34%;
+  width: 32%;
+  top: 0;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 40%, #3f7a4d, #12382700 72%);
+  z-index: 4;
 }
 
-/* Heritage brass: opaque bowls expose only a bounded, top-facing liquid surface. */
-.botanical-receiver {
+/* --------------------------------------------------------------------------
+   Scene 6 · Oil
+   -------------------------------------------------------------------------- */
+.botanical-copper {
+  position: absolute;
   left: 50%;
-  top: 57%;
-  width: 40%;
-  height: auto;
-  aspect-ratio: 1393 / 877;
+  top: 54%;
+  width: clamp(14rem, 26vw, 22rem);
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1400 / 811;
+  z-index: 5;
+  transform-origin: 50% 88%;
 }
-.botanical-liquid-aperture {
+.botanical-copper > img {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  clip-path: ellipse(42% 22% at 50% 29%);
-  overflow: hidden;
-}
-.botanical-liquid-aperture .botanical-fill {
-  left: 8%;
-  top: 7%;
-  bottom: auto;
-  width: 84%;
-  height: 44%;
-  border-radius: 50%;
-  clip-path: none;
-  opacity: calc(0.25 + var(--collection, 1) * 0.75);
-  transform: scale(
-    calc(0.88 + var(--collection, 1) * 0.12),
-    calc(0.86 + var(--collection, 1) * 0.14)
-  );
-  transform-origin: 50% 50%;
-}
-.botanical-liquid-aperture .botanical-fill::before {
+  width: 100%;
   height: 100%;
-  max-height: 100%;
+  object-fit: contain;
+}
+.botanical-copper .botanical-liquid-aperture {
+  left: 30%;
+  width: 40%;
+  top: 17%;
+  height: 30%;
+  mask-image: radial-gradient(54% 48% at 50% 44%, #000 60%, transparent 100%);
+}
+.botanical-ripples {
+  position: absolute;
+  left: 32%;
+  width: 36%;
+  top: 22%;
+  height: 18%;
+  z-index: 3;
+  opacity: 0.5;
+}
+.botanical-ripples img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  opacity: 0.4;
+}
+.botanical-ripples i {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 30%;
+  height: 26%;
+  margin-left: -15%;
+  border: 1px solid #9fd3a94d;
   border-radius: 50%;
-  box-shadow: inset 0 1px 2px #344735;
+}
+
+/* --------------------------------------------------------------------------
+   Scene 7 · Transfer
+   -------------------------------------------------------------------------- */
+.botanical-copper--target {
+  left: 58%;
+  top: 62%;
+  width: clamp(13rem, 24vw, 20rem);
 }
 .botanical-pourer {
-  left: 65.5%;
-  top: 13%;
-}
-.botanical-extract-stream {
-  height: 20.5%;
-}
-.botanical-static .botanical-extract-stream {
-  height: 19.4%;
-}
-.botanical-static-transfer .botanical-stream {
-  height: 26.7%;
-}
-.botanical-drop {
-  top: 62%;
-}
-.botanical-copper {
-  top: 33%;
-  height: auto;
-  aspect-ratio: 1400 / 811;
-}
-.botanical-copper .botanical-ripples {
-  left: 17%;
-  top: 19%;
-  width: 66%;
-  height: 40%;
-}
-.botanical-prep-bowl {
   position: absolute;
-  left: 44%;
-  top: 73%;
-  width: 18%;
-  aspect-ratio: 1393 / 877;
-  z-index: 7;
+  left: 40%;
+  top: 34%;
+  width: clamp(11rem, 20vw, 17rem);
+  aspect-ratio: 800 / 600;
+  transform: translate(-50%, -50%) rotate(14deg);
+  transform-origin: 60% 40%;
+  z-index: 6;
 }
-.botanical-prep-bowl img {
-  display: block;
+.botanical-pourer img {
   width: 100%;
   height: auto;
+  object-fit: contain;
 }
-.botanical-journey[data-motion='scroll'] .botanical-static-prep {
-  display: none;
+.botanical-stream {
+  position: absolute !important;
+  left: 22%;
+  top: 68%;
+  width: 9% !important;
+  height: 0;
+  transform-origin: 50% 0;
+  z-index: 2;
 }
-.botanical-extractor .botanical-filter-botanicals {
-  width: 48%;
-  height: 22%;
-  left: 26%;
-  top: 19%;
-}
-@media (max-width: 759px) {
-  .botanical-receiver {
-    left: 7%;
-    top: 60%;
-    width: 86%;
-    height: auto;
-  }
-  .botanical-pourer {
-    left: 47.5%;
-    top: 30.8%;
-  }
-  .botanical-extract-stream {
-    height: 14.8%;
-  }
-  .botanical-static .botanical-extract-stream {
-    height: 13%;
-  }
-  .botanical-static-transfer .botanical-stream {
-    height: 15.3%;
-  }
-  .botanical-drop {
-    top: 61%;
-  }
-  .botanical-copper {
-    left: 3%;
-    width: 94%;
-    height: auto;
-    top: 49%;
-  }
-  .botanical-prep-bowl {
-    left: 4%;
-    top: 72%;
-    width: 32%;
-  }
-  .botanical-extractor .botanical-filter-botanicals {
-    width: 64%;
-    left: 18%;
-  }
+.botanical-drop {
+  position: absolute !important;
+  left: 21%;
+  top: 66%;
+  width: 11% !important;
+  height: auto;
+  opacity: 0;
+  z-index: 3;
 }
 
-/* Anchor native-aspect utensil outlets to the streams across tall/tablet viewports. */
-.botanical-pourer {
-  --pour-width: min(27vw, calc(32svh * 1107 / 1163));
-  width: var(--pour-width);
-  height: auto;
-  aspect-ratio: 1107 / 1163;
-  left: calc(70.8% - var(--pour-width) * 0.022);
-  top: calc(41% - var(--pour-width) * 1163 / 1107 * 0.88);
+/* --------------------------------------------------------------------------
+   Scene 8 · Reveal
+   -------------------------------------------------------------------------- */
+.botanical-product {
+  /* A flex child of the art box: it is centred by layout, not by a transform,
+     so the original bottle can never drift over the copy or off the scene. */
+  position: relative;
+  /* The original bottle, whole, inside one viewport on every screen. The art box
+     has a definite height, so this percentage always resolves to real pixels. */
+  height: 100%;
+  width: auto;
+  max-width: 70%;
+  aspect-ratio: 245 / 745;
+  z-index: 4;
 }
-.botanical-extractor {
-  --filter-width: min(28vw, calc(24svh * 1164 / 1024));
-  width: var(--filter-width);
-  height: auto;
-  aspect-ratio: 1164 / 1024;
-  left: calc(70.125% - var(--filter-width) * 0.5);
-  top: calc(48% - var(--filter-width) * 1024 / 1164);
+.botanical-product img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* The owner's original bottle pixels, never re-drawn or recoloured. */
+  filter: drop-shadow(0 26px 34px #000b);
+  z-index: 2;
 }
-@media (max-width: 759px) {
+.botanical-product-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 190%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #c5a46a2e 0%,
+    #2f7a4d1a 42%,
+    transparent 68%
+  );
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Portrait (390x844 and similar).
+
+   One coherent set of rules. The composition is a single full-bleed stage:
+   - copy takes the upper band, clear of the fixed header and of the product;
+   - the chapter's own vessels bleed from the edges around the held bottle,
+     rather than sitting inside a measured box (which collapsed to 0px, since
+     every vessel is absolutely positioned);
+   - the held bottle owns the middle band, floating in front of the art;
+   - the finale resolves beneath the bottle so claim and CTA stay readable.
+
+   The bottle's band on an 844-tall viewport is roughly 286-558.
+   -------------------------------------------------------------------------- */
+/* The scene keeps its runway (base rule adds the travel), but the inner
+   composition is settled to the middle of it, so a chapter passes through a
+   centred state exactly like the held bottle. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene {
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene-inner {
+  display: block;
+  position: relative;
+  min-height: 100svh;
+  max-width: none;
+  padding: calc(4.75rem + env(safe-area-inset-top)) 6vw
+    calc(4.5rem + env(safe-area-inset-bottom));
+}
+/* The chapter's art bed: full bleed, behind the held bottle, and it is what
+   fills the frame instead of leaving the lower third empty. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene-art {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Centred on the chapter, and pinned to the viewport's height, so the bed
+     lines up with the held bottle whenever the chapter is settled. An explicit
+     height is required: `inset: 0` alone resolved to 0px here. */
+  top: calc(50% - 50svh);
+  height: 100svh;
+  margin: 0;
+  z-index: 0;
+}
+/* Every vessel is sized against the frame, not the narrow column, and is
+   centred behind the held product. The bottle floats in front, which is the
+   depth this composition wants; the copy keeps its own backdrop so text never
+   sits over a vessel's bright metal. */
+/* Only the process vessels are re-seated. The 30 studies position themselves
+   from `--study-y`, and a bare `> *` selector here caught them too, collapsing
+   every specimen into a single row at 56% — the empty-looking frames the owner
+   reported. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene-art
+  > :not(
+    .botanical-study,
+    .botanical-ingredient,
+    .botanical-canopy,
+    .botanical-grove,
+    .botanical-finale-halo,
+    .botanical-convergence-halo
+  ) {
+  top: 56%;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-mortar {
+  width: min(78vw, 19rem);
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-filter-station {
+  width: min(68vw, 16rem);
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-copper,
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-copper--target {
+  left: 50%;
+  width: min(84vw, 20rem);
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-convergence-vessel {
+  width: min(60vw, 14rem);
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
   .botanical-pourer {
-    --pour-width: min(48vw, calc(24svh * 1107 / 1163));
-    left: calc(49.9% - var(--pour-width) * 0.022);
-    top: calc(51.5% - var(--pour-width) * 1163 / 1107 * 0.88);
-  }
-  .botanical-extractor {
-    --filter-width: min(50vw, calc(22svh * 1164 / 1024));
-    left: calc(50% - var(--filter-width) * 0.5);
-    top: calc(55% - var(--filter-width) * 1024 / 1164);
-  }
+  top: 66%;
 }
-@media (max-height: 500px) and (min-width: 760px) {
-  .botanical-receiver {
-    width: min(40vw, calc(35svh * 1393 / 877));
-    left: calc(70% - min(40vw, calc(35svh * 1393 / 877)) / 2);
-  }
-  .botanical-copper {
-    width: min(58vw, calc(57svh * 1400 / 811));
-    left: calc(69% - min(58vw, calc(57svh * 1400 / 811)) / 2);
-  }
-  .botanical-pourer {
-    top: calc(49% - var(--pour-width) * 1163 / 1107 * 0.88);
-  }
-  .botanical-stream {
-    top: 49%;
-  }
-  .botanical-extractor {
-    top: calc(55% - var(--filter-width) * 1024 / 1164);
-  }
-  .botanical-extract-stream {
-    top: 55%;
-  }
+/* Copy: a frosted band pinned to the top of the frame, above the product.
+   `sticky` rather than in-flow: in flow the copy swept up at 1:1 and had to
+   cross the held bottle's band to exit, so it could only be readable for ~220px
+   of its 860px on-screen life (26%). Pinned, it holds the clear band for the
+   whole chapter and fades once, cleanly, before the next one arrives. The page
+   itself is still not pinned — this is a small block inside a scrolling
+   chapter, and the bottle's layer is the only other sticky element. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene
+  .botanical-copy {
+  position: sticky;
+  top: calc(4.75rem + env(safe-area-inset-top));
+  z-index: 2;
+  max-width: none;
+  background: linear-gradient(
+    180deg,
+    #05130ef2 0%,
+    #05130ee6 70%,
+    #05130ecc 100%
+  );
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  margin-inline: -0.35rem;
+  box-shadow: 0 12px 30px #05130e8c;
+}
+/* The bottle takes the middle band on portrait. */
+.botanical-journey[data-layout='portrait'] .botanical-bottle-frame {
+  height: min(34svh, 17rem);
+  width: clamp(6.5rem, 27vw, 9rem);
+}
+/* Origin keeps its establishing plate full bleed; its copy takes the same top
+   band as every other chapter, so it never crosses the held product. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-scene-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: calc(4.75rem + env(safe-area-inset-top)) 7vw
+    calc(4.5rem + env(safe-area-inset-bottom));
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-copy {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  /* The clear band above the product is ~210px on an 844-tall viewport. The
+     origin copy carries the most lines in the journey, so it is trimmed to fit
+     that band rather than being allowed to sit over the bottle. */
+  max-width: 26rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-overture {
+  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  margin-bottom: 0.6rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-copy
+  h3 {
+  font-size: clamp(1.3rem, 5.2vw, 1.65rem);
+  line-height: 1.1;
+  margin: 0.35rem 0 0.35rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-copy
+  > p:not(.eyebrow, .botanical-claim, .botanical-overture, .botanical-note) {
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-note {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-top: 0.4rem;
+  margin: 0;
+}
+/* Studies and convergence already own the full frame. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--studies
+  .botanical-scene-inner,
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--studies
+  .botanical-scene-art {
+  min-height: 100svh;
+}
+/* Reduced motion: the same finale composition, without its choreography. The
+   copy resolves in the lower band under the held bottle, exactly as it does
+   when the scroll timeline runs. */
+.botanical-journey[data-layout='portrait'][data-motion='reduced']
+  .botanical-scene--reveal
+  .botanical-scene-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  padding-bottom: calc(2.25rem + env(safe-area-inset-bottom));
+}
+.botanical-journey[data-layout='portrait'][data-motion='reduced']
+  .botanical-scene--reveal
+  .botanical-copy
+  h3 {
+  font-size: clamp(1.4rem, 5.8vw, 1.85rem);
+  margin-bottom: 0.4rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='reduced']
+  .botanical-scene--reveal
+  .botanical-claim {
+  font-size: clamp(1.4rem, 5.4vw, 1.75rem);
+  margin: 0.6rem 0 0.75rem;
+}
+/* The finale is the one chapter whose copy resolves *beneath* the product, so it
+   must not inherit the pinned top band. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-scroll-copy,
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy {
+  position: relative;
+  top: auto;
+}
+/* The finale resolves beneath the held bottle, and is the journey's last
+   frame: exactly one viewport, so it settles flush with the page end instead
+   of running on past the scroll limit. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal {
+  min-height: 100svh;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-scene-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  /* The band between the held bottle (ends ≈563) and the bottom bar (starts
+     ≈778) is ~215px, so the copy is kept tight to fit inside it whole, clear of
+     the fixed navigation at every portrait width. */
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  .eyebrow {
+  margin-bottom: 0.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  h3 {
+  font-size: clamp(1.32rem, 5.4vw, 1.7rem);
+  line-height: 1.08;
+  margin: 0.3rem 0 0.3rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-claim {
+  /* The claim reads on one line here: the stacked form is 21px taller than the
+     window allows between the product and the navigation. */
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.4em;
+  font-size: clamp(1.25rem, 4.8vw, 1.5rem);
+  line-height: 1;
+  margin: 0.35rem 0 0.4rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-cta {
+  padding: 0.72rem 1.15rem;
+}
+
+/* Malayalam and Tamil set taller than Latin at the same size, and their finale
+   copy needs the whole band between the product and the navigation. */
+.botanical-journey[data-lang='ml'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-scene-inner,
+.botanical-journey[data-lang='ta'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-scene-inner {
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+}
+.botanical-journey[data-lang='ml'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  h3,
+.botanical-journey[data-lang='ta'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  h3 {
+  font-size: clamp(1.15rem, 4.8vw, 1.45rem);
+  line-height: 1.35;
+}
+.botanical-journey[data-lang='ml'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  > p:not(.eyebrow, .botanical-claim),
+.botanical-journey[data-lang='ta'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy
+  > p:not(.eyebrow, .botanical-claim) {
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+.botanical-journey[data-lang='ml'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-cta,
+.botanical-journey[data-lang='ta'][data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-cta {
+  font-size: 0.95rem;
+  line-height: 1.3;
+  padding: 0.7rem 1rem;
 }

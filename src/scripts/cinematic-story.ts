@@ -7,6 +7,8 @@ export function mountCinematicStory(root: HTMLElement) {
   const scenes = Array.from(
     root.querySelectorAll<HTMLElement>('[data-story-scene]'),
   );
+  // The chapter navigation and photographic scene sections were removed from
+  // the homepage; the hero film keeps its eight internal chapters.
   const links = root.querySelectorAll('[data-chapter-link]');
   const watch = (event: MouseEvent) => {
     const link = (event.target as Element).closest<HTMLElement>(
@@ -21,6 +23,9 @@ export function mountCinematicStory(root: HTMLElement) {
   };
   root.addEventListener('click', watch);
   const hero = root.querySelector('.cinema-hero');
+  // Observe the film itself rather than the whole story wrapper: with the
+  // duplicated scene sections removed, the wrapper is one viewport tall and the
+  // header would only switch a full screen too late.
   const headerObserver = new IntersectionObserver(
     ([entry]) => {
       document.documentElement.classList.toggle(
@@ -28,7 +33,9 @@ export function mountCinematicStory(root: HTMLElement) {
         !entry.isIntersecting,
       );
     },
-    { threshold: 0 },
+    // Shrinking the root by a pixel stops a hero that exactly fills the
+    // viewport from still counting as intersecting once it is scrolled past.
+    { threshold: 0, rootMargin: '-1px 0px 0px 0px' },
   );
   if (hero) headerObserver.observe(hero);
   const setChapter = (index: number) => {
@@ -43,13 +50,15 @@ export function mountCinematicStory(root: HTMLElement) {
   media.add(
     '(prefers-reduced-motion: no-preference)',
     () => {
-      gsap.from(root.querySelectorAll('.cinema-hero-copy > *'), {
-        y: 14,
-        opacity: 0,
-        duration: 1.1,
-        stagger: 0.1,
-        ease: 'power2.out',
-      });
+      const heroCopy = root.querySelectorAll('.cinema-hero-copy > *');
+      if (heroCopy.length)
+        gsap.from(heroCopy, {
+          y: 14,
+          opacity: 0,
+          duration: 1.1,
+          stagger: 0.1,
+          ease: 'power2.out',
+        });
       scenes.forEach((scene, index) => {
         ScrollTrigger.create({
           trigger: scene,
@@ -58,12 +67,14 @@ export function mountCinematicStory(root: HTMLElement) {
           onEnter: () => setChapter(index),
           onEnterBack: () => setChapter(index),
         });
-        gsap.from(scene.querySelector('.cinema-scene-copy'), {
-          y: 24,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: scene, start: 'top 90%', once: true },
-        });
+        const sceneCopy = scene.querySelector('.cinema-scene-copy');
+        if (sceneCopy)
+          gsap.from(sceneCopy, {
+            y: 24,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: scene, start: 'top 90%', once: true },
+          });
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: scene,
@@ -144,20 +155,26 @@ export function mountCinematicStory(root: HTMLElement) {
               ease: 'sine.inOut',
             });
       });
-      gsap.fromTo(
-        root.querySelector('.cinema-progress span'),
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: root.querySelector('.cinema-scenes'),
-            start: 'top 60%',
-            end: 'bottom 60%',
-            scrub: true,
+      // Guarded: the scene list and its progress bar no longer exist now that the
+      // duplicated post-hero sections are gone. Never create a ScrollTrigger
+      // against a null trigger.
+      const scenesList = root.querySelector('.cinema-scenes');
+      const progressBar = root.querySelector('.cinema-progress span');
+      if (scenesList && progressBar)
+        gsap.fromTo(
+          progressBar,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: scenesList,
+              start: 'top 60%',
+              end: 'bottom 60%',
+              scrub: true,
+            },
           },
-        },
-      );
+        );
       return () => {
         delete root.dataset.chapter;
         links.forEach((link) => link.removeAttribute('aria-current'));

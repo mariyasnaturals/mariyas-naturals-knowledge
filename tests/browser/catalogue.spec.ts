@@ -169,14 +169,16 @@ test('touch navigation supports narrow screens and reduced motion', async ({
       'open',
     );
     await expect(page.locator('header .language-menu summary')).toBeFocused();
-    await page.locator('#story-scene-5').scrollIntoViewIfNeeded();
-    await expect(page.locator('#story-scene-5 .cinema-frame')).toBeVisible();
-    await expect(page.locator('.cinema-frame img')).toHaveCount(9);
+    // One cinematic hero, then the botanical journey; the duplicated
+    // post-hero scene sections are gone and nothing is pinned.
+    await page.locator('.cinema-hero').scrollIntoViewIfNeeded();
+    await expect(page.locator('.cinema-hero')).toBeVisible();
+    await expect(page.locator('[data-story-scene]')).toHaveCount(0);
     await expect(page.locator('.pin-spacer')).toHaveCount(0);
+    await expect(page.locator('[data-botanical-journey]')).toBeVisible();
     expect(
       await page
-        .locator('[data-story-scene]')
-        .last()
+        .locator('.cinema-hero')
         .evaluate((el) => getComputedStyle(el).transform),
     ).toBe('none');
   }

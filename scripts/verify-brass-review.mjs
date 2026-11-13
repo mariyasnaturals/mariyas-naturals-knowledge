@@ -39,12 +39,46 @@ export async function verifyBrassReview(manifest) {
       'Superseded file must stay present: ' + path,
     );
   const code = readFileSync('src/components/botanical/journey.ts', 'utf8');
-  for (const block of report.preservedChoreography)
+  // A reviewed correction may supersede a choreography block, but only when the
+  // replacement is recorded with its reason and its own digest.
+  const supersededChoreography = new Map(
+    (integration.supersededChoreography ?? []).map((item) => [
+      `${item.start}->${item.end}`,
+      item,
+    ]),
+  );
+  for (const block of report.preservedChoreography) {
+    const key = `${block.start}->${block.end}`;
+    const record = supersededChoreography.get(key);
+    if (record) {
+      // A superseded block may be rewritten or removed, but the replacement
+      // must state why and must not silently vanish without that record.
+      assert.ok(record.reason && record.reason.length > 40, key);
+      if (record.integratedSha256 === 'removed') {
+        // `studies.forEach` survives as the new convergence block, so removal is
+        // proven by the absence of the old block's closing marker instead.
+        assert.equal(
+          code.includes(block.end),
+          false,
+          'Superseded block must actually be removed: ' + key,
+        );
+      } else {
+        assert.equal(
+          digest(
+            code.slice(code.indexOf(block.start), code.indexOf(block.end)),
+          ),
+          record.integratedSha256,
+          key,
+        );
+      }
+      continue;
+    }
     assert.equal(
       digest(code.slice(code.indexOf(block.start), code.indexOf(block.end))),
       block.sha256,
       'Preserved scroll choreography changed',
     );
+  }
   for (const reference of report.references) {
     assert.match(reference.file, /^references\/1054[01]\.jpg$/);
     const bytes = readFileSync(prefix + reference.file);

@@ -75,7 +75,10 @@ for (const width of [360, 759, 760, 1440]) {
     });
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/en/');
-    await expect(page.locator('[data-story-scene]')).toHaveCount(8);
+    // One cinematic hero; the duplicated photographic scene sections are gone.
+    await expect(page.locator('[data-story-scene]')).toHaveCount(0);
+    await expect(page.locator('.cinema-hero')).toHaveCount(1);
+    await expect(page.locator('.cinema-chapters')).toHaveCount(0);
     await expect(page.locator('video')).toHaveAttribute(
       'src',
       width < 760
@@ -92,11 +95,14 @@ for (const width of [360, 759, 760, 1440]) {
       ),
     ).toBe(true);
     await page.screenshot({ path: `test-results/cinematic-${width}.png` });
-    await page.locator('[data-chapter-link]').last().click();
-    await expect(page).toHaveURL(/#story-scene-8$/);
-    await expect(page.locator('.cinema')).toHaveAttribute('data-chapter', '8');
-    await page.locator('[data-chapter-link]').first().click();
-    await expect(page.locator('.cinema')).toHaveAttribute('data-chapter', '1');
+    // The hero's Discover control leads straight into the botanical journey.
+    await expect(page.locator('.cinema-hero-action')).toHaveAttribute(
+      'href',
+      '#botanical-journey',
+    );
+    await page.locator('.cinema-hero-action').click();
+    await expect(page).toHaveURL(/#botanical-journey$/);
+    await expect(page.locator('[data-botanical-journey]')).toBeVisible();
     expect(missing).toEqual([]);
   });
 }
@@ -126,7 +132,7 @@ test('one orientation loads, playback pauses offscreen, user pause persists, and
   await expect
     .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
     .toBe(true);
-  await page.locator('#story-scene-8').scrollIntoViewIfNeeded();
+  await page.locator('[data-botanical-journey]').scrollIntoViewIfNeeded();
   await page.locator('responsive-film').scrollIntoViewIfNeeded();
   await expect
     .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
@@ -135,7 +141,7 @@ test('one orientation loads, playback pauses offscreen, user pause persists, and
   await expect
     .poll(() => video.evaluate((el: HTMLVideoElement) => !el.paused))
     .toBe(true);
-  await page.locator('#story-scene-8').scrollIntoViewIfNeeded();
+  await page.locator('[data-botanical-journey]').scrollIntoViewIfNeeded();
   await expect
     .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
     .toBe(true);
@@ -163,9 +169,9 @@ test('reduced motion prevents autoplay and live preference changes pause playbac
     .poll(() => video.evaluate((el: HTMLVideoElement) => !el.paused))
     .toBe(true);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await expect(page.locator('#story-scene-8 .cinema-scene-copy')).not.toHaveCSS(
-    'transform',
-    'none',
+  await expect(page.locator('[data-botanical-journey]')).toHaveAttribute(
+    'data-motion',
+    'scroll',
   );
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect
@@ -215,10 +221,11 @@ test('failed video keeps a readable fallback and chapter navigation', async ({
   await page.locator('video').evaluate((el: HTMLVideoElement) => {
     void el.play().catch(() => {});
   });
-  await expect(page.locator('[data-film-status]')).toHaveText(
-    'The film is unavailable. Explore the chapters below.',
-  );
   await expect(page.locator('.cinema-play')).toBeHidden();
-  await page.locator('[data-chapter-link]').last().click();
-  await expect(page).toHaveURL(/#story-scene-8$/);
+  // With no film the page still has a reachable story below the hero: the
+  // botanical journey begins immediately and carries the product reveal.
+  await expect(page.locator('[data-botanical-journey]')).toBeVisible();
+  await expect(page.locator('.botanical-claim')).toHaveText(
+    /60\s*Natural Ingredients/,
+  );
 });

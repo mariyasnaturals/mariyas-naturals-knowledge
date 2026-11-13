@@ -68,25 +68,15 @@ for (const [width, height] of [
         });
       }
       expect(captions.size).toBe(8);
-      for (const scene of await page.locator('[data-story-scene]').all()) {
-        await scene.scrollIntoViewIfNeeded();
-        const image = scene.locator('img').first();
-        await expect(image).toHaveCSS('object-fit', 'cover');
-        const figure = await image.boundingBox();
-        expect(figure!.width).toBeGreaterThan(
-          width < 760 ? width - 1 : width * 0.5,
-        );
-        await expect(scene.locator('h3')).toBeVisible();
-        if (await scene.locator('.cinema-final-product').count()) {
-          const geometry = await scene
-            .locator('.cinema-product-reveal')
-            .evaluate((el) => ({
-              image: el.getBoundingClientRect().height,
-              panel: el.parentElement!.getBoundingClientRect().height,
-            }));
-          expect(geometry.image).toBeGreaterThanOrEqual(geometry.panel - 1);
-        }
-      }
+      // The single cinematic hero stays full-bleed; the duplicated post-hero
+      // photographic sections no longer exist to be measured.
+      await expect(page.locator('[data-story-scene]')).toHaveCount(0);
+      const heroFilm = page.locator('responsive-film video');
+      await expect(heroFilm).toHaveCSS('object-fit', 'cover');
+      const heroBox = await page.locator('.cinema-hero').boundingBox();
+      expect(heroBox!.width).toBe(width);
+      const heroVideo = await heroFilm.boundingBox();
+      expect(heroVideo!.width).toBeGreaterThanOrEqual(width - 1);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

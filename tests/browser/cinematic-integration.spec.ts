@@ -95,44 +95,20 @@ for (const mode of ['desktop', 'android'] as const) {
         path: `test-results/integrated-${mode}-film.png`,
       });
       await expect(page.locator('.cinema-film-placeholder')).toBeHidden();
+      // The eight photographic scene frames were removed by the owner
+      // correction; the page keeps one cinematic hero and hands straight to the
+      // botanical journey, which must still carry the authentic product reveal.
+      await expect(page.locator('[data-story-scene]')).toHaveCount(0);
+      await expect(page.locator('.cinema-frame')).toHaveCount(0);
+      await expect(page.locator('.cinema-hero')).toHaveCount(1);
+      await page.locator('[data-botanical-journey]').scrollIntoViewIfNeeded();
+      await expect(page.locator('[data-botanical-journey]')).toBeVisible();
       await expect(
-        page.locator('.cinema-frame[data-asset-state="ready"]'),
-      ).toHaveCount(8);
-      await expect(page.locator('.cinema-frame img')).toHaveCount(9);
-      for (const [scene, reference] of [
-        [3, 'product'],
-        [4, 'model'],
-      ] as const) {
-        const frame = page.locator(`#story-scene-${scene} .cinema-frame`);
-        const image = frame.locator('img');
-        await frame.scrollIntoViewIfNeeded();
-        await expect(image).toHaveAttribute(
-          'src',
-          assets.references[reference].src,
-        );
-        await expect
-          .poll(() =>
-            image.evaluate(
-              (image: HTMLImageElement) =>
-                image.complete && image.naturalWidth === 1280,
-            ),
-          )
-          .toBe(true);
-        await frame.screenshot({
-          path: `test-results/integrated-${mode}-${reference}.png`,
-        });
-      }
-      await page.locator('#story-scene-8').scrollIntoViewIfNeeded();
-      await expect(page.locator('#story-scene-8 img')).toHaveCount(2);
+        page.locator('.botanical-copy:has(.botanical-claim) .botanical-claim'),
+      ).toContainText('60');
       await page.screenshot({
         path: `test-results/integrated-${mode}-final.png`,
       });
-      await page.locator('#story-scene-6 [data-watch-scene]').click();
-      await expect(page).toHaveURL(/#cinema-film$/);
-      await expect(page.locator('responsive-film')).toHaveAttribute(
-        'data-current-chapter',
-        'hair-shine',
-      );
       expect([...new Set(videoRequests)]).toEqual([videoRecord.src]);
       expect(errors).toEqual([]);
       await expect(page.locator('.pin-spacer')).toHaveCount(0);
@@ -180,37 +156,19 @@ test('resize maps a paused story moment between the actual desktop and mobile ed
   expect(time).toBeLessThan(14.8);
 });
 
-test('hair highlight stays masked to the original photograph and clears for reduced motion', async ({
+test('the botanical journey clears its decorative overlay for reduced motion', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/en/');
-  const scene = page.locator('#story-scene-6');
-  await scene.scrollIntoViewIfNeeded();
-  const highlight = scene.locator('.cinema-sweep');
-  await expect
-    .poll(() =>
-      highlight.evaluate((element) =>
-        Number(getComputedStyle(element).opacity),
-      ),
-    )
-    .toBeGreaterThan(0.04);
-  expect(
-    await highlight.evaluate((element) =>
-      Number(getComputedStyle(element).opacity),
-    ),
-  ).toBeLessThanOrEqual(0.17);
-  await expect(scene.locator('img')).toHaveAttribute(
-    'src',
-    '/cinematic/original-model.jpg',
-  );
-  await expect(scene.locator('.cinema-hair-highlight')).toHaveCSS(
-    'mask-image',
-    /original-hair-mask\.png/,
-  );
-  await scene
-    .locator('.cinema-frame')
-    .screenshot({ path: 'test-results/integrated-desktop-hair-shine.png' });
+  const journey = page.locator('[data-botanical-journey]');
+  await journey.scrollIntoViewIfNeeded();
+  await expect(journey).toHaveAttribute('data-motion', 'scroll');
+  // Reduced motion must drop the animated overlay and keep every stage readable.
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(highlight).toHaveCSS('opacity', '0');
+  await expect(journey).toHaveAttribute('data-motion', 'reduced');
+  await expect(page.locator('[data-scene]')).toHaveCount(8);
+  await expect(page.locator('.botanical-claim')).toContainText(
+    /60\s*Natural Ingredients/,
+  );
 });

@@ -49,6 +49,21 @@
       "reviewSha256": null,
       "reason": "Repointed at the integrated release build: the separate review-only build and its unsigned preview artifact were retired, while the required botanical-review check keeps verifying the 43 registered media and the fourteen browser tests against the pages that actually ship.",
       "integratedSha256": "9353c71b4c801f246a22a950d997c5f919d63b29b639b7b2553ff8da84633707"
+    },
+    {
+      "file": "src/components/StorytellingSection.astro",
+      "reviewSha256": "7f5dc49c95f75c3df517a20fefb101577e293faa934c598416f36ec710bbeb1b",
+      "reason": "Owner correction: the eight post-hero photographic scene sections and the chapter navigation were removed so only the original cinematic hero remains, and the Discover anchor now leads straight into #botanical-journey. The hero video, its eight internal film chapters, footage, poster, captions, model identity and controls are unchanged."
+    },
+    {
+      "file": "src/components/botanical/motion.mjs",
+      "reviewSha256": "72c0a37d4683b886357b9614e1317adb561192c53e1371e86ac7a005f53250ba",
+      "reason": "Owner correction: placement metadata became the single source of truth for the camera dolly, depth planes, per-study travel arcs and the eight-stage hand-off chain. Study identities stay unnamed and null."
+    },
+    {
+      "file": "src/scripts/cinematic-story.ts",
+      "reviewSha256": "a60931ca4e4d9f4d2fc24caeac37f40a86e671d3b49aacf7025dd51ba0970601",
+      "reason": "Owner correction: guards prevent ScrollTriggers and tweens from being created against the removed scene list, chapter navigation and progress bar. The hero seek/hover behaviour, chapter timing and scroll handling are unchanged."
     }
   ],
   "unchangedSecurityControls": [
@@ -69,5 +84,21 @@
     "trustModule": "ops/ci_staging/trust.py",
     "bundleDigest": "8083bbd23fc21c0d33eddafbf37f0fb4dd10361ce48f6792200f2b2d496c8a51",
     "servedBotanicalMedia": 43
-  }
+  },
+  "supersededChoreography": [
+    {
+      "start": "studies.forEach",
+      "end": "const reveal",
+      "reviewSha256": "e30e0cf1ebb24b7fa79a84c18261ff6c6d2aade0705f50196c68accc282404b2",
+      "integratedSha256": "removed",
+      "reason": "Owner correction: the pinned-stage study loop and the world-box camera were removed entirely. The thirty studies now enter on their own paths inside their own scrolling scene, and no sticky stage or single translated world remains. The 30 studies, their unnamed identity and their six progressive groups are unchanged."
+    },
+    {
+      "start": "reveal('product'",
+      "end": "// Explicit duration",
+      "reviewSha256": "e30e0cf1ebb24b7fa79a84c18261ff6c6d2aade0705f50196c68accc282404b2",
+      "integratedSha256": "removed",
+      "reason": "Owner correction: the fixed-composition reveal() helper was removed with the pinned architecture. The finale is now a real section in document flow whose own scroll drives the product into place. The authentic photographic bottle, the owner-confirmed claim and the approved CTA are unchanged."
+    }
+  ]
 }

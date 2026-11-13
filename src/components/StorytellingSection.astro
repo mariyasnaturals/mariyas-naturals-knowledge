@@ -1,9 +1,6 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
 import ResponsiveFilm from './cinematic/ResponsiveFilm.astro';
-import CinematicScene from './cinematic/CinematicScene.astro';
-import assets from '../data/cinematic-assets.json';
-import { featuredProduct, productPath } from '../data/products';
 import type { Dictionary, Locale } from '../i18n';
 import '../styles/cinematic.css';
 interface Props {
@@ -34,7 +31,7 @@ const c = t.cinematic;
       <p class="eyebrow">{c.heroKicker}</p>
       <h1 id="hero-title">{t.hero}</h1>
       <p class="cinema-hero-line">{c.heroLine}</p>
-      <a class="cinema-hero-action" href="#story-scene-1">
+      <a class="cinema-hero-action" href="#botanical-journey">
         {t.discover}
         <ArrowIcon direction="down" />
       </a>
@@ -44,33 +41,9 @@ const c = t.cinematic;
     </a>
   </div>
   <h2 class="sr-only">{c.title}</h2>
-  <nav class="cinema-chapters" aria-label={t.story}>
-    {c.titles.map((title, index) => (
-      <a href={`#story-scene-${index + 1}`} data-chapter-link>
-        <span>{title}</span>
-      </a>
-    ))}
-  </nav>
-  <div class="cinema-progress" aria-hidden="true">
-    <span></span>
-  </div>
-  <ol class="cinema-scenes">
-    {assets.scenes.map((scene, index) => (
-      <CinematicScene
-        scene={scene}
-        index={index}
-        title={c.titles[index]}
-        description={c.notes[index]}
-        pending={c.imagePending}
-        lang={lang}
-        watch={c.watch}
-        finalLine={c.finalLine}
-        productLabel={t.heroNote}
-        productAction={t.viewDetails}
-        productHref={productPath(lang, featuredProduct)}
-      />
-    ))}
-  </ol>
+  <!-- The film's eight chapters play inside the hero video itself. The previous
+       eight photographic scene sections and the chapter navigation duplicated
+       that story after the hero and have been removed on owner request. -->
 </section>
 <script>
   import { mountCinematicStory } from '../scripts/cinematic-story';
