@@ -26,7 +26,15 @@ for (const [width, height] of [
     try {
       await page.goto('/en/');
       await page.evaluate(() => document.fonts.ready);
-      await expect(page.locator('[data-story-scene]')).toHaveCount(8);
+      // The duplicated post-hero photographic sections are gone: the page has one
+      // cinematic hero, and the journey begins on the very next scroll.
+      await expect(page.locator('[data-story-scene]')).toHaveCount(0);
+      await expect(page.locator('.cinema-hero')).toHaveCount(1);
+      await expect(page.locator('.cinema-hero-action')).toHaveAttribute(
+        'href',
+        '#botanical-journey',
+      );
+      await expect(page.locator('.botanical-intro')).toHaveCount(0);
       const journey = page.locator('[data-botanical-journey]');
       await expect(journey).toHaveAttribute('data-motion', 'scroll');
       await expect(journey.locator('.botanical-study')).toHaveCount(30);

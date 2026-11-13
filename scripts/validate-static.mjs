@@ -31,7 +31,29 @@ for (const lang of locales) {
   assert.ok($('meta[name="description"]').attr('content').length > 30);
   titles.add($('title').text());
   JSON.parse($('script[type="application/ld+json"]').text());
-  assert.equal($('[data-story-scene]').length, 8);
+  // Correction: the homepage has exactly one cinematic hero. The eight
+  // post-hero photographic scenes and their chapter navigation are gone, and the
+  // Discover control leads straight into the botanical journey.
+  assert.equal($('[data-story-scene]').length, 0);
+  assert.equal($('.cinema-scenes').length, 0);
+  assert.equal($('.cinema-chapters').length, 0);
+  assert.equal($('.cinema-hero').length, 1);
+  assert.equal($('.cinema-hero-action').attr('href'), '#botanical-journey');
+  assert.equal(
+    $('[data-botanical-journey]').length,
+    1,
+    'The botanical journey must follow the hero',
+  );
+  assert.equal(
+    $('#story').nextAll('section').first().is('[data-botanical-journey]'),
+    true,
+    'Nothing may sit between the hero and the botanical journey',
+  );
+  assert.equal(
+    $('.botanical-intro').length,
+    0,
+    'The separate introductory panel must stay removed',
+  );
   for (const a of $('a[href]').toArray()) {
     const href = $(a).attr('href');
     if (href.startsWith('#'))

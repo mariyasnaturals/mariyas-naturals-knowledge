@@ -41,10 +41,12 @@ test('desktop, keyboard skip link and reduced motion', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
   await expect(page.locator('.desktop-nav')).toBeVisible();
+  // The duplicated photographic sections are gone; the single hero and the
+  // botanical journey below it carry no ScrollTrigger pinning.
+  await expect(page.locator('[data-story-scene]')).toHaveCount(0);
   expect(
     await page
-      .locator('[data-story-scene]')
-      .first()
+      .locator('.cinema-hero')
       .evaluate((el) => getComputedStyle(el).transform),
   ).toBe('none');
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -59,7 +61,8 @@ test('content and language navigation work without JavaScript', async ({
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('http://127.0.0.1:4321/en/');
-  await expect(page.locator('[data-story-scene]').first()).toBeVisible();
+  await expect(page.locator('.cinema-hero')).toBeVisible();
+  await expect(page.locator('[data-botanical-journey]')).toBeVisible();
   await page.locator('header .language-menu summary').click();
   await page.locator('header a[hreflang="ml"]').click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ml');
@@ -72,14 +75,29 @@ test('ScrollTrigger moves a scene into its resting position', async ({
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/en/');
-  const scene = page.locator('[data-story-scene]').last();
-  const translation = () =>
-    scene
-      .locator('.cinema-scene-copy')
-      .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
-  await expect.poll(translation).toBeGreaterThan(0);
-  await scene.scrollIntoViewIfNeeded();
-  await expect.poll(translation).toBe(0);
+  // The corrected journey is scroll-driven, reversible and pin-free: native
+  // scroll drives the camera dolly (vertical on portrait, horizontal on desktop).
+  const journey = page.locator('[data-botanical-journey]');
+  const progress = () =>
+    journey.evaluate((el) => Number(el.getAttribute('data-progress') ?? 0));
+  await journey.scrollIntoViewIfNeeded();
+  const start = await progress();
+  await page.evaluate(() =>
+    scrollBy({ top: innerHeight * 2, behavior: 'instant' }),
+  );
+  await expect.poll(progress).toBeGreaterThan(start);
+  // Reversing must retrace the same path: the camera position at a given scroll
+  // offset is identical whether it was reached going down or coming back up.
+  const forward = await progress();
+  await page.evaluate(() =>
+    scrollBy({ top: -innerHeight, behavior: 'instant' }),
+  );
+  await expect.poll(progress).toBeLessThan(forward);
+  await page.evaluate(() =>
+    scrollBy({ top: innerHeight, behavior: 'instant' }),
+  );
+  await expect.poll(progress).toBeCloseTo(forward, 2);
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
 for (const width of [360, 768, 1440]) {
@@ -128,15 +146,11 @@ test('mobile chapters advance without pinning or substitute imagery', async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/en/');
   await page.locator('#story').scrollIntoViewIfNeeded();
-  await page.locator('#story-scene-8').scrollIntoViewIfNeeded();
-  await expect(page.locator('.story-experience')).toHaveAttribute(
-    'data-chapter',
-    '8',
-  );
-  await expect(page.locator('.cinema-frame img')).toHaveCount(9);
-  await expect(
-    page.locator('.cinema-frame[data-asset-state="ready"]'),
-  ).toHaveCount(8);
+  // The hero carries its eight film chapters internally; there are no separate
+  // scene frames any more, and nothing is pinned.
+  await expect(page.locator('.cinema-hero')).toHaveCount(1);
+  await expect(page.locator('.cinema-frame')).toHaveCount(0);
+  await expect(page.locator('.cinema-chapters')).toHaveCount(0);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
@@ -146,15 +160,15 @@ test('desktop uses natural scrolling and resets animation for reduced motion', a
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/en/');
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
-  await page.locator('#story-scene-6').scrollIntoViewIfNeeded();
+  const journey = page.locator('[data-botanical-journey]');
+  await journey.scrollIntoViewIfNeeded();
+  await expect(journey).toHaveAttribute('data-motion', 'scroll');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
   await expect(page.locator('.story-experience')).not.toHaveAttribute(
     'data-chapter',
   );
-  expect(
-    await page
-      .locator('#story-scene-6 .cinema-frame')
-      .evaluate((el) => getComputedStyle(el).transform === 'none'),
-  ).toBe(true);
+  // Reduced motion restores the eight accessible stages to normal flow.
+  await expect(journey).toHaveAttribute('data-motion', 'reduced');
+  await expect(page.locator('.botanical-step')).toHaveCount(8);
 });

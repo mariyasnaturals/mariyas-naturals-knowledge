@@ -3,7 +3,13 @@ import type { Locale } from '../../i18n';
 import ArrowIcon from '../ArrowIcon.astro';
 import BotanicalExtractor from './BotanicalExtractor.astro';
 import { journeyCopy } from './content';
-import { studies } from './motion.mjs';
+import {
+  studies,
+  places,
+  worldFocus,
+  verticalFocus,
+  world,
+} from './motion.mjs';
 import originals from '../../data/cinematic-assets.json';
 import botanicalManifest from '../../data/botanical-media.json';
 import { featuredProduct } from '../../data/products';
@@ -39,15 +45,36 @@ const asset = (name: string) => {
   return path;
 };
 
+// Stations are placed with the same camera math the choreography uses, so each
+// one is centred in the frame exactly when its own stage is on screen.
+// Offsets are given in viewport widths and converted to world fractions, so a
+// nudge stays a nudge at every screen size.
+// `screenY` is where the station's centre should land in a portrait frame at its
+// own stage; the default keeps it clear of both the caption and the fixed
+// bottom navigation. Stations that touch (uruli / pourer) share a value.
+const layoutStyle = (place: number, dxVw = 0, screenY = 0.72) =>
+  `--w-x:${(
+    (worldFocus(place, world.desktopExtent) + dxVw / world.desktopExtent) *
+    100
+  ).toFixed(3)}%;--m-x:${(
+    (worldFocus(place, world.mobileExtent) + dxVw / world.mobileExtent) *
+    100
+  ).toFixed(3)}%;--m-y:${(
+    verticalFocus(place, screenY, world.mobileExtent) * 100
+  ).toFixed(3)}%`;
+
 // Approved call to action stays inside the reviewed static site. The current .in
 // product page remains the visible source reference; purchasing stays disabled.
 const destination = `/${lang}/products/${featuredProduct.slug}/`;
-const staticLayers = [
-  'ingredient-01.webp',
-  'ingredient-07.webp',
-  'ingredient-12.webp',
+
+// Stage one stills, drawn from the same registered set so the accessible
+// reduced-motion and no-JavaScript story never points at unregistered media.
+const stills = [
+  'botanical-origin-desktop.webp',
+  'ingredient-09.webp',
+  'ingredient-22.webp',
   'preparation-device.webp',
-  'brass-kinnam.webp',
+  'brass-filter.webp',
   'brass-uruli.webp',
   'dark-oil-stream.webp',
   'authentic-product-cutout.webp',
@@ -59,190 +86,244 @@ const staticLayers = [
   id="botanical-journey"
   aria-labelledby="botanical-title"
   data-botanical-journey
+  style={`--world-extent-landscape:${world.desktopExtent};--world-extent-portrait:${world.mobileExtent}`}
 >
-  <header class="botanical-intro">
-    <p class="eyebrow">{t.eyebrow}</p>
-    <h2 id="botanical-title">{t.intro}</h2>
-    <p class="botanical-concept-note">{t.note}</p>
-    <a href="#botanical-finale" class="botanical-skip">
-      {t.skip} ↓
-    </a>
-  </header>
+  <h2 id="botanical-title" class="sr-only">
+    {t.intro}
+  </h2>
   <div class="botanical-track">
+    <!-- One continuous world. The camera dollies through it; nothing here is a slide. -->
     <div class="botanical-stage" aria-hidden="true">
-      <picture class="botanical-environment">
-        <source
-          media="(max-width: 759px)"
-          srcset={asset('botanical-origin-mobile.webp')}
-        />
-        <img
-          data-botanical-media
-          src={asset('botanical-origin-desktop.webp')}
-          width="1920"
-          height="1080"
-          alt={altFor('botanical-origin-desktop.webp')}
-          loading="lazy"
-          decoding="async"
-        />
-      </picture>
-      <div class="botanical-light"></div>
-      <div class="botanical-depth"></div>
-      <div class="botanical-studies">
-        {studies.map((study) => (
+      <div class="botanical-world" data-layer="world">
+        <div class="botanical-sky"></div>
+        <picture class="botanical-canopy" data-plane="far">
+          <source
+            media="(max-width: 759px)"
+            srcset={asset('botanical-origin-mobile.webp')}
+          />
           <img
             data-botanical-media
-            src={asset(`${study.id}.webp`)}
-            width="320"
-            height="420"
-            alt={altFor(`${study.id}.webp`)}
+            src={asset('botanical-origin-desktop.webp')}
+            width="1920"
+            height="1080"
+            alt={altFor('botanical-origin-desktop.webp')}
             loading="lazy"
             decoding="async"
-            class="botanical-study"
-            data-study={study.id}
-            data-group={study.group}
-            style={`--study-x:${study.x}%;--study-y:${study.y}%`}
           />
-        ))}
-      </div>
-      <div class="botanical-apparatus botanical-mortar" data-layer="mortar">
-        <img
-          data-botanical-media
-          src={asset('preparation-device.webp')}
-          width="760"
-          height="620"
-          alt={altFor('preparation-device.webp')}
-          loading="lazy"
-        />
-        <img
-          data-botanical-media
-          class="botanical-pestle"
-          data-layer="pestle"
-          src={asset('preparation-pestle.webp')}
-          width="280"
-          height="680"
-          alt={altFor('preparation-pestle.webp')}
-          loading="lazy"
-        />
-      </div>
-      <div class="botanical-fragments" data-layer="fragments">
-        <img
-          data-botanical-media
-          src={asset('preparation-fragments.webp')}
-          width="420"
-          height="280"
-          alt={altFor('preparation-fragments.webp')}
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="botanical-prep-bowl"
-        data-layer="prep-bowl"
-        data-vessel="brass-kinnam"
-      >
-        <img
-          data-botanical-media
-          src={asset('brass-kinnam.webp')}
-          width="1400"
-          height="875"
-          alt={altFor('brass-kinnam.webp')}
-          loading="lazy"
-        />
-      </div>
-      <BotanicalExtractor animated lang={lang} />
-      <div class="botanical-extract-stream" data-layer="extract-stream"></div>
-      <div
-        class="botanical-pourer"
-        data-layer="pourer"
-        data-vessel="brass-pourer"
-      >
-        <img
-          data-botanical-media
-          src={asset('brass-pourer.webp')}
-          width="800"
-          height="600"
-          alt={altFor('brass-pourer.webp')}
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="botanical-apparatus botanical-receiver"
-        data-layer="receiver"
-        data-vessel="brass-kinnam"
-      >
-        <div class="botanical-liquid-aperture">
-          <div class="botanical-fill" data-layer="fill"></div>
+        </picture>
+        <div class="botanical-haze" data-plane="far"></div>
+
+        <!-- Ground the camera travels over, and the grove it starts in. -->
+        <div class="botanical-ground" data-plane="mid"></div>
+        <div
+          class="botanical-grove"
+          data-plane="mid"
+          data-place="grove"
+          style={layoutStyle(places.grove)}
+        >
+          <i class="botanical-stem"></i>
+          <i class="botanical-stem"></i>
+          <i class="botanical-stem"></i>
+          <i class="botanical-stem"></i>
+          <i class="botanical-stem"></i>
         </div>
-        <img
-          data-botanical-media
-          src={asset('brass-kinnam.webp')}
-          width="600"
-          height="600"
-          alt={altFor('brass-kinnam.webp')}
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="botanical-apparatus botanical-copper"
-        data-layer="copper"
-        data-vessel="brass-uruli"
-      >
-        <img
-          data-botanical-media
-          src={asset('brass-uruli.webp')}
-          width="900"
-          height="600"
-          alt={altFor('brass-uruli.webp')}
-          loading="lazy"
-        />
-        <div class="botanical-ripples" data-layer="ripples">
+
+        <div class="botanical-studies" data-plane="mid">
+          {studies.map((study) => (
+            <img
+              data-botanical-media
+              src={asset(`${study.id}.webp`)}
+              width="320"
+              height="420"
+              alt={altFor(`${study.id}.webp`)}
+              loading="lazy"
+              decoding="async"
+              class="botanical-study"
+              data-study={study.id}
+              data-group={study.group}
+              style={`--study-x:${(study.x + 4).toFixed(2)}%;--study-y:${study.y}%`}
+            />
+          ))}
+        </div>
+
+        <!-- Preparation bench: mortar and pestle, then the grinder the material falls into. -->
+        <div
+          class="botanical-mortar"
+          data-plane="near"
+          data-place="bench"
+          data-layer="mortar"
+          style={layoutStyle(places.bench, 0, 0.8)}
+        >
+          <div class="botanical-mortar-body">
+            <img
+              data-botanical-media
+              src={asset('preparation-device.webp')}
+              width="760"
+              height="620"
+              alt={altFor('preparation-device.webp')}
+              loading="lazy"
+            />
+          </div>
           <img
             data-botanical-media
-            src={asset('liquid-reflections.webp')}
-            width="600"
-            height="280"
-            alt={altFor('liquid-reflections.webp')}
+            class="botanical-pestle"
+            data-layer="pestle"
+            src={asset('preparation-pestle.webp')}
+            width="280"
+            height="680"
+            alt={altFor('preparation-pestle.webp')}
             loading="lazy"
           />
-          <i></i>
-          <i></i>
+          <img
+            data-botanical-media
+            class="botanical-fragments"
+            data-layer="fragments"
+            src={asset('preparation-fragments.webp')}
+            width="420"
+            height="280"
+            alt={altFor('preparation-fragments.webp')}
+            loading="lazy"
+          />
+          <div class="botanical-paste" data-layer="paste"></div>
+        </div>
+
+        <!-- Extraction bench: botanical paste falls into the brass filter, fine
+             green herbal liquid leaves its outlet and enters the kinnam below. -->
+        <div
+          class="botanical-filter-station"
+          data-plane="near"
+          data-place="filter"
+          data-layer="filter-station"
+          style={layoutStyle(places.filter, 0, 0.68)}
+        >
+          <BotanicalExtractor animated lang={lang} />
+          <div
+            class="botanical-apparatus botanical-receiver"
+            data-layer="receiver"
+            data-vessel="brass-kinnam"
+          >
+            <div class="botanical-liquid-aperture">
+              <div class="botanical-fill" data-layer="fill"></div>
+            </div>
+            <img
+              data-botanical-media
+              src={asset('brass-kinnam.webp')}
+              width="600"
+              height="600"
+              alt={altFor('brass-kinnam.webp')}
+              loading="lazy"
+            />
+          </div>
+          <div
+            class="botanical-extract-stream"
+            data-layer="extract-stream"
+          ></div>
+          <div class="botanical-extract-pool" data-layer="extract-pool"></div>
+        </div>
+
+        <!-- The larger uruli the extract is carried to, where it becomes oil. -->
+        <div
+          class="botanical-apparatus botanical-copper"
+          data-plane="near"
+          data-place="uruli"
+          data-layer="copper"
+          data-vessel="brass-uruli"
+          style={layoutStyle(places.uruli, 0.034, 0.7)}
+        >
+          <img
+            data-botanical-media
+            src={asset('brass-uruli.webp')}
+            width="900"
+            height="600"
+            alt={altFor('brass-uruli.webp')}
+            loading="lazy"
+          />
+          <div class="botanical-liquid-aperture botanical-uruli-aperture">
+            <div class="botanical-fill" data-layer="uruli-fill"></div>
+          </div>
+          <div class="botanical-ripples" data-layer="ripples">
+            <img
+              data-botanical-media
+              src={asset('liquid-reflections.webp')}
+              width="600"
+              height="280"
+              alt={altFor('liquid-reflections.webp')}
+              loading="lazy"
+            />
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+        </div>
+
+        <!-- Transfer: the kinnam is lifted beside the uruli and pours into it. -->
+        <div
+          class="botanical-pourer"
+          data-plane="near"
+          data-place="transfer"
+          data-layer="pourer"
+          data-vessel="brass-pourer"
+          style={layoutStyle(places.uruli, 0.034, 0.7)}
+        >
+          <img
+            data-botanical-media
+            src={asset('brass-pourer.webp')}
+            width="800"
+            height="600"
+            alt={altFor('brass-pourer.webp')}
+            loading="lazy"
+          />
+          <!-- The stream and its droplet are children of the pouring vessel, so
+               they can never become detached from the spout that emits them. -->
+          <img
+            data-botanical-media
+            class="botanical-stream"
+            data-layer="stream"
+            src={asset('dark-oil-stream.webp')}
+            width="150"
+            height="800"
+            alt={altFor('dark-oil-stream.webp')}
+            loading="lazy"
+          />
+          <img
+            data-botanical-media
+            class="botanical-drop"
+            data-layer="drop"
+            src={asset('dark-oil-droplet.webp')}
+            width="160"
+            height="240"
+            alt={altFor('dark-oil-droplet.webp')}
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Reveal: the finished oil becomes the authentic photographic bottle. -->
+        <div
+          class="botanical-product"
+          data-plane="near"
+          data-place="reveal"
+          data-layer="product"
+          style={layoutStyle(places.reveal, 0.01, 0.66)}
+        >
+          <div class="botanical-product-glow"></div>
+          <img
+            data-botanical-media
+            src={asset('authentic-product-cutout.webp')}
+            width="245"
+            height="745"
+            alt={altFor('authentic-product-cutout.webp')}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div class="botanical-light" data-plane="far"></div>
+        <div class="botanical-progress">
           <i></i>
         </div>
       </div>
-      <img
-        data-botanical-media
-        class="botanical-stream"
-        data-layer="stream"
-        src={asset('dark-oil-stream.webp')}
-        width="150"
-        height="800"
-        alt={altFor('dark-oil-stream.webp')}
-        loading="lazy"
-      />
-      <img
-        data-botanical-media
-        class="botanical-drop"
-        data-layer="drop"
-        src={asset('dark-oil-droplet.webp')}
-        width="160"
-        height="240"
-        alt={altFor('dark-oil-droplet.webp')}
-        loading="lazy"
-      />
-      <div class="botanical-product" data-layer="product">
-        <img
-          data-botanical-media
-          src={asset('authentic-product-cutout.webp')}
-          width="245"
-          height="745"
-          alt={altFor('authentic-product-cutout.webp')}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div class="botanical-progress">
-        <i></i>
-      </div>
     </div>
+
     <ol class="botanical-steps">
       {t.titles.map((title, index) => (
         <li
@@ -266,89 +347,26 @@ const staticLayers = [
                 loading="lazy"
               />
             </picture>
-            {index === 4 ? (
-              <>
-                <BotanicalExtractor lang={lang} />
-                <div class="botanical-extract-stream"></div>
-                <div class="botanical-apparatus botanical-receiver botanical-extract-receiver">
-                  <div class="botanical-liquid-aperture">
-                    <div class="botanical-fill"></div>
-                  </div>
-                  <img
-                    data-botanical-media
-                    src={asset('brass-kinnam.webp')}
-                    width="600"
-                    height="600"
-                    alt={altFor('brass-kinnam.webp')}
-                    loading="lazy"
-                  />
-                </div>
-              </>
-            ) : index === 6 ? (
-              <div class="botanical-static-transfer">
-                <div class="botanical-pourer">
-                  <img
-                    data-botanical-media
-                    src={asset('brass-pourer.webp')}
-                    width="800"
-                    height="600"
-                    alt={altFor('brass-pourer.webp')}
-                    loading="lazy"
-                  />
-                </div>
-                <div class="botanical-apparatus botanical-receiver">
-                  <div class="botanical-liquid-aperture">
-                    <div class="botanical-fill"></div>
-                  </div>
-                  <img
-                    data-botanical-media
-                    src={asset('brass-kinnam.webp')}
-                    width="600"
-                    height="600"
-                    alt={altFor('brass-kinnam.webp')}
-                    loading="lazy"
-                  />
-                </div>
-                <img
-                  data-botanical-media
-                  class="botanical-stream"
-                  src={asset('dark-oil-stream.webp')}
-                  width="150"
-                  height="800"
-                  alt={altFor('dark-oil-stream.webp')}
-                  loading="lazy"
-                />
-              </div>
-            ) : (
-              <img
-                data-botanical-media
-                src={staticLayers[index] ? asset(staticLayers[index]!) : ''}
-                width="900"
-                height="900"
-                alt={staticLayers[index] ? altFor(staticLayers[index]!) : ''}
-                loading="lazy"
-              />
-            )}
+            <img
+              data-botanical-media
+              class="botanical-static-layer"
+              src={asset(stills[index]!)}
+              width="900"
+              height="900"
+              alt={altFor(stills[index]!)}
+              loading="lazy"
+            />
           </div>
-          {index === 3 && (
-            <div
-              class="botanical-prep-bowl botanical-static-prep"
-              aria-hidden="true"
-            >
-              <img
-                data-botanical-media
-                src={asset('brass-kinnam.webp')}
-                width="1400"
-                height="875"
-                alt={altFor('brass-kinnam.webp')}
-                loading="lazy"
-              />
-            </div>
-          )}
           <div class="botanical-copy">
+            {index === 0 ? (
+              // "From nature. With care." is the opening line of the journey,
+              // not a separate full-height panel above it.
+              <p class="botanical-overture">{t.intro}</p>
+            ) : null}
             <p class="eyebrow">{t.label}</p>
             <h3>{title}</h3>
             <p>{t.lines[index]}</p>
+            {index === 0 && <p class="botanical-note">{t.note}</p>}
             {index === 7 && (
               <>
                 <span class="sr-only">{authenticProduct.alt[lang]}</span>

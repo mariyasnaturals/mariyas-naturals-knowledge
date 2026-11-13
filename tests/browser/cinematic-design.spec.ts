@@ -60,46 +60,60 @@ for (const [width, height] of [
       await expect(film).toHaveAttribute('data-fit', 'cover');
       await expect(video).toHaveCSS('object-fit', 'cover');
       await expect(page.locator('.cinema-hero-copy')).toHaveCSS('opacity', '1');
-      const finale = page.locator('#story-scene-8');
-      await finale.evaluate((element) =>
-        element.scrollIntoView({ block: 'start', behavior: 'instant' }),
-      );
+      // The duplicated finale scene was removed with the other post-hero
+      // sections; the story now closes on the botanical product reveal, which
+      // must keep the authentic photographic bottle and no layout overlap.
+      await page
+        .locator('[data-botanical-journey]')
+        .evaluate((element) =>
+          element.scrollIntoView({ block: 'start', behavior: 'instant' }),
+        );
+      // The journey carries a header-height scroll margin, so the last slice of
+      // hero is still on screen here; the header only switches once it is gone.
+      await expect(page.locator('html')).not.toHaveClass(/cinema-past-hero/);
+      await page.evaluate(() => scrollBy({ top: 140, behavior: 'instant' }));
       await expect(page.locator('html')).toHaveClass(/cinema-past-hero/);
+      // This context runs with reduced motion, where the journey swaps the
+      // animated world for accessible stills in normal flow. Either way the
+      // finale must show the authentic photographic bottle, so target whichever
+      // product photograph is actually visible.
+      await page.locator('#botanical-finale').scrollIntoViewIfNeeded();
+      const product = page
+        .locator(
+          '[data-layer="product"] img:visible, #botanical-finale .botanical-static-layer:visible',
+        )
+        .first();
+      await expect(product).toBeVisible();
+      await expect(product).toHaveAttribute(
+        'src',
+        /authentic-product-cutout\.webp$/,
+      );
       await expect
         .poll(() =>
-          finale
-            .locator('img')
-            .evaluateAll((images) =>
-              images.every((image) => (image as HTMLImageElement).complete),
-            ),
+          product.evaluate(
+            (image: HTMLImageElement) =>
+              image.complete && image.naturalHeight === 745,
+          ),
         )
         .toBe(true);
-      const model = await finale.locator('.cinema-final-model').boundingBox();
-      const product = await finale
-        .locator('.cinema-product-reveal')
+      const caption = await page
+        .locator('.botanical-copy:has(.botanical-claim)')
         .boundingBox();
+      const bottle = await product.boundingBox();
       const overlap =
         Math.max(
           0,
-          Math.min(model!.x + model!.width, product!.x + product!.width) -
-            Math.max(model!.x, product!.x),
+          Math.min(caption!.x + caption!.width, bottle!.x + bottle!.width) -
+            Math.max(caption!.x, bottle!.x),
         ) *
         Math.max(
           0,
-          Math.min(model!.y + model!.height, product!.y + product!.height) -
-            Math.max(model!.y, product!.y),
+          Math.min(caption!.y + caption!.height, bottle!.y + bottle!.height) -
+            Math.max(caption!.y, bottle!.y),
         );
       expect(overlap).toBe(0);
-      await expect(finale.locator('.cinema-final-model > img')).toHaveCSS(
-        'object-fit',
-        'cover',
-      );
-      expect(product!.width).toBeGreaterThan(
-        width < 760 ? width * 0.8 : width * 0.23,
-      );
-      await expect(finale.locator('.cinema-product-reveal img')).toHaveCSS(
-        'object-fit',
-        'cover',
+      expect(bottle!.height).toBeGreaterThan(
+        width < 760 ? 150 : Math.min(900, width) * 0.3,
       );
       expect(
         await page.evaluate(
@@ -114,10 +128,10 @@ for (const [width, height] of [
         scale: 'css',
       });
       if (width < 760)
-        await finale
-          .locator('.cinema-final-product')
+        await page
+          .locator('[data-layer="product"]')
           .evaluate((element) =>
-            element.scrollIntoView({ block: 'start', behavior: 'instant' }),
+            element.scrollIntoView({ block: 'center', behavior: 'instant' }),
           );
       await page.screenshot({
         path: `test-results/immersive-${width}-final.png`,

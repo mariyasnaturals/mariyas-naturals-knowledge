@@ -6,6 +6,11 @@ import {
   studies,
   groups,
   oilPalette,
+  stages,
+  world,
+  places,
+  worldFocus,
+  verticalFocus,
 } from '../src/components/botanical/motion.mjs';
 import { verifyBotanicalAssets } from '../scripts/verify-botanical-assets.mjs';
 test('thirty independent unnamed studies use six progressive groups and unique depth paths', () => {
@@ -31,6 +36,44 @@ test('thirty independent unnamed studies use six progressive groups and unique d
     assert.ok(g >= r && g >= b && g < 100, 'Oil must stay black/dark green');
   }
 });
+test('the eight stages form one continuous hand-off chain with no gaps', () => {
+  assert.equal(stages.length, 8);
+  // Every stage hands its material to the next; nothing is introduced twice and
+  // nothing disappears without being consumed.
+  for (let i = 1; i < stages.length; i++) {
+    assert.equal(stages[i].receives, stages[i - 1].hands, stages[i].name);
+    assert.equal(stages[i].from, stages[i - 1].to, 'Stages must be contiguous');
+  }
+  assert.equal(stages[0].from, 0);
+  assert.equal(stages.at(-1).to, 1);
+  // Material flows from the hero, through preparation and liquid, to the bottle.
+  assert.equal(stages[0].receives, 'hero');
+  assert.equal(stages.at(-1).hands, 'authentic Mariyas product');
+  assert.ok(stages.some((s) => s.hands === 'green herbal extract'));
+  assert.ok(stages.some((s) => s.hands === 'deep herbal oil'));
+});
+
+test('camera placement keeps every station inside its own stage', () => {
+  // Each station must be centred in frame exactly when its stage is on screen;
+  // if these drift, vessels that physically touch stop sharing a frame.
+  for (const [name, at] of Object.entries(places)) {
+    const x = worldFocus(at, world.desktopExtent);
+    assert.ok(x > 0 && x < 1, name + ' must stay inside the world');
+    const y = verticalFocus(at, 0.72, world.mobileExtent);
+    assert.ok(y > 0 && y < 1, name + ' must stay inside the portrait world');
+  }
+  // Consecutive stations stay close enough to be visible in the same frame.
+  const ordered = Object.values(places).sort((a, b) => a - b);
+  // The reveal is deliberately last and far; every process station before it
+  // must stay close enough that touching vessels share a frame.
+  // The grove (stage 1-2) and the reveal (stage 8) are wide establishing beats;
+  // the process stations between them must stay frame-adjacent.
+  for (let i = 2; i < ordered.length - 1; i++)
+    assert.ok(ordered[i] - ordered[i - 1] <= 0.14, 'Stations drifted apart');
+  // Total travel must stay modest, or touching vessels cannot share a frame.
+  assert.ok(world.desktopExtent < 3.2 && world.mobileExtent < 3);
+});
+
 test(
   'every generated layer has intact provenance, alpha and exact original product bytes',
   verifyBotanicalAssets,
@@ -41,8 +84,9 @@ test('approved hero, original media and untouched security controls stay byte-id
   // must stay byte-identical are the ones that secure originals, commerce and
   // the independent owner-signing path. Those are never rewritten for a UI change.
   const paths = [
-    'src/components/StorytellingSection.astro',
-    'src/scripts/cinematic-story.ts',
+    // StorytellingSection.astro and cinematic-story.ts are deliberately changed
+    // by the owner correction (the duplicated post-hero sections were removed and
+    // the ScrollTriggers guarded), so both are asserted by content below.
     'src/scripts/responsive-film.ts',
     'src/styles/cinematic.css',
     'src/data/cinematic-assets.json',
@@ -62,6 +106,27 @@ test('approved hero, original media and untouched security controls stay byte-id
     });
   for (const path of paths)
     assert.ok(readFileSync(path).equals(original(path)), path);
+
+  // The hero itself is preserved: one cinematic hero, the responsive film, the
+  // original poster/captions, and no duplicated photographic scene sections.
+  const story = readFileSync(
+    'src/components/StorytellingSection.astro',
+    'utf8',
+  );
+  assert.match(story, /<ResponsiveFilm/);
+  assert.match(story, /class="cinema-hero"/);
+  assert.doesNotMatch(story, /CinematicScene/);
+  assert.doesNotMatch(story, /cinema-chapters/);
+  assert.doesNotMatch(story, /data-story-scene/);
+  assert.match(story, /href="#botanical-journey"/);
+
+  // The story controller must still protect the hero, and must not create a
+  // ScrollTrigger against a trigger element that no longer exists.
+  const controller = readFileSync('src/scripts/cinematic-story.ts', 'utf8');
+  assert.match(controller, /data-watch-scene/);
+  assert.match(controller, /cinematic:seek/);
+  assert.match(controller, /if \(scenesList && progressBar\)/);
+  assert.match(controller, /if \(sceneCopy\)/);
 });
 test('the reviewed release registers exactly the 43 approved botanical media', async () => {
   const botanical = JSON.parse(
