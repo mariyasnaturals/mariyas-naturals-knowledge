@@ -128,6 +128,31 @@ for (const file of files) {
 // A preview must never be indexed: Pages serves this file for the whole site.
 await writeFile(join(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
 
+// GitHub Pages runs Jekyll by default, which drops every directory starting with
+// an underscore. That would delete `_astro/` (all CSS/JS) and
+// `_botanical-assets/` (all 43 reviewed layers, including the bottle), leaving a
+// blank, unstyled page. `.nojekyll` disables Jekyll and serves the files as-is.
+await writeFile(join(out, '.nojekyll'), '');
+
+// A visitor who lands on the branch itself should not be able to mistake this
+// for source. This file is never served by Pages (Pages serves the directory).
+await writeFile(
+  join(out, 'PREVIEW_NOTICE.txt'),
+  [
+    'UNAPPROVED INTERACTIVE PREVIEW - NOT FOR RELEASE',
+    '',
+    'Source commit: ' + argOf('--commit', 'local'),
+    'Built by scripts/build-pages-preview.mjs from the verified static output.',
+    '',
+    'This branch contains only built preview output. It is not source, it is',
+    'not reviewable as code, and it must not be merged anywhere.',
+    '',
+    'Purchasing is disabled. The site is noindex/nofollow (robots.txt and a meta',
+    'tag), and .nojekyll is present because Jekyll would otherwise delete',
+    '_astro/ and _botanical-assets/, leaving a blank page.',
+  ].join('\n') + '\n',
+);
+
 const suspicious = [];
 for (const file of await walk(out)) {
   if (extname(file).toLowerCase() !== '.html') continue;
@@ -154,6 +179,7 @@ console.log(
       unrewrittenRootPaths: suspicious,
       ribbon: true,
       robots: 'Disallow: /',
+      nojekyll: true,
     },
     null,
     1,
