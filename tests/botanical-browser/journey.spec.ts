@@ -490,15 +490,34 @@ for (const [width, height] of [
     expect(await layer.evaluate((el) => getComputedStyle(el).position)).toBe(
       'sticky',
     );
-    const stickyCount = await page
+    // Sticky is allowed in exactly two roles: the bottle's foreground layer, and
+    // each chapter's own copy band. Anything else sticky — a full-viewport
+    // stage, a scene, the track — would be the page-locking stage the owner
+    // rejected. Assert the roles, not a bare count.
+    const stickyRoles = await page
       .locator('[data-botanical-journey]')
-      .evaluate(
-        (root) =>
-          [...root.querySelectorAll('*')].filter(
-            (el) => getComputedStyle(el).position === 'sticky',
-          ).length,
+      .evaluate((root) =>
+        [...root.querySelectorAll('*')]
+          .filter((el) => getComputedStyle(el).position === 'sticky')
+          .map((el) => {
+            const r = el.getBoundingClientRect();
+            if (el.hasAttribute('data-bottle-layer')) return 'bottle';
+            if (el.classList.contains('botanical-copy')) return 'copy';
+            return `UNEXPECTED:${el.tagName}.${el.className}`;
+          }),
       );
-    expect(stickyCount).toBe(1);
+    expect(stickyRoles.filter((r) => r === 'bottle')).toHaveLength(1);
+    expect(stickyRoles.filter((r) => r.startsWith('UNEXPECTED'))).toEqual([]);
+    // No sticky element may cover the viewport: that would freeze the page.
+    const stickyFullscreen = await page
+      .locator('[data-botanical-journey]')
+      .evaluate((root) =>
+        [...root.querySelectorAll('*')]
+          .filter((el) => getComputedStyle(el).position === 'sticky')
+          .filter((el) => el.getBoundingClientRect().height > innerHeight * 0.9)
+          .map((el) => el.className.toString()),
+      );
+    expect(stickyFullscreen).toEqual([]);
     // Nothing froze the page: GSAP never pinned.
     await expect(page.locator('.pin-spacer')).toHaveCount(0);
 

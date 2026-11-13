@@ -888,9 +888,20 @@
    centred behind the held product. The bottle floats in front, which is the
    depth this composition wants; the copy keeps its own backdrop so text never
    sits over a vessel's bright metal. */
+/* Only the process vessels are re-seated. The 30 studies position themselves
+   from `--study-y`, and a bare `> *` selector here caught them too, collapsing
+   every specimen into a single row at 56% — the empty-looking frames the owner
+   reported. */
 .botanical-journey[data-layout='portrait'][data-motion='scroll']
   .botanical-scene-art
-  > * {
+  > :not(
+    .botanical-study,
+    .botanical-ingredient,
+    .botanical-canopy,
+    .botanical-grove,
+    .botanical-finale-halo,
+    .botanical-convergence-halo
+  ) {
   top: 56%;
 }
 .botanical-journey[data-layout='portrait'][data-motion='scroll']
@@ -916,11 +927,18 @@
   .botanical-pourer {
   top: 66%;
 }
-/* Copy: a frosted band at the top of the frame, above the product. */
+/* Copy: a frosted band pinned to the top of the frame, above the product.
+   `sticky` rather than in-flow: in flow the copy swept up at 1:1 and had to
+   cross the held bottle's band to exit, so it could only be readable for ~220px
+   of its 860px on-screen life (26%). Pinned, it holds the clear band for the
+   whole chapter and fades once, cleanly, before the next one arrives. The page
+   itself is still not pinned — this is a small block inside a scrolling
+   chapter, and the bottle's layer is the only other sticky element. */
 .botanical-journey[data-layout='portrait'][data-motion='scroll']
   .botanical-scene
   .botanical-copy {
-  position: relative;
+  position: sticky;
+  top: calc(4.75rem + env(safe-area-inset-top));
   z-index: 2;
   max-width: none;
   background: linear-gradient(
@@ -956,6 +974,38 @@
   background: none;
   box-shadow: none;
   padding: 0;
+  /* The clear band above the product is ~210px on an 844-tall viewport. The
+     origin copy carries the most lines in the journey, so it is trimmed to fit
+     that band rather than being allowed to sit over the bottle. */
+  max-width: 26rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-overture {
+  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  margin-bottom: 0.6rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-copy
+  h3 {
+  font-size: clamp(1.3rem, 5.2vw, 1.65rem);
+  line-height: 1.1;
+  margin: 0.35rem 0 0.35rem;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-copy
+  > p:not(.eyebrow, .botanical-claim, .botanical-overture, .botanical-note) {
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--origin
+  .botanical-note {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-top: 0.4rem;
   margin: 0;
 }
 /* Studies and convergence already own the full frame. */
@@ -992,6 +1042,17 @@
   font-size: clamp(1.4rem, 5.4vw, 1.75rem);
   margin: 0.6rem 0 0.75rem;
 }
+/* The finale is the one chapter whose copy resolves *beneath* the product, so it
+   must not inherit the pinned top band. */
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-scroll-copy,
+.botanical-journey[data-layout='portrait'][data-motion='scroll']
+  .botanical-scene--reveal
+  .botanical-copy {
+  position: relative;
+  top: auto;
+}
 /* The finale resolves beneath the held bottle, and is the journey's last
    frame: exactly one viewport, so it settles flush with the page end instead
    of running on past the scroll limit. */
@@ -1006,10 +1067,10 @@
   flex-direction: column;
   justify-content: flex-end;
   min-height: 100svh;
-  /* The band between the held bottle (ends ≈559) and the bottom bar (starts
-     ≈778) is 219px, so the copy is kept tight to fit inside it whole, clear of
+  /* The band between the held bottle (ends ≈563) and the bottom bar (starts
+     ≈778) is ~215px, so the copy is kept tight to fit inside it whole, clear of
      the fixed navigation at every portrait width. */
-  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 .botanical-journey[data-layout='portrait'][data-motion='scroll']
   .botanical-scene--reveal

@@ -96,35 +96,40 @@ export function mountBotanicalJourney(root: HTMLElement) {
       );
 
       // Portrait: the held bottle owns the middle of the frame (roughly
-      // 262–582 of an 844-tall viewport). Chapter copy is in flow, so it sweeps
-      // upward at 1:1 and would otherwise be read straight through the product.
-      // The only genuinely clear band above the bottle is therefore the reveal
-      // window: copy stays at zero until its top edge is clear of the product,
-      // then holds until it leaves the frame. Triggered on the copy itself, so
-      // the mapping is the copy's own travel — not a guess about scene height.
+      // 286–559 of an 844-tall viewport), and chapter copy is pinned to the
+      // clear band above it (see journey.css).
+      //
+      // The geometry cannot be argued away: anything scrolling up from below
+      // must cross the product's band to reach the top. So copy may only become
+      // visible once its bottom edge has cleared the bottle's top — at 844 tall
+      // that is when its top passes ~163px, i.e. ~0.80 through the copy's own
+      // "bottom edge of viewport → top of viewport" travel. The old 0.84 was
+      // measuring the right event; the mistake was that in-flow copy then
+      // immediately swept back across the bottle, so it stayed readable for only
+      // ~220px. Pinning it holds the clear band instead.
+      //
+      // Two cues, deliberately on ranges that never overlap, so they cannot
+      // fight over `opacity` the way two scrubbed tweens on one range do:
+      //   A. fade in as the copy settles above the product;
+      //   B. fade out as the chapter hands over to the next one.
       if (mobile)
         scenes.forEach((el) => {
           const copy = el.querySelector<HTMLElement>('.botanical-copy');
           if (!copy) return;
-          // The finale resolves beneath the product for good, so it is never
-          // faded in — only out, once it starts climbing into the held bottle's
-          // band. Geometry: copy top reaches 66% (≈557 of 844) exactly as it
-          // touches the bottle's base, so it is gone before it can overlap.
+          // The finale resolves beneath the product, so it is visible for its
+          // whole settle and never needs an entry cue. Set it before any
+          // scrubbed tween reads it: an earlier version returned here *after*
+          // building the entry timeline, and that scrub reset the copy to zero,
+          // leaving the last chapter blank.
           if (el.dataset.scene === 'reveal') {
-            const exit = gsap.timeline({
-              defaults: { ease: 'none' },
-              scrollTrigger: {
-                trigger: copy,
-                start: 'top 66%',
-                end: 'top 60%',
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            });
-            exit.fromTo(copy, { autoAlpha: 1 }, { autoAlpha: 0 });
+            gsap.set(copy, { autoAlpha: 1 });
             return;
           }
-          const tl = gsap.timeline({
+          // `origin` is the first chapter: no previous chapter covers it, so it
+          // is on screen while it crosses the product on the way in. It gets a
+          // longer clear window before it appears.
+          const holdRatio = el.dataset.scene === 'origin' ? 0.86 : 0.8;
+          const reveal = gsap.timeline({
             defaults: { ease: 'none' },
             scrollTrigger: {
               trigger: copy,
@@ -134,12 +139,32 @@ export function mountBotanicalJourney(root: HTMLElement) {
               invalidateOnRefresh: true,
             },
           });
-          tl.fromTo(
-            copy,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, duration: 0.06 },
-            0.84,
-          ).to(copy, { autoAlpha: 1, duration: 0.1 }, 0.9);
+          reveal
+            .fromTo(
+              copy,
+              { autoAlpha: 0 },
+              { autoAlpha: 0, duration: holdRatio },
+              0,
+            )
+            .to(
+              copy,
+              { autoAlpha: 1, duration: 1 - holdRatio, ease: 'power2.out' },
+              holdRatio,
+            );
+
+          const exitStart = 'bottom 45%';
+          const exitEnd = 'bottom 20%';
+          const exit = gsap.timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: el,
+              start: exitStart,
+              end: exitEnd,
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+          exit.to(copy, { autoAlpha: 0, duration: 1 });
         });
 
       // Chapter art drifts gently behind the held product, so the background

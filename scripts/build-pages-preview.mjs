@@ -8,8 +8,8 @@
 //
 //   1. `base: '/'` (Astro) has no effect on an existing build by default, so the
 //      rewrite is done here, against the real output, and verified afterwards.
-//   2. A `<base href="/<repo>/">` is injected too. It is a backstop for any path
-//      this rewrite misses: a missed src/href would otherwise silently 404.
+//   2. No `<base>` tag is injected: a base resolves in-page `#fragment` links
+//      against the repo root instead of the page, breaking every anchor.
 //   3. An unapproved-preview ribbon is added, and the built noindex/robots
 //      policy is re-asserted rather than assumed.
 //
@@ -108,10 +108,13 @@ for (const file of files) {
 
   if (ext === '.html') {
     stats.html++;
-    // Backstop plus preview labelling. `noindex` does not make a public site
-    // private; it only asks well-behaved crawlers to stay away.
-    if (!text.includes('<base '))
-      text = text.replace(/<head([^>]*)>/i, `<head$1><base href="${base}">`);
+    // Deliberately NO `<base href>`. It was here as a backstop for relative
+    // paths, but this build has none: every asset reference is root-absolute and
+    // is rewritten above. What `<base>` DID do was break in-page navigation —
+    // `<a href="#story">` resolved against the base, giving `/<repo>/#story`
+    // (the repo root index) instead of `/<repo>/en/#story`. That is 13 broken
+    // anchors per page across 377 pages. Removing it fixes them at the source
+    // instead of rewriting every hash link in four languages.
     const ribbon = `<div role="note" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483647;padding:.45rem .75rem;background:#3a2410;color:#f0e2c8;font:600 .72rem/1.35 system-ui,sans-serif;letter-spacing:.02em;text-align:center;pointer-events:none">UNAPPROVED PREVIEW · commit ${argOf('--commit', 'local')} · not for release</div>`;
     text = text.replace(/<\/body>/i, `${ribbon}</body>`);
     // Re-assert the build's own policy instead of trusting it survived.
@@ -157,6 +160,11 @@ const suspicious = [];
 for (const file of await walk(out)) {
   if (extname(file).toLowerCase() !== '.html') continue;
   const text = await readFile(file, 'utf8');
+  if (text.includes('<base '))
+    suspicious.push({
+      file: relative(out, file),
+      found: ['<base> breaks hash links'],
+    });
   const m = [...text.matchAll(/(?:href|src)="\/(?!\/)([^"]*)"/g)].filter(
     ([, path]) => !path.startsWith(base.slice(1)),
   );
@@ -177,6 +185,7 @@ console.log(
       htmlPages: stats.html,
       skippedSitemap: [...skipped],
       unrewrittenRootPaths: suspicious,
+      noBaseTag: true,
       ribbon: true,
       robots: 'Disallow: /',
       nojekyll: true,
