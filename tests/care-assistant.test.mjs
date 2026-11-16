@@ -40,11 +40,19 @@ test('every care answer quotes the official store, never an invented fact', () =
   assert.equal(products.length, 85);
   assert.ok(knowledge.policy.length >= 3);
 
-  const records = new Map(catalogue.records.map((record) => [record.id, record]));
+  const records = new Map(
+    catalogue.records.map((record) => [record.id, record]),
+  );
   for (const product of products) {
     assert.ok(product.name && product.slug && product.storeUrl);
-    assert.equal(new URL(product.storeUrl).origin, 'https://www.mariyasnaturals.com');
-    assert.match(product.storeUrl, /^https:\/\/www\.mariyasnaturals\.com\/product\//);
+    assert.equal(
+      new URL(product.storeUrl).origin,
+      'https://www.mariyasnaturals.com',
+    );
+    assert.match(
+      product.storeUrl,
+      /^https:\/\/www\.mariyasnaturals\.com\/product\//,
+    );
     // No HTML or undecoded entities leak into an answer.
     for (const text of [product.name, product.summary, product.details])
       assert.doesNotMatch(text, /<[^>]+>|&#?\w+;/);
@@ -92,7 +100,10 @@ test('a media id always resolves to a real local derivative of that product', ()
 test('product lookup finds the right listing in English and in Indic scripts', () => {
   const names = (query) => searchProducts(products, query).map((p) => p.name);
 
-  assert.equal(names('hair oil 500 ml')[0], 'Mariyas Herbal Hair Care – 500 ml');
+  assert.equal(
+    names('hair oil 500 ml')[0],
+    'Mariyas Herbal Hair Care – 500 ml',
+  );
   assert.ok(names('hair oil').length > 0);
   assert.ok(names('hair oil 500').some((name) => name.includes('500 ml')));
   assert.equal(names('chyavanaprash')[0], 'Chyavanaprash');
@@ -110,11 +121,15 @@ test('product lookup finds the right listing in English and in Indic scripts', (
 test('intents separate a product question from a medical one', () => {
   assert.ok(detectIntents('is it safe during pregnancy').includes('safety'));
   assert.ok(detectIntents('can I use this on my newborn').includes('safety'));
-  assert.ok(detectIntents('my baby has a rash, is this ok?').includes('safety'));
+  assert.ok(
+    detectIntents('my baby has a rash, is this ok?').includes('safety'),
+  );
   assert.ok(detectIntents('how much is the hair oil').includes('price'));
   assert.ok(detectIntents('do you deliver to Kottayam').includes('shipping'));
   assert.ok(detectIntents('how do I use the hair oil').includes('use'));
-  assert.ok(detectIntents('what ingredients are in it').includes('ingredients'));
+  assert.ok(
+    detectIntents('what ingredients are in it').includes('ingredients'),
+  );
   assert.ok(detectIntents('whatsapp number').includes('contact'));
   // A product name must not be mistaken for a safety question.
   const plain = detectIntents('baby hair oil');

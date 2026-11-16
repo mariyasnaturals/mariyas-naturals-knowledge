@@ -20,7 +20,9 @@ const approved = new Map(
 export function approvedImage(id: string, alt: LocalizedText): ProductImage {
   const media = approved.get(id);
   if (!media)
-    throw new Error(`Image is not in the approved official-store manifest: ${id}`);
+    throw new Error(
+      `Image is not in the approved official-store manifest: ${id}`,
+    );
   const largest = media.derivatives.at(-1)!;
   return {
     id,

@@ -15,13 +15,13 @@ A product guide that sits on every page. It is deliberately **not** a chatbot an
 
 ## What it never does
 
-| Risk | How it is prevented |
-| --- | --- |
+| Risk                                   | How it is prevented                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Invented ingredients, prices or claims | Every string comes from `catalogue/care-knowledge.json`, a verbatim snapshot of the public WooCommerce Store API taken on the verification date. There is no model, no prompt and no generation step. |
-| Network calls or tracking | The assistant never calls the network. The catalogue index ships with the site. `tests/browser/home.spec.ts` aborts every non-`127.0.0.1` request and asserts none were attempted. |
-| Medical advice | `detectIntents` escalates pregnancy, breastfeeding, allergy, infant, medicine, doctor and "is it safe" phrasing to the caution answer. |
-| Wrong product photo | Answers only show a photograph whose media record is associated with that exact listing (`tests/care-assistant.test.mjs`). |
-| A dead button without JavaScript | The trigger is rendered `hidden` and is revealed by the module script. |
+| Network calls or tracking              | The assistant never calls the network. The catalogue index ships with the site. `tests/browser/home.spec.ts` aborts every non-`127.0.0.1` request and asserts none were attempted.                    |
+| Medical advice                         | `detectIntents` escalates pregnancy, breastfeeding, allergy, infant, medicine, doctor and "is it safe" phrasing to the caution answer.                                                                |
+| Wrong product photo                    | Answers only show a photograph whose media record is associated with that exact listing (`tests/care-assistant.test.mjs`).                                                                            |
+| A dead button without JavaScript       | The trigger is rendered `hidden` and is revealed by the module script.                                                                                                                                |
 
 ## Data
 

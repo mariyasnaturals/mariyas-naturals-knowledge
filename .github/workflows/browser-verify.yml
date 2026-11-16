@@ -1,0 +1,50 @@
+name: Browser verification
+
+# Temporary: verifies the built site in a real Chromium (fonts, axe WCAG 2.2 AA,
+# the care assistant, chrome geometry) and commits a small JSON summary of the
+# result, because the review sandbox cannot read Actions logs or artifacts.
+# It holds content-write authority for that summary only and publishes nothing.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'arena/**'
+    paths:
+      - 'tests/browser/**'
+      - 'scripts/summarise-playwright.mjs'
+      - '.github/workflows/browser-verify.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  browser:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npx astro check
+      - name: Run the browser and accessibility suites
+        run: |
+          set +e
+          npx playwright test --reporter=json > /tmp/playwright.json 2>/tmp/playwright.err
+          echo "exit=$?" > /tmp/report-status.txt
+          set -e
+          node scripts/summarise-playwright.mjs /tmp/playwright.json /tmp/playwright.err /tmp/report-status.txt
+      - name: Commit the summary for review
+        if: always()
+        run: |
+          git config user.name 'mariyas-browser-check'
+          git config user.email 'browser-check@users.noreply.github.com'
+          git add browser-report.json 2>/dev/null || true
+          git commit -m 'chore(ci): browser verification summary' || echo 'nothing to commit'
+          git push origin HEAD:${{ github.ref_name }} || echo 'push skipped'

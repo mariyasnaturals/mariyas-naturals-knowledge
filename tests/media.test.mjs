@@ -38,9 +38,18 @@ test('the catalogue is the official .com store, with the discontinued pack remov
     'Every published record must come from the official .com catalogue',
   );
   // 3010 (1 litre) is discontinued and must not exist anywhere.
-  assert.equal(snapshot.records.some((r) => r.id === 3010), false);
-  assert.equal(identities.some((i) => i.sourceProductId === 3010), false);
-  assert.equal(manifest.products.some((p) => p.sources[0].id === 3010), false);
+  assert.equal(
+    snapshot.records.some((r) => r.id === 3010),
+    false,
+  );
+  assert.equal(
+    identities.some((i) => i.sourceProductId === 3010),
+    false,
+  );
+  assert.equal(
+    manifest.products.some((p) => p.sources[0].id === 3010),
+    false,
+  );
   assert.deepEqual(
     snapshot.exclusions.map((entry) => entry.id),
     [3010],

@@ -205,8 +205,13 @@ function tree(directory) {
 function approvedPublic(root) {
   const brand = json(resolve(root, 'src/data/brand-assets.json'));
   const expected = new Map();
-  for (const name of ['media-manifest', 'brand-media']) {
-    const manifest = json(resolve(root, `src/data/${name}.json`));
+  // Catalogue manifests are generated into `catalogue/`; brand artwork stays in
+  // `src/data/`. Both are verified against the same media policy.
+  for (const path of [
+    'catalogue/media-manifest.json',
+    'src/data/brand-media.json',
+  ]) {
+    const manifest = json(resolve(root, path));
     assertApprovedMedia(manifest);
     for (const asset of manifest.media.flatMap((m) => m.derivatives))
       expected.set(asset.localAssetPath.slice(1), asset.sha256);

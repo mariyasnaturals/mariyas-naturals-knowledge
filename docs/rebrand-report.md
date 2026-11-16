@@ -1,5 +1,9 @@
 # Current .in visual rebrand and source correction
 
+> **Superseded on 2026-11-16.** The `.in` census in this report (86 listings, 8
+> photographs) was replaced by the official `.com` sync: 85 published listings and
+> 215 product photographs. See [official-store-sync.md](official-store-sync.md).
+
 Branch: `feature/authentic-media-typography`. Before baseline: `40035f4a7f8c006922eb661f434d4e0b98053c75`. The handoff gives the corrective commit SHA. This updates the existing premium Astro implementation and its draft PR; nothing is deployed or merged.
 
 ## Source correction

@@ -1,5 +1,10 @@
 # Current approved .in catalogue
 
+> **Superseded on 2026-11-16.** This `.in` inventory is historical. The published
+> catalogue is now 85 `.com` listings, and the 1 litre pack (`3010`) is withdrawn —
+> see [withdrawn-1-litre-pack.md](withdrawn-1-litre-pack.md) and the generated
+> [official-store-sync.md](official-store-sync.md).
+
 This inventory follows the 86 current public .in listings. Individual product imagery is available for two listings only. Category artwork is not used to fill missing product photographs. Source URLs and complete media provenance are in the active manifests.
 
 | Stable ID  | Current product name                  | Source product ID | SKU   | Approved product images |

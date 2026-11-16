@@ -4,15 +4,15 @@
 
 On 2026-11-16 the official store still listed a fourth hair-oil SKU:
 
-| Field | Value |
-| --- | --- |
-| Store id | `3010` |
-| Name | `Mariyas Hair Oil – 1 ltr` |
-| Slug | `mariyas-hair-oil-1-ltr` |
-| SKU | `89554` |
-| Price | `0` |
-| Photograph | none |
-| Status | discontinued — no longer sold |
+| Field      | Value                         |
+| ---------- | ----------------------------- |
+| Store id   | `3010`                        |
+| Name       | `Mariyas Hair Oil – 1 ltr`    |
+| Slug       | `mariyas-hair-oil-1-ltr`      |
+| SKU        | `89554`                       |
+| Price      | `0`                           |
+| Photograph | none                          |
+| Status     | discontinued — no longer sold |
 
 A zero-priced listing with no photograph cannot be presented as part of the
 range, so it is excluded from the site in one place — `EXCLUSIONS` in

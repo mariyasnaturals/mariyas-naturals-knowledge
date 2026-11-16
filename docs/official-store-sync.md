@@ -6,16 +6,16 @@ untouched original binaries; this report describes what the site now holds.
 
 ## Catalogue
 
-| Fact | Value |
-| --- | --- |
-| Products read | 86 |
-| Products published | 85 |
-| Excluded | 1 — #3010 |
-| Products with an official photograph | 59 |
-| Products without one (labelled empty frame) | 26 |
-| Distinct store attachments | 215 |
-| Local WebP derivatives | 489 |
-| Local derivative bytes | 26337590 |
+| Fact                                        | Value     |
+| ------------------------------------------- | --------- |
+| Products read                               | 86        |
+| Products published                          | 85        |
+| Excluded                                    | 1 — #3010 |
+| Products with an official photograph        | 59        |
+| Products without one (labelled empty frame) | 26        |
+| Distinct store attachments                  | 215       |
+| Local WebP derivatives                      | 489       |
+| Local derivative bytes                      | 26337590  |
 
 ## Exclusions
 

@@ -86,10 +86,17 @@ function temporary(t) {
 function fixture(t) {
   const path = temporary(t);
   mkdirSync(resolve(path, 'src/data'), { recursive: true });
-  for (const name of ['brand-assets', 'media-manifest', 'brand-media'])
+  for (const name of ['brand-assets', 'brand-media'])
     cpSync(
       resolve(root, `src/data/${name}.json`),
       resolve(path, `src/data/${name}.json`),
+    );
+  // Generated catalogue manifests live in `catalogue/` (see catalogue/README.md).
+  mkdirSync(resolve(path, 'catalogue'), { recursive: true });
+  for (const name of ['media-manifest', 'media-index'])
+    cpSync(
+      resolve(root, `catalogue/${name}.json`),
+      resolve(path, `catalogue/${name}.json`),
     );
   cpSync(resolve(root, 'public'), resolve(path, 'public'), { recursive: true });
   cpSync(resolve(path, 'public'), resolve(path, 'dist'), { recursive: true });
