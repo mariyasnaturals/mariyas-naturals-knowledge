@@ -571,8 +571,13 @@ test('the review carousel is keyboard operable and instant under reduced motion'
   await expect
     .poll(() => rail.evaluate((element) => element.scrollLeft))
     .toBeGreaterThan(before);
+  // The dots follow the real scroll position: exactly one is current, and it is
+  // the card we scrolled to.
   await expect(
-    page.locator('[data-voices-dots] button').first(),
+    page.locator('[data-voices-dots] button[aria-current="true"]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-voices-dots] button').last(),
   ).toHaveAttribute('aria-current', 'true');
 });
 
@@ -603,8 +608,12 @@ test('every social button points at the two verified destinations', async ({
       await expect(link).toHaveAttribute('rel', /noopener/);
       await expect(link).toHaveAttribute('aria-label', /\S/);
     }
-    // The Maps listing link still works from both the rating block and footer.
-    await expect(page.locator(`#voices a[href="${MAPS}"]`)).toHaveCount(1);
+    // Two ways back to the listing inside the voices section: the aggregate's
+    // own button, and the source link under the carousel.
+    await expect(page.locator(`#voices a[href="${MAPS}"]`)).toHaveCount(2);
+    await expect(
+      page.locator(`#voices .lg-rating__cta[href="${MAPS}"]`),
+    ).toHaveCount(1);
   }
 });
 
