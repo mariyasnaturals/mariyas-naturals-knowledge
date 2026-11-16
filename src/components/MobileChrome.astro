@@ -114,20 +114,44 @@ const offerMessage = hairOilOffer.verified
     if (!heroActions) {
       fab.dataset.fabVisible = 'true';
     } else {
-      const footer = document.querySelector('#site-footer');
-      const sync = () => {
+      /**
+       * The pill hides while the hero's own action is on screen, and while any
+       * closing panel is in view. The reviews block, the story panel and the
+       * footer are dense text; a fixed pill on top of them is exactly the
+       * failure this rule prevents. An observer is used rather than a scroll
+       * calculation so it stays correct when the page height changes.
+       */
+      const dense = ['#voices', '#story', '#site-footer']
+        .map((selector) => document.querySelector(selector))
+        .filter((element): element is Element => Boolean(element));
+      const inView = new Set<Element>();
+
+      const render = () => {
         const past = heroActions.getBoundingClientRect().bottom <= 0;
-        // Hide over the footer: the pill is a shortcut to the same shop the bar
-        // already links to, and it must never cover the address or wordmark.
-        const footerTop = footer
-          ? footer.getBoundingClientRect().top
-          : Infinity;
-        const overFooter = footerTop < innerHeight - 40;
-        fab.dataset.fabVisible = String(past && !overFooter);
+        fab.dataset.fabVisible = String(past && inView.size === 0);
       };
-      sync();
-      addEventListener('scroll', sync, { passive: true });
-      addEventListener('resize', sync, { passive: true });
+
+      if ('IntersectionObserver' in window && dense.length > 0) {
+        const watcher = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) inView.add(entry.target);
+              else inView.delete(entry.target);
+            }
+            render();
+          },
+          // Trigger before the panel's top edge reaches the pill.
+          { rootMargin: '0px 0px -30% 0px' },
+        );
+        for (const element of dense) watcher.observe(element);
+      } else {
+        // Without the observer, stay visible rather than risk hiding a link.
+        fab.dataset.fabVisible = 'true';
+      }
+
+      render();
+      addEventListener('scroll', render, { passive: true });
+      addEventListener('resize', render, { passive: true });
     }
   }
 </script>
