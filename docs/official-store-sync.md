@@ -30,7 +30,7 @@ records its own SHA-256 in `src/data/media-manifest.json`.
 ## Listings without an official photograph
 
 - Mariyas Herbal Hair Care Oil (`mariyas-hair-oil`)
-- Hair Pack &#038; Wash Powder 100 g (`hair-pack-wash-powder-100gm-19214`)
+- Hair Pack & Wash Powder 100 g (`hair-pack-wash-powder-100gm-19214`)
 - Lip Balm 10 g (`lip-balm-10gm-19216`)
 - Eyebrow Oil 10 ml (`eyebrow-oil-10ml-19219`)
 - Under Eye Dark Circle Oil 10 ml (`under-eye-dark-circle-oil-10-ml-19222`)
@@ -39,13 +39,13 @@ records its own SHA-256 in `src/data/media-manifest.json`.
 - Kajal (`kajal-19587`)
 - Saffron Fairness Oil (`saffron-fairness-oil-19597`)
 - Mariyas Fairness Natural Soap (`mariyas-fairness-natural-soap-19674`)
-- Mariyas Oil Treated Comb &#8211; Dual (`mariyas-oil-treated-comb-dual-21885`)
-- Mariyas Oil Treated Comb &#8211; Wide (`mariyas-oil-treated-comb-wide-21914`)
-- Mariyas Oil Treated Comb &#8211; Fine (`mariyas-oil-treated-comb-fine-21918`)
-- Mariyas Oil Treated Comb &#8211; Combo Pack (`mariyas-oil-treated-comb-combo-pack-21919`)
-- Lotus Gel 100 g &#8211; No Stock (`lotus-gel-100-g-no-stock-2934`)
+- Mariyas Oil Treated Comb – Dual (`mariyas-oil-treated-comb-dual-21885`)
+- Mariyas Oil Treated Comb – Wide (`mariyas-oil-treated-comb-wide-21914`)
+- Mariyas Oil Treated Comb – Fine (`mariyas-oil-treated-comb-fine-21918`)
+- Mariyas Oil Treated Comb – Combo Pack (`mariyas-oil-treated-comb-combo-pack-21919`)
+- Lotus Gel 100 g – No Stock (`lotus-gel-100-g-no-stock-2934`)
 - Hibiscus Gel 100 g (`hibiscus-gel-100gm-24246`)
-- Mariyas Hair &#038; Skin Care Kit (`mariyas-hair-skin-care-kit-77781`)
+- Mariyas Hair & Skin Care Kit (`mariyas-hair-skin-care-kit-77781`)
 - Ashwagandha Powder 100 g (`ashwagandha-powder-100g-79428`)
 - Pathimugham Powder 100 g (`pathimugham-powder-100g-79434`)
 - Reetha Powder 100 g (`reetha-powder-100g-79435`)
@@ -54,7 +54,7 @@ records its own SHA-256 in `src/data/media-manifest.json`.
 - Kolarakku Powder 100 g (`kolarakku-powder-100g-79449`)
 - Navara Powder 100 g (`navara-powder-100g-79451`)
 - Karkidaka Kanji (`karkidaka-kanji-89315`)
-- Ghee &#8211; Vechoor Cow 500 g (`ghee-vechoor-cow-500gm-98121`)
+- Ghee – Vechoor Cow 500 g (`ghee-vechoor-cow-500gm-98121`)
 
 ## Owner note
 

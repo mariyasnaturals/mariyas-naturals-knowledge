@@ -272,11 +272,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        {
-          "id": 107,
-          "name": "Glow &amp; Brightening",
-          "slug": "glow-brightening"
-        },
+        { "id": 107, "name": "Glow & Brightening", "slug": "glow-brightening" },
         { "id": 80, "name": "Skin Care", "slug": "skin-care" }
       ],
       "attributes": [],
@@ -537,7 +533,7 @@
     {
       "store": "com",
       "id": 2879,
-      "name": "Hair Pack &#038; Wash Powder 100 g",
+      "name": "Hair Pack & Wash Powder 100 g",
       "sku": "19214",
       "slug": "hair-pack-wash-powder-100-g",
       "url": "https://www.mariyasnaturals.com/product/hair-pack-wash-powder-100-g/",
@@ -793,13 +789,9 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 104, "name": "Acne &amp; Pimples", "slug": "acne-pimples" },
+        { "id": 104, "name": "Acne & Pimples", "slug": "acne-pimples" },
         { "id": 105, "name": "Dark Circles", "slug": "dark-circles" },
-        {
-          "id": 107,
-          "name": "Glow &amp; Brightening",
-          "slug": "glow-brightening"
-        },
+        { "id": 107, "name": "Glow & Brightening", "slug": "glow-brightening" },
         { "id": 80, "name": "Skin Care", "slug": "skin-care" }
       ],
       "attributes": [],
@@ -1060,10 +1052,10 @@
       "categories": [
         {
           "id": 94,
-          "name": "Health Foods &amp; Tonics",
+          "name": "Health Foods & Tonics",
           "slug": "health-foods-tonics"
         },
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -1190,7 +1182,7 @@
     {
       "store": "com",
       "id": 2930,
-      "name": "Mariyas Oil Treated Comb &#8211; Dual",
+      "name": "Mariyas Oil Treated Comb – Dual",
       "sku": "21885",
       "slug": "mariyas-oil-treated-comb-dual",
       "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-dual/",
@@ -1212,7 +1204,7 @@
     {
       "store": "com",
       "id": 2931,
-      "name": "Mariyas Oil Treated Comb &#8211; Wide",
+      "name": "Mariyas Oil Treated Comb – Wide",
       "sku": "21914",
       "slug": "mariyas-oil-treated-comb-wide",
       "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-wide/",
@@ -1234,7 +1226,7 @@
     {
       "store": "com",
       "id": 2932,
-      "name": "Mariyas Oil Treated Comb &#8211; Fine",
+      "name": "Mariyas Oil Treated Comb – Fine",
       "sku": "21918",
       "slug": "mariyas-oil-treated-comb-fine",
       "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-fine/",
@@ -1256,7 +1248,7 @@
     {
       "store": "com",
       "id": 2933,
-      "name": "Mariyas Oil Treated Comb &#8211; Combo Pack",
+      "name": "Mariyas Oil Treated Comb – Combo Pack",
       "sku": "21919",
       "slug": "mariyas-oil-treated-comb-combo-pack",
       "url": "https://www.mariyasnaturals.com/product/mariyas-oil-treated-comb-combo-pack/",
@@ -1278,7 +1270,7 @@
     {
       "store": "com",
       "id": 2934,
-      "name": "Lotus Gel 100 g &#8211; No Stock",
+      "name": "Lotus Gel 100 g – No Stock",
       "sku": "24220",
       "slug": "lotus-gel-100-g-no-stock",
       "url": "https://www.mariyasnaturals.com/product/lotus-gel-100-g-no-stock/",
@@ -1337,7 +1329,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 104, "name": "Acne &amp; Pimples", "slug": "acne-pimples" },
+        { "id": 104, "name": "Acne & Pimples", "slug": "acne-pimples" },
         { "id": 105, "name": "Dark Circles", "slug": "dark-circles" },
         { "id": 80, "name": "Skin Care", "slug": "skin-care" }
       ],
@@ -1746,7 +1738,7 @@
     {
       "store": "com",
       "id": 2948,
-      "name": "Mariyas Hair &#038; Skin Care Kit",
+      "name": "Mariyas Hair & Skin Care Kit",
       "sku": "77781",
       "slug": "mariyas-hair-skin-care-kit",
       "url": "https://www.mariyasnaturals.com/product/mariyas-hair-skin-care-kit/",
@@ -1914,7 +1906,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -1955,7 +1947,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -1996,7 +1988,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2037,7 +2029,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2078,7 +2070,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2163,7 +2155,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2226,7 +2218,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2289,7 +2281,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2330,7 +2322,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2371,7 +2363,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2412,7 +2404,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2453,7 +2445,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2494,7 +2486,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2535,7 +2527,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2576,7 +2568,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2617,7 +2609,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2680,7 +2672,7 @@
       },
       "inStockAtVerification": true,
       "categories": [
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2750,7 +2742,7 @@
     {
       "store": "com",
       "id": 3008,
-      "name": "Mariyas Herbal Hair Care Oil &#8211; 200 ml",
+      "name": "Mariyas Herbal Hair Care Oil – 200 ml",
       "sku": "89552",
       "slug": "mariyas-herbal-hair-care-oil-200-ml",
       "url": "https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-oil-200-ml/",
@@ -2789,7 +2781,7 @@
     {
       "store": "com",
       "id": 3009,
-      "name": "Mariyas Herbal Hair Care &#8211; 500 ml",
+      "name": "Mariyas Herbal Hair Care – 500 ml",
       "sku": "89553",
       "slug": "mariyas-herbal-hair-care-500-ml",
       "url": "https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-500-ml/",
@@ -2846,10 +2838,10 @@
         { "id": 91, "name": "Body Care", "slug": "body-care" },
         {
           "id": 94,
-          "name": "Health Foods &amp; Tonics",
+          "name": "Health Foods & Tonics",
           "slug": "health-foods-tonics"
         },
-        { "id": 83, "name": "Herbs &amp; Wellness", "slug": "herbs-wellness" }
+        { "id": 83, "name": "Herbs & Wellness", "slug": "herbs-wellness" }
       ],
       "attributes": [],
       "variations": [],
@@ -2863,7 +2855,7 @@
     {
       "store": "com",
       "id": 3012,
-      "name": "Ghee &#8211; Vechoor Cow 500 g",
+      "name": "Ghee – Vechoor Cow 500 g",
       "sku": "98121",
       "slug": "ghee-vechoor-cow-500-g",
       "url": "https://www.mariyasnaturals.com/product/ghee-vechoor-cow-500-g/",
