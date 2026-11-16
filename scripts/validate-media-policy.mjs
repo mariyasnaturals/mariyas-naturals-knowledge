@@ -8,7 +8,7 @@ import { assertApprovedMedia } from '../src/config/media-policy.mjs';
  * Source policy for the discovery build.
  *
  * Every published image must fall into exactly one registered class:
- *   1. a catalogue product derivative from the current approved .in manifest,
+ *   1. a catalogue product derivative from the approved official-store manifest,
  *   2. a brand-editorial derivative from the same current-source policy,
  *   3. a brand asset derived here from an owner-supplied original, recorded with
  *      its own hash in `src/data/brand-assets.json`.
@@ -20,7 +20,7 @@ const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 
 const manifests = [
-  json('../src/data/media-manifest.json'),
+  json('../catalogue/media-manifest.json'),
   json('../src/data/brand-media.json'),
 ];
 manifests.forEach(assertApprovedMedia);
@@ -238,5 +238,5 @@ assert.equal(
   'All reported approved images must actually be used',
 );
 console.log(
-  `PASS source policy: ${htmlCount} HTML pages, ${imageCount} image elements, ${used.size} approved .in images, ${brandAssets.size} derived brand assets; no legacy files, retired hashes, hotlinks, CSS/JS, social or schema images.`,
+  `PASS source policy: ${htmlCount} HTML pages, ${imageCount} image elements, ${used.size} approved official-store images, ${brandAssets.size} derived brand assets; no legacy files, retired hashes, hotlinks, CSS/JS, social or schema images.`,
 );

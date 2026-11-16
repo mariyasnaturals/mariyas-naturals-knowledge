@@ -405,3 +405,104 @@ test('the footer links the verified listing without merging the two addresses', 
   await expect(footer).toContainText('Thalavady South S.O');
   await expect(footer).toContainText('Avalookkunnu P.O');
 });
+
+test('the care assistant answers from the store and never blocks the chrome', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 780 });
+  const external: string[] = [];
+  await page.route('**/*', (route) => {
+    if (new URL(route.request().url()).hostname !== '127.0.0.1') {
+      external.push(route.request().url());
+      return route.abort();
+    }
+    return route.continue();
+  });
+  await page.goto('/en/');
+
+  const trigger = page.locator('[data-care-open]');
+  await expect(trigger).toBeVisible();
+  const dialog = page.locator('[data-care-dialog]');
+  await expect(dialog).not.toBeVisible();
+
+  // Clear of the gold shop pill and of the bottom bar on small screens.
+  const boxes = await Promise.all([
+    trigger.boundingBox(),
+    page.locator('.shop-fab').boundingBox(),
+    page.locator('[data-mobile-nav]').boundingBox(),
+    page
+      .locator('.hero-video-control')
+      .boundingBox()
+      .catch(() => null),
+  ]);
+  const [care, fab, bar, heroControl] = boxes;
+  expect(care).not.toBeNull();
+  expect(fab).not.toBeNull();
+  expect(bar).not.toBeNull();
+  const overlaps = (a: typeof care, b: typeof care) =>
+    Boolean(
+      a &&
+      b &&
+      a.x < b.x + b.width &&
+      b.x < a.x + a.width &&
+      a.y < b.y + b.height &&
+      b.y < a.y + a.height,
+    );
+  expect(overlaps(care, fab)).toBe(false);
+  expect(overlaps(care, bar)).toBe(false);
+  if (heroControl) expect(overlaps(care, heroControl)).toBe(false);
+
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+  await expect(page.locator('#care-input')).toBeFocused();
+  await page.locator('#care-input').fill('hair oil 500 ml');
+  await page.locator('[data-care-form] button[type="submit"]').click();
+  await expect(page.locator('.care-card').first()).toBeVisible();
+  await expect(page.locator('.care-card').first()).toContainText(
+    'Mariyas Herbal Hair Care',
+  );
+  await expect(page.locator('.care-card__link').first()).toHaveAttribute(
+    'href',
+    /^https:\/\/www\.mariyasnaturals\.com\/product\//,
+  );
+
+  // A medical question is refused, never answered from guesswork.
+  await page.locator('#care-input').fill('is it safe during pregnancy');
+  await page.locator('[data-care-form] button[type="submit"]').click();
+  await expect(page.locator('.care-bubble--bot').last()).toContainText(
+    'qualified practitioner',
+  );
+
+  expect(await axe(page)).toEqual([]);
+
+  // Escape closes the dialog and focus returns to the trigger.
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  expect(external).toEqual([]);
+});
+
+test('the care assistant is reachable and labelled in every locale', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  const labels = {
+    en: 'Chat with Mariyas',
+    ml: 'മാരിയാസിനോട് സംസാരിക്കൂ',
+    hi: 'मारियास से बात करें',
+    ta: 'மாரியாஸுடன் பேசுங்கள்',
+    kn: 'ಮಾರಿಯಾಸ್ ಜೊತೆ ಮಾತನಾಡಿ',
+  } as const;
+  for (const [lang, label] of Object.entries(labels)) {
+    await page.goto(`/${lang}/`);
+    const trigger = page.locator('[data-care-open]');
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveText(label);
+    await trigger.click();
+    await expect(
+      page.locator('[data-care-dialog] [data-care-close]'),
+    ).toHaveAccessibleName(/.+/);
+    await page.keyboard.press('Escape');
+    expect(await axe(page)).toEqual([]);
+  }
+});

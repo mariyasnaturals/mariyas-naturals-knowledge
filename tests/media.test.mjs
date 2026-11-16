@@ -10,9 +10,9 @@ import {
 } from '../src/config/media-policy.mjs';
 
 const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
-const manifest = json('../src/data/media-manifest.json');
+const manifest = json('../catalogue/media-manifest.json');
 const brand = json('../src/data/brand-media.json');
-const snapshot = json('../src/data/catalogue-source.json');
+const snapshot = json('../catalogue/catalogue-source.json');
 const identities = json('../src/data/product-identities.json');
 const retired = json('./fixtures/retired-media-hashes.json');
 const media = [...manifest.media, ...brand.media];

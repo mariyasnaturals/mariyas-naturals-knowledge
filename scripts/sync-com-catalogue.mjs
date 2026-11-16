@@ -5,11 +5,12 @@
  *   node scripts/sync-com-catalogue.mjs --snapshot /tmp/com-snapshot
  *
  * It produces, and is the only writer of:
- *   src/data/catalogue-source.json    the verified .com product records
+ *   catalogue/catalogue-source.json   the verified .com product records
  *   src/data/product-identities.json  stable local ids and slugs
- *   src/data/media-manifest.json      approved product media + derivatives
+ *   catalogue/media-manifest.json     approved product media + derivatives
+ *   catalogue/media-index.json        URL-free id → derivative index for the client
  *   src/data/brand-media.json         category artwork, policy-stamped
- *   src/data/care-knowledge.json      verbatim store facts for the care assistant
+ *   catalogue/care-knowledge.json     verbatim store facts for the care assistant
  *   public/images/products/<slug>/…   WebP derivatives at 320 / 640 / 960
  *   docs/official-store-sync.md       the audit report for this sync
  *
@@ -501,16 +502,26 @@ const careKnowledge = {
 
 // --------------------------------------------------------------------- write
 await writeJson(
-  resolve(root, 'src/data/catalogue-source.json'),
+  resolve(root, 'catalogue/catalogue-source.json'),
   catalogueSource,
 );
 await writeJson(
   resolve(root, 'src/data/product-identities.json'),
   identities.map(({ sku, ...identity }) => identity),
 );
-await writeJson(resolve(root, 'src/data/media-manifest.json'), manifest);
+await writeJson(resolve(root, 'catalogue/media-manifest.json'), manifest);
+// A URL-free index for client components: id → local derivative, width, height.
+await writeJson(
+  resolve(root, 'catalogue/media-index.json'),
+  media.map(({ id, localAssetPath, width, height }) => ({
+    id,
+    path: localAssetPath,
+    width,
+    height,
+  })),
+);
 await writeJson(resolve(root, 'src/data/brand-media.json'), brandManifest);
-await writeJson(resolve(root, 'src/data/care-knowledge.json'), careKnowledge);
+await writeJson(resolve(root, 'catalogue/care-knowledge.json'), careKnowledge);
 
 async function prune(directory) {
   const entries = await readdir(directory, { withFileTypes: true }).catch(
@@ -554,7 +565,7 @@ ${[...exclusions].map(([id, reason]) => `- **#${id}** — ${reason}`).join('\n')
 
 Main images are published at 320 / 640 / 960 px wide, gallery images at 320 / 640 px,
 WebP quality 82, never enlarged, aspect ratio preserved (no crop). Each derivative
-records its own SHA-256 in \`src/data/media-manifest.json\`.
+records its own SHA-256 in \`catalogue/media-manifest.json\`.
 
 ## Listings without an official photograph
 
@@ -565,7 +576,7 @@ ${missing.map((product) => `- ${product.displayName} (\`${product.slug}\`)`).joi
 The owner-signed release tools in \`ops/\` pin the previous image inventory. They are
 untouched by this sync and must be re-pinned by the owner before the next
 owner-signed release; every other validation path reads
-\`src/data/media-manifest.json\`.
+\`catalogue/media-manifest.json\`.
 `;
 await writeFile(resolve(root, 'docs/official-store-sync.md'), report);
 

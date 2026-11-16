@@ -15,7 +15,9 @@ export const normalise = (value) =>
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[’‘]/g, "'");
+    .replace(/[’‘]/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
 
 export const tokenise = (value) =>
   normalise(value)
@@ -348,6 +350,7 @@ const INTENT_WORDS = {
     'price',
     'cost',
     'rate',
+    'much',
     'rupee',
     'cheap',
     'expensive',
@@ -382,7 +385,6 @@ const INTENT_WORDS = {
     'applied',
     'direction',
     'directions',
-    'how',
     'method',
     'step',
     'steps',

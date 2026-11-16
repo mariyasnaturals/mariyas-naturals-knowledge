@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
 
 const manifest = JSON.parse(
-  readFileSync('src/data/media-manifest.json', 'utf8'),
+  readFileSync('catalogue/media-manifest.json', 'utf8'),
 );
 const brandManifest = JSON.parse(
   readFileSync('src/data/brand-media.json', 'utf8'),

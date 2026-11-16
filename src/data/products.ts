@@ -1,7 +1,7 @@
 import type { Locale } from '../i18n';
 import { dictionaries } from '../i18n';
 import { resolvePurchaseUrl } from '../config/commerce.mjs';
-import data from './media-manifest.json';
+import data from '../../catalogue/media-manifest.json';
 import { approvedImage } from './media';
 import type {
   CatalogueSource,

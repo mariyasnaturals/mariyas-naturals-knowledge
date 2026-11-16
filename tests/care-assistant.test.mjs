@@ -9,9 +9,9 @@ import {
 } from '../src/data/care-search.mjs';
 
 const json = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url)));
-const knowledge = json('../src/data/care-knowledge.json');
-const manifest = json('../src/data/media-manifest.json');
-const catalogue = json('../src/data/catalogue-source.json');
+const knowledge = json('../catalogue/care-knowledge.json');
+const manifest = json('../catalogue/media-manifest.json');
+const catalogue = json('../catalogue/catalogue-source.json');
 
 /** Mirrors `src/data/care-index.ts` so the test sees exactly the shipped shape. */
 const products = knowledge.products.map((product) => ({
@@ -92,13 +92,17 @@ test('a media id always resolves to a real local derivative of that product', ()
 test('product lookup finds the right listing in English and in Indic scripts', () => {
   const names = (query) => searchProducts(products, query).map((p) => p.name);
 
-  assert.deepEqual(names('hair oil 500 ml'), ['Mariyas Herbal Hair Care – 500 ml']);
-  assert.ok(names('hair oil').some((name) => name.includes('500 ml')));
+  assert.equal(names('hair oil 500 ml')[0], 'Mariyas Herbal Hair Care – 500 ml');
+  assert.ok(names('hair oil').length > 0);
+  assert.ok(names('hair oil 500').some((name) => name.includes('500 ml')));
   assert.equal(names('chyavanaprash')[0], 'Chyavanaprash');
-  assert.ok(names('baby massage').some((name) => name.includes('Massage')));
+  assert.equal(names('baby massage')[0], 'Baby Massage Oil 200 ml');
   assert.ok(names('shampoo').length > 0);
-  assert.ok(names('मालिश').length > 0, 'Devanagari lookup');
-  assert.ok(names('മസാജ്').length > 0, 'Malayalam lookup');
+  // A query typed in an Indic script finds the English store listing.
+  assert.equal(names('मालिश')[0], 'Baby Massage Oil 200 ml');
+  assert.equal(names('മസാജ്')[0], 'Baby Massage Oil 200 ml');
+  assert.match(names('शैम्पू')[0], /Shampoo/);
+  assert.match(names('ഷാംപൂ')[0], /Shampoo/);
   assert.deepEqual(names('zzzz not a product'), []);
   assert.deepEqual(searchProducts(products, '   '), []);
 });

@@ -1,4 +1,4 @@
-import productData from './media-manifest.json';
+import productData from '../../catalogue/media-manifest.json';
 import brandData from './brand-media.json';
 import type {
   ProductMediaManifest,

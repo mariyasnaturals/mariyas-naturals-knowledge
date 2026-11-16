@@ -1204,9 +1204,10 @@
 
 .lg-footer__top {
   display: grid;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 2.2vw, 1.75rem);
   grid-template-columns: 1fr;
-  padding-block: clamp(2rem, 4vw, 3rem);
+  /* Compact: the footer closes the page, it does not become a second page. */
+  padding-block: clamp(1.35rem, 2.6vw, 2rem);
 }
 
 @media (min-width: 700px) {
@@ -1217,12 +1218,13 @@
 
 @media (min-width: 1040px) {
   .lg-footer__top {
-    grid-template-columns: 1.35fr 1fr 1fr 1.1fr;
+    grid-template-columns: 1.3fr 1.15fr 0.8fr 1fr;
+    align-items: start;
   }
 }
 
 .lg-footer h2 {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.4rem;
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -1240,11 +1242,23 @@
 }
 
 .lg-footer__tagline {
-  margin: 0.6rem 0 0;
-  max-width: 30ch;
-  font-size: 0.85rem;
-  line-height: 1.7;
+  margin: 0.45rem 0 0;
+  max-width: 34ch;
+  font-size: 0.82rem;
+  line-height: 1.6;
   color: #bdd0c2;
+}
+
+/* Social links run on one line so the brand column stays short. */
+.lg-footer__inline {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.lg-footer__inline li {
+  color: #7e968a;
 }
 
 .lg-footer ul {
@@ -1256,8 +1270,17 @@
 }
 
 .lg-footer li {
-  font-size: 0.83rem;
-  line-height: 1.6;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Two tight link columns instead of four tall stacks. */
+.lg-footer__links {
+  gap: 0 !important;
+}
+
+.lg-footer__facts {
+  margin-top: 0.4rem !important;
 }
 
 .lg-footer li a,
@@ -1276,7 +1299,8 @@
 
 .lg-footer__hint {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  line-height: 1.45;
   color: #93a898;
 }
 
@@ -1301,8 +1325,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem 1rem;
-  padding-block: 1rem;
+  gap: 0.35rem 1rem;
+  padding-block: 0.7rem;
   border-top: 1px solid #ffffff1a;
   font-size: 0.75rem;
   color: #9db3a3;

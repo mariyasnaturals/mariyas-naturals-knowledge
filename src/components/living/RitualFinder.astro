@@ -130,7 +130,7 @@ const copy = {
     type QuestionKey,
     type Recommendation,
   } from '../../data/ritual-engine';
-  import mediaManifest from '../../data/media-manifest.json';
+  import mediaIndex from '../../../catalogue/media-index.json';
 
   /**
    * Map of approved local derivative per media id. Result cards show the real
@@ -141,23 +141,17 @@ const copy = {
     string,
     { src: string; width: number; height: number }
   >();
-  for (const item of (
-    mediaManifest as {
-      media?: {
-        id: string;
-        localAssetPath?: string;
-        width?: number;
-        height?: number;
-      }[];
-    }
-  ).media ?? []) {
-    if (item.localAssetPath)
-      localImage.set(item.id, {
-        src: item.localAssetPath,
-        width: item.width ?? 1200,
-        height: item.height ?? 1200,
-      });
-  }
+  for (const item of mediaIndex as {
+    id: string;
+    path: string;
+    width: number;
+    height: number;
+  }[])
+    localImage.set(item.id, {
+      src: item.path,
+      width: item.width,
+      height: item.height,
+    });
 
   const root = document.querySelector<HTMLElement>('[data-ritual-finder]');
   if (root) {

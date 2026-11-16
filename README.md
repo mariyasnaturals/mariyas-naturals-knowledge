@@ -52,14 +52,17 @@ Malayalam, Hindi and Tamil are starter translations requiring native-speaker rev
 
 `CampaignCard` and `CollectionHighlights` provide reusable cards and a feature banner for homepage, category and future promotional layouts. Only current .in category artwork is used. `/{lang}/collections/{category}/` supplies six localized static collections with truthful metadata and ItemList structure. No unverified “best,” purity, medical or certification claim is inserted to target a keyword.
 
-The active catalogue contains 86 .in product listings. Two have four approved photographs each; the remaining 84 use clean placeholders. Current category artwork is never substituted for an individual product photo. Official product names remain in English; interface text and alt text are localized. Product ItemPage metadata includes actual names, source SKUs, brand and an approved image where available, without offers, ratings or availability assertions.
+The active catalogue contains the 85 published .com product listings (the withdrawn 1 litre pack, store #3010, is excluded and recorded in `catalogue/catalogue-source.json`). 59 of them carry the official store photograph; the remaining 26 have no photograph published upstream and show a labelled empty frame. Category artwork is never substituted for an individual product photo. Official product names remain in English; interface text and alt text are localized. Product ItemPage metadata includes actual names, source SKUs, brand and an approved image where available, without offers, ratings or availability assertions.
 
-`src/config/media-policy.mjs` enforces exact current .in image provenance separately from `src/config/commerce.mjs`. The latter retains disabled global/per-product purchasing and an empty exact-URL map. Product discovery is local; source disclosures cite the current .in catalogue. No final purchase destination is guessed from a WordPress slug.
+`src/config/media-policy.mjs` enforces exact official-store (`.com`) product-image provenance separately from `src/config/commerce.mjs`. The latter retains disabled global/per-product purchasing and an empty exact-URL map. Product discovery is local; source disclosures cite the official catalogue. No final purchase destination is guessed from a WordPress slug.
+
+Generated catalogue data lives in `catalogue/` (see `catalogue/README.md`); the only network step is the audited acquisition job in `.github/workflows/com-catalogue-sync.yml`, which never runs during a build.
 
 ```sh
 npm run fonts:prepare     # Reproduce committed licensed WOFF2 subsets from locked packages
-npm run media:import      # Reprocess temporary source cache; no network by default
-# Explicit audited acquisition only: npm run media:import -- --download
+npm run media:sync        # Rebuild manifests + WebP derivatives from a downloaded snapshot
+# Acquisition (GitHub Actions only, no build ever downloads):
+#   node scripts/fetch-com-snapshot.mjs   then   npm run media:sync
 node scripts/measure-render.mjs  # Local lab observations + review screenshots
 # Optional font audit: Python fontTools[woff] and uharfbuzz are required
 python scripts/check-fonts.py

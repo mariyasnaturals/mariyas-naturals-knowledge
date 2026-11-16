@@ -48,26 +48,28 @@ const collections = collectionKeys
       <div class="lg-footer__brand">
         <BrandMark href={`/${lang}/`} inverse />
         <p class="lg-footer__tagline">{c.tagline}</p>
-        <p class="lg-footer__hint" style="margin-top:.75rem">
-          {c.storeNote}
-        </p>
+        <p class="lg-footer__hint">{c.storeNote}</p>
+
+        <h2>{c.socialLabel}</h2>
+        <ul class="lg-footer__inline">
+          <li>
+            <a href={social.instagram.href} rel="noopener">
+              {c.instagram}
+            </a>
+          </li>
+          <li aria-hidden="true">·</li>
+          <li>
+            <a href={social.facebook.href} rel="noopener">
+              {c.facebook}
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div>
         <h2>{c.addressLabel}</h2>
         <address>{postalAddress.display}</address>
-        <ul style="margin-top:.55rem">
-          <li>
-            <span class="lg-footer__hint">{c.emailLabel}</span>
-            <a href={email.href}>{email.display}</a>
-          </li>
-          <li>
-            <span class="lg-footer__hint">{c.whatsappLabel}</span>
-            <a href={whatsapp.href} rel="noopener">
-              {whatsapp.display}
-            </a>
-            <span class="lg-footer__hint">{c.whatsappHint}</span>
-          </li>
+        <ul class="lg-footer__facts">
           <li>
             <span class="lg-footer__hint">{c.mapsLabel}</span>
             {googleBusiness.href ? (
@@ -88,7 +90,7 @@ const collections = collectionKeys
 
       <div>
         <h2>{c.collectionsLabel}</h2>
-        <ul>
+        <ul class="lg-footer__links">
           {collections.map((item) => (
             <li>
               <a href={item.href}>{item.label}</a>
@@ -98,25 +100,23 @@ const collections = collectionKeys
             <a href={`/${lang}/products/`}>{t.catalogue}</a>
           </li>
         </ul>
-
-        <h2 style="margin-top:1.1rem">{c.socialLabel}</h2>
-        <ul>
-          <li>
-            <a href={social.instagram.href} rel="noopener">
-              {c.instagram}
-            </a>
-          </li>
-          <li>
-            <a href={social.facebook.href} rel="noopener">
-              {c.facebook}
-            </a>
-          </li>
-        </ul>
       </div>
 
       <div>
         <h2>{c.legalLabel}</h2>
-        <ul>
+        <ul class="lg-footer__links">
+          <li>
+            <a href={email.href}>
+              <span class="lg-footer__hint">{c.emailLabel}</span>
+              {email.display}
+            </a>
+          </li>
+          <li>
+            <a href={whatsapp.href} rel="noopener">
+              <span class="lg-footer__hint">{c.whatsappLabel}</span>
+              {whatsapp.display}
+            </a>
+          </li>
           <li>
             <a href={storeLinks.shop} rel="noopener">
               {t.shopProducts}
@@ -138,6 +138,7 @@ const collections = collectionKeys
       <ul class="lg-footer__legal">
         <li>Mariyas Naturals</li>
         <li>{postalAddress.display.split(', ').slice(-2).join(', ')}</li>
+        <li>{c.whatsappHint}</li>
       </ul>
     </div>
   </div>

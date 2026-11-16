@@ -1,12 +1,12 @@
 /**
  * The care assistant's client index — a slim projection of
- * `src/data/care-knowledge.json`.
+ * `catalogue/care-knowledge.json`.
  *
  * It is imported lazily by `CareAssistant.astro`, so Vite emits it as its own
  * chunk and a visitor who never opens the assistant never downloads it. It is a
  * build-time module: nothing here is copied into `public/`.
  */
-import knowledge from './care-knowledge.json';
+import knowledge from '../../catalogue/care-knowledge.json';
 
 export interface CareProduct {
   id: string;
