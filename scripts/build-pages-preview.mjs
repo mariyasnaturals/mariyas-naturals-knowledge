@@ -65,7 +65,10 @@ cpSync(dist, stage, { recursive: true });
 const rewrite = (text) =>
   text
     // href="/x" src="/x" content="/x" data-desktop="/x" poster="/x" …
-    .replace(/(\s(?:href|src|content|poster|data-[a-z-]+)=")\/(?!\/)/g, `$1${BASE}`)
+    .replace(
+      /(\s(?:href|src|content|poster|data-[a-z-]+)=")\/(?!\/)/g,
+      `$1${BASE}`,
+    )
     // srcset="/a 1x, /b 2x" (and every subsequent comma-separated candidate)
     .replace(
       /(\ssrcset=")([^"]*)"/g,
@@ -108,7 +111,9 @@ for (const file of walk(stage)) {
   const relative = file.slice(stage.length + 1);
   for (const match of text.matchAll(new RegExp(UNSAFE, 'g'))) {
     const at = match.index ?? 0;
-    const snippet = text.slice(Math.max(0, at - 40), at + 60).replace(/\s+/g, ' ');
+    const snippet = text
+      .slice(Math.max(0, at - 40), at + 60)
+      .replace(/\s+/g, ' ');
     offenders.push(`${relative}: …${snippet}…`);
     if (offenders.length > 8) break;
   }
