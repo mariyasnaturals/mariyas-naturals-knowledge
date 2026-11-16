@@ -1,11 +1,12 @@
-UNAPPROVED INTERACTIVE PREVIEW - NOT FOR RELEASE
+UNAPPROVED INTERACTIVE PREVIEW — NOT FOR RELEASE
 
-Source commit: 25d5b3e
+Source commit: 427acf90d9fd66b0ffbbac354d75962205025116
+
 Built by scripts/build-pages-preview.mjs from the verified static output.
 
-This branch contains only built preview output. It is not source, it is
-not reviewable as code, and it must not be merged anywhere.
+This branch contains only built preview output. It is not source, it is not
+reviewable as code, and it must not be merged anywhere.
 
-Purchasing is disabled. The site is noindex/nofollow (robots.txt and a meta
-tag), and .nojekyll is present because Jekyll would otherwise delete
-_astro/ and _botanical-assets/, leaving a blank page.
+Purchasing happens on https://www.mariyasnaturals.com only; this preview has
+no cart, checkout or payment flow. The site is noindex/nofollow (robots.txt
+plus a meta tag) and canonicals stay on the intended .cloud origin.

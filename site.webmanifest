@@ -1,0 +1,30 @@
+{
+  "name": "Mariyas Naturals",
+  "short_name": "Mariyas",
+  "description": "Herbal hair care, skin care and everyday wellness from Kerala.",
+  "start_url": "/mariyas-naturals-knowledge/",
+  "scope": "/mariyas-naturals-knowledge/",
+  "display": "standalone",
+  "background_color": "#F6EFDF",
+  "theme_color": "#063D2A",
+  "icons": [
+    {
+      "src": "/mariyas-naturals-knowledge/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/mariyas-naturals-knowledge/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/mariyas-naturals-knowledge/brand/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
