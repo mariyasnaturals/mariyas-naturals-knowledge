@@ -6,16 +6,16 @@ untouched original binaries; this report describes what the site now holds.
 
 ## Catalogue
 
-| Fact                                        | Value     |
-| ------------------------------------------- | --------- |
-| Products read                               | 86        |
-| Products published                          | 85        |
-| Excluded                                    | 1 — #3010 |
-| Products with an official photograph        | 59        |
-| Products without one (labelled empty frame) | 26        |
-| Distinct store attachments                  | 215       |
-| Local WebP derivatives                      | 489       |
-| Local derivative bytes                      | 26337590  |
+| Fact | Value |
+| --- | --- |
+| Products read | 86 |
+| Products published | 85 |
+| Excluded | 1 — #3010 |
+| Products with an official photograph | 59 |
+| Products without one (labelled empty frame) | 26 |
+| Distinct store attachments | 215 |
+| Local WebP derivatives | 489 |
+| Local derivative bytes | 26337590 |
 
 ## Exclusions
 
@@ -25,7 +25,7 @@ untouched original binaries; this report describes what the site now holds.
 
 Main images are published at 320 / 640 / 960 px wide, gallery images at 320 / 640 px,
 WebP quality 82, never enlarged, aspect ratio preserved (no crop). Each derivative
-records its own SHA-256 in `src/data/media-manifest.json`.
+records its own SHA-256 in `catalogue/media-manifest.json`.
 
 ## Listings without an official photograph
 
@@ -61,4 +61,4 @@ records its own SHA-256 in `src/data/media-manifest.json`.
 The owner-signed release tools in `ops/` pin the previous image inventory. They are
 untouched by this sync and must be re-pinned by the owner before the next
 owner-signed release; every other validation path reads
-`src/data/media-manifest.json`.
+`catalogue/media-manifest.json`.
