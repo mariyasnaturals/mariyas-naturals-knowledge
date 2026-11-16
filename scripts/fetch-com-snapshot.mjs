@@ -17,7 +17,9 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 
-const ORIGIN = (process.env.SOURCE_ORIGIN || 'https://www.mariyasnaturals.com').replace(/\/$/, '');
+const ORIGIN = (
+  process.env.SOURCE_ORIGIN || 'https://www.mariyasnaturals.com'
+).replace(/\/$/, '');
 const OUT = resolve(process.env.SNAPSHOT_DIR || '/tmp/com-snapshot');
 const MAX_IMAGES = Number(process.env.SNAPSHOT_MAX_IMAGES || 600);
 const MAX_BYTES = 14_000_000;
@@ -58,7 +60,9 @@ async function getBinary(url, attempt = 1) {
     throw new Error(`${url}: unexpected content type ${type}`);
   const bytes = Buffer.from(await response.arrayBuffer());
   if (!bytes.length || bytes.length > MAX_BYTES)
-    throw new Error(`${url}: ${bytes.length} bytes is outside the accepted range`);
+    throw new Error(
+      `${url}: ${bytes.length} bytes is outside the accepted range`,
+    );
   return { bytes, type };
 }
 
@@ -68,7 +72,11 @@ async function allProducts() {
   for (let page = 1; page <= 10; page += 1) {
     const url = `${ORIGIN}/wp-json/wc/store/v1/products?per_page=100&page=${page}&orderby=id&order=asc`;
     const { body, headers } = await getJson(url);
-    pages.push({ url, count: Array.isArray(body) ? body.length : 0, total: headers.get('x-wp-total') });
+    pages.push({
+      url,
+      count: Array.isArray(body) ? body.length : 0,
+      total: headers.get('x-wp-total'),
+    });
     if (!Array.isArray(body) || !body.length) break;
     records.push(...body);
     if (body.length < 100) break;
@@ -108,7 +116,10 @@ for (const product of products) {
     if (!image?.src || !image?.id)
       throw new Error(`Product ${product.id} publishes an image without an id`);
     const url = new URL(image.src);
-    if (url.origin !== ORIGIN || !url.pathname.startsWith('/wp-content/uploads/'))
+    if (
+      url.origin !== ORIGIN ||
+      !url.pathname.startsWith('/wp-content/uploads/')
+    )
       throw new Error(`Unapproved product image host: ${image.src}`);
     const key = String(image.id);
     const current = attachments.get(key) || {
@@ -128,9 +139,13 @@ for (const product of products) {
   }
 }
 
-const list = [...attachments.values()].sort((a, b) => a.attachmentId - b.attachmentId);
+const list = [...attachments.values()].sort(
+  (a, b) => a.attachmentId - b.attachmentId,
+);
 if (list.length > MAX_IMAGES)
-  throw new Error(`${list.length} images exceeds the ${MAX_IMAGES} image budget`);
+  throw new Error(
+    `${list.length} images exceeds the ${MAX_IMAGES} image budget`,
+  );
 
 const downloads = await mapLimit(list, CONCURRENCY, async (attachment) => {
   const { bytes, type } = await getBinary(attachment.sourceUrl);
@@ -147,14 +162,21 @@ const downloads = await mapLimit(list, CONCURRENCY, async (attachment) => {
 });
 
 const fetchedAt = new Date().toISOString();
-await writeFile(resolve(OUT, 'products.json'), JSON.stringify(products, null, 2));
-await writeFile(resolve(OUT, 'images.json'), JSON.stringify(downloads, null, 2));
+await writeFile(
+  resolve(OUT, 'products.json'),
+  JSON.stringify(products, null, 2),
+);
+await writeFile(
+  resolve(OUT, 'images.json'),
+  JSON.stringify(downloads, null, 2),
+);
 await writeFile(
   resolve(OUT, 'snapshot.json'),
   JSON.stringify(
     {
       schemaVersion: 1,
-      purpose: 'Owner-authorised read of the public .com store API for the .cloud discovery site.',
+      purpose:
+        'Owner-authorised read of the public .com store API for the .cloud discovery site.',
       origin: ORIGIN,
       fetchedAt,
       endpoints: {
@@ -165,12 +187,15 @@ await writeFile(
       productCount: products.length,
       attachmentCount: downloads.length,
       totalBytes: downloads.reduce((total, image) => total + image.bytes, 0),
-      productsWithImages: products.filter((p) => (p.images || []).length).length,
-      productsWithoutImages: products.filter((p) => !(p.images || []).length).map((p) => ({
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-      })),
+      productsWithImages: products.filter((p) => (p.images || []).length)
+        .length,
+      productsWithoutImages: products
+        .filter((p) => !(p.images || []).length)
+        .map((p) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+        })),
     },
     null,
     2,
@@ -186,7 +211,8 @@ console.log(
       reportedTotalProducts: reportedTotals,
       attachments: downloads.length,
       totalBytes: downloads.reduce((total, image) => total + image.bytes, 0),
-      productsWithoutImages: products.filter((p) => !(p.images || []).length).length,
+      productsWithoutImages: products.filter((p) => !(p.images || []).length)
+        .length,
     },
     null,
     2,

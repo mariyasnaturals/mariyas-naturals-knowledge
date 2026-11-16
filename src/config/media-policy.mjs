@@ -1,10 +1,31 @@
 // The business-approved image source. Commerce configuration is separate.
-export const currentStoreOrigin = 'https://mariyasnaturals.in';
-export const mediaPolicy = 'current-approved-in-only';
-export function assertApprovedSource(value) {
+//
+// Product photography comes from the live official store (`.com`) through the
+// audited acquisition job in `scripts/fetch-com-snapshot.mjs`; the four category
+// artworks that were already published on the `.in` staging store stay readable
+// as editorial artwork only. No CDN, no hotlink and no third host is approved.
+export const storeOrigins = Object.freeze({
+  official: 'https://www.mariyasnaturals.com',
+  editorial: 'https://mariyasnaturals.in',
+});
+
+/** Where the catalogue and every product photograph must come from. */
+export const currentStoreOrigin = storeOrigins.official;
+
+/** Every approved upload host, official store first. */
+export const approvedStoreOrigins = Object.freeze(Object.values(storeOrigins));
+
+export const mediaPolicy = 'official-com-catalogue-with-editorial-artwork';
+
+/**
+ * Approved media may only be served from an approved upload host. A `.in`
+ * source is accepted as editorial artwork; product photographs must use the
+ * official `.com` store (`assertApprovedMedia` enforces that).
+ */
+export function assertApprovedSource(value, origins = approvedStoreOrigins) {
   const url = new URL(value);
   if (
-    url.origin !== currentStoreOrigin ||
+    !origins.includes(url.origin) ||
     url.username ||
     url.password ||
     !url.pathname.startsWith('/wp-content/uploads/')
@@ -13,13 +34,10 @@ export function assertApprovedSource(value) {
   }
   return url;
 }
-/**
- * The reviewed 200 ml bottle cutout is derived from the owner photograph that is
- * already published by this site; its catalogue reference stays a current .in page.
- */
+
 export function assertApprovedMedia(manifest) {
   if (manifest.sourcePolicy !== mediaPolicy)
-    throw new Error('Current-store media policy is required');
+    throw new Error('Official-store media policy is required');
   const ids = new Set();
   for (const media of manifest.media) {
     if (!media.sources.length || ids.has(media.id))
@@ -27,9 +45,16 @@ export function assertApprovedMedia(manifest) {
     ids.add(media.id);
     assertApprovedSource(media.sourceMediaUrl);
     for (const source of media.sources) {
-      if (source.store !== 'in')
-        throw new Error('Only current .in media may render');
+      if (!['com', 'in'].includes(source.store))
+        throw new Error('Only an approved store may be recorded as the source');
       assertApprovedSource(source.sourceUrl);
+      if (
+        source.store === 'com' &&
+        new URL(source.sourceUrl).origin !== currentStoreOrigin
+      )
+        throw new Error(
+          'A .com media record must be served by the official store',
+        );
     }
     for (const derivative of media.derivatives) {
       if (
@@ -42,10 +67,10 @@ export function assertApprovedMedia(manifest) {
   for (const product of manifest.products || []) {
     for (const source of product.sources) {
       if (
-        source.store !== 'in' ||
+        source.store !== 'com' ||
         new URL(source.url).origin !== currentStoreOrigin
       )
-        throw new Error('Only current .in catalogue records may render');
+        throw new Error('Only official .com catalogue records may render');
     }
     for (const id of product.mediaIds) {
       if (!ids.has(id)) throw new Error(`Unapproved product image: ${id}`);
