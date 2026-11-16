@@ -1,0 +1,12 @@
+UNAPPROVED INTERACTIVE PREVIEW — NOT FOR RELEASE
+
+Source commit: 427acf90d9fd66b0ffbbac354d75962205025116
+
+Built by scripts/build-pages-preview.mjs from the verified static output.
+
+This branch contains only built preview output. It is not source, it is not
+reviewable as code, and it must not be merged anywhere.
+
+Purchasing happens on https://www.mariyasnaturals.com only; this preview has
+no cart, checkout or payment flow. The site is noindex/nofollow (robots.txt
+plus a meta tag) and canonicals stay on the intended .cloud origin.
