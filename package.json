@@ -9,8 +9,10 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/build-care-public.mjs",
     "build": "astro build",
     "preview": "astro preview",
+    "build:care-public": "node scripts/build-care-public.mjs",
     "check": "astro check",
     "lint": "prettier --check .",
     "format": "prettier --write .",

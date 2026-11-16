@@ -14,7 +14,7 @@
 import BrandMark from './living/BrandMark.astro';
 import { dictionaries, type Locale } from '../i18n';
 import { footerCopy } from '../data/living-copy';
-import { collectionKeys, collectionPath } from '../data/collections';
+import { activeCollectionKeys, collectionPath } from '../data/collections';
 import {
   whatsapp,
   email,
@@ -33,8 +33,8 @@ const t = dictionaries[lang];
 const c = footerCopy[lang];
 const year = new Date().getFullYear();
 
-/** Only categories that actually have a built route on this site. */
-const collections = collectionKeys
+/** Only categories that actually hold a visible product and a built route. */
+const collections = activeCollectionKeys
   .filter((key) => key !== 'combo')
   .map((key) => ({
     href: collectionPath(lang, key),

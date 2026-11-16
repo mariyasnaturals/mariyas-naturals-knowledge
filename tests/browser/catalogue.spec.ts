@@ -5,6 +5,20 @@ import { readFileSync } from 'node:fs';
 const manifest = JSON.parse(
   readFileSync('catalogue/media-manifest.json', 'utf8'),
 );
+/**
+ * The owner temporarily hid the 26 listings that have no genuine photograph
+ * (src/data/product-visibility.json). The catalogue renders exactly the visible
+ * products, so the expected card count comes from the policy, not the manifest.
+ */
+const visibility = JSON.parse(
+  readFileSync('src/data/product-visibility.json', 'utf8'),
+);
+const hiddenSlugs = new Set<string>(
+  visibility.hidden.map((item: { slug: string }) => item.slug),
+);
+const visibleProducts = manifest.products.filter(
+  (product: { slug: string }) => !hiddenSlugs.has(product.slug),
+);
 const brandManifest = JSON.parse(
   readFileSync('src/data/brand-media.json', 'utf8'),
 );
@@ -81,8 +95,17 @@ for (const lang of locales) {
 
       await page.goto(`/${lang}/products/`);
       await expect(page.locator('.catalogue-card')).toHaveCount(
-        manifest.products.length,
+        visibleProducts.length,
       );
+      // No hidden listing may be reachable from the catalogue at all.
+      expect(
+        await page.locator('[href*="/products/"]').count(),
+      ).toBeGreaterThan(0);
+      for (const slug of hiddenSlugs) {
+        await expect(page.locator(`a[href*="/products/${slug}/"]`)).toHaveCount(
+          0,
+        );
+      }
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

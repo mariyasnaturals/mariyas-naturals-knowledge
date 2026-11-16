@@ -12,7 +12,7 @@
  */
 import ArrowIcon from '../ArrowIcon.astro';
 import { products } from '../../data/products';
-import { collectionPath, collectionKeys } from '../../data/collections';
+import { activeCollectionKeys, collectionPath } from '../../data/collections';
 import { careExplorer } from '../../data/living-copy';
 import { dict } from '../../i18n/living';
 import type { Dictionary, Locale } from '../../i18n';
@@ -60,7 +60,7 @@ const order: ProductCategory[] = [
 ];
 
 const tiles = order
-  .filter((key) => collectionKeys.includes(key))
+  .filter((key) => activeCollectionKeys.includes(key))
   .map((key) => ({
     key,
     href: collectionPath(lang, key),

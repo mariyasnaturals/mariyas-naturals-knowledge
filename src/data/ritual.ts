@@ -13,6 +13,8 @@
  *   - reasons are always phrased as "why this suits what you told us"
  *   - testimonials, ratings and scarcity are never generated
  */
+
+import { isPubliclyVisible } from './product-visibility';
 import type { Locale } from '../i18n';
 import type { Localized } from './living-copy';
 
@@ -592,7 +594,12 @@ export interface RitualProduct {
   category: 'hair' | 'skin' | 'wellness' | 'baby';
 }
 
-export const ritualProducts: readonly RitualProduct[] = [
+/**
+ * The candidate products for the Ritual Finder, before the owner's visibility
+ * policy is applied. Kept whole so the recommendation model stays verifiable
+ * against the full catalogue.
+ */
+const ritualCandidates: readonly RitualProduct[] = [
   {
     id: 'mn-89552',
     slug: 'mariyas-hair-oil-200-ml',
@@ -754,6 +761,15 @@ export const ritualProducts: readonly RitualProduct[] = [
     category: 'wellness',
   },
 ];
+
+/**
+ * What the Ritual Finder may actually suggest: only listings that are publicly
+ * visible. A hidden-pending-photo product is never recommended, linked or
+ * counted.
+ */
+export const ritualProducts: readonly RitualProduct[] = ritualCandidates.filter(
+  (product) => isPubliclyVisible(product.storeProductId),
+);
 
 /** Shown when the answers cannot support a real match. Never fabricated. */
 export const fallbackProductIds = ['mn-89552', 'mn-19187'] as const;

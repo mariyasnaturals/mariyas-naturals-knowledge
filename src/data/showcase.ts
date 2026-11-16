@@ -17,6 +17,7 @@
 import type { Product } from './products';
 import { products as catalogue } from './products';
 import { storeLinks, STORE_ORIGIN } from './store';
+import { isPubliclyVisible } from './product-visibility';
 import type { Locale } from '../i18n';
 
 export type ShowcaseGroup = 'hairCare' | 'skinAndBody' | 'wellness' | 'tools';
@@ -46,7 +47,7 @@ const withPhotos = (slug: string) => {
   return { image: product.images.main, gallery };
 };
 
-export const showcaseItems: readonly ShowcaseItem[] = [
+const showcaseCandidates: readonly ShowcaseItem[] = [
   {
     id: 'hair-oil-200-ml',
     officialName: 'Mariyas Herbal Hair Care Oil – 200 ml',
@@ -73,6 +74,15 @@ export const showcaseItems: readonly ShowcaseItem[] = [
 ];
 
 /**
+ * Only listings the site publishes may be showcased. A hidden-pending-photo
+ * listing is dropped here even though its name and store link are perfectly
+ * known: visibility is the owner's decision, not a side effect of having a photo.
+ */
+export const showcaseItems: readonly ShowcaseItem[] = showcaseCandidates.filter(
+  (item) => isPubliclyVisible(item.storeProductId),
+);
+
+/**
  * The rest of the live catalogue, grouped for browsing. Only names and exact
  * links are carried; no photography and no pricing, because we do not hold
  * authorized full-resolution photographs for them and prices change.
@@ -82,7 +92,7 @@ interface BrowseGroup {
   items: readonly { id: number; officialName: string }[];
 }
 
-export const browseGroups: readonly BrowseGroup[] = [
+const browseGroupCandidates: readonly BrowseGroup[] = [
   {
     id: 'hairCare',
     items: [
@@ -185,6 +195,15 @@ export const browseGroups: readonly BrowseGroup[] = [
     ],
   },
 ];
+
+/** The same policy applies to the browse-in-store groups: hidden listings are
+ * not offered, and a group left with nothing is not offered either. */
+export const browseGroups: readonly BrowseGroup[] = browseGroupCandidates
+  .map((group) => ({
+    ...group,
+    items: group.items.filter((item) => isPubliclyVisible(item.id)),
+  }))
+  .filter((group) => group.items.length > 0);
 
 /** Exact product URLs for the browse groups, verified on the same read. */
 const browseHrefs: Record<number, string> = {

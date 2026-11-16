@@ -352,6 +352,202 @@ function validateTree(directory) {
     );
   }
 }
+
+/* ------------------------------------------- public product visibility policy -- */
+
+/**
+ * The owner temporarily hid 26 listings pending genuine product photography
+ * (`src/data/product-visibility.json`). Those records still exist in
+ * `catalogue/`, but no public surface may serve them: no route, no link, no
+ * sitemap entry, no assistant record and no placeholder page.
+ */
+const visibilityConfig = JSON.parse(
+  readFileSync(
+    new URL('../src/data/product-visibility.json', import.meta.url),
+    'utf8',
+  ),
+);
+const hidden = visibilityConfig.hidden;
+const approvedHiddenCount = 26;
+const approvedVisibleCount = 59;
+
+assert.equal(
+  hidden.length,
+  approvedHiddenCount,
+  'The owner approved exactly 26 hidden-pending-photo listings',
+);
+const hiddenSlugs = new Set(hidden.map((item) => item.slug));
+
+// Every locale must publish exactly the visible products, and nothing else.
+for (const lang of locales) {
+  const directory = new URL(`${lang}/products/`, root);
+  assert.ok(existsSync(directory), `Missing product directory: ${lang}`);
+  const entries = readdirSync(directory, { withFileTypes: true });
+  const detailRoutes = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+  assert.equal(
+    detailRoutes.length,
+    approvedVisibleCount,
+    `${lang}: expected ${approvedVisibleCount} public product pages, found ${detailRoutes.length}`,
+  );
+  for (const slug of detailRoutes) {
+    assert.ok(
+      !hiddenSlugs.has(slug),
+      `${lang}: hidden listing must not have a route: ${slug}`,
+    );
+  }
+  // A hidden listing whose photography is still pending must never leave an
+  // empty shelf behind: empty collections are not built either.
+  const collections = readdirSync(new URL(`${lang}/collections/`, root), {
+    withFileTypes: true,
+  })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+  assert.equal(
+    collections.length,
+    5,
+    `${lang}: expected 5 non-empty collections, found ${collections.length}`,
+  );
+  assert.ok(
+    !collections.includes('combo'),
+    `${lang}: a collection with no visible product must not be built`,
+  );
+}
+
+// No page may render the "photograph pending" placeholder any more: every
+// visible listing has a real local image.
+const pendingCopy = locales.flatMap((lang) => {
+  const dictionary = JSON.parse(
+    readFileSync(new URL(`../src/i18n/${lang}.json`, import.meta.url), 'utf8'),
+  );
+  return [dictionary.photoPending, dictionary.imageMissing];
+});
+assert.equal(
+  pendingCopy.length,
+  10,
+  'Both pending strings exist in all five locales',
+);
+
+// No hidden slug may reach the sitemap, any page or any bundled script.
+assert.equal(
+  sitemap.match(new RegExp(`/products/(${[...hiddenSlugs].join('|')})/`)) ??
+    null,
+  null,
+  'Sitemap must not list a hidden listing',
+);
+const bundles = readdirSync(new URL('_astro/', root))
+  .filter((name) => name.endsWith('.js'))
+  .map((name) => ({ name, text: read('_astro/' + name) }));
+const bundled = bundles.map((bundle) => bundle.text).join('\n');
+
+/**
+ * One module may name a hidden slug: the visibility policy itself, which is
+ * exactly a list of store ids and slugs. It is allowed to exist in the browser
+ * bundle — it carries no product name, price or store URL — but every *other*
+ * script must be free of hidden listings.
+ */
+const hiddenIds = hidden.map((item) => item.storeProductId);
+const namesId = (text, id) =>
+  new RegExp(`storeProductId:${id}([^0-9]|$)`).test(text);
+/**
+ * The policy module is the only script that names all 26 hidden ids — it is a
+ * list of ids and slugs and nothing else. Every other script must be free of
+ * hidden listings, ids and slugs alike.
+ */
+const policyBundles = bundles.filter(
+  (bundle) =>
+    hiddenIds.filter((id) => namesId(bundle.text, id)).length ===
+    approvedHiddenCount,
+);
+const listingBundles = bundles.filter(
+  (bundle) => !policyBundles.includes(bundle),
+);
+assert.equal(
+  policyBundles.length,
+  1,
+  'Exactly one bundled script carries the visibility policy',
+);
+for (const bundle of policyBundles) {
+  assert.equal(
+    (bundle.text.match(/slug:`/g) ?? []).length,
+    approvedHiddenCount,
+    `${bundle.name}: the policy chunk names the ${approvedHiddenCount} hidden slugs`,
+  );
+  for (const leak of ['mariyasnaturals.com', 'Kajal', 'Ghee', '₹']) {
+    assert.ok(
+      !bundle.text.includes(leak),
+      `${bundle.name}: the policy chunk must not carry product data (${leak})`,
+    );
+  }
+}
+for (const bundle of listingBundles) {
+  for (const id of hiddenIds) {
+    assert.ok(
+      !namesId(bundle.text, id),
+      `${bundle.name} still carries the hidden listing id ${id}`,
+    );
+  }
+}
+
+// Slugs must be matched on their boundaries: `mariyas-hair-oil` is a prefix of
+// the *visible* `mariyas-hair-oil-200-ml`, so a plain substring test lies.
+const slugPattern = (slug) => new RegExp(`(^|[^a-z0-9-])${slug}([^a-z0-9-]|$)`);
+for (const bundle of listingBundles) {
+  for (const slug of hiddenSlugs) {
+    assert.ok(
+      !slugPattern(slug).test(bundle.text),
+      `${bundle.name} still ships the hidden listing: ${slug}`,
+    );
+  }
+}
+assert.ok(
+  !pendingCopy.some((copy) => bundled.includes(copy)),
+  'Bundled scripts carry no pending-photo copy',
+);
+
+const pendingPages = [];
+const hiddenLinkPages = [];
+const scanTree = (directory) => {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = new URL(
+      entry.name + (entry.isDirectory() ? '/' : ''),
+      directory,
+    );
+    if (entry.isDirectory()) {
+      scanTree(path);
+      continue;
+    }
+    if (!entry.name.endsWith('.html')) continue;
+    const html = readFileSync(path, 'utf8');
+    const route = path.href.slice(root.href.length);
+    if (pendingCopy.some((copy) => html.includes(copy)))
+      pendingPages.push(route);
+    for (const slug of hiddenSlugs) {
+      if (html.includes(`/products/${slug}/`)) {
+        hiddenLinkPages.push(`${route} -> ${slug}`);
+        break;
+      }
+    }
+  }
+};
+scanTree(root);
+assert.deepEqual(
+  pendingPages,
+  [],
+  'No page shows a photograph-pending placeholder',
+);
+assert.deepEqual(
+  hiddenLinkPages,
+  [],
+  'No page links to a hidden product route',
+);
+
+console.log(
+  `PASS product visibility: ${approvedVisibleCount} public pages per locale, ` +
+    `${approvedHiddenCount} hidden listings absent from routes, sitemap, links and bundles`,
+);
+
 validateTree(root);
 console.log(
   'PASS all generated pages: local assets, navigation, alternates, chrome and outbound-only commerce',

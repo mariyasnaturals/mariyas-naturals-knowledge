@@ -3,13 +3,20 @@
 Everything in this directory is **generated** by `scripts/sync-com-catalogue.mjs`
 from a snapshot of the public WooCommerce Store API at
 `https://www.mariyasnaturals.com`, and verified by the test suite. Nothing here
-is hand-edited: the sync overwrites all three files in one pass.
+is hand-edited: the sync overwrites the three store files in one pass.
 
-| File                    | What it is                                                                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `catalogue-source.json` | The 85 published product records exactly as the store returned them, plus the one recorded exclusion (`3010`, the withdrawn 1 litre pack). |
-| `media-manifest.json`   | Approved product media: the store attachment, its origin hash, its associations and the local WebP derivatives with their own hashes.      |
-| `care-knowledge.json`   | Verbatim store facts (pack size, price, stock, listing copy) used by the "Chat with Mariyas" assistant.                                    |
+`care-knowledge-public.json` is the one exception to "top-level files come from
+the sync": it is a projection written by `scripts/build-care-public.mjs` from
+`care-knowledge.json` plus the owner's visibility policy
+(`src/data/product-visibility.json`). `tests/visibility.test.mjs` fails if it is
+stale.
+
+| File                         | What it is                                                                                                                                                                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `catalogue-source.json`      | The 85 published product records exactly as the store returned them, plus the one recorded exclusion (`3010`, the withdrawn 1 litre pack).                                                                                                                   |
+| `media-manifest.json`        | Approved product media: the store attachment, its origin hash, its associations and the local WebP derivatives with their own hashes.                                                                                                                        |
+| `care-knowledge.json`        | Verbatim store facts (pack size, price, stock, listing copy) used by the "Chat with Mariyas" assistant.                                                                                                                                                      |
+| `care-knowledge-public.json` | Derived from `care-knowledge.json` by `scripts/build-care-public.mjs` (run as `prebuild`): only the listings the owner has made publicly visible, so hidden records never reach a browser bundle. Not written by the sync; see `docs/product-visibility.md`. |
 
 ## Why this is not under `src/`
 
