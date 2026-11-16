@@ -365,6 +365,14 @@
   }
 }
 
+/* The trigger floats above the mobile bar; the footer's last row keeps clear of it
+   so no link ends up underneath a fixed pill. */
+@media (max-width: 859px) {
+  .lg-footer__bottom {
+    padding-bottom: calc(0.7rem + 3.1rem);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .care-trigger,
   .care-chip,

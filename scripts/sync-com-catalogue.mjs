@@ -578,7 +578,10 @@ untouched by this sync and must be re-pinned by the owner before the next
 owner-signed release; every other validation path reads
 \`catalogue/media-manifest.json\`.
 `;
-await writeFile(resolve(root, 'docs/official-store-sync.md'), report);
+await writeFile(
+  resolve(root, 'docs/official-store-sync.md'),
+  await format(report, { parser: 'markdown' }),
+);
 
 console.log(
   JSON.stringify(
