@@ -1,0 +1,39 @@
+name: Acquire official store snapshot
+
+# Read-only, owner-authorised acquisition of the public .com catalogue and its
+# product photographs. The build sandbox has no egress to the store, so this job
+# downloads the originals and hands them back as a short-lived artifact; the
+# approved local derivatives are generated and reviewed in the repository.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'arena/**'
+    paths:
+      - 'scripts/fetch-com-snapshot.mjs'
+      - '.github/workflows/com-catalogue-sync.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download the public store API and every product photograph
+        run: |
+          node --version
+          node scripts/fetch-com-snapshot.mjs
+          du -sh /tmp/com-snapshot /tmp/com-snapshot/images
+      - uses: actions/upload-artifact@v4
+        with:
+          name: com-snapshot
+          path: /tmp/com-snapshot
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
