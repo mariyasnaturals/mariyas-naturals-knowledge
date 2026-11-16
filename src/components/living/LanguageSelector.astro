@@ -1,0 +1,109 @@
+---
+/**
+ * The site-wide language selector.
+ *
+ * - visible on every route, in the header (and again in the footer)
+ * - remembers a manual choice in localStorage, and that stored choice wins over
+ *   the optional browser-language suggestion
+ * - builds locale URLs by swapping only the leading segment, so deep routes keep
+ *   their path, and never invents a locale that does not exist
+ * - a plain <details> menu, so it opens and navigates with JavaScript disabled
+ */
+import { languages, locales, type Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+  /** Accessible name, localised. */
+  label: string;
+  /** Rendered variant. */
+  variant?: 'compact' | 'full';
+}
+
+const { lang, label, variant = 'compact' } = Astro.props;
+
+/** Swap the locale segment of the current path and keep everything after it. */
+function localeHref(target: Locale): string {
+  const parts = Astro.url.pathname.split('/').filter(Boolean);
+  if (locales.includes(parts[0] as Locale)) parts[0] = target;
+  else parts.unshift(target);
+  return `/${parts.join('/')}/`.replace(/\/+$/, '/');
+}
+---
+
+<div class:list={['lg-lang', `lg-lang--${variant}`]} data-language-selector>
+  <details>
+    <summary aria-label={`${label}: ${languages[lang]}`}>
+      <span lang={lang} data-lang-current>
+        {lang.toUpperCase()}
+      </span>
+      <span class="lg-visually-hidden">{languages[lang]}</span>
+      <svg
+        class="lg-lang__caret"
+        viewBox="0 0 10 6"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M1 1l4 4 4-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </summary>
+    <nav class="lg-lang__menu" aria-label={label}>
+      {locales.map((code) => (
+        <a
+          href={localeHref(code)}
+          lang={code}
+          hreflang={code}
+          data-locale={code}
+          aria-current={lang === code ? 'page' : undefined}
+        >
+          {languages[code]}
+          <span class="lg-lang__code">{code}</span>
+        </a>
+      ))}
+    </nav>
+  </details>
+</div>
+
+<script>
+  import { dict } from '../../i18n/living';
+
+  /**
+   * Close the menu on Escape, on outside click, and when one of its links is
+   * used. A manual choice is recorded so the suggestion never overrides it.
+   */
+  for (const root of document.querySelectorAll<HTMLElement>(
+    '[data-language-selector]',
+  )) {
+    const details = root.querySelector('details');
+    if (!details) continue;
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && details.open) {
+        details.open = false;
+        details.querySelector('summary')?.focus();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!details.open) return;
+      if (event.target instanceof Node && !root.contains(event.target))
+        details.open = false;
+    });
+    for (const link of details.querySelectorAll('a[data-locale]'))
+      link.addEventListener('click', () => {
+        try {
+          localStorage.setItem(
+            'mariyas-language-choice',
+            link.getAttribute('data-locale') ?? 'en',
+          );
+        } catch {
+          /* Storage can be blocked; navigation still works. */
+        }
+      });
+  }
+  void dict;
+</script>

@@ -1,0 +1,94 @@
+---
+/**
+ * Phase 8 — Customer voices.
+ *
+ * Ships the visual container EMPTY. There is no auto-sync, no widget, no embedded
+ * Google script, no scraped review, no invented quote, no star rating and no
+ * "500+" count. The section says plainly that reviews are pending and why.
+ *
+ * To publish for real, the owner must supply:
+ *   1. the exact Google Business Profile / Maps URL for this business, and
+ *   2. written approval to republish specific review text and the exact count
+ *      and rating shown on that listing.
+ * Only then should `reviews` below be filled in.
+ */
+import { voices } from '../../data/living-copy';
+import { dict } from '../../i18n/living';
+import { googleBusiness } from '../../data/site-contact';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = {
+  label: dict(voices.label, lang),
+  title: dict(voices.title, lang),
+  note: dict(voices.note, lang),
+  emptyTitle: dict(voices.emptyTitle, lang),
+  emptyBody: dict(voices.emptyBody, lang),
+  social: dict(voices.socialPending, lang),
+};
+
+/** Intentionally empty. Never populated with anything we did not verify. */
+const reviews: { quote: string; author: string; source: string }[] = [];
+const skeletons = [0, 1, 2];
+---
+
+<section
+  id="voices"
+  class="lg-voices lg-section"
+  aria-labelledby="voices-title"
+>
+  <div class="lg-shell">
+    <div class="lg-heading">
+      <p class="lg-eyebrow">{copy.label}</p>
+      <h2 id="voices-title">{copy.title}</h2>
+      <span class="lg-rule" aria-hidden="true"></span>
+      <p>{copy.note}</p>
+    </div>
+
+    <div class="lg-voices__grid">
+      {reviews.length > 0
+        ? reviews.map((review) => (
+            <blockquote class="lg-voice">
+              <p>{review.quote}</p>
+              <footer>
+                <cite>{review.author}</cite> · <span>{review.source}</span>
+              </footer>
+            </blockquote>
+          ))
+        : skeletons.map(() => (
+            <div class="lg-voice" aria-hidden="true">
+              <div class="lg-voice__head">
+                <span class="lg-voice__avatar" />
+                <span class="lg-voice__bars">
+                  <i />
+                  <i />
+                </span>
+              </div>
+              <p class="lg-voice__empty">{copy.emptyTitle}</p>
+            </div>
+          ))}
+    </div>
+
+    <p class="lg-voices__note">{copy.emptyBody}</p>
+
+    <div class="lg-voices__actions">
+      {googleBusiness.href ? (
+        <a
+          class="lg-btn lg-btn--gold"
+          href={googleBusiness.href}
+          rel="noopener"
+        >
+          {copy.social}
+        </a>
+      ) : (
+        <span class="lg-btn lg-btn--ghost" aria-disabled="true">
+          {copy.social}
+        </span>
+      )}
+    </div>
+  </div>
+</section>

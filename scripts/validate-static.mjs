@@ -25,6 +25,21 @@ const titles = new Set();
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
 const has = (path) => existsSync(new URL(path, root));
 
+/**
+ * Contact and social destinations that are allowed to appear as outbound links.
+ * These are the owner-declared channels in `src/data/site-contact.ts`; they are
+ * verified in the contact-data test, not against the storefront URL rules.
+ */
+const approvedOutboundOrigins = new Set([
+  'https://wa.me',
+  'https://www.instagram.com',
+  'https://www.facebook.com',
+]);
+
+const isApprovedOutbound = (url) =>
+  approvedOutboundOrigins.has(url.origin) ||
+  (url.origin === 'https://wa.me' && url.username === '');
+
 /** Every outbound store link must be an exact official storefront URL. */
 function assertStoreLink(href, where) {
   const url = new URL(href);
@@ -153,7 +168,12 @@ for (const lang of locales) {
         has(`${href.slice(1)}${href.endsWith('/') ? 'index.html' : ''}`),
         `Broken route ${href}`,
       );
-    else if (!/^(?:mailto:|tel:)/.test(href)) assertStoreLink(href, `${lang}`);
+    else if (!/^(?:mailto:|tel:)/.test(href)) {
+      // Contact/social channels are not storefront links: check them against the
+      // approved origin list instead of the /shop/, /product/ rules.
+      if (isApprovedOutbound(new URL(href))) continue;
+      assertStoreLink(href, `${lang}`);
+    }
   }
   console.log(
     `PASS ${lang}: metadata, hreflang, structured data, hero, chrome and links`,
@@ -177,30 +197,40 @@ assert.ok(
   readdirSync(new URL('_astro/', root)).length > 0,
   'Astro assets are emitted',
 );
-// The language landing keeps a static approved photograph: no film, no animation.
+// The site root is a real homepage, not a language gateway: it renders the
+// English page, canonicals to /en/ so the pair is not treated as duplicates, and
+// still offers every language.
 {
   const $ = load(read('index.html'));
-  const photo = $('img.landing-photo');
-  assert.equal(photo.length, 1, 'The landing keeps the approved photograph');
-  assert.ok(
-    photo.attr('alt')?.length > 20,
-    'The photograph carries real alt text',
+  assert.equal(
+    $('link[rel="canonical"]').attr('href'),
+    `${expectedOrigin}/en/`,
+    'The root canonicalises to the English homepage',
   );
-  assert.ok(
-    photo.attr('src')?.startsWith('/hero/'),
-    'The landing photograph is a local brand derivative',
+  assert.equal(
+    $('link[hreflang="x-default"]').attr('href'),
+    `${expectedOrigin}/en/`,
+    'x-default points at English',
   );
-  assert.equal($('video').length, 0, 'The landing has no video');
-  assert.equal($('.landing-languages a').length, locales.length);
   for (const lang of locales)
     assert.ok(
-      $(`.landing-languages a[hreflang="${lang}"]`).length === 1,
-      `Landing offers ${lang}`,
+      $(`link[rel="alternate"][hreflang="${lang}"]`).length === 1,
+      `Root declares hreflang ${lang}`,
     );
+  // A real homepage: hero, editions and the care explorer are all server-rendered.
+  assert.equal($('video').length, 1, 'The root keeps exactly one hero film');
+  assert.equal($('#ritual').length, 1, 'The editions section is present');
+  assert.equal($('#care').length, 1, 'The care explorer is present');
+  assert.ok($('h1').text().trim().length > 8, 'The root has a real headline');
+  // No forced language redirect: the page is static and loads no redirect script.
+  assert.ok(
+    !/location\.(?:replace|assign)|location\.href\s*=/.test(read('index.html')),
+    'The root never redirects the visitor by language',
+  );
   assert.equal(
     $('meta[name="robots"]').attr('content'),
     expectedRobots,
-    'The chooser is noindex while .cloud is a preview',
+    'The root follows the deployment robots policy',
   );
   assert.ok(
     $('link[rel="icon"]').length + $('link[rel="apple-touch-icon"]').length >=
@@ -209,7 +239,7 @@ assert.ok(
   );
   assert.ok($('link[rel="manifest"]').length === 1);
 }
-console.log('PASS language landing: static photograph, five languages, icons');
+console.log('PASS site root: real homepage, canonical to /en/, five hreflangs');
 console.log('PASS sitemap, robots and bundled assets');
 
 /** Validate every generated HTML page, including route-local alternates. */
@@ -234,9 +264,12 @@ function validateTree(directory) {
       expectedRobots,
       `${route} robots`,
     );
+    // The site root renders the English homepage and canonicalises to it, so the
+    // two URLs are one page rather than competing duplicates. Every other route
+    // is its own canonical.
     assert.equal(
       $('link[rel="canonical"]').attr('href'),
-      expectedOrigin + route,
+      expectedOrigin + (route === '/' ? '/en/' : route),
       `${route} canonical`,
     );
     for (const node of $('a[href]').toArray()) {
@@ -297,8 +330,17 @@ function validateTree(directory) {
         );
       }
     }
-    for (const node of $('a[href*="mariyasnaturals.com"]').toArray())
-      assertStoreLink($(node).attr('href'), route);
+    // The substring selector also catches the contact address, so protocol links
+    // are checked for shape rather than treated as storefront URLs.
+    for (const node of $('a[href*="mariyasnaturals.com"]').toArray()) {
+      const href = $(node).attr('href');
+      if (/^mailto:/.test(href)) {
+        assert.match(href, /^mailto:[^@\s]+@mariyasnaturals\.com$/);
+        continue;
+      }
+      if (/^tel:/.test(href)) continue;
+      assertStoreLink(href, route);
+    }
     assert.equal(
       $(
         'form[action*="checkout"],form[action*="cart"],input[name="cardnumber"]',

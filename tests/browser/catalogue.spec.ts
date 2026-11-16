@@ -139,8 +139,15 @@ for (const lang of locales) {
           nodes.map((node) => (node as HTMLAnchorElement).href),
         );
       expect(links.length).toBeGreaterThan(0);
-      for (const link of links)
+      // The selector also matches the footer's contact address, which is a
+      // mailto: channel rather than a storefront URL.
+      for (const link of links) {
+        if (link.startsWith('mailto:')) {
+          expect(link).toMatch(/^mailto:[^@\s]+@mariyasnaturals\.com$/);
+          continue;
+        }
         expect(new URL(link).origin).toBe('https://www.mariyasnaturals.com');
+      }
       expect(await axe(page)).toEqual([]);
       expect(external).toEqual([]);
     });
@@ -199,13 +206,13 @@ test('narrow screens keep the chrome inside the viewport with reduced motion', a
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await page.locator('header .language-menu summary').click();
-    await expect(page.locator('header .language-menu a')).toHaveCount(5);
+    await page.locator('header .lg-lang summary').click();
+    await expect(page.locator('header .lg-lang a')).toHaveCount(5);
     await page.keyboard.press('Escape');
-    await expect(page.locator('header .language-menu')).not.toHaveAttribute(
+    await expect(page.locator('header .lg-lang > details')).not.toHaveAttribute(
       'open',
     );
-    await expect(page.locator('header .language-menu summary')).toBeFocused();
+    await expect(page.locator('header .lg-lang summary')).toBeFocused();
     // The offer tile shows the verified claim without any animation.
     await expect(page.locator('[data-offer-b]')).toBeVisible();
     expect(
@@ -222,10 +229,10 @@ test('collection landmark and localized switcher stay linked', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/en/');
-  await page.locator('#collections .browse-list a').first().click();
+  await page.locator('#care .lg-tile').first().click();
   await expect(page).not.toHaveURL(/\/en\/$/);
   await page.goBack();
-  await page.locator('header .language-menu summary').click();
+  await page.locator('header .lg-lang summary').click();
   await page.locator('header a[hreflang="ml"]').click();
   await expect(page).toHaveURL(/\/ml\/$/);
   expect(await axe(page)).toEqual([]);

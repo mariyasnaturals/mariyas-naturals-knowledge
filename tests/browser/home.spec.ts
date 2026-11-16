@@ -10,7 +10,7 @@ const axe = async (page: import('@playwright/test').Page) =>
   ).violations;
 
 for (const lang of locales) {
-  test(`${lang}: mobile layout, language landing, chrome and accessibility`, async ({
+  test(`${lang}: mobile layout, homepage sections, chrome and accessibility`, async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -37,10 +37,10 @@ for (const lang of locales) {
       'https://www.mariyasnaturals.com/shop/',
     );
 
-    await page.locator('.mobile-menu summary').click();
-    await expect(page.locator('.mobile-menu nav')).toBeVisible();
-    await page.locator('.mobile-menu a[href="#showcase"]').click();
-    await page.locator('#showcase').scrollIntoViewIfNeeded();
+    await page.locator('[data-mobile-menu] summary').click();
+    await expect(page.locator('[data-mobile-menu] nav')).toBeVisible();
+    await page.locator('[data-mobile-menu] a[href="#care"]').click();
+    await page.locator('#care').scrollIntoViewIfNeeded();
     expect(await axe(page)).toEqual([]);
     expect(errors).toEqual([]);
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -51,23 +51,52 @@ for (const lang of locales) {
   });
 }
 
-test('language chooser offers all five languages with a static photograph', async ({
+test('the site root is the real English homepage, not a language gateway', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
-  await expect(page.locator('.landing-languages a')).toHaveCount(5);
-  await expect(
-    page.locator('.landing-languages a[hreflang="kn"]'),
-  ).toHaveAttribute('href', '/kn/');
-  await expect(page.locator('video')).toHaveCount(0);
-  const photo = page.locator('img.landing-photo');
-  await expect(photo).toBeVisible();
-  // No zoom, no parallax: the approved photograph never animates.
-  expect(await photo.evaluate((el) => getComputedStyle(el).transform)).toBe(
-    'none',
+  // Same page as /en/, declared as such, while every language stays reachable.
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    /\/en\/$/,
   );
-  await page.screenshot({ path: 'test-results/landing-desktop.png' });
+  await expect(page.locator('h1')).toBeVisible();
+  for (const section of ['#ritual', '#spotlights', '#care', '#voices']) {
+    await expect(page.locator(section)).toHaveCount(1);
+  }
+  await page.locator('header .lg-lang summary').click();
+  await expect(page.locator('header .lg-lang a')).toHaveCount(5);
+  await expect(
+    page.locator('header .lg-lang a[hreflang="kn"]'),
+  ).toHaveAttribute('href', '/kn/');
+  // The hero film is unchanged: one video with its local poster.
+  await expect(page.locator('video')).toHaveCount(1);
+  await page.screenshot({ path: 'test-results/root-homepage-desktop.png' });
+});
+
+test('a language suggestion is offered but never applied automatically', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: 'ml-IN' });
+  const page = await context.newPage();
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/en/');
+  const strip = page.locator('[data-language-suggestion]');
+  await expect(strip).toBeVisible();
+  await expect(strip.locator('[data-suggest-accept]')).toHaveAttribute(
+    'href',
+    '/ml/',
+  );
+  // Non-blocking: the visitor is still reading /en/ and can dismiss it.
+  await expect(page).toHaveURL(/\/en\/$/);
+  await strip.locator('[data-suggest-dismiss]').click();
+  await expect(strip).toBeHidden();
+  await page.reload();
+  await expect(strip).toBeHidden();
+  expect(errors).toEqual([]);
+  await context.close();
 });
 
 for (const [width, height] of [
@@ -114,7 +143,7 @@ for (const [width, height] of [
   });
 }
 
-test('the language landing fits one screen with the face above the text', async ({
+test('the homepage hero and the sections below it never scroll sideways', async ({
   page,
 }) => {
   for (const [width, height] of [
@@ -126,25 +155,22 @@ test('the language landing fits one screen with the face above the text', async 
     [430, 932],
   ]) {
     await page.setViewportSize({ width, height });
-    await page.goto('/');
+    await page.goto('/en/');
     const layout = await page.evaluate(() => {
-      const photo = document
-        .querySelector('.landing > picture')!
-        .getBoundingClientRect();
-      const heading = document
-        .querySelector('.landing-main h1')!
-        .getBoundingClientRect();
+      const hero = document.querySelector('.hero-copy h1')!;
       return {
-        scrollHeight: document.documentElement.scrollHeight,
         hScroll: document.documentElement.scrollWidth > innerWidth,
-        photoBottom: photo.bottom,
-        textTop: heading.top,
+        heroVisible: hero.getBoundingClientRect().top < innerHeight,
+        sections: ['ritual', 'spotlights', 'care', 'voices'].map(
+          (id) =>
+            document.getElementById(id)?.getBoundingClientRect().width ?? 0,
+        ),
       };
     });
-    // The photograph is a discrete band, so no face pixel is ever behind copy.
-    expect(layout.textTop, `${width}px`).toBeGreaterThan(layout.photoBottom);
     expect(layout.hScroll, `${width}px`).toBe(false);
-    expect(layout.scrollHeight, `${width}px`).toBeLessThanOrEqual(height);
+    expect(layout.heroVisible, `${width}px`).toBe(true);
+    for (const sectionWidth of layout.sections)
+      expect(sectionWidth, `${width}px`).toBeLessThanOrEqual(width);
   }
 });
 
@@ -156,7 +182,7 @@ test('desktop, keyboard skip link and reduced motion', async ({ page }) => {
   await expect(page.locator('.skip-link')).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
-  await expect(page.locator('.desktop-nav')).toBeVisible();
+  await expect(page.locator('.lg-nav')).toBeVisible();
   // The removed scroll story leaves no scenes behind.
   await expect(page.locator('[data-story-scene]')).toHaveCount(0);
   // Reduced motion freezes the two-frame offer tile on the discount frame.
@@ -204,7 +230,7 @@ test('content and language navigation work without JavaScript', async ({
   await page.goto('http://127.0.0.1:4321/en/');
   await expect(page.locator('h1')).toBeVisible();
   await expect(page.locator('[data-mobile-chrome]')).toBeAttached();
-  await page.locator('header .language-menu summary').click();
+  await page.locator('header .lg-lang summary').click();
   await page.locator('header a[hreflang="kn"]').click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'kn');
   await expect(page.locator('h1')).toBeVisible();
@@ -265,7 +291,7 @@ for (const width of [360, 768, 1440]) {
     await page.locator('.catalogue-card a').first().click();
     await expect(page).toHaveURL(/\/en\/products\/[a-z0-9-]+\/$/);
     const productUrl = page.url();
-    await page.locator('header .language-menu summary').click();
+    await page.locator('header .lg-lang summary').click();
     await page.locator('header a[hreflang="ta"]').click();
     await expect(page).toHaveURL(productUrl.replace('/en/', '/ta/'));
     await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
@@ -278,7 +304,15 @@ for (const width of [360, 768, 1440]) {
     // Outbound purchase links go to the official storefront only.
     for (const link of await page
       .locator('a[href*="mariyasnaturals.com"]')
-      .evaluateAll((nodes) => nodes.map((n) => (n as HTMLAnchorElement).href)))
+      .evaluateAll((nodes) =>
+        nodes.map((n) => (n as HTMLAnchorElement).href),
+      )) {
+      // Contact channels are mailto: links, not storefront destinations.
+      if (link.startsWith('mailto:')) {
+        expect(link).toMatch(/^mailto:[^@\s]+@mariyasnaturals\.com$/);
+        continue;
+      }
       expect(new URL(link).origin).toBe('https://www.mariyasnaturals.com');
+    }
   });
 }

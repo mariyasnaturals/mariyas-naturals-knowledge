@@ -1,86 +1,33 @@
 ---
+/**
+ * The language homepage. `/` renders the same body (see src/pages/index.astro),
+ * so English is reachable both at the root and at /en/ — with the root canonical
+ * pointing at /en/ and every locale declaring the full hreflang set.
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import HomeHero from '../../components/HomeHero.astro';
-import ShowcaseSection from '../../components/ShowcaseSection.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import MobileChrome from '../../components/MobileChrome.astro';
-import ApprovedImage from '../../components/ApprovedImage.astro';
-import ArrowIcon from '../../components/ArrowIcon.astro';
-import { featuredProduct } from '../../data/products';
-import { storeLinks } from '../../data/store';
+import HomeHero from '../../components/HomeHero.astro';
+import HomeSections from '../../components/living/HomeSections.astro';
+import LanguageSuggestion from '../../components/living/LanguageSuggestion.astro';
 import { locales, dictionaries, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
 }
+
 const lang = Astro.params.lang as Locale;
 const t = dictionaries[lang];
-const portrait = featuredProduct.images.main!;
 ---
 
 <BaseLayout lang={lang} title={t.title} description={t.description}>
-  <SiteHeader lang={lang} t={t} />
+  <LanguageSuggestion lang={lang} />
+  <SiteHeader lang={lang} route="home" />
   <main id="main" tabindex="-1">
     <HomeHero t={t} />
-    <ShowcaseSection t={t} lang={lang} />
-
-    <section id="about" class="section" aria-labelledby="about-title">
-      <div class="shell about-grid">
-        <div>
-          <p class="eyebrow-gold">{t.heritageLabel}</p>
-          <h2 id="about-title">{t.aboutTitle}</h2>
-          <p class="section-note">{t.aboutLede}</p>
-          <dl class="qa">
-            <div>
-              <dt>{t.aboutQ1}</dt>
-              <dd>{t.aboutA1}</dd>
-            </div>
-            <div>
-              <dt>{t.aboutQ2}</dt>
-              <dd>{t.aboutA2}</dd>
-            </div>
-            <div>
-              <dt>{t.aboutQ3}</dt>
-              <dd>{t.aboutA3}</dd>
-            </div>
-          </dl>
-          <p class="actions">
-            <a class="button" href={storeLinks.shop} rel="noopener">
-              {t.shopProducts}
-              <span aria-hidden="true">
-                <ArrowIcon />
-              </span>
-            </a>
-          </p>
-        </div>
-        <div class="about-media">
-          <ApprovedImage
-            lang={lang}
-            image={portrait}
-            sizes="(min-width: 900px) 460px, 90vw"
-          />
-        </div>
-      </div>
-    </section>
+    <HomeSections t={t} lang={lang} />
   </main>
-
-  <div class="store-cta section">
-    <div class="shell">
-      <p class="eyebrow-gold">{t.nextChapter}</p>
-      <h2>{t.store}</h2>
-      <p class="section-note">{t.storeText}</p>
-      <p class="actions">
-        <a class="button" href={storeLinks.shop} rel="noopener">
-          {t.shopProducts}
-          <span aria-hidden="true">
-            <ArrowIcon />
-          </span>
-        </a>
-      </p>
-    </div>
-  </div>
-
-  <SiteFooter lang={lang} t={t} />
-  <MobileChrome lang={lang} t={t} />
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
 </BaseLayout>

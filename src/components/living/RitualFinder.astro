@@ -1,0 +1,1202 @@
+---
+/**
+ * MARIYAS RITUAL FINDER — the questionnaire.
+ *
+ * Everything is rendered from the config in `src/data/ritual.ts`, so the screen
+ * list, the option lists and the recommendation rules are data, not markup.
+ *
+ * No-JS behaviour: the markup ships a complete, readable intro plus the honest
+ * "this needs JavaScript" note. The interactive screens are rendered by the
+ * client script, so nothing is half-working without JS and no answers are ever
+ * posted anywhere.
+ *
+ * Accessibility: one region, a real progress bar, a live region for step changes,
+ * arrow-key navigation over the option group, Escape never traps focus, and the
+ * results heading receives focus.
+ */
+import { ritualCopy } from '../../data/ritual';
+import { dict } from '../../i18n/living';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = {
+  title: dict(ritualCopy.title, lang),
+  kicker: dict(ritualCopy.kicker, lang),
+  lede: dict(ritualCopy.lede, lang),
+  start: dict(ritualCopy.start, lang),
+  noJs: dict(ritualCopy.noJs, lang),
+  disclaimer: dict(ritualCopy.disclaimer, lang),
+  privacy: dict(ritualCopy.privacy, lang),
+  browseAll: dict(ritualCopy.browseAll, lang),
+};
+---
+
+<section
+  class="lf"
+  id="ritual-finder"
+  data-ritual-finder
+  data-lang={lang}
+  aria-labelledby="ritual-title"
+>
+  <div class="shell lf-shell">
+    <header class="lf-intro">
+      <p class="lg-eyebrow">{copy.kicker}</p>
+      <h1 id="ritual-title">{copy.title}</h1>
+      <p class="lf-lede">{copy.lede}</p>
+    </header>
+
+    <!-- Rendered entirely by the client script. -->
+    <div class="lf-app" data-ritual-app hidden>
+      <div class="lf-progress">
+        <ol class="lf-dots" data-ritual-progress aria-hidden="true"></ol>
+        <p class="lf-step" data-ritual-step></p>
+        <div
+          class="lf-bar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          data-ritual-bar
+        >
+          <span data-ritual-bar-fill></span>
+        </div>
+      </div>
+
+      <div class="lf-card">
+        <button class="lf-back" type="button" data-ritual-back hidden>
+          <span aria-hidden="true">←</span>
+          <span data-ritual-back-label></span>
+        </button>
+
+        <div data-ritual-stage></div>
+
+        <div class="lf-actions">
+          <button
+            class="lg-btn"
+            type="button"
+            data-ritual-next
+            disabled
+          ></button>
+          <p class="lf-helper" data-ritual-helper></p>
+        </div>
+      </div>
+
+      <p
+        class="lf-live lg-visually-hidden"
+        role="status"
+        aria-live="polite"
+        data-ritual-live
+      ></p>
+    </div>
+
+    <div class="lf-nojs" data-ritual-nojs>
+      <p>{copy.noJs}</p>
+      <p>
+        <a class="lg-btn" href={`/${lang}/products/`}>
+          {copy.browseAll}
+        </a>
+      </p>
+    </div>
+
+    <footer class="lf-foot">
+      <p class="lf-disclaimer">{copy.disclaimer}</p>
+      <p class="lf-privacy">{copy.privacy}</p>
+    </footer>
+  </div>
+</section>
+
+<script>
+  import {
+    optionsAge,
+    optionsCategory,
+    optionsHairConcern,
+    optionsHairScalp,
+    optionsHairType,
+    optionsRoutine,
+    optionsSkinFocus,
+    optionsSkinType,
+    placementCopy,
+    reasonCopy,
+    ritualCopy,
+    type AnswerSet,
+  } from '../../data/ritual';
+  import {
+    questionsFor,
+    recommend,
+    type QuestionKey,
+    type Recommendation,
+  } from '../../data/ritual-engine';
+
+  const root = document.querySelector<HTMLElement>('[data-ritual-finder]');
+  if (root) {
+    const lang = (root.dataset.lang || 'en') as
+      'en' | 'ml' | 'hi' | 'ta' | 'kn';
+    const app = root.querySelector<HTMLElement>('[data-ritual-app]')!;
+    const stage = root.querySelector<HTMLElement>('[data-ritual-stage]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-ritual-next]')!;
+    const back = root.querySelector<HTMLButtonElement>('[data-ritual-back]')!;
+    const backLabel = root.querySelector<HTMLElement>(
+      '[data-ritual-back-label]',
+    )!;
+    const stepText = root.querySelector<HTMLElement>('[data-ritual-step]')!;
+    const helper = root.querySelector<HTMLElement>('[data-ritual-helper]')!;
+    const live = root.querySelector<HTMLElement>('[data-ritual-live]')!;
+    const progress = root.querySelector<HTMLElement>('[data-ritual-progress]')!;
+    const bar = root.querySelector<HTMLElement>('[data-ritual-bar]')!;
+    const barFill = root.querySelector<HTMLElement>('[data-ritual-bar-fill]')!;
+    const noJs = root.querySelector<HTMLElement>('[data-ritual-nojs]')!;
+
+    const fill = (template: string, tokens: Record<string, string | number>) =>
+      template.replace(/\{(\w+)\}/g, (match, key: string) =>
+        key in tokens ? String(tokens[key]) : match,
+      );
+    const text = (value: { en: string } & Record<string, string>) =>
+      value[lang] ?? value.en;
+
+    /** State lives in memory for this tab only. Never persisted, never sent. */
+    let answers: AnswerSet = { hairConcerns: [], skinFocus: [] };
+    let index = 0;
+    let screen: 'questions' | 'results' = 'questions';
+
+    const questions = () => questionsFor(answers.category);
+
+    /* ---------------------------------------------------------------- render -- */
+
+    const optionRow = (
+      value: string,
+      label: string,
+      icon: string | undefined,
+      checked: boolean,
+      type: 'radio' | 'checkbox',
+      name: string,
+    ) => `
+      <label class="lf-option">
+        <input type="${type}" name="${name}" value="${value}" ${checked ? 'checked' : ''} />
+        <span class="lf-option__box" aria-hidden="true"></span>
+        ${
+          icon
+            ? `<svg class="lf-option__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${icon}"/></svg>`
+            : ''
+        }
+        <span class="lf-option__label">${label}</span>
+      </label>`;
+
+    const renderQuestion = (key: QuestionKey) => {
+      const isMulti = key === 'hairConcerns' || key === 'skinFocus';
+      const chosen = answers[key as keyof AnswerSet];
+      const selected = Array.isArray(chosen)
+        ? (chosen as string[])
+        : chosen
+          ? [chosen as string]
+          : [];
+
+      let title = '';
+      let helperText = isMulti
+        ? text(ritualCopy.multiHint)
+        : text(ritualCopy.singleHint);
+      let options = '';
+
+      switch (key) {
+        case 'category':
+          title = text(ritualCopy.categoryLabel);
+          helperText = text(ritualCopy.singleHint);
+          options = optionsCategory
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'category',
+              ),
+            )
+            .join('');
+          break;
+        case 'hairScalp':
+          title = {
+            en: 'How does your scalp usually feel?',
+            ml: 'നിങ്ങളുടെ തലയോട്ടി സാധാരണ എങ്ങനെയാണ്?',
+            hi: 'आपकी खोपड़ी आमतौर पर कैसी रहती है?',
+            ta: 'உங்கள் தலைக்கவசம் பொதுவாக எப்படி இருக்கும்?',
+            kn: 'ನಿಮ್ಮ ನೆತ್ತಿ ಸಾಮಾನ್ಯವಾಗಿ ಹೇಗಿರುತ್ತದೆ?',
+          }[lang];
+          options = optionsHairScalp
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'hairScalp',
+              ),
+            )
+            .join('');
+          break;
+        case 'hairType':
+          title = {
+            en: 'How would you describe your hair?',
+            ml: 'നിങ്ങളുടെ മുടി എങ്ങനെയാണ്?',
+            hi: 'आप अपने बालों को कैसा बताएँगे?',
+            ta: 'உங்கள் முடியை எப்படி விவரிப்பீர்கள்?',
+            kn: 'ನಿಮ್ಮ ಕೂದಲನ್ನು ಹೇಗೆ ವಿವರಿಸುತ್ತೀರಿ?',
+          }[lang];
+          options = optionsHairType
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'hairType',
+              ),
+            )
+            .join('');
+          break;
+        case 'hairConcerns':
+          title = {
+            en: 'What would you like the routine to help with?',
+            ml: 'പരിചരണം എന്തിന് സഹായിക്കണം?',
+            hi: 'रिचुअल किसमें मदद करे?',
+            ta: 'பராமரிப்பு எதற்கு உதவ வேண்டும்?',
+            kn: 'ಆರೈಕೆ ಯಾವುದಕ್ಕೆ ಸಹಾಯ ಮಾಡಬೇಕು?',
+          }[lang];
+          options = optionsHairConcern
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'checkbox',
+                'hairConcerns',
+              ),
+            )
+            .join('');
+          break;
+        case 'skinType':
+          title = {
+            en: 'How does your skin usually feel?',
+            ml: 'നിങ്ങളുടെ ചർമ്മം സാധാരണ എങ്ങനെയാണ്?',
+            hi: 'आपकी त्वचा आमतौर पर कैसी रहती है?',
+            ta: 'உங்கள் சருமம் பொதுவாக எப்படி இருக்கும்?',
+            kn: 'ನಿಮ್ಮ ಚರ್ಮ ಸಾಮಾನ್ಯವಾಗಿ ಹೇಗಿರುತ್ತದೆ?',
+          }[lang];
+          options = optionsSkinType
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'skinType',
+              ),
+            )
+            .join('');
+          break;
+        case 'skinFocus':
+          title = {
+            en: 'What would you like to focus on?',
+            ml: 'എന്തിൽ ശ്രദ്ധിക്കണം?',
+            hi: 'किस पर ध्यान दें?',
+            ta: 'எதில் கவனம் செலுத்த வேண்டும்?',
+            kn: 'ಯಾವುದಕ್ಕೆ ಗಮನ ಕೊಡಬೇಕು?',
+          }[lang];
+          options = optionsSkinFocus
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'checkbox',
+                'skinFocus',
+              ),
+            )
+            .join('');
+          break;
+        case 'routine':
+          title = {
+            en: 'How often would you like to use it?',
+            ml: 'എത്ര തവണ ഉപയോഗിക്കാൻ ആഗ്രഹിക്കുന്നു?',
+            hi: 'आप इसे कितनी बार उपयोग करना चाहेंगे?',
+            ta: 'எத்தனை முறை பயன்படுத்த விரும்புகிறீர்கள்?',
+            kn: 'ಎಷ್ಟು ಬಾರಿ ಬಳಸಲು ಬಯಸುತ್ತೀರಿ?',
+          }[lang];
+          options = optionsRoutine
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'routine',
+              ),
+            )
+            .join('');
+          break;
+        case 'age':
+          title = {
+            en: 'Which age range are you in?',
+            ml: 'നിങ്ങളുടെ പ്രായപരിധി?',
+            hi: 'आपकी आयु सीमा कौन सी है?',
+            ta: 'உங்கள் வயது வரம்பு எது?',
+            kn: 'ನಿಮ್ಮ ವಯಸ್ಸಿನ ವ್ಯಾಪ್ತಿ ಯಾವುದು?',
+          }[lang];
+          helperText = text(ritualCopy.optional);
+          options = optionsAge
+            .map((option) =>
+              optionRow(
+                option.value,
+                text(option.label),
+                option.icon,
+                selected.includes(option.value),
+                'radio',
+                'age',
+              ),
+            )
+            .join('');
+          break;
+      }
+
+      stage.innerHTML = `
+        <fieldset class="lf-fieldset">
+          <legend class="lf-legend">${title}</legend>
+          <p class="lf-helper">${helperText}</p>
+          <div class="lf-options lf-options--${isMulti ? 'grid' : 'rows'}">${options}</div>
+        </fieldset>`;
+
+      stage.querySelectorAll<HTMLInputElement>('input').forEach((input) => {
+        input.addEventListener('change', () => {
+          const name = input.name as keyof AnswerSet;
+          if (input.type === 'checkbox') {
+            const list = new Set((answers[name] as string[]) ?? []);
+            if (input.checked) list.add(input.value);
+            else list.delete(input.value);
+            (answers[name] as unknown as string[]) = [...list];
+          } else {
+            (answers[name] as unknown as string) = input.value;
+          }
+          syncActions();
+        });
+      });
+
+      // Arrow keys move between the radios in a group, as a radiogroup should.
+      stage.addEventListener('keydown', (event) => {
+        const key = (event as KeyboardEvent).key;
+        if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(key))
+          return;
+        const inputs = [
+          ...stage.querySelectorAll<HTMLInputElement>('input[type="radio"]'),
+        ];
+        const active = document.activeElement;
+        const at = inputs.indexOf(active as HTMLInputElement);
+        if (at < 0) return;
+        event.preventDefault();
+        const forward = key === 'ArrowDown' || key === 'ArrowRight';
+        const nextInput =
+          inputs[(at + (forward ? 1 : -1) + inputs.length) % inputs.length];
+        nextInput.focus();
+        nextInput.checked = true;
+        nextInput.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+
+      root.dataset.question = key;
+      syncProgress();
+    };
+
+    const syncProgress = () => {
+      progress.hidden = false;
+      const total = questions().length;
+      stepText.textContent = fill(text(ritualCopy.step), {
+        current: index + 1,
+        total,
+      });
+      const percent = Math.round(
+        ((index + (screen === 'results' ? 1 : 0)) / total) * 100,
+      );
+      bar.setAttribute('aria-valuenow', String(percent));
+      barFill.style.width = `${percent}%`;
+      progress.innerHTML = questions()
+        .map(
+          (_, at) =>
+            `<li class="${at < index ? 'is-done' : at === index ? 'is-current' : ''}"></li>`,
+        )
+        .join('');
+      back.hidden = index === 0 && screen === 'questions';
+      backLabel.textContent = text(ritualCopy.back);
+      next.textContent =
+        index === questions().length - 1
+          ? text(ritualCopy.seeResults)
+          : text(ritualCopy.next);
+    };
+
+    const syncActions = () => {
+      const key = questions()[index];
+      if (!key) {
+        next.disabled = false;
+        return;
+      }
+      if (key === 'age') {
+        // Optional step: always continue-able.
+        next.disabled = false;
+        helper.textContent = text(ritualCopy.optional);
+        return;
+      }
+      const value = answers[key as keyof AnswerSet];
+      const answered = Array.isArray(value) ? value.length > 0 : Boolean(value);
+      next.disabled = !answered;
+      if (key === 'hairConcerns' || key === 'skinFocus')
+        helper.textContent = text(ritualCopy.multiHint);
+      else helper.textContent = text(ritualCopy.singleHint);
+    };
+
+    /* --------------------------------------------------------------- results -- */
+
+    const productCard = (entry: Recommendation, position: number) => {
+      const product = entry.product;
+      const reasonKey =
+        entry.matched[0] ?? (entry.fallback ? 'default' : 'default');
+      const reason = reasonCopy[reasonKey] ?? reasonCopy.default;
+      const placement =
+        placementCopy[product.id] ?? placementCopy['mn-in-3008'];
+      return `
+        <li class="lf-result">
+          <div class="lf-result__head">
+            <span class="lf-result__step">STEP ${String(position + 1).padStart(2, '0')}</span>
+            <h3>${product.name}</h3>
+          </div>
+          <p class="lf-result__why"><strong>${text(ritualCopy.why)}:</strong> ${text(reason)}</p>
+          <p class="lf-result__place"><strong>${text(ritualCopy.placement)}:</strong> ${text(placement)}</p>
+          <div class="lf-result__actions">
+            <a class="lg-btn lg-btn--gold" href="${product.href}" rel="noopener">${text(ritualCopy.viewProduct)}</a>
+            <a class="lg-link" href="/${lang}/products/${product.slug}/">${text(ritualCopy.browseAll)}</a>
+          </div>
+        </li>`;
+    };
+
+    const answerList = () => {
+      const label = (
+        options: {
+          value: string;
+          label: { en: string } & Record<string, string>;
+        }[],
+        value: string,
+      ) =>
+        text(
+          options.find((option) => option.value === value)?.label ?? {
+            en: value,
+          },
+        );
+      const rows: { key: QuestionKey; value: string }[] = [];
+      const push = (key: QuestionKey, value?: string | string[]) => {
+        if (!value || (Array.isArray(value) && !value.length)) return;
+        rows.push({
+          key,
+          value: Array.isArray(value)
+            ? value.map((item) => labelFor(key, item)).join(', ')
+            : labelFor(key, value),
+        });
+      };
+      const labelFor = (key: QuestionKey, value: string) => {
+        const map: Record<
+          string,
+          { value: string; label: { en: string } & Record<string, string> }[]
+        > = {
+          category: optionsCategory as never,
+          hairScalp: optionsHairScalp as never,
+          hairType: optionsHairType as never,
+          hairConcerns: optionsHairConcern as never,
+          routine: optionsRoutine as never,
+          skinType: optionsSkinType as never,
+          skinFocus: optionsSkinFocus as never,
+          age: optionsAge as never,
+        };
+        return map[key] ? label(map[key], value) : value;
+      };
+      push('category', answers.category);
+      push('hairScalp', answers.hairScalp);
+      push('hairType', answers.hairType);
+      push('hairConcerns', answers.hairConcerns);
+      push('skinType', answers.skinType);
+      push('skinFocus', answers.skinFocus);
+      push('routine', answers.routine);
+      push('age', answers.age);
+      return rows
+        .map(
+          (row) => `
+          <li>
+            <span>${questionLabel(row.key)}</span>
+            <strong>${row.value}</strong>
+            <button class="lf-change" type="button" data-edit="${row.key}">${text(ritualCopy.changeAnswer)}</button>
+          </li>`,
+        )
+        .join('');
+    };
+
+    const questionLabel = (key: QuestionKey) => {
+      const labels: Record<QuestionKey, Record<string, string>> = {
+        category: {
+          en: 'Care',
+          ml: 'പരിചരണം',
+          hi: 'देखभाल',
+          ta: 'பராமரிப்பு',
+          kn: 'ಆರೈಕೆ',
+        },
+        hairScalp: {
+          en: 'Scalp',
+          ml: 'തലയോട്ടി',
+          hi: 'खोपड़ी',
+          ta: 'தலைக்கவசம்',
+          kn: 'ನೆತ್ತಿ',
+        },
+        hairType: {
+          en: 'Hair',
+          ml: 'മുടി',
+          hi: 'बाल',
+          ta: 'முடி',
+          kn: 'ಕೂದಲು',
+        },
+        hairConcerns: {
+          en: 'Concerns',
+          ml: 'ആവശ്യങ്ങൾ',
+          hi: 'चिंताएँ',
+          ta: 'கவலைகள்',
+          kn: 'ಕಾಳಜಿಗಳು',
+        },
+        routine: {
+          en: 'Frequency',
+          ml: 'ആവൃത്തി',
+          hi: 'आवृत्ति',
+          ta: 'அடிக்கடி',
+          kn: 'ಆವರ್ತನ',
+        },
+        skinType: {
+          en: 'Skin',
+          ml: 'ചർമ്മം',
+          hi: 'त्वचा',
+          ta: 'சருமம்',
+          kn: 'ಚರ್ಮ',
+        },
+        skinFocus: {
+          en: 'Skin focus',
+          ml: 'ചർമ്മ ശ്രദ്ധ',
+          hi: 'त्वचा फ़ोकस',
+          ta: 'சருமக் கவனம்',
+          kn: 'ಚರ್ಮ ಗಮನ',
+        },
+        age: {
+          en: 'Age range',
+          ml: 'പ്രായം',
+          hi: 'आयु',
+          ta: 'வயது',
+          kn: 'ವಯಸ್ಸು',
+        },
+      };
+      return labels[key][lang] ?? labels[key].en;
+    };
+
+    const renderResults = () => {
+      screen = 'results';
+      const results = recommend(answers);
+      const fallback = results.every((entry) => entry.fallback);
+      stage.innerHTML = `
+        <h2 class="lf-results-title" tabindex="-1" data-results-title>${text(ritualCopy.resultsTitle)}</h2>
+        <p class="lf-lede">${text(ritualCopy.resultsLede)}</p>
+        ${
+          fallback
+            ? `<div class="lf-fallback"><h3>${text(ritualCopy.fallbackTitle)}</h3><p>${text(ritualCopy.fallbackBody)}</p></div>`
+            : ''
+        }
+        <ol class="lf-results">${results.map(productCard).join('')}</ol>
+        <details class="lf-answers">
+          <summary>${text(ritualCopy.answersTitle)}</summary>
+          <ul>${answerList()}</ul>
+        </details>
+        <div class="lf-result__footer">
+          <button class="lg-btn lg-btn--outline" type="button" data-ritual-restart>${text(ritualCopy.restart)}</button>
+          <a class="lg-link" href="/${lang}/products/">${text(ritualCopy.browseAll)}</a>
+        </div>`;
+
+      stepText.textContent = text(ritualCopy.resultsTitle);
+      bar.setAttribute('aria-valuenow', '100');
+      barFill.style.width = '100%';
+      progress.innerHTML = '';
+      progress.hidden = true;
+      back.hidden = true;
+      next.hidden = true;
+      helper.textContent = '';
+
+      const heading = stage.querySelector<HTMLElement>('[data-results-title]');
+      heading?.focus();
+      live.textContent = text(ritualCopy.resultsTitle);
+
+      stage
+        .querySelectorAll<HTMLButtonElement>('[data-edit]')
+        .forEach((button) => {
+          button.addEventListener('click', () => {
+            const key = button.dataset.edit as QuestionKey;
+            const at = questions().indexOf(key);
+            screen = 'questions';
+            next.hidden = false;
+            if (at >= 0) index = at;
+            renderQuestion(questions()[index]);
+            syncActions();
+            stage.querySelector<HTMLInputElement>('input')?.focus();
+          });
+        });
+      stage
+        .querySelector('[data-ritual-restart]')
+        ?.addEventListener('click', restart);
+    };
+
+    /* ---------------------------------------------------------------- flow --- */
+
+    const show = () => {
+      if (screen === 'results') return renderResults();
+      renderQuestion(questions()[index]);
+      syncActions();
+    };
+
+    const restart = () => {
+      answers = { hairConcerns: [], skinFocus: [] };
+      index = 0;
+      screen = 'questions';
+      next.hidden = false;
+      show();
+      root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    };
+
+    next.addEventListener('click', () => {
+      if (screen !== 'questions') return;
+      if (index === questions().length - 1) {
+        renderResults();
+        return;
+      }
+      index += 1;
+      show();
+      stage.querySelector<HTMLInputElement>('input')?.focus();
+      live.textContent = stepText.textContent ?? '';
+    });
+
+    back.addEventListener('click', () => {
+      if (screen === 'results') {
+        screen = 'questions';
+        next.hidden = false;
+        renderResults();
+        return;
+      }
+      if (index > 0) index -= 1;
+      show();
+      stage.querySelector<HTMLInputElement>('input')?.focus();
+    });
+
+    // This page is a task, not a shop window: the floating pill would cover the
+    // results' own buttons, so it stays hidden here.
+    document.querySelector<HTMLElement>('.shop-fab')?.remove();
+
+    // Reveal the interactive app; the no-JS note only stands in for it.
+    app.hidden = false;
+    noJs.hidden = true;
+    show();
+
+    // Expose the pure rules for the test suite (browser context only).
+    (window as unknown as Record<string, unknown>).__mariyasRitual = {
+      recommend,
+      questionsFor,
+    };
+  }
+</script>
+
+<style is:global>
+  /*
+   * Global on purpose: the question screens and the result cards are created by
+   * the client script, so they never receive an Astro scope attribute and scoped
+   * rules would silently miss them. Every selector below is prefixed `.lf` and the
+   * class names are unique to this component.
+   */
+  .lf {
+    padding-block: clamp(1.5rem, 4vw, 3rem) var(--lg-section);
+    background:
+      radial-gradient(ellipse at 50% -10%, #efe6d2 0%, transparent 55%),
+      var(--lg-ivory);
+  }
+
+  .lf-shell {
+    width: min(920px, calc(100% - 2rem));
+  }
+
+  .lf-intro {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .lf-intro h1 {
+    margin: 0;
+    font-family: var(--lg-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.6vw, 3.2rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--lg-emerald-900);
+  }
+
+  .lf-lede {
+    max-width: 56ch;
+    margin: 0.75rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--lg-ink-soft);
+  }
+
+  /* Progress ---------------------------------------------------------------- */
+
+  .lf-progress {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lf-dots {
+    display: flex;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lf-dots li {
+    flex: 1;
+    height: 3px;
+    border-radius: 99px;
+    background: var(--lg-beige-deep);
+  }
+
+  .lf-dots li.is-done {
+    background: var(--lg-emerald-700);
+  }
+
+  .lf-dots li.is-current {
+    background: var(--lg-gold-deep);
+  }
+
+  .lf-step {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lg-ink-mute);
+  }
+
+  .lf-bar {
+    height: 2px;
+    background: #e5dbc4;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .lf-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(
+      90deg,
+      var(--lg-emerald-700),
+      var(--lg-gold-deep)
+    );
+    transition: width 0.28s ease;
+  }
+
+  /* Card -------------------------------------------------------------------- */
+
+  .lf-card {
+    position: relative;
+    padding: clamp(1.1rem, 3vw, 2rem);
+    border: 1px solid var(--lg-beige);
+    border-radius: var(--lg-radius-lg);
+    background: #fffdf8;
+    box-shadow: var(--lg-shadow-card);
+  }
+
+  .lf-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 40px;
+    margin-bottom: 0.6rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--lg-emerald-800);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .lf-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .lf-legend {
+    padding: 0;
+    font-family: var(--lg-display);
+    font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+    line-height: 1.22;
+    color: var(--lg-emerald-900);
+  }
+
+  .lf-helper {
+    margin: 0.3rem 0 0.9rem;
+    font-size: 0.78rem;
+    color: var(--lg-ink-mute);
+  }
+
+  .lf-options {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .lf-options--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 520px) {
+    .lf-options--grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lf-option {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 52px;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--lg-beige-deep);
+    border-radius: var(--lg-radius);
+    background: #fffefb;
+    cursor: pointer;
+    transition:
+      border-color 0.16s ease,
+      background-color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+
+  .lf-options--rows .lf-option {
+    grid-template-columns: auto auto 1fr;
+  }
+
+  .lf-options--grid .lf-option {
+    grid-template-columns: auto 1fr;
+    min-height: 66px;
+  }
+
+  .lf-option:hover {
+    border-color: var(--lg-gold-deep);
+  }
+
+  /* The native control stays in the a11y tree but is visually replaced. */
+  .lf-option input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+  }
+
+  .lf-option__box {
+    display: grid;
+    place-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #b9aa8a;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .lf-option input[type='checkbox'] ~ .lf-option__box {
+    border-radius: 4px;
+  }
+
+  .lf-option input:checked ~ .lf-option__box {
+    border-color: var(--lg-emerald-800);
+    background: var(--lg-emerald-800);
+  }
+
+  .lf-option input:checked ~ .lf-option__box::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: inherit;
+    background: #fffdf6;
+  }
+
+  .lf-option input:focus-visible ~ .lf-option__box {
+    outline: 2px solid var(--lg-gold-ink);
+    outline-offset: 2px;
+  }
+
+  .lf-option:has(input:checked) {
+    border-color: var(--lg-emerald-800);
+    background: #f2f7f2;
+    box-shadow: inset 0 0 0 1px #063d2a22;
+  }
+
+  .lf-option__icon {
+    width: 22px;
+    height: 22px;
+    stroke: var(--lg-emerald-700);
+    fill: none;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+  }
+
+  .lf-option__label {
+    font-size: 0.9rem;
+    color: var(--lg-ink);
+  }
+
+  .lf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+  }
+
+  .lf-actions .lf-helper {
+    margin: 0;
+  }
+
+  .lf-actions .lg-btn {
+    min-width: 9.5rem;
+  }
+
+  /* Results ----------------------------------------------------------------- */
+
+  .lf-results-title {
+    margin: 0;
+    font-family: var(--lg-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+    color: var(--lg-emerald-900);
+  }
+
+  .lf-results-title:focus-visible {
+    outline: 2px solid var(--lg-gold-ink);
+    outline-offset: 4px;
+  }
+
+  .lf-fallback {
+    margin: 1rem 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--lg-gold-deep);
+    background: #f8f1dd;
+  }
+
+  .lf-fallback h3 {
+    margin: 0 0 0.25rem;
+    font-family: var(--lg-display);
+    font-size: 1.1rem;
+    color: var(--lg-emerald-900);
+  }
+
+  .lf-fallback p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--lg-ink-soft);
+  }
+
+  .lf-results {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lf-result {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem 1.1rem 1.1rem;
+    border: 1px solid var(--lg-beige);
+    border-left: 3px solid var(--lg-gold-deep);
+    border-radius: var(--lg-radius);
+    background: #fffdf7;
+  }
+
+  /* The step number sits in its own rail so the product name keeps a straight
+   * left edge on every card, including when the name wraps to three lines. */
+  .lf-result__head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--lg-beige);
+  }
+
+  .lf-result__step {
+    font-family: var(--lg-sans);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--lg-gold-ink);
+  }
+
+  .lf-result h3 {
+    margin: 0;
+    font-family: var(--lg-display);
+    font-weight: 500;
+    font-size: 1.18rem;
+    line-height: 1.25;
+    color: var(--lg-emerald-900);
+    overflow-wrap: anywhere;
+  }
+
+  .lf-result p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: var(--lg-ink-soft);
+  }
+
+  .lf-result__why strong,
+  .lf-result__place strong {
+    display: block;
+    margin-bottom: 0.1rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--lg-emerald-700);
+  }
+
+  .lf-result__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.9rem;
+    margin-top: 0.45rem;
+  }
+
+  .lf-result__actions .lg-link {
+    font-size: 0.78rem;
+  }
+
+  /* The second link inside a card is a convenience, not a second CTA. */
+  .lf-result__actions .lg-link {
+    color: var(--lg-ink-mute);
+  }
+
+  .lf-answers {
+    margin-top: 1.1rem;
+    border-top: 1px solid var(--lg-beige);
+    padding-top: 0.75rem;
+  }
+
+  .lf-answers summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--lg-emerald-800);
+    cursor: pointer;
+  }
+
+  .lf-answers ul {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lf-answers li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--lg-ink-mute);
+  }
+
+  .lf-answers strong {
+    color: var(--lg-ink);
+    font-weight: 500;
+  }
+
+  .lf-change {
+    min-height: 32px;
+    margin-left: auto;
+    padding: 0 0.5rem;
+    border: 1px solid var(--lg-beige-deep);
+    border-radius: 3px;
+    background: #fffdf8;
+    color: var(--lg-emerald-800);
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+  }
+
+  .lf-result__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  /* Notes ------------------------------------------------------------------- */
+
+  .lf-nojs {
+    padding: 1rem 1.1rem;
+    border: 1px dashed var(--lg-beige-deep);
+    border-radius: var(--lg-radius);
+    background: #fffdf8;
+    font-size: 0.88rem;
+  }
+
+  .lf-foot {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lg-beige);
+  }
+
+  .lf-disclaimer {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.7;
+    color: var(--lg-ink-mute);
+  }
+
+  .lf-privacy {
+    margin: 0;
+    font-size: 0.74rem;
+    color: var(--lg-ink-mute);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lf-bar span,
+    .lf-option {
+      transition: none;
+    }
+  }
+</style>

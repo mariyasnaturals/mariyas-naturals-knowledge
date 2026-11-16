@@ -6,6 +6,7 @@ import '../styles/fonts.css';
 import '../styles/typography.css';
 import '../styles/rebrand.css';
 import '../styles/discovery.css';
+import '../styles/living-gallery.css';
 import fontManifest from '../data/font-manifest.json';
 import type { Locale } from '../i18n';
 interface Props {
@@ -16,6 +17,8 @@ interface Props {
   pageSchema?: Record<string, unknown>;
   socialImage?: { src: string; width: number; height: number; alt: string };
   breadcrumbs?: { name: string; path: string }[];
+  /** Absolute canonical override, e.g. the root homepage canonicalising to /en/. */
+  canonicalPath?: string;
 }
 const subset = {
   en: 'latin',

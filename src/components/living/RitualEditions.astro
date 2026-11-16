@@ -1,0 +1,348 @@
+---
+/**
+ * Phase 4 — "Discover Your Mariyas Ritual".
+ *
+ * Exactly two feature cards:
+ *   1. the 200 ml herbal hair care oil
+ *   2. the 500 ml pack, badged OIL-TREATED NEEM COMB INCLUDED
+ *
+ * The badge wording is deliberately not "FREE NEEM COMB": the live store sells the
+ * 500 ml oil and the oil-treated neem comb as one listing with no free-gift
+ * language, and the URL the brief supplied
+ * (`/product/hair-oil-500ml-comb/`) returns a WordPress 404. See
+ * docs/reference/living-gallery/README.md for the evidence.
+ *
+ * Desktop: 2-up. Mobile: 1-up horizontal rail with a deliberate peek of the next
+ * card, swipe/drag/keyboard scrolling, prev/next buttons and dot pagination.
+ * The one 1-litre card and the duplicate 200 ml listing were removed from the
+ * homepage; the catalogue is untouched.
+ */
+import ApprovedImage from '../ApprovedImage.astro';
+import ArrowIcon from '../ArrowIcon.astro';
+import { showcaseItems } from '../../data/showcase';
+import { ritualCards } from '../../data/living-copy';
+import { dict } from '../../i18n/living';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+/** Only the two editions this section is allowed to show. */
+const editions = ['hair-oil-200-ml', 'hair-oil-500-ml']
+  .map((id) => showcaseItems.find((item) => item.id === id)!)
+  .filter(Boolean);
+
+const copy = {
+  label: dict(ritualCards.label, lang),
+  title: dict(ritualCards.title, lang),
+  note: dict(ritualCards.note, lang),
+  eyebrow: dict(ritualCards.eyebrow, lang),
+  badge: dict(ritualCards.combBadge, lang),
+  combNote: dict(ritualCards.combNote, lang),
+  shop: dict(ritualCards.shop, lang),
+  caption: dict(ritualCards.photoCaption, lang),
+  prev: dict(ritualCards.prev, lang),
+  next: dict(ritualCards.next, lang),
+  slideLabel: dict(ritualCards.slideLabel, lang),
+};
+
+const lines: Record<string, Record<Locale, string>> = {
+  'hair-oil-200-ml': {
+    en: 'The 200 ml pack of the herbal hair care oil, in its current Mariyas bottle.',
+    ml: 'നിലവിലെ മരിയാസ് കുപ്പിയിലുള്ള 200 ml ഹെർബൽ ഹെയർ കെയർ ഓയിൽ.',
+    hi: 'मौजूदा मरियास बोतल में 200 ml हर्बल हेयर केयर ऑयल।',
+    ta: 'தற்போதைய மரியாஸ் பாட்டிலில் 200 ml ஹெர்பல் ஹேர் கேர் ஆயில்.',
+    kn: 'ಪ್ರಸುತ್ತ ಮರಿಯಾಸ್ ಬಾಟಲಿಯಲ್ಲಿ 200 ml ಹೆರ್ಬಲ್ ಹೇರ್ ಕೇರ್ ಆಯಿಲ್.',
+  },
+  'hair-oil-500-ml': {
+    en: 'The larger 500 ml pack, sold together with the oil-treated neem comb.',
+    ml: 'എണ്ണയിൽ സംസ്കരിച്ച നീം ചീർപ്പിനൊപ്പം വിൽക്കുന്ന വലിയ 500 ml പായ്ക്ക്.',
+    hi: 'तेल-उपचारित नीम कंघी के साथ बिकने वाला बड़ा 500 ml पैक।',
+    ta: 'எண்ணெய் பதப்படுத்திய வேப்பம் சீப்புடன் விற்கப்படும் பெரிய 500 ml பொதி.',
+    kn: 'ಎಣ್ಣೆ ಸಂಸ್ಕರಿಸಿದ ಬೇವು ಬಾಚಣಿಗೆಯೊಂದಿಗೆ ಮಾರಾಟವಾಗುವ ದೊಡ್ಡ 500 ml ಪ್ಯಾಕ್.',
+  },
+};
+---
+
+<section
+  id="ritual"
+  class="lg-section lg-editions"
+  aria-labelledby="editions-title"
+>
+  <div class="lg-shell">
+    <div class="lg-heading">
+      <p class="lg-eyebrow">{copy.label}</p>
+      <h2 id="editions-title">{copy.title}</h2>
+      <span class="lg-rule" aria-hidden="true"></span>
+      <p>{copy.note}</p>
+    </div>
+
+    <div class="lg-rails" data-editions>
+      <ul
+        class="lg-rail lg-edition-rail"
+        role="list"
+        tabindex="0"
+        aria-label={copy.slideLabel}
+        data-edition-rail
+      >
+        {editions.map((item, index) => (
+          <li class="lg-edition-wrap" data-slide={index}>
+            <article class="lg-edition" id={item.id}>
+              {item.image && (
+                <figure class="lg-edition__media">
+                  <ApprovedImage
+                    lang={lang}
+                    image={item.image}
+                    priority={index === 0}
+                    sizes="(min-width: 1040px) 560px, (min-width: 700px) 46vw, 78vw"
+                  />
+                  <figcaption>{copy.caption}</figcaption>
+                  {item.id === 'hair-oil-500-ml' && (
+                    <span class="lg-edition__rosette lg-rosette">
+                      {copy.badge}
+                    </span>
+                  )}
+                </figure>
+              )}
+              <div class="lg-edition__body">
+                <p class="lg-eyebrow">{copy.eyebrow}</p>
+                <h3 lang="en">{item.officialName}</h3>
+                <p>{lines[item.id][lang]}</p>
+                {item.id === 'hair-oil-500-ml' && (
+                  <p class="lg-edition__note">{copy.combNote}</p>
+                )}
+                <a class="lg-btn" href={item.href} rel="noopener">
+                  {copy.shop}
+                  <ArrowIcon />
+                </a>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+
+      <div class="lg-rail-nav">
+        <button
+          class="lg-rail-btn"
+          type="button"
+          aria-label={copy.prev}
+          data-rail-prev
+          hidden
+        >
+          <span aria-hidden="true">
+            <ArrowIcon direction="left" />
+          </span>
+        </button>
+        <div
+          class="lg-dots"
+          data-rail-dots
+          role="tablist"
+          aria-label={copy.slideLabel}
+        >
+          {editions.map((_, index) => (
+            <button
+              type="button"
+              role="tab"
+              aria-current={index === 0 ? 'true' : 'false'}
+              aria-label={`${index + 1} / ${editions.length}`}
+              data-rail-dot={index}
+            />
+          ))}
+        </div>
+        <button
+          class="lg-rail-btn"
+          type="button"
+          aria-label={copy.next}
+          data-rail-next
+          hidden
+        >
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /**
+   * One rail controller, used by both the edition rail and the spotlight rail.
+   *
+   * - works with touch swipe, trackpad, mouse drag and the scrollbar natively
+   * - prev/next buttons scroll by one card and are hidden when the rail fits
+   * - dots follow the real scroll position and are buttons, not decoration
+   * - keyboard: the rail itself is focusable and scrolls with the arrow keys
+   * - never loops, never auto-advances, and does nothing under reduced motion
+   *   beyond instant jumps
+   */
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const behaviour = (): ScrollBehavior => (reduced.matches ? 'auto' : 'smooth');
+
+  document
+    .querySelectorAll<HTMLElement>('[data-edition-rail], [data-spotlight-rail]')
+    .forEach((rail) => {
+      const scope = rail.closest('[data-editions], [data-spotlights]');
+      if (!scope) return;
+      const slides = [...rail.querySelectorAll<HTMLElement>('[data-slide]')];
+      const prev = scope.querySelector<HTMLButtonElement>('[data-rail-prev]');
+      const next = scope.querySelector<HTMLButtonElement>('[data-rail-next]');
+      const dots = [
+        ...scope.querySelectorAll<HTMLButtonElement>('[data-rail-dot]'),
+      ];
+
+      const overflows = () => rail.scrollWidth - rail.clientWidth > 8;
+      const current = () => {
+        const left = rail.scrollLeft;
+        let best = 0;
+        let distance = Infinity;
+        slides.forEach((slide, index) => {
+          const delta = Math.abs(slide.offsetLeft - rail.offsetLeft - left);
+          if (delta < distance) {
+            distance = delta;
+            best = index;
+          }
+        });
+        return best;
+      };
+
+      const sync = () => {
+        const canScroll = overflows();
+        if (prev) prev.hidden = !canScroll;
+        if (next) next.hidden = !canScroll;
+        const at = current();
+        dots.forEach((dot, index) =>
+          dot.setAttribute('aria-current', String(index === at)),
+        );
+        if (prev) prev.disabled = !canScroll || rail.scrollLeft < 4;
+        if (next)
+          next.disabled =
+            !canScroll ||
+            rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4;
+      };
+
+      const goTo = (index: number) => {
+        const slide = slides[Math.max(0, Math.min(slides.length - 1, index))];
+        if (!slide) return;
+        rail.scrollTo({
+          left: slide.offsetLeft - rail.offsetLeft,
+          behavior: behaviour(),
+        });
+      };
+
+      prev?.addEventListener('click', () => goTo(current() - 1));
+      next?.addEventListener('click', () => goTo(current() + 1));
+      dots.forEach((dot, index) =>
+        dot.addEventListener('click', () => goTo(index)),
+      );
+
+      rail.addEventListener('scroll', () => requestAnimationFrame(sync), {
+        passive: true,
+      });
+      addEventListener('resize', sync, { passive: true });
+      rail.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          goTo(current() + 1);
+        }
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goTo(current() - 1);
+        }
+      });
+
+      // Mouse drag, for desktop pointers that do not have a trackpad.
+      let dragging = false;
+      let startX = 0;
+      let startScroll = 0;
+      rail.addEventListener('pointerdown', (event) => {
+        if (event.pointerType !== 'mouse' || !overflows()) return;
+        dragging = true;
+        startX = event.clientX;
+        startScroll = rail.scrollLeft;
+        rail.setPointerCapture(event.pointerId);
+        rail.dataset.dragging = 'true';
+      });
+      rail.addEventListener('pointermove', (event) => {
+        if (!dragging) return;
+        rail.scrollLeft = startScroll - (event.clientX - startX);
+      });
+      const stop = (event: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        delete rail.dataset.dragging;
+        if (rail.hasPointerCapture(event.pointerId))
+          rail.releasePointerCapture(event.pointerId);
+      };
+      rail.addEventListener('pointerup', stop);
+      rail.addEventListener('pointercancel', stop);
+
+      sync();
+    });
+</script>
+
+<style>
+  .lg-editions {
+    background:
+      radial-gradient(ellipse at 50% 0%, #f4ecda 0%, transparent 60%),
+      var(--lg-ivory);
+  }
+
+  .lg-rails {
+    position: relative;
+  }
+
+  /* The rail already declares its column widths; this only adds the nav row. */
+  .lg-rail-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  @media (min-width: 1040px) {
+    /* Two cards fit, so there is nothing to page through. */
+    .lg-rail-nav {
+      display: none;
+    }
+  }
+
+  .lg-rail-btn {
+    display: inline-grid;
+    place-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--lg-beige-deep);
+    border-radius: 50%;
+    background: #fffdf7;
+    color: var(--lg-emerald-900);
+    cursor: pointer;
+    box-shadow: var(--lg-shadow-card);
+  }
+
+  .lg-rail-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .lg-rail-btn:focus-visible {
+    outline: 2px solid var(--lg-gold-ink);
+    outline-offset: 3px;
+  }
+
+  .lg-rail-btn :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Drag affordance: a grabbing cursor and text selection suppressed. */
+  .lg-edition-rail[data-dragging] {
+    cursor: grabbing;
+    user-select: none;
+    scroll-snap-type: none;
+  }
+</style>

@@ -1,0 +1,1396 @@
+/*
+ * Mariyas Living Product Gallery — the one design system used by every route.
+ *
+ * Loaded after global/premium/rebrand/discovery. It does not restyle the older
+ * layers; it adds the shared vocabulary (header, footer, buttons, cards, rails,
+ * badges, the Ritual Finder) so nothing has to be re-declared per page.
+ *
+ * Motion policy: CSS transitions only, all of them opt-out under
+ * prefers-reduced-motion. No scroll hijacking, no parallax, no autoplaying
+ * carousels, no infinite loops except the offer tile that already existed.
+ */
+
+:root {
+  /* Palette: emerald, ivory, botanical green, brushed gold. */
+  --lg-emerald-950: #04251a;
+  --lg-emerald-900: #063d2a;
+  --lg-emerald-800: #0b4b34;
+  --lg-emerald-700: #135c41;
+  --lg-emerald-600: #1d6b4c;
+  --lg-botanical: #3b7450;
+  --lg-botanical-soft: #6f9a7e;
+  --lg-leaf-wash: #eef3ec;
+  --lg-ivory: #fcf8ef;
+  --lg-ivory-deep: #f6efe0;
+  --lg-beige: #ebe3d1;
+  --lg-beige-deep: #ddd0b4;
+  --lg-gold: #d9b672;
+  --lg-gold-deep: #b5852f;
+  --lg-gold-ink: #7d5c17;
+  --lg-ink: #18352a;
+  --lg-ink-soft: #3c5647;
+  --lg-ink-mute: #5d7267;
+
+  /* Editorial type scale, fluid but bounded. */
+  --lg-display: var(--font-display);
+  --lg-sans: var(--font-sans);
+  --lg-eyebrow-size: 0.66rem;
+  --lg-eyebrow-track: 0.22em;
+
+  /* Rhythm. */
+  --lg-shell: 1240px;
+  --lg-gutter: clamp(1rem, 4vw, 3rem);
+  --lg-section: clamp(3rem, 6vw, 5.5rem);
+  --lg-radius: 4px;
+  --lg-radius-lg: 10px;
+  --lg-hairline: 1px solid var(--lg-beige);
+
+  /* Depth: two shadows, reused everywhere instead of per-component guesses. */
+  --lg-shadow-card: 0 2px 10px #082d210a, 0 18px 40px -28px #082d2133;
+  --lg-shadow-float: 0 10px 30px -12px #082d2140;
+
+  --lg-target: 44px;
+}
+
+/* --------------------------------------------------------------- primitives -- */
+
+.lg-shell {
+  width: min(var(--lg-shell), calc(100% - 2 * var(--lg-gutter)));
+  margin-inline: auto;
+}
+
+.lg-eyebrow {
+  margin: 0 0 0.7rem;
+  font-family: var(--lg-sans);
+  font-size: var(--lg-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--lg-eyebrow-track);
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--lg-gold-ink);
+}
+
+.lg-section {
+  padding-block: var(--lg-section);
+}
+
+/* The centred editorial heading with gold rules, exactly as the approved
+ * homepage shows it. Used by every section that introduces a rail. */
+.lg-heading {
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.lg-heading h2 {
+  font-family: var(--lg-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.4vw, 2.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--lg-emerald-900);
+  margin: 0;
+}
+
+.lg-heading .lg-rule {
+  display: block;
+  width: min(220px, 42vw);
+  margin: 0.35rem auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--lg-gold) 22%,
+    var(--lg-gold) 78%,
+    transparent
+  );
+  position: relative;
+}
+
+/* The little gold swash under the title. */
+.lg-heading .lg-rule::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  width: 26px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  border-bottom: 2px solid var(--lg-gold);
+}
+
+.lg-heading p {
+  max-width: 58ch;
+  margin: 0.35rem auto 0;
+  font-size: 0.95rem;
+  color: var(--lg-ink-mute);
+}
+
+/* Section heading aligned left, for secondary rails. */
+.lg-heading--start {
+  text-align: left;
+  justify-items: start;
+}
+
+.lg-heading--start .lg-rule {
+  margin-inline: 0;
+}
+
+.lg-heading--start .lg-rule::after {
+  left: 0;
+  transform: none;
+}
+
+.lg-heading--start p {
+  margin-inline: 0;
+}
+
+/* ------------------------------------------------------------------ buttons -- */
+
+.lg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: var(--lg-target);
+  padding: 0.7rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--lg-radius);
+  background: var(--lg-emerald-900);
+  color: var(--lg-ivory);
+  font-family: var(--lg-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lg-btn:hover {
+  background: var(--lg-emerald-950);
+  text-decoration: none;
+}
+
+.lg-btn--gold {
+  background: linear-gradient(180deg, #e2c07c, var(--lg-gold-deep));
+  color: #241703;
+  border-color: #a97c26;
+  box-shadow: inset 0 1px 0 #fff8e3b3;
+}
+
+.lg-btn--gold:hover {
+  background: linear-gradient(180deg, #eccd8a, #bd8d33);
+  color: #1b1000;
+}
+
+.lg-btn--outline {
+  background: transparent;
+  color: var(--lg-emerald-900);
+  border-color: var(--lg-emerald-900);
+}
+
+.lg-btn--outline:hover {
+  background: var(--lg-emerald-900);
+  color: var(--lg-ivory);
+}
+
+.lg-btn--ghost {
+  background: transparent;
+  color: var(--lg-ivory);
+  border-color: #ffffff59;
+}
+
+.lg-btn--ghost:hover {
+  background: #ffffff1a;
+  color: var(--lg-ivory);
+}
+
+.lg-btn--sm {
+  min-height: 38px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.76rem;
+}
+
+.lg-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: var(--lg-target);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--lg-emerald-900);
+  text-decoration: underline;
+  text-underline-offset: 0.32em;
+  text-decoration-thickness: 1px;
+}
+
+.lg-link:hover {
+  color: var(--lg-gold-ink);
+}
+
+.lg-btn:focus-visible,
+.lg-link:focus-visible,
+.lg-tile:focus-visible,
+.lg-card-link:focus-visible {
+  outline: 2px solid var(--lg-gold-ink);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ badges -- */
+
+.lg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--lg-gold);
+  border-radius: 999px;
+  background: #fffbee;
+  color: var(--lg-gold-ink);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* The circular rosette used on the combo card. Pure CSS, no image asset. */
+.lg-rosette {
+  display: grid;
+  place-content: center;
+  width: 84px;
+  height: 84px;
+  padding: 0.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #f7e6bd, #dcb56a 62%, #b98d38);
+  color: #33220a;
+  font-family: var(--lg-sans);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 0 3px #fffdf7,
+    0 0 0 4px #c69c4e80,
+    0 8px 18px -8px #3b2a0859;
+}
+
+/* ------------------------------------------------------------ header shell -- */
+
+.lg-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--lg-ivory) 96%, transparent);
+  border-bottom: 1px solid var(--lg-beige);
+  backdrop-filter: blur(10px);
+}
+
+.lg-header__bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  min-height: 68px;
+  padding-block: 0.5rem;
+}
+
+.lg-brand {
+  display: inline-grid;
+  gap: 0.05rem;
+  justify-self: start;
+  line-height: 1;
+  color: var(--lg-emerald-950);
+}
+
+.lg-brand__word {
+  font-family: var(--lg-display);
+  font-size: clamp(1.5rem, 2.4vw, 1.95rem);
+  letter-spacing: 0.01em;
+}
+
+.lg-brand__word i {
+  font-style: normal;
+  color: var(--lg-gold-deep);
+}
+
+.lg-brand__sub {
+  font-family: var(--lg-sans);
+  font-size: 0.44rem;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  color: var(--lg-ink-mute);
+}
+
+.lg-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.35rem, 1.4vw, 1.4rem);
+}
+
+.lg-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--lg-target);
+  padding-inline: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--lg-ink);
+  border-bottom: 1.5px solid transparent;
+  transition:
+    color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.lg-nav a:hover {
+  color: var(--lg-emerald-900);
+  text-decoration: none;
+  border-bottom-color: var(--lg-gold);
+}
+
+.lg-nav a[aria-current='page'] {
+  color: var(--lg-emerald-900);
+  border-bottom-color: var(--lg-gold);
+}
+
+.lg-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: end;
+}
+
+/* Language selector: a real <details> so it works without JavaScript. */
+.lg-lang {
+  position: relative;
+}
+
+.lg-lang summary {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 0.4rem;
+  min-height: 38px;
+  padding: 0 0.7rem;
+  border: 1px solid var(--lg-beige-deep);
+  border-radius: var(--lg-radius);
+  background: #fffdf8;
+  color: var(--lg-ink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  list-style: none;
+  cursor: pointer;
+}
+
+.lg-lang summary::-webkit-details-marker {
+  display: none;
+}
+
+/* An inline SVG caret, not a text glyph: U+25BE gets font-substituted to a
+ * right-pointing triangle by some fallback faces, which reads as "play". */
+.lg-lang__caret {
+  width: 9px;
+  height: 6px;
+  margin-left: 0.2rem;
+  flex: none;
+  opacity: 0.8;
+}
+
+.lg-lang summary > * {
+  flex: none;
+}
+
+.lg-lang__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 5;
+  min-width: 11rem;
+  padding: 0.3rem;
+  border: 1px solid var(--lg-beige-deep);
+  border-radius: var(--lg-radius);
+  background: #fffdf8;
+  box-shadow: var(--lg-shadow-float);
+}
+
+.lg-lang__menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--lg-target);
+  padding: 0 0.6rem;
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+
+.lg-lang__menu a:hover {
+  background: var(--lg-leaf-wash);
+  text-decoration: none;
+}
+
+.lg-lang__menu a[aria-current='page'] {
+  color: var(--lg-emerald-900);
+  font-weight: 600;
+  background: var(--lg-leaf-wash);
+}
+
+.lg-lang__menu .lg-lang__code {
+  margin-left: auto;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lg-ink-mute);
+}
+
+/* Burger: only on small screens. */
+.lg-burger {
+  display: none;
+}
+
+.lg-burger > summary {
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--lg-beige-deep);
+  border-radius: 50%;
+  background: #fffdf8;
+  list-style: none;
+  cursor: pointer;
+}
+
+.lg-burger > summary::-webkit-details-marker {
+  display: none;
+}
+
+.lg-burger span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: var(--lg-emerald-900);
+}
+
+.lg-burger__panel {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  padding: 0.6rem var(--lg-gutter) 1rem;
+  background: var(--lg-ivory);
+  border-bottom: 1px solid var(--lg-beige);
+  box-shadow: var(--lg-shadow-float);
+}
+
+.lg-burger__panel nav {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.lg-burger__panel a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 0.35rem;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #ebe3d180;
+}
+
+@media (max-width: 959px) {
+  .lg-nav {
+    display: none;
+  }
+  /* The mobile bottom bar already carries the gold Buy/offer tile, so the
+   * header keeps only the wordmark, language and menu at this width. */
+  .lg-header__shop {
+    display: none;
+  }
+  .lg-header__bar {
+    grid-template-columns: auto 1fr auto;
+  }
+  .lg-burger {
+    display: block;
+    position: static;
+  }
+  .lg-header {
+    position: relative;
+  }
+}
+
+/* -------------------------------------------------------- language suggest -- */
+
+.lg-suggest {
+  display: none;
+  border-bottom: 1px solid #d9cba885;
+  background: linear-gradient(180deg, #f8f0dd, #f3e8d0);
+}
+
+.lg-suggest[data-open='true'] {
+  display: block;
+}
+
+.lg-suggest__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  padding-block: 0.6rem;
+  font-size: 0.82rem;
+  color: #4a3a1c;
+}
+
+.lg-suggest__inner p {
+  margin: 0;
+  flex: 1 1 15rem;
+}
+
+.lg-suggest__inner .lg-btn {
+  min-height: 34px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.lg-suggest__dismiss {
+  display: inline-grid;
+  place-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #b99f6a66;
+  border-radius: 50%;
+  background: transparent;
+  color: #4a3a1c;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------ product card -- */
+
+.lg-edition {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  /* Both cards share one row, so they must share one height: the 500 ml card has
+   * more copy and would otherwise end visibly lower than the 200 ml card. */
+  height: 100%;
+  background: #fffdf7;
+  border: 1px solid var(--lg-beige);
+  border-radius: var(--lg-radius-lg);
+  box-shadow: var(--lg-shadow-card);
+  overflow: hidden;
+}
+
+.lg-edition__media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  background: var(--lg-ivory-deep);
+  overflow: hidden;
+}
+
+.lg-edition__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.lg-edition:hover .lg-edition__media img {
+  transform: scale(1.025);
+}
+
+.lg-edition__media figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.3rem 0.6rem;
+  background: linear-gradient(0deg, #04251ad9, #04251a59 70%, transparent);
+  color: #f7f1e2;
+  font-size: 0.56rem;
+  letter-spacing: 0.11em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.lg-edition__rosette {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+}
+
+.lg-edition__body {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.lg-edition__body h3 {
+  font-family: var(--lg-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  line-height: 1.2;
+  color: var(--lg-emerald-900);
+  margin: 0;
+}
+
+.lg-edition__body p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--lg-ink-soft);
+}
+
+.lg-edition__note {
+  font-size: 0.78rem;
+  color: var(--lg-ink-mute);
+}
+
+.lg-edition .lg-btn {
+  margin-top: 0.35rem;
+  justify-self: start;
+}
+
+/* Desktop: photo beside copy, exactly like the approved desktop reference. */
+@media (min-width: 900px) {
+  .lg-edition {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .lg-edition__media {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+  .lg-edition__body {
+    align-content: center;
+    padding: clamp(1.25rem, 2.2vw, 2rem);
+  }
+}
+
+/* -------------------------------------------------------- horizontal rails -- */
+
+/* Flex, not grid: a percentage flex-basis is resolved against the scroller's own
+ * width, which is what makes the deliberate "peek" of the next card reliable at
+ * every width. Grid auto-columns treat a percentage basis as auto once the
+ * container is scrollable, which produced two cramped half-width cards. */
+.lg-rail {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin: 0;
+  padding: 0.35rem 0 0.75rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lg-rail > * {
+  flex: 0 0 auto;
+  width: 82%;
+  scroll-snap-align: start;
+}
+
+/* Room for the focus ring, which would otherwise be clipped by the scroller. */
+.lg-rail:focus-visible {
+  outline: 2px solid var(--lg-gold-ink);
+  outline-offset: 4px;
+}
+
+@media (min-width: 700px) {
+  .lg-edition-rail > * {
+    width: 47%;
+  }
+  .lg-spotlight-rail > * {
+    width: 31%;
+  }
+}
+
+/* Desktop: everything fits, so the rails stop being scrollers. */
+@media (min-width: 1040px) {
+  .lg-rail {
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .lg-edition-rail > * {
+    width: calc((100% - clamp(0.75rem, 2vw, 1.25rem)) / 2);
+  }
+  .lg-spotlight-rail > * {
+    width: calc((100% - 3 * clamp(0.75rem, 2vw, 1.25rem)) / 4);
+  }
+}
+
+/* Pagination dots for the edition rail. Buttons, not decoration. */
+.lg-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.lg-dots button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+}
+
+.lg-dots button::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lg-beige-deep);
+  transition:
+    background-color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.lg-dots button[aria-current='true']::before {
+  background: var(--lg-emerald-900);
+  transform: scale(1.25);
+}
+
+/* On desktop the rail shows everything, so the dots are redundant. */
+@media (min-width: 1040px) {
+  .lg-dots {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------- spotlight -- */
+
+.lg-spotlight {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 1px solid var(--lg-beige);
+  border-radius: var(--lg-radius);
+  background: #fffdf7;
+  box-shadow: var(--lg-shadow-card);
+  overflow: hidden;
+}
+
+.lg-spotlight__layer {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 5 / 4;
+  background: var(--lg-ivory-deep);
+  overflow: hidden;
+}
+
+/* Two stacked layers cross-fade on hover/focus only — never on a timer. */
+.lg-spotlight__layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lg-spotlight__layer--alt {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.lg-spotlight:hover .lg-spotlight__layer--alt,
+.lg-spotlight:focus-within .lg-spotlight__layer--alt {
+  opacity: 1;
+}
+
+.lg-spotlight__tag {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 2;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  background: #04251ac2;
+  color: #f4eddc;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lg-spotlight__body {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.75rem 0.85rem 0.9rem;
+}
+
+.lg-spotlight__body h3 {
+  margin: 0;
+  font-family: var(--lg-display);
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.25;
+  color: var(--lg-emerald-900);
+}
+
+.lg-spotlight__body p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--lg-ink-mute);
+}
+
+.lg-spotlight__body .lg-link {
+  font-size: 0.74rem;
+  min-height: 38px;
+}
+
+/* --------------------------------------------------------- care explorer -- */
+
+.lg-care {
+  display: grid;
+  gap: clamp(0.6rem, 1.4vw, 0.9rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lg-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 74px;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #0c4d3721;
+  border-radius: var(--lg-radius);
+  background:
+    linear-gradient(150deg, #0b4b34f2, #063d2af7 62%, #04251af7),
+    var(--lg-emerald-900);
+  color: var(--lg-ivory);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lg-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 88% 50%, #d9b67233 0%, transparent 58%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lg-tile:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px -18px #04251ae6;
+}
+
+.lg-tile:hover::after {
+  opacity: 1;
+}
+
+.lg-tile__icon {
+  display: grid;
+  place-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--lg-gold);
+}
+
+.lg-tile__icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.15;
+}
+
+.lg-tile__text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.lg-tile__text span:first-child {
+  font-family: var(--lg-display);
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  line-height: 1.2;
+}
+
+.lg-tile__text small {
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: #d6e4d8b0;
+}
+
+@media (min-width: 760px) {
+  /* Three across, never four: the catalogue has six care groups, so three-up
+   * gives two even rows instead of a 4 + 2 ragged second row. */
+  .lg-care {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg-tile {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    min-height: 108px;
+    padding: 0.9rem 0.6rem;
+  }
+}
+
+/* ------------------------------------------------------------- voice wall -- */
+
+.lg-voices {
+  background:
+    radial-gradient(ellipse at 50% 0%, #0d5540 0%, transparent 62%),
+    var(--lg-emerald-950);
+  color: var(--lg-ivory);
+}
+
+.lg-voices .lg-heading h2 {
+  color: var(--lg-ivory);
+}
+
+.lg-voices .lg-heading p {
+  color: #cfe0d3c4;
+}
+
+.lg-voices .lg-eyebrow {
+  color: var(--lg-gold);
+}
+
+.lg-voices__grid {
+  display: grid;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .lg-voices__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.lg-voice {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 132px;
+  padding: 1rem 1.1rem;
+  border: 1px solid #ffffff1f;
+  border-radius: var(--lg-radius);
+  background: #ffffff0d;
+}
+
+.lg-voice__head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.lg-voice__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff1f;
+  flex: none;
+}
+
+.lg-voice__bars {
+  display: grid;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.lg-voice__bars i {
+  display: block;
+  height: 6px;
+  border-radius: 99px;
+  background: #ffffff1a;
+}
+
+.lg-voice__bars i:last-child {
+  width: 52%;
+}
+
+.lg-voice__empty {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #cfe0d3a8;
+}
+
+.lg-voices__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.lg-voices__note {
+  max-width: 62ch;
+  margin: 1rem auto 0;
+  font-size: 0.76rem;
+  line-height: 1.7;
+  text-align: center;
+  color: #cfe0d3a8;
+}
+
+/* ------------------------------------------------------------- ritual CTA -- */
+
+.lg-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(120deg, #f7efdc 0%, #f3e8d1 45%, #efe3c7 100%);
+  border-block: 1px solid var(--lg-beige);
+}
+
+.lg-cta__inner {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  text-align: center;
+  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+}
+
+.lg-cta h2 {
+  margin: 0;
+  font-family: var(--lg-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  line-height: 1.12;
+  color: var(--lg-emerald-900);
+}
+
+.lg-cta p {
+  max-width: 56ch;
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--lg-ink-soft);
+}
+
+.lg-cta .lg-disclaimer {
+  max-width: 62ch;
+  font-size: 0.75rem;
+  color: var(--lg-ink-mute);
+}
+
+/* ----------------------------------------------------------------- footer -- */
+
+.lg-footer {
+  background: var(--lg-emerald-950);
+  color: #e3ebdf;
+}
+
+.lg-footer a {
+  color: #e3ebdf;
+}
+
+.lg-footer a:hover {
+  color: var(--lg-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.lg-footer__top {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: 1fr;
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 700px) {
+  .lg-footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .lg-footer__top {
+    grid-template-columns: 1.35fr 1fr 1fr 1.1fr;
+  }
+}
+
+.lg-footer h2 {
+  margin: 0 0 0.6rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lg-gold);
+  font-family: var(--lg-sans);
+}
+
+.lg-footer__brand .lg-brand {
+  color: var(--lg-ivory);
+}
+
+.lg-footer__brand .lg-brand__sub {
+  color: #b9cbb9;
+}
+
+.lg-footer__tagline {
+  margin: 0.6rem 0 0;
+  max-width: 30ch;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #bdd0c2;
+}
+
+.lg-footer ul {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-footer li {
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+
+.lg-footer li a,
+.lg-footer address {
+  display: inline-block;
+  min-height: 30px;
+  padding-block: 0.15rem;
+  font-style: normal;
+}
+
+.lg-footer address {
+  display: block;
+  max-width: 26ch;
+  color: #bdd0c2;
+}
+
+.lg-footer__hint {
+  display: block;
+  font-size: 0.72rem;
+  color: #93a898;
+}
+
+.lg-footer__pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #b9cbb9;
+}
+
+.lg-footer__pending::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
+
+.lg-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-block: 1rem;
+  border-top: 1px solid #ffffff1a;
+  font-size: 0.75rem;
+  color: #9db3a3;
+}
+
+.lg-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-footer__legal li {
+  font-size: 0.75rem;
+  color: #9db3a3;
+}
+
+/* ----------------------------------------------------------- mobile bottom -- */
+
+@media (max-width: 859px) {
+  /* The bar is five equal cells: four destinations plus the buy tile. */
+  .mobile-chrome-bar {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.35fr);
+    background: color-mix(in srgb, var(--lg-ivory) 94%, transparent);
+    border-top: 1px solid var(--lg-beige);
+  }
+  .mobile-chrome-bar a.mobile-chrome-link {
+    font-size: 0.56rem;
+    /* "My Ritual", "Collections" and the four Indic equivalents must all fit a
+     * quarter cell without splitting mid-word. */
+    overflow-wrap: normal;
+    hyphens: none;
+    padding-inline: 0.1rem;
+  }
+  .mobile-chrome-link span {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  /* The offer tile carries the approved claim verbatim, so it gets the wider
+   * share of the bar rather than being squeezed to a three-line wrap at 320px. */
+  .mobile-chrome-bar [data-offer-a],
+  .mobile-chrome-bar [data-offer-b] {
+    padding-inline: 0;
+    letter-spacing: 0.02em;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+  @media (max-width: 359px) {
+    .mobile-chrome-bar {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.6fr);
+    }
+    .mobile-chrome-bar a.mobile-chrome-link {
+      font-size: 0.53rem;
+    }
+  }
+  .mobile-chrome-link[aria-current='page'] {
+    color: var(--lg-emerald-900);
+    background: #063d2a10;
+  }
+}
+
+/* ---------------------------------------------------------------- utility -- */
+
+.lg-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Long translated strings must never blow out a grid cell. */
+.lg-tile__text span,
+.lg-edition__body h3,
+.lg-spotlight__body h3,
+.lg-heading h2 {
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-edition:hover .lg-edition__media img,
+  .lg-tile:hover {
+    transform: none;
+  }
+  .lg-spotlight__layer--alt {
+    transition: none;
+  }
+  .lg-btn,
+  .lg-lang summary,
+  .lg-dots button::before {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------- legacy section spacing -- */
+
+/*
+ * The older discovery sheet reserves page-bottom space for its own chrome and
+ * pads every `.section`. The new sections own their rhythm through
+ * `.lg-section`, so the legacy double-spacing is neutralised here rather than by
+ * editing sheets other routes still depend on.
+ */
+body {
+  padding-bottom: 0;
+}
+
+@media (max-width: 859px) {
+  /* The mobile bar is the only fixed element; reserve exactly its height so the
+   * last line of any page stays clear of it. */
+  body {
+    padding-bottom: calc(var(--chrome-height) + 0.5rem);
+  }
+}
+
+main > .section:last-child {
+  padding-bottom: 0;
+}
+
+/* --------------------------------------------------- non-Latin typography --- */
+
+/*
+ * Tracking is a Latin-script habit. On Malayalam, Devanagari, Tamil and Kannada it
+ * visually splits conjuncts and vowel signs, so every letter-spaced label in this
+ * system relaxes its tracking (and drops the uppercase transform, which does
+ * nothing useful for these scripts) once the document language is not English.
+ */
+:lang(ml) .lg-eyebrow,
+:lang(hi) .lg-eyebrow,
+:lang(ta) .lg-eyebrow,
+:lang(kn) .lg-eyebrow,
+:lang(ml) .lg-footer h2,
+:lang(hi) .lg-footer h2,
+:lang(ta) .lg-footer h2,
+:lang(kn) .lg-footer h2,
+:lang(ml) .lg-badge,
+:lang(hi) .lg-badge,
+:lang(ta) .lg-badge,
+:lang(kn) .lg-badge,
+:lang(ml) .lg-edition__media figcaption,
+:lang(hi) .lg-edition__media figcaption,
+:lang(ta) .lg-edition__media figcaption,
+:lang(kn) .lg-edition__media figcaption,
+:lang(ml) .lg-rosette,
+:lang(hi) .lg-rosette,
+:lang(ta) .lg-rosette,
+:lang(kn) .lg-rosette,
+:lang(ml) .lg-spotlight__tag,
+:lang(hi) .lg-spotlight__tag,
+:lang(ta) .lg-spotlight__tag,
+:lang(kn) .lg-spotlight__tag,
+:lang(ml) .lf-step,
+:lang(hi) .lf-step,
+:lang(ta) .lf-step,
+:lang(kn) .lf-step,
+:lang(ml) .lf-result__step,
+:lang(hi) .lf-result__step,
+:lang(ta) .lf-result__step,
+:lang(kn) .lf-result__step,
+:lang(ml) .lf-result__why strong,
+:lang(hi) .lf-result__why strong,
+:lang(ta) .lf-result__why strong,
+:lang(kn) .lf-result__why strong,
+:lang(ml) .lf-result__place strong,
+:lang(hi) .lf-result__place strong,
+:lang(ta) .lf-result__place strong,
+:lang(kn) .lf-result__place strong {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* The wordmark's wide-tracked sub-line is Latin by design; leave it alone. */
+:lang(ml) .lg-brand__sub,
+:lang(hi) .lg-brand__sub,
+:lang(ta) .lg-brand__sub,
+:lang(kn) .lg-brand__sub {
+  letter-spacing: 0.42em;
+}

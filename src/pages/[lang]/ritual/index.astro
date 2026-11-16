@@ -1,0 +1,53 @@
+---
+/**
+ * /[lang]/ritual/ — the MARIYAS RITUAL FINDER.
+ *
+ * Static shell, client-side questionnaire. It is a real route in every locale with
+ * its own title, description and hreflang, and it is linked from the header nav,
+ * the mobile bottom bar ("My Ritual"), the homepage CTA banner and the hair/skin
+ * collection pages.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import MobileChrome from '../../../components/MobileChrome.astro';
+import RitualFinder from '../../../components/living/RitualFinder.astro';
+import { ritualCopy } from '../../../data/ritual';
+import { dict } from '../../../i18n/living';
+import { locales, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+
+const title = dict(ritualCopy.title, lang);
+const description = dict(ritualCopy.lede, lang);
+
+const pageSchema = {
+  '@type': 'WebApplication',
+  name: title,
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'Any',
+  browserRequirements: 'Requires JavaScript',
+  inLanguage: lang,
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={title}
+  description={description}
+  path={`/${lang}/ritual/`}
+  pageSchema={pageSchema}
+>
+  <SiteHeader lang={lang} route="ritual" />
+  <main id="main" tabindex="-1">
+    <RitualFinder lang={lang} />
+  </main>
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
+</BaseLayout>

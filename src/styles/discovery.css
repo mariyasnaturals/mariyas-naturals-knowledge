@@ -348,6 +348,9 @@
 
 .hero-actions .text-link {
   color: var(--color-cream);
+  /* A hairline underline keeps the link legible where the film is bright. */
+  text-decoration-color: #fff9ec99;
+  text-shadow: 0 1px 6px #021b1399;
 }
 
 .hero :focus-visible {

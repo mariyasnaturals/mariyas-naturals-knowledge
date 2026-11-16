@@ -24,3 +24,10 @@ google_drive/
 
 # GitHub Pages preview staging (built output, published to preview/* only).
 pages-preview/
+
+# Design references (competitor and third-party captures) are design intent only.
+# They are never site assets, so only the written intent is tracked.
+docs/reference/**/*.jpg
+docs/reference/**/*.jpeg
+docs/reference/**/*.png
+docs/reference/**/*.webp
