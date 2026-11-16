@@ -45,6 +45,9 @@ jobs:
         run: |
           git config user.name 'mariyas-browser-check'
           git config user.email 'browser-check@users.noreply.github.com'
-          git add browser-report.json 2>/dev/null || true
+          git add -f browser-report.json 2>/dev/null || true
           git commit -m 'chore(ci): browser verification summary' || echo 'nothing to commit'
-          git push origin HEAD:${{ github.ref_name }} || echo 'push skipped'
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash origin "${{ github.ref_name }}" || true
+            git push origin HEAD:${{ github.ref_name }} && break || sleep 8
+          done
