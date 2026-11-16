@@ -116,7 +116,17 @@
       "src": "/cinematic/homepage-desktop.mp4",
       "poster": "/cinematic/poster-desktop.jpg",
       "status": "active",
-      "note": "Existing 16:9 owner cut retained; the replacement landscape cut failed face verification."
+      "master": "landscape_video.mp4",
+      "masterSha256": "b3215258be5b70327763ba763717b7106f4add88331b2afd1ce14368de8ffa22",
+      "transformation": "audio removed, H.264 fast-start re-encode at the owner’s native 1280x720; no crop, no stretch",
+      "note": "Owner-supplied landscape cut, approved 2026-11-16. Supersedes the earlier 16:9 edit.",
+      "encoded": {
+        "width": 1280,
+        "height": 720,
+        "codec": "h264",
+        "durationSeconds": 15.0,
+        "bytes": 2698656
+      }
     },
     "mobile": {
       "src": "/cinematic/hero-mobile.mp4",

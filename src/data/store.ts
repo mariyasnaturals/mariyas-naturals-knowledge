@@ -37,10 +37,11 @@ export const hairOilOffer = Object.freeze({
   verified: true,
   verifiedOn: '2026-11-16',
   evidence: [
-    'Mariyas Herbal Hair Care Oil – 200 ml: ₹647.62 regular, ₹514.29 sale (−21%)',
-    'Mariyas Herbal Hair Care – 500 ml: ₹1,400.00 regular, ₹1,285.71 sale (−8%)',
+    'Mariyas Herbal Hair Care Oil – 200 ml: ₹680.00 regular, ₹540.00 sale (−20.6%, store badge −21%)',
+    'Mariyas Herbal Hair Care – 500 ml: ₹1,470.00 regular, ₹1,350.00 sale (−8.2%)',
   ],
-  /** The published bound must never exceed the highest live discount. */
+  /** Re-read the live store before publishing; the published bound must never
+   * exceed the highest live discount actually observed. */
   maximumVerifiedDiscountPercent: 21,
   message: 'SAVE UP TO 20%',
   fallbackMessage: 'DISCOVER HAIR OIL',

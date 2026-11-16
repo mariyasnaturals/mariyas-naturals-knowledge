@@ -29,6 +29,9 @@ const ffmpeg = process.env.FFMPEG || 'ffmpeg';
 const modelMaster = join(drive, 'file_0000000001108211b11b1f7880d1df22.png');
 const logoMaster = join(drive, 'logo');
 const heroMaster = join(drive, 'mariyas_hero.mp4');
+// Owner re-supplied the landscape cut on 2026-11-16 and approved this exact
+// master for desktop. It is a different edit from the portrait hero.
+const desktopMaster = join(drive, 'landscape_video.mp4');
 
 const BRAND_GREEN = '#063D2A';
 const sha256 = async (path) =>
@@ -373,6 +376,45 @@ run([
   join(cinematic, 'hero-mobile-poster.jpg'),
 ]);
 
+// Landscape cut: keep the owner's native 1280x720 framing exactly (16:9, no
+// crop, no stretch), drop the unused audio track, and move the index to the
+// front so the first frame paints before the whole file arrives.
+run([
+  '-y',
+  '-i',
+  desktopMaster,
+  '-an',
+  '-c:v',
+  'libx264',
+  '-profile:v',
+  'high',
+  '-preset',
+  'slow',
+  '-crf',
+  '23',
+  '-pix_fmt',
+  'yuv420p',
+  '-vf',
+  'scale=1280:720:flags=lanczos',
+  '-movflags',
+  '+faststart',
+  '-r',
+  '24',
+  join(cinematic, 'homepage-desktop.mp4'),
+]);
+run([
+  '-y',
+  '-i',
+  desktopMaster,
+  '-frames:v',
+  '1',
+  '-vf',
+  'scale=1280:720:flags=lanczos',
+  '-q:v',
+  '3',
+  join(cinematic, 'poster-desktop.jpg'),
+]);
+
 // This repo's toolchain may provide only the ffmpeg binary, so read the stream
 // facts out of `ffmpeg -i` rather than depending on a separate ffprobe.
 const probeVideo = (file) => {
@@ -404,12 +446,24 @@ const probeVideo = (file) => {
 };
 
 const mobileFacts = probeVideo(join(cinematic, 'hero-mobile.mp4'));
+const desktopFacts = probeVideo(join(cinematic, 'homepage-desktop.mp4'));
 outputs.hero = {
   desktop: {
     src: '/cinematic/homepage-desktop.mp4',
     poster: '/cinematic/poster-desktop.jpg',
     status: 'active',
-    note: 'Existing 16:9 owner cut retained; the replacement landscape cut failed face verification.',
+    master: 'landscape_video.mp4',
+    masterSha256: await sha256(desktopMaster),
+    transformation:
+      'audio removed, H.264 fast-start re-encode at the owner’s native 1280x720; no crop, no stretch',
+    note: 'Owner-supplied landscape cut, approved 2026-11-16. Supersedes the earlier 16:9 edit.',
+    encoded: {
+      width: desktopFacts.width,
+      height: desktopFacts.height,
+      codec: desktopFacts.codec,
+      durationSeconds: desktopFacts.durationSeconds,
+      bytes: (await stat(join(cinematic, 'homepage-desktop.mp4'))).size,
+    },
   },
   mobile: {
     src: '/cinematic/hero-mobile.mp4',

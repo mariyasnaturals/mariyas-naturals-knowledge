@@ -32,9 +32,14 @@ const REVIEW_PAIRS = new Map([
 // The hero films are served from public/cinematic and are pinned by hash below.
 const HERO_PINS = {
   '/cinematic/homepage-desktop.mp4': [
-    'b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641',
+    'cbb094c7f7d896d33e0e6f4e0c6bb7bd3307b47bf40ed86e6bfa94ea0f0d8571',
     1280,
     720,
+  ],
+  '/cinematic/hero-mobile.mp4': [
+    'ea41c7577fa293bcb80d82ef35b27ef9d32cd659a238a93813604a78574c66cc',
+    720,
+    1280,
   ],
 };
 const sha256 = (data) => createHash('sha256').update(data).digest('hex');
@@ -258,8 +263,10 @@ function approvedPublic(root) {
         height,
         bytes: files.get(src.slice(1)).length,
         source: 'owner-original',
-        originalFilename: '714482450_1794338494564178-1.mp4',
-        contentOrigin: 'google-flow',
+        originalFilename: src.endsWith('homepage-desktop.mp4')
+          ? 'landscape_video.mp4'
+          : 'mariyas_hero.mp4',
+        contentOrigin: 'owner-supplied',
         identityAccuracy: 'not-asserted',
       }),
     ),

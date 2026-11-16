@@ -18,3 +18,6 @@ ci-staging-bootstrap/
 
 botanical-review-site/
 botanical-review-results/
+
+# Owner-supplied masters stay out of Git; only derivatives are published.
+google_drive/

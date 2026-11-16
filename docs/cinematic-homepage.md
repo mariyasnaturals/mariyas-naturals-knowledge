@@ -18,10 +18,18 @@ transcoding, retouching, packaging reconstruction or model replacement was done.
 
 | Supplied filename                  | Role                             | Dimensions  |     Bytes | SHA-256                                                            |
 | ---------------------------------- | -------------------------------- | ----------- | --------: | ------------------------------------------------------------------ |
-| `714482450_1794338494564178-1.mp4` | Desktop, 16:9                    | 1280 × 720  | 7,849,962 | `b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641` |
+| `landscape_video.mp4`              | Desktop hero, 16:9 (owner cut 2) | 1280 × 720  | 6,290,396 | `b3215258be5b70327763ba763717b7106f4add88331b2afd1ce14368de8ffa22` |
+| `714482450_1794338494564178-1.mp4` | Desktop hero, 16:9 (superseded)  | 1280 × 720  | 7,849,962 | `b86aa80d1ecc5c1dd262ed56c84e3f2f1f708cc562ada05fe26f328baaae0641` |
 | `496978374_1794339270167488-1.mp4` | Mobile, 9:16                     | 720 × 1280  | 7,594,716 | `faf4c549cedeee848205047ff0062e28b2a7e578a81543b0ff27d1a135589c92` |
 | `9468.jpg`                         | Authoritative model photograph   | 1280 × 720  |    64,291 | `0bc3eea1d3aa07d313ca852fe79667ba90d616c4e54b7a49b4afc5711d384a46` |
 | `9456.jpg`                         | Authoritative product photograph | 1280 × 1108 |   219,940 | `be1689ee9c89b3fb4bccd07572f9c4a7c56fc8b3e2f6679bee700083dc579b65` |
+
+The owner supplied `landscape_video.mp4` on 2026-11-16 and approved it as the
+desktop hero, superseding the earlier 16:9 edit. It is served from
+`public/cinematic/homepage-desktop.mp4`: audio track dropped, H.264 High at the
+owner's native 1280 × 720, CRF 23, `+faststart`, 24 fps, 2,698,656 bytes
+(SHA-256 `cbb094c7f7d896d33e0e6f4e0c6bb7bd3307b47bf40ed86e6bfa94ea0f0d8571`).
+No crop and no stretch. The mobile hero bytes are untouched.
 
 Both H.264 videos contain exactly 15 seconds of picture. The container duration is
 15.04 seconds because of the AAC audio tail. Original audio streams remain in the

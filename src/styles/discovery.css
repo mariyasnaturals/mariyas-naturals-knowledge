@@ -249,10 +249,16 @@
 
 /* -------------------------------------------------------------- home chrome -- */
 
+/* The desktop cut is native 16:9. Sizing the band from the same ratio means
+ * `object-fit: cover` has almost nothing left to trim, so the owner's framing
+ * survives. The band is capped by the space left under the sticky header so the
+ * hero copy and its buttons stay above the fold; only on short, wide windows
+ * does that cap introduce a vertical crop, and the film's subject sits centred
+ * enough that a centre-42% anchor keeps it whole. */
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: min(94svh, 900px);
+  min-height: clamp(30rem, min(56.25vw, calc(100svh - 6.7rem)), 100svh);
   display: grid;
   align-items: end;
   background: var(--color-deep);
@@ -375,8 +381,11 @@
 }
 
 @media (max-width: 759px) {
+  /* The sticky announcement bar plus header sit above the film on the first
+   * screen, so subtract them. Without this the hero ran past the fold and the
+   * floating shop button landed on top of the hero's own buttons. */
   .hero {
-    min-height: min(100svh, 860px);
+    min-height: min(calc(100svh - 6.6rem), 860px);
   }
   .hero-film video,
   .hero-film img {
@@ -599,10 +608,11 @@
     --chrome-height: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Reserve the bar so it never covers the last line of content. The language
-   * landing has no chrome, so it opts out through its own class. */
+  /* Reserve the bar, plus the floating pill's footprint, so neither can cover
+   * the last line of content. The language landing has no chrome, so it opts out
+   * through its own class. */
   body {
-    padding-bottom: var(--chrome-height);
+    padding-bottom: calc(var(--chrome-height) + 3.2rem);
   }
 
   body:has(.landing) {
@@ -619,7 +629,9 @@
     inset-inline: 0;
     bottom: 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.18fr);
+    /* The offer tile gets a wider share so the discount line reads on two
+     * comfortable lines down to 320px instead of stacking four ways. */
+    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.45fr);
     align-items: stretch;
     gap: 0.1rem;
     padding: 0.25rem 0.3rem calc(0.25rem + env(safe-area-inset-bottom, 0px));
@@ -690,6 +702,34 @@
     box-shadow:
       0 10px 22px #063d2a3d,
       inset 0 1px 0 #ffffff59;
+    /* Hidden while the hero's own primary action is still on screen. */
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease,
+      visibility 0s linear 0.22s;
+  }
+
+  /* Without JavaScript the pill is simply present from the start. */
+  .shop-fab:not([data-fab-visible]):not([data-fab-visible='true']) {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .shop-fab[data-fab-visible='true'] {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease,
+      visibility 0s;
   }
 
   .shop-fab:hover,
@@ -740,11 +780,12 @@
 
 .offer-tile-label {
   display: block;
-  padding: 0.15rem 0.4rem;
-  font-size: 0.6rem;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.58rem;
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0.03em;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
   transform-style: preserve-3d;
   animation: offer-pop 7.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
@@ -829,6 +870,11 @@
   .offer-tile-label,
   .offer-tile-shimmer {
     animation: none !important;
+  }
+  .shop-fab,
+  .shop-fab[data-fab-visible='true'] {
+    transition: none !important;
+    transform: none !important;
   }
   .offer-tile-label[data-offer-a] {
     display: none;

@@ -87,3 +87,27 @@ const offerMessage = hairOilOffer.verified
     </a>
   </nav>
 </div>
+
+<script>
+  /**
+   * The hero already offers its own primary action, so the floating shop pill
+   * waits until that action has scrolled out of view. Revealing it late keeps
+   * translated hero copy (Tamil and Malayalam run long at 320px) free of a
+   * fixed overlay, and the pill never competes with the offer tile either.
+   */
+  const fab = document.querySelector<HTMLAnchorElement>('.shop-fab');
+  const heroActions = document.querySelector('.hero-actions');
+  if (fab) {
+    if (!heroActions) {
+      fab.dataset.fabVisible = 'true';
+    } else {
+      const sync = () => {
+        const past = heroActions.getBoundingClientRect().bottom <= 0;
+        fab.dataset.fabVisible = String(past);
+      };
+      sync();
+      addEventListener('scroll', sync, { passive: true });
+      addEventListener('resize', sync, { passive: true });
+    }
+  }
+</script>

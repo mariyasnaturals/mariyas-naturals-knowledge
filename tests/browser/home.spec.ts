@@ -95,7 +95,19 @@ for (const [width, height] of [
     expect(box!.height).toBeGreaterThanOrEqual(40);
     // The tile keeps its full share of the bar at every width down to 320px.
     expect(box!.width / width).toBeGreaterThan(0.17);
-    // The floating shop button must not overlap the offer tile.
+    // The approved discount wording must stay legible: two lines, never four.
+    const lines = await page.evaluate(() => {
+      const el = document.querySelector('[data-offer-b]')!;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getClientRects().length;
+    });
+    expect(lines).toBeLessThanOrEqual(2);
+    // The floating shop button stays hidden while the hero's own action is on
+    // screen, so it can never sit on top of the headline or the hero buttons.
+    await expect(page.locator('.shop-fab')).toBeHidden();
+    await page.evaluate(() => window.scrollTo(0, 1600));
+    await expect(page.locator('.shop-fab')).toBeVisible();
     const fab = await page.locator('.shop-fab').boundingBox();
     expect(fab!.y + fab!.height).toBeLessThanOrEqual(box!.y + 1);
     await page.screenshot({ path: `test-results/mobile-${width}.png` });
@@ -196,6 +208,25 @@ test('content and language navigation work without JavaScript', async ({
   await page.locator('header a[hreflang="kn"]').click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'kn');
   await expect(page.locator('h1')).toBeVisible();
+  await context.close();
+});
+
+test('without JavaScript the floating shop pill is present from the start', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:4321/en/');
+  // The reveal-on-scroll behaviour is an enhancement only; the link must still
+  // be reachable when scripting is off.
+  await expect(page.locator('.shop-fab')).toBeVisible();
+  await expect(page.locator('.shop-fab')).toHaveAttribute(
+    'href',
+    'https://www.mariyasnaturals.com/shop/',
+  );
   await context.close();
 });
 
