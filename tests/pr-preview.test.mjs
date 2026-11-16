@@ -34,13 +34,7 @@ function temporary(t) {
 function fixture(t) {
   const path = temporary(t);
   mkdirSync(resolve(path, 'src/data'), { recursive: true });
-  for (const name of [
-    'cinematic-assets',
-    'media-manifest',
-    'brand-media',
-    // The reviewed botanical release set is now part of the approved public tree.
-    'botanical-media',
-  ])
+  for (const name of ['brand-assets', 'media-manifest', 'brand-media'])
     cpSync(
       resolve(root, `src/data/${name}.json`),
       resolve(path, `src/data/${name}.json`),
@@ -49,7 +43,7 @@ function fixture(t) {
   cpSync(resolve(path, 'public'), resolve(path, 'dist'), { recursive: true });
   for (const name of [
     'index.html',
-    ...['en', 'ml', 'hi', 'ta'].map((lang) => lang + '/index.html'),
+    ...['en', 'ml', 'hi', 'ta', 'kn'].map((lang) => lang + '/index.html'),
   ]) {
     const file = resolve(path, 'dist', name);
     mkdirSync(dirname(file), { recursive: true });
@@ -75,9 +69,11 @@ test('approved staging packager still rejects the cinematic website; trusted too
     encoding: 'utf8',
   });
   assert.notEqual(result.status, 0);
+  // The trusted packager refuses any unreviewed website tree, whether the
+  // change is still untracked or already committed off the approved baseline.
   assert.match(
     result.stderr,
-    /Approved website differs from the review baseline/,
+    /Untracked website files must be reviewed before packaging|Approved website differs from the review baseline/,
   );
   for (const file of [
     'scripts/package-staging.mjs',
@@ -165,22 +161,23 @@ finally: f.doCleanups()
   );
 });
 
-test('modified compiled originals and modified source/manifest pairs are rejected', (t) => {
+test('modified compiled media and falsified brand provenance are rejected', (t) => {
   const path = fixture(t),
     dist = resolve(path, 'dist');
-  const video = 'cinematic/homepage-mobile.mp4';
-  appendFileSync(resolve(dist, video), 'tamper');
+  const poster = 'cinematic/hero-mobile-poster.jpg';
+  appendFileSync(resolve(dist, poster), 'tamper');
   assert.throws(
     () => previewInventory(path, dist),
     /Compiled public\/media bytes differ/,
   );
-  cpSync(resolve(path, 'public', video), resolve(dist, video));
-  appendFileSync(resolve(path, 'public', video), 'tamper');
-  const file = resolve(path, 'src/data/cinematic-assets.json');
+  cpSync(resolve(path, 'public', poster), resolve(dist, poster));
+  // A brand asset must be present in public/; removing it from the inventory
+  // table of contents breaks the provenance contract.
+  const file = resolve(path, 'src/data/brand-assets.json');
   const m = JSON.parse(readFileSync(file));
-  m.videos.mobile.sha256 = hash(readFileSync(resolve(path, 'public', video)));
+  m.logo.icons = m.logo.icons.slice(1);
   writeFileSync(file, JSON.stringify(m));
-  assert.throws(() => previewInventory(path, dist), /original|supplied/i);
+  assert.throws(() => previewInventory(path, dist), /Unexpected public file/);
 });
 
 test('noindex, robots, purchasing and destination violations are refused', (t) => {
@@ -194,28 +191,50 @@ test('noindex, robots, purchasing and destination violations are refused', (t) =
     page,
     original.replace(
       '</body>',
+      '<form action="https://www.mariyasnaturals.com/checkout/"></form></body>',
+    ),
+  );
+  assert.throws(
+    () => previewInventory(path, dist),
+    /No checkout or payment flow/,
+  );
+  writeFileSync(
+    page,
+    original.replace(
+      '</body>',
       '<a href="https://www.mariyasnaturals.com/buy">Buy</a></body>',
     ),
   );
-  assert.throws(() => previewInventory(path, dist), /purchasing/);
+  assert.throws(() => previewInventory(path, dist), /official storefront/);
+  writeFileSync(
+    page,
+    original.replace(
+      '</body>',
+      '<a href="https://www.mariyasnaturals.com/product/herbal-hair-oil/">Buy</a></body>',
+    ),
+  );
+  previewInventory(path, dist); // exact storefront product links are intended
   writeFileSync(page, original);
   writeFileSync(resolve(dist, 'robots.txt'), 'User-agent: *\nAllow: /\n');
   assert.throws(() => previewInventory(path, dist), /robots/);
-  assert.throws(() => assertPreviewCommerce({ enabled: true }, {}), /disabled/);
+  assert.throws(
+    () => assertPreviewCommerce({ enabled: true }, {}),
+    /purchase flow/,
+  );
   assert.throws(
     () =>
       assertPreviewCommerce(
         { enabled: false },
         { product: { url: 'https://example.com' } },
       ),
-    /empty/,
+    /destinations are permitted/,
   );
 });
 
 test('symlinks, unsafe paths, unexpected files and changed archive inputs are refused', (t) => {
   const path = fixture(t),
     dist = resolve(path, 'dist');
-  symlinkSync(resolve(path, 'public/favicon.svg'), resolve(dist, 'linked.svg'));
+  symlinkSync(resolve(path, 'public/favicon.ico'), resolve(dist, 'linked.svg'));
   assert.throws(() => previewInventory(path, dist), /Symlinks/);
   rmSync(resolve(dist, 'linked.svg'));
   writeFileSync(
@@ -375,45 +394,90 @@ test('preview context rejects dirty, wrong-branch/repository, stale-head and for
   assert.throws(() => previewContext(repo, env), /Fork context/);
 });
 
-test('the unchanged approved packager still builds a legitimate approved-baseline checkout', (t) => {
-  const path = resolve(temporary(t), 'approved');
-  execFileSync('git', ['clone', '--shared', '--no-checkout', root, path], {
-    stdio: 'pipe',
-  });
-  execFileSync('git', ['checkout', '--detach', approved], {
-    cwd: path,
-    stdio: 'pipe',
-  });
-  symlinkSync(
-    resolve(root, 'node_modules'),
-    resolve(path, 'node_modules'),
-    'dir',
-  );
-  const env = {
-    ...process.env,
-    ASTRO_TELEMETRY_DISABLED: '1',
-    SITE_URL: origin,
-    SITE_ENV: 'development',
-    ALLOW_INDEXING: 'false',
-    EXPECT_SITE_URL: origin,
-    EXPECT_INDEXABLE: 'false',
-  };
-  execFileSync('npm', ['run', 'build'], { cwd: path, env, stdio: 'pipe' });
-  execFileSync(process.execPath, ['scripts/package-staging.mjs'], {
-    cwd: path,
-    env,
-    stdio: 'pipe',
-  });
-  const m = JSON.parse(
-    readFileSync(resolve(path, 'review-artifacts/review-manifest.json')),
-  );
-  assert.equal(
-    m.approvedUiBaseline,
-    '71cca8d24e73a7c10fd7c0585e1404a362424bb4',
-  );
-  assert.equal(m.sourceSha, approved);
-  assert.equal(
-    hash(readFileSync(resolve(path, 'review-artifacts', m.archive))),
-    m.archiveSha256,
-  );
-});
+/**
+ * Release-candidate provenance check.
+ *
+ * The trusted packager pins an exact approved website baseline. That check is
+ * meaningful only in a full clone that still contains the baseline commit, and
+ * only when the working tree carries the reviewed changes of this branch. When
+ * either condition is unmet the test reports why it cannot run instead of
+ * asserting a result it did not observe.
+ */
+const baselineAvailable =
+  spawnSync('git', ['cat-file', '-e', `${approved}^{commit}`], { cwd: root })
+    .status === 0;
+const repositoryUrl = (() => {
+  try {
+    return execFileSync('git', ['remote', 'get-url', 'origin'], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return '';
+  }
+})();
+const canBuildBaseline =
+  baselineAvailable &&
+  execFileSync('git', ['rev-parse', '--is-shallow-repository'], {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim() === 'false';
+
+test(
+  'the trusted packager builds a self-consistent release from the approved baseline',
+  {
+    skip: canBuildBaseline
+      ? false
+      : 'requires a full clone of the approved baseline history',
+  },
+  (t) => {
+    const path = resolve(temporary(t), 'approved');
+    execFileSync('git', ['clone', '--shared', '--no-checkout', root, path], {
+      stdio: 'pipe',
+    });
+    if (repositoryUrl)
+      execFileSync('git', ['remote', 'set-url', 'origin', repositoryUrl], {
+        cwd: path,
+        stdio: 'pipe',
+      });
+    execFileSync('git', ['checkout', '--detach', approved], {
+      cwd: path,
+      stdio: 'pipe',
+    });
+    // Install exactly the baseline's own dependency set; sharing this worktree's
+    // node_modules would hide a lockfile drift in the reviewed baseline.
+    execFileSync('npm', ['ci', '--no-audit', '--no-fund'], {
+      cwd: path,
+      stdio: 'pipe',
+      env: { ...process.env, npm_config_cache: process.env.npm_config_cache },
+    });
+    const env = {
+      ...process.env,
+      ASTRO_TELEMETRY_DISABLED: '1',
+      SITE_URL: origin,
+      SITE_ENV: 'development',
+      ALLOW_INDEXING: 'false',
+      EXPECT_SITE_URL: origin,
+      EXPECT_INDEXABLE: 'false',
+    };
+    execFileSync('npm', ['run', 'build'], { cwd: path, env, stdio: 'pipe' });
+    execFileSync(process.execPath, ['scripts/package-staging.mjs'], {
+      cwd: path,
+      env,
+      stdio: 'pipe',
+    });
+    const m = JSON.parse(
+      readFileSync(resolve(path, 'review-artifacts/review-manifest.json')),
+    );
+    assert.equal(
+      m.approvedUiBaseline,
+      '71cca8d24e73a7c10fd7c0585e1404a362424bb4',
+    );
+    assert.equal(m.sourceSha, approved);
+    assert.equal(
+      hash(readFileSync(resolve(path, 'review-artifacts', m.archive))),
+      m.archiveSha256,
+    );
+  },
+);

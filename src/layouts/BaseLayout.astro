@@ -5,6 +5,7 @@ import '../styles/premium.css';
 import '../styles/fonts.css';
 import '../styles/typography.css';
 import '../styles/rebrand.css';
+import '../styles/discovery.css';
 import fontManifest from '../data/font-manifest.json';
 import type { Locale } from '../i18n';
 interface Props {
@@ -14,10 +15,15 @@ interface Props {
   path?: string;
   pageSchema?: Record<string, unknown>;
   socialImage?: { src: string; width: number; height: number; alt: string };
+  breadcrumbs?: { name: string; path: string }[];
 }
-const subset = { en: 'latin', ml: 'malayalam', hi: 'devanagari', ta: 'tamil' }[
-  Astro.props.lang
-];
+const subset = {
+  en: 'latin',
+  ml: 'malayalam',
+  hi: 'devanagari',
+  ta: 'tamil',
+  kn: 'kannada',
+}[Astro.props.lang];
 const preloadFonts = fontManifest.filter((font) => font.subset === subset);
 ---
 

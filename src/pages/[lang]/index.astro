@@ -1,58 +1,110 @@
 ---
-import ArrowIcon from '../../components/ArrowIcon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import StorytellingSection from '../../components/StorytellingSection.astro';
-import BotanicalJourney from '../../components/botanical/BotanicalJourney.astro';
-import IngredientPreview from '../../components/IngredientPreview.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
-import ProductCard from '../../components/ProductCard.astro';
-import CollectionHighlights from '../../components/CollectionHighlights.astro';
+import HomeHero from '../../components/HomeHero.astro';
+import ShowcaseSection from '../../components/ShowcaseSection.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { featuredProduct, featuredProducts } from '../../data/products';
-import { socialImage } from '../../data/seo';
+import MobileChrome from '../../components/MobileChrome.astro';
+import ApprovedImage from '../../components/ApprovedImage.astro';
+import ArrowIcon from '../../components/ArrowIcon.astro';
+import { featuredProduct } from '../../data/products';
+import { storeLinks } from '../../data/store';
 import { locales, dictionaries, type Locale } from '../../i18n';
+
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
 }
 const lang = Astro.params.lang as Locale;
 const t = dictionaries[lang];
+const portrait = featuredProduct.images.main!;
 ---
 
-<BaseLayout
-  lang={lang}
-  title={t.title}
-  description={t.description}
-  socialImage={socialImage(featuredProduct.images.main, lang)}
->
+<BaseLayout lang={lang} title={t.title} description={t.description}>
   <SiteHeader lang={lang} t={t} />
   <main id="main" tabindex="-1">
-    <StorytellingSection t={t} lang={lang} />
-    <BotanicalJourney lang={lang} />
-    <IngredientPreview t={t} />
-    <CollectionHighlights t={t} lang={lang} />
-    <section id="products" class="product-section section">
-      <div class="wrap">
-        <SectionHeading
-          eyebrow={t.productLabel}
-          title={t.productTitle}
-          text={t.productText}
-        />
-        <div
-          class="product-rail"
-          tabindex="0"
-          role="region"
-          aria-label={t.products}
-        >
-          {featuredProducts.map((product) => (
-            <ProductCard product={product} t={t} lang={lang} />
-          ))}
+    <HomeHero t={t} />
+    <ShowcaseSection t={t} lang={lang} />
+
+    <section id="about" class="section" aria-labelledby="about-title">
+      <div class="shell about-grid">
+        <div>
+          <p class="eyebrow-gold">{t.heritageLabel}</p>
+          <h2 id="about-title">{t.storeTitle}</h2>
+          <p class="section-note">{t.storeText}</p>
+          <dl class="qa">
+            <div>
+              <dt>{t.aboutQ1}</dt>
+              <dd>{t.aboutA1}</dd>
+            </div>
+            <div>
+              <dt>{t.aboutQ2}</dt>
+              <dd>{t.aboutA2}</dd>
+            </div>
+            <div>
+              <dt>{t.aboutQ3}</dt>
+              <dd>{t.aboutA3}</dd>
+            </div>
+          </dl>
+          <p class="actions">
+            <a class="button" href={storeLinks.shop} rel="noopener">
+              {t.shopProducts}
+              <span aria-hidden="true">
+                <ArrowIcon />
+              </span>
+            </a>
+          </p>
         </div>
-        <a class="button catalogue-link" href={`/${lang}/products/`}>
-          {t.allProducts} <ArrowIcon />
-        </a>
+        <div class="about-media">
+          <ApprovedImage
+            lang={lang}
+            image={portrait}
+            sizes="(min-width: 900px) 460px, 90vw"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="collections"
+      class="section"
+      aria-labelledby="collections-title"
+    >
+      <div class="shell">
+        <p class="eyebrow-gold">{t.campaignLabel}</p>
+        <h2 id="collections-title">{t.catalogueTitle}</h2>
+        <p class="section-note">{t.catalogueText}</p>
+        <ul class="browse-list">
+          <li>
+            <a href={storeLinks.hairCareCategory} rel="noopener">
+              {t.categories['hair-care']}
+            </a>
+          </li>
+          <li>
+            <a href={storeLinks.shop} rel="noopener">
+              {t.allProducts}
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
+
+  <div class="store-cta section">
+    <div class="shell">
+      <p class="eyebrow-gold">{t.nextChapter}</p>
+      <h2>{t.store}</h2>
+      <p class="section-note">{t.storeText}</p>
+      <p class="actions">
+        <a class="button" href={storeLinks.shop} rel="noopener">
+          {t.shopProducts}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
+        </a>
+      </p>
+    </div>
+  </div>
+
   <SiteFooter lang={lang} t={t} />
+  <MobileChrome lang={lang} t={t} />
 </BaseLayout>

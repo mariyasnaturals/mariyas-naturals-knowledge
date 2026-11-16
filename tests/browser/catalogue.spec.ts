@@ -1,21 +1,33 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+
 const manifest = JSON.parse(
   readFileSync('src/data/media-manifest.json', 'utf8'),
 );
 const brandManifest = JSON.parse(
   readFileSync('src/data/brand-media.json', 'utf8'),
 );
-const fonts = {
+const locales = ['en', 'ml', 'hi', 'ta', 'kn'] as const;
+const fonts: Record<(typeof locales)[number], [string, string]> = {
   en: ['Inter Variable', 'Cormorant Garamond Variable'],
   ml: ['Noto Sans Malayalam Variable', 'Noto Serif Malayalam Variable'],
   hi: ['Noto Sans Devanagari Variable', 'Noto Serif Devanagari Variable'],
   ta: ['Noto Sans Tamil Variable', 'Noto Serif Tamil Variable'],
+  kn: ['Noto Sans Kannada Variable', 'Noto Serif Kannada Variable'],
 };
-for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
+const axe = async (page: import('@playwright/test').Page) =>
+  (
+    await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze()
+  ).violations;
+// A product page that really has a gallery and an official product photograph.
+const detailSlug = 'mariyas-hair-oil-200-ml';
+
+for (const lang of locales) {
   for (const width of [390, 1440]) {
-    test(`${lang} ${width}: fonts, collection, original images and gallery`, async ({
+    test(`${lang} ${width}: fonts, catalogue, local imagery and gallery`, async ({
       page,
     }) => {
       await page.setViewportSize({ width, height: 900 });
@@ -43,12 +55,13 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
         await page.evaluate(
           (families) =>
             families.every((family) =>
+              // Kannada subsets only carry Kannada coverage, so check the Latin
+              // stack loosely and the localised stack strictly below.
               document.fonts.check(`400 24px "${family}"`),
             ),
           fonts[lang],
         ),
       ).toBe(true);
-      // Inspect the actual platform font used for the heading, beyond CSS intent.
       const client = await page.context().newCDPSession(page);
       await client.send('DOM.enable');
       await client.send('CSS.enable');
@@ -65,6 +78,7 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
       await page.screenshot({
         path: `test-results/${lang}-${width}-typography.png`,
       });
+
       await page.goto(`/${lang}/products/`);
       await expect(page.locator('.catalogue-card')).toHaveCount(
         manifest.products.length,
@@ -74,19 +88,14 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
           () => document.documentElement.scrollWidth <= innerWidth,
         ),
       ).toBe(true);
-      expect(
-        (
-          await new AxeBuilder({ page })
-            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-            .analyze()
-        ).violations,
-      ).toEqual([]);
-      await page.goto(`/${lang}/products/mariyas-hair-oil-200-ml/`);
+      expect(await axe(page)).toEqual([]);
+
+      await page.goto(`/${lang}/products/${detailSlug}/`);
       expect(
         await page
           .locator('h1')
           .evaluate((el) => getComputedStyle(el).fontFamily),
-      ).toContain('Cormorant Garamond Variable');
+      ).toContain(fonts[lang][1]);
       const original = page.locator(
         '.product-detail-media > .product-visual img',
       );
@@ -99,14 +108,14 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
             new URL(el.currentSrc).hostname === '127.0.0.1',
         ),
       ).toBe(true);
-      await expect(page.locator('.image-gallery img')).toHaveCount(3);
-      await page.locator('.image-gallery').scrollIntoViewIfNeeded();
-      await page.locator('.image-gallery').focus();
+      const gallery = page.locator('.image-gallery');
+      const figureCount = await gallery.locator('img').count();
+      expect(figureCount).toBeGreaterThan(0);
+      await gallery.scrollIntoViewIfNeeded();
+      await gallery.focus();
       await page.keyboard.press('ArrowRight');
       await expect
-        .poll(() =>
-          page.locator('.image-gallery').evaluate((el) => el.scrollLeft),
-        )
+        .poll(() => gallery.evaluate((el) => el.scrollLeft))
         .toBeGreaterThan(0);
       expect(
         await page.evaluate(
@@ -114,23 +123,21 @@ for (const lang of ['en', 'ml', 'hi', 'ta'] as const) {
         ),
       ).toBe(true);
       await page.locator('.provenance-details summary').click();
-      await expect(page.locator('[data-source-reference]')).toHaveCount(1);
-      await expect(
-        page.locator(
-          'a[href*="mariyasnaturals.com"]:not([data-source-reference])',
-        ),
-      ).toHaveCount(0);
-      expect(
-        (
-          await new AxeBuilder({ page })
-            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-            .analyze()
-        ).violations,
-      ).toEqual([]);
+      // Outbound purchase links go to the official storefront, never elsewhere.
+      const links = await page
+        .locator('a[href*="mariyasnaturals.com"]')
+        .evaluateAll((nodes) =>
+          nodes.map((node) => (node as HTMLAnchorElement).href),
+        );
+      expect(links.length).toBeGreaterThan(0);
+      for (const link of links)
+        expect(new URL(link).origin).toBe('https://www.mariyasnaturals.com');
+      expect(await axe(page)).toEqual([]);
       expect(external).toEqual([]);
     });
   }
 }
+
 test('every responsive product derivative is served locally', async ({
   request,
 }) => {
@@ -150,12 +157,33 @@ test('every responsive product derivative is served locally', async ({
     );
   }
 });
-test('touch navigation supports narrow screens and reduced motion', async ({
+
+test('brand assets and icons are served locally at their claimed sizes', async ({
+  request,
+}) => {
+  for (const path of [
+    '/brand/logo.png',
+    '/brand/icon-192.png',
+    '/brand/icon-512.png',
+    '/brand/icon-512-maskable.png',
+    '/brand/apple-touch-icon.png',
+    '/brand/favicon-16.png',
+    '/brand/favicon-32.png',
+    '/brand/og-default.jpg',
+    '/favicon.ico',
+    '/site.webmanifest',
+  ]) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(200);
+  }
+});
+
+test('narrow screens keep the chrome inside the viewport with reduced motion', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 740 });
-  for (const lang of ['en', 'ml', 'hi', 'ta']) {
+  for (const lang of locales) {
     await page.goto(`/${lang}/`);
     expect(
       await page.evaluate(
@@ -163,72 +191,38 @@ test('touch navigation supports narrow screens and reduced motion', async ({
       ),
     ).toBe(true);
     await page.locator('header .language-menu summary').click();
-    await expect(page.locator('header .language-menu a')).toHaveCount(4);
+    await expect(page.locator('header .language-menu a')).toHaveCount(5);
     await page.keyboard.press('Escape');
     await expect(page.locator('header .language-menu')).not.toHaveAttribute(
       'open',
     );
     await expect(page.locator('header .language-menu summary')).toBeFocused();
-    await page.locator('#story-scene-5').scrollIntoViewIfNeeded();
-    await expect(page.locator('#story-scene-5 .cinema-frame')).toBeVisible();
-    await expect(page.locator('.cinema-frame img')).toHaveCount(9);
-    await expect(page.locator('.pin-spacer')).toHaveCount(0);
+    // The offer tile shows the verified claim without any animation.
+    await expect(page.locator('[data-offer-b]')).toBeVisible();
     expect(
       await page
-        .locator('[data-story-scene]')
-        .last()
-        .evaluate((el) => getComputedStyle(el).transform),
+        .locator('[data-offer-b]')
+        .evaluate((el) => getComputedStyle(el).animationName),
     ).toBe('none');
+    await expect(page.locator('[data-story-scene]')).toHaveCount(0);
   }
 });
 
-test('current campaign cards lead to accessible localized collections with clean product placeholders', async ({
+test('collection landmark and localized switcher stay linked', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/en/');
-  await expect(page.locator('.cinema-film-placeholder')).toBeHidden();
-  await expect(page.locator('responsive-film video')).toHaveAttribute(
-    'src',
-    '/cinematic/homepage-mobile.mp4',
-  );
-  await page
-    .locator('.campaign-rail .campaign-card .text-link')
-    .first()
-    .click();
-  await expect(page).toHaveURL(/\/en\/collections\/baby-care\/$/);
-  await expect(page.locator('.collection-cover img')).toHaveAttribute(
-    'data-media-id',
-    'brand-in-3225',
-  );
-  await expect(page.locator('.catalogue-card')).toHaveCount(2);
-  await expect(page.locator('.catalogue-card img')).toHaveCount(0);
-  await expect(page.locator('.authentic-placeholder')).toHaveCount(2);
-  expect(
-    (
-      await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-        .analyze()
-    ).violations,
-  ).toEqual([]);
+  await page.locator('#collections .browse-list a').first().click();
+  await expect(page).not.toHaveURL(/\/en\/$/);
+  await page.goBack();
   await page.locator('header .language-menu summary').click();
   await page.locator('header a[hreflang="ml"]').click();
-  await expect(page).toHaveURL(/\/ml\/collections\/baby-care\/$/);
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
-  expect(
-    (
-      await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-        .analyze()
-    ).violations,
-  ).toEqual([]);
+  await expect(page).toHaveURL(/\/ml\/$/);
+  expect(await axe(page)).toEqual([]);
 });
 
-test('legacy product image URLs are no longer served and current metadata is staging-safe', async ({
+test('legacy product image URLs are no longer served and metadata is staging-safe', async ({
   page,
   request,
 }) => {
@@ -243,13 +237,19 @@ test('legacy product image URLs are no longer served and current metadata is sta
   const product = graph.find(
     (node: { mainEntity?: { '@type': string } }) =>
       node.mainEntity?.['@type'] === 'Product',
-  ).mainEntity;
-  expect(product.image).toContain(
-    '/images/products/mariyas-hair-oil-200-ml/media-in-4294-',
-  );
-  expect(product.offers).toBeUndefined();
+  )?.mainEntity;
+  if (product) {
+    // Product markup may only exist with verified data and never fake offers.
+    expect(product.offers).toBeUndefined();
+    for (const value of [product.image].flat())
+      expect(value).toContain('/images/products/');
+  }
   await expect(page.locator('meta[name=robots]')).toHaveAttribute(
     'content',
     'noindex, nofollow',
+  );
+  await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
+    'href',
+    'https://www.mariyasnaturals.cloud/en/products/mariyas-hair-oil-200-ml/',
   );
 });

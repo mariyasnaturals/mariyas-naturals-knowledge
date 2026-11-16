@@ -16,10 +16,12 @@ class PackagingAndInstallation(unittest.TestCase):
         sha=trust.git(ROOT,'rev-parse','HEAD').decode().strip()
         policy=trust.make_trust(ROOT,sha)
         self.assertEqual(len(policy['original_media']),4)
-        for name in ['cinematic/homepage-desktop.mp4','cinematic/homepage-mobile.mp4','cinematic/original-model.jpg','cinematic/original-product.jpg']:
-            self.assertEqual(policy['public_files'][name]['sha256'],trust.digest((ROOT/'public'/name).read_bytes()))
+        for record in policy['original_media']:
+            name=record['path'].removeprefix('/')
+            self.assertEqual(record['sha256'],trust.digest((ROOT/'public'/name).read_bytes()))
+            self.assertIn(name,policy['public_files'])
         self.assertTrue(trust.is_ui_file('src/pages/[lang]/index.astro'))
-        self.assertFalse(trust.is_ui_file('src/data/cinematic-assets.json'))
+        self.assertFalse(trust.is_ui_file('src/data/brand-assets.json'))
         self.assertFalse(trust.is_ui_file('.github/workflows/validate.yml'))
 
     def test_pr_and_checkout_mismatch_cannot_package(self):
@@ -31,7 +33,7 @@ class PackagingAndInstallation(unittest.TestCase):
     def test_data_only_signer_authenticates_exact_envelope(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder=Path(tmp);site=folder/'site';site.mkdir()
-            for name in ['index.html','en/index.html','ml/index.html','hi/index.html','ta/index.html']:
+            for name in ['index.html',*[lang+'/index.html' for lang in trust.LOCALES]]:
                 p=site/name;p.parent.mkdir(exist_ok=True);p.write_text('<meta name="robots" content="noindex, nofollow"><link rel="canonical" href="'+trust.ORIGIN+'/'+name.removesuffix('index.html')+'">')
             (site/'robots.txt').write_text('User-agent: *\nDisallow: /\n')
             policy={'original_media':[],'public_files':{}}
@@ -52,9 +54,9 @@ class PackagingAndInstallation(unittest.TestCase):
     def test_installed_bundle_matches_all_reviewed_tools(self):
         install.verify_bundle()
         records=[line.split() for line in (ROOT/'ops/ci_staging/bundle.sha256').read_text().splitlines()]
-        self.assertIn('ops/cinematic/pull_deploy.py',[n for _,n in records])
-        self.assertIn('ops/cinematic/media_policy.py',[n for _,n in records])
-        self.assertIn('ops/cinematic/owner-media-policy.json',[n for _,n in records])
+        self.assertIn('ops/ci_staging/trust.py',[n for _,n in records])
+        self.assertIn('ops/ci_staging/artifact.py',[n for _,n in records])
+        self.assertIn('ops/ci_staging/runtime.py',[n for _,n in records])
         for digest,name in records:self.assertEqual(trust.digest((ROOT/name).read_bytes()),digest)
 
     def test_private_installed_configuration_and_runtime_integrity(self):

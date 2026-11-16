@@ -19,6 +19,11 @@
   --font-display:
     'Noto Serif Tamil Variable', 'Cormorant Garamond Variable', serif;
 }
+:lang(kn) {
+  --font-sans: 'Noto Sans Kannada Variable', 'Inter Variable', sans-serif;
+  --font-display:
+    'Noto Serif Kannada Variable', 'Cormorant Garamond Variable', serif;
+}
 body,
 .language-switcher a,
 .language-menu summary,
@@ -39,6 +44,9 @@ html:lang(hi) {
   line-height: 1.85;
 }
 html:lang(ta) {
+  line-height: 1.9;
+}
+html:lang(kn) {
   line-height: 1.9;
 }
 html:not(:lang(en)) body {

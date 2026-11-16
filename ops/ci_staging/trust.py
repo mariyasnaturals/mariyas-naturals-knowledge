@@ -40,8 +40,9 @@ def git(repo, *args):
     return subprocess.check_output(['git', '-c', 'core.hooksPath=/dev/null', '-C', str(repo), *args], stderr=subprocess.PIPE)
 
 
-# Reviewed botanical release media are hash-pinned like other public files.
-BOTANICAL_ROOT = 'public/_botanical-assets/'
+LOCALES = ['en', 'ml', 'hi', 'ta', 'kn']
+# Outbound links to the official storefront are the intended discovery path.
+STORE_ORIGIN = 'https://www.mariyasnaturals.com'
 
 
 def is_ui_file(name):
@@ -69,19 +70,28 @@ def make_trust(repo, sha):
     git(repo,'merge-base','--is-ancestor',HERO_ORIGIN,sha)
     gate = tree_policy(repo, sha)
     public = {name[7:]: {'sha256': value, 'bytes': int(git(repo, 'cat-file', '-s', sha+':'+name))} for name, value in gate.items() if name.startswith('public/')}
-    # In this repository the reviewed botanical release set must be complete and pinned.
-    if 'src/data/botanical-media.json' in gate:
-        botanical = json.loads(git(repo, 'show', sha+':src/data/botanical-media.json'))
-        served = {record['localAssetPath'][1:] for record in botanical['media']}
-        require(len(served) == 43 and botanical.get('status') == 'owner-approved-reviewed-botanical-release-media', 'Incomplete reviewed botanical release')
-        for path in served:
-            require(path.startswith(BOTANICAL_ROOT.removeprefix('public/')) and path in public, 'Reviewed botanical media must be pinned in the gate')
-        for path in gate:
-            require(not path.startswith(BOTANICAL_ROOT) or path.removeprefix('public/') in served, 'Unregistered botanical file in the protected gate')
     require(WORKFLOW in gate and len(public) > 4, 'Incomplete trust source')
-    cinematic = json.loads(git(repo, 'show', sha+':src/data/cinematic-assets.json'))
-    originals = [*cinematic['videos'].values(), *cinematic['references'].values()]
-    return {'original_media': originals, 'schema': 'ci-staging-trust/v1', 'reviewed_commit': sha, 'repository': REPOSITORY, 'repository_id': REPOSITORY_ID, 'branch': BRANCH, 'workflow_id': WORKFLOW_ID, 'workflow': WORKFLOW, 'gate_files': gate, 'public_files': public}
+    # Brand assets are generated from owner originals; their provenance record
+    # is part of the protected gate, so the derived files stay hash-pinned.
+    brand = json.loads(git(repo, 'show', sha+':src/data/brand-assets.json'))
+    original_media = []
+    for record in [
+        {'key': 'landing', 'record': brand['landing'], 'path': brand['landing']['landscapeJpeg']},
+        {'key': 'logo', 'record': brand['logo'], 'path': brand['logo']['full']},
+        *[
+            {'key': 'hero-' + name, 'record': hero, 'path': hero['src']}
+            for name, hero in brand['hero'].items()
+        ],
+    ]:
+        name = record['path'].removeprefix('/')
+        require(name in public, 'Recorded brand asset is missing from the gate')
+        original_media.append({
+            'path': record['path'],
+            'sha256': public[name]['sha256'],
+            'source': record['record'].get('master', 'owner-supplied'),
+            'masterSha256': record['record'].get('masterSha256'),
+        })
+    return {'original_media': original_media, 'schema': 'ci-staging-trust/v1', 'reviewed_commit': sha, 'repository': REPOSITORY, 'repository_id': REPOSITORY_ID, 'branch': BRANCH, 'workflow_id': WORKFLOW_ID, 'workflow': WORKFLOW, 'gate_files': gate, 'public_files': public}
 
 
 def verify_gate(repo, sha, policy):

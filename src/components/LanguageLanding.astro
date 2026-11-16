@@ -1,0 +1,64 @@
+---
+import brand from '../data/brand-assets.json';
+import { languages, languageHints, locales } from '../i18n';
+interface Props {
+  headline: string;
+  lede: string;
+  label: string;
+  eyebrow: string;
+  footnote: string;
+  photoAlt: string;
+}
+const { headline, lede, label, eyebrow, footnote, photoAlt } = Astro.props;
+const { landscape, mobile, landscapeJpeg } = brand.landing;
+const widest = landscape.at(-1)!;
+---
+
+<div class="landing">
+  <picture>
+    <source
+      media="(max-width: 899px)"
+      srcset={mobile
+        .map((variant) => `${variant.webp} ${variant.width}w`)
+        .join(', ')}
+      sizes="100vw"
+      type="image/webp"
+    />
+    <source
+      media="(min-width: 900px)"
+      srcset={landscape
+        .map((variant) => `${variant.webp} ${variant.width}w`)
+        .join(', ')}
+      sizes="(min-width: 1600px) 70vw, 100vw"
+      type="image/webp"
+    />
+    <img
+      class="landing-photo"
+      src={landscapeJpeg}
+      width={widest.width}
+      height={widest.height}
+      alt={photoAlt}
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+  <div class="landing-shade" aria-hidden="true"></div>
+  <main class="landing-main">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{headline}</h1>
+    <p class="landing-lede">{lede}</p>
+    <nav aria-label={label}>
+      <ul class="landing-languages">
+        {locales.map((locale) => (
+          <li>
+            <a href={`/${locale}/`} hreflang={locale} lang={locale}>
+              <span class="language-name">{languages[locale]}</span>
+              <span class="language-hint">{languageHints[locale]}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <p class="landing-footnote">{footnote}</p>
+  </main>
+</div>

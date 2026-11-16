@@ -1,0 +1,89 @@
+---
+import { hairOilOffer, storeLinks } from '../data/store';
+import type { Dictionary, Locale } from '../i18n';
+interface Props {
+  t: Dictionary;
+  lang: Locale;
+}
+const { t, lang } = Astro.props;
+
+/**
+ * Four destinations plus the offer tile. On a sub-page the in-page anchors are
+ * rewritten to the homepage anchors so every item stays meaningful.
+ */
+const onHome = Astro.url.pathname === `/${lang}/`;
+const anchor = (id: string) => (onHome ? `#${id}` : `/${lang}/#${id}`);
+
+const links = [
+  {
+    label: t.home,
+    href: `/${lang}/`,
+    current: onHome,
+    icon: 'M3 10.5 12 3l9 7.5V21h-6.2v-6.4H9.2V21H3Z',
+  },
+  {
+    label: t.knowledge,
+    href: anchor('collections'),
+    current: false,
+    icon: 'M4 5.5h16M4 12h16M4 18.5h10',
+  },
+  {
+    label: t.products,
+    href: `/${lang}/products/`,
+    current: Astro.url.pathname.startsWith(`/${lang}/products`),
+    icon: 'M4 4.5h5.2v5.2H4Zm10.8 0H20v5.2h-5.2ZM4 15.3h5.2V20.5H4Zm10.8 0H20v5.2h-5.2Z',
+  },
+  {
+    label: t.story,
+    href: anchor('about'),
+    current: false,
+    icon: 'M12 21c-4.4 0-7-2.6-7-6.4C5 9.6 12 3 12 3s7 6.6 7 11.6c0 3.8-2.6 6.4-7 6.4Z',
+  },
+];
+
+// The discount wording is published only while the offer is marked verified.
+const offerMessage = hairOilOffer.verified
+  ? hairOilOffer.message
+  : hairOilOffer.fallbackMessage;
+---
+
+<div class="mobile-chrome" data-mobile-chrome>
+  <a class="shop-fab" href={storeLinks.shop} rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 8h12l-1 12H7L6 8Z" />
+      <path d="M9 8V6.2a3 3 0 0 1 6 0V8" />
+    </svg>
+    {t.shopProducts}
+  </a>
+
+  <nav class="mobile-chrome-bar" data-mobile-nav aria-label={t.navLabel}>
+    {links.map((link) => (
+      <a
+        class="mobile-chrome-link"
+        href={link.href}
+        aria-current={link.current ? 'page' : undefined}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d={link.icon} />
+        </svg>
+        <span>{link.label}</span>
+      </a>
+    ))}
+    <a
+      class="offer-tile"
+      data-offer-tile
+      data-offer-href={hairOilOffer.href}
+      href={hairOilOffer.href}
+      rel="noopener"
+      aria-label={`${t.hairOilOffer}: ${offerMessage}`}
+    >
+      <span class="offer-tile-shimmer" aria-hidden="true"></span>
+      <span class="offer-tile-label" data-offer-a aria-hidden="true">
+        {t.buyNow}
+      </span>
+      <span class="offer-tile-label" data-offer-b aria-hidden="true">
+        {offerMessage}
+      </span>
+    </a>
+  </nav>
+</div>

@@ -10,8 +10,9 @@ import tempfile
 import time
 
 ROOT=Path(__file__).resolve().parents[2]
+# The trusted verifier lives once, in ops/. The separately reviewed cinematic
+# profile was retired with the scroll-story release it pinned.
 sys.path.insert(0,str(ROOT/'ops'))
-sys.path.insert(0,str(ROOT/'ops/cinematic'))
 import pull_deploy as core
 from automatic_staging import private_file
 from ci_staging import artifact,health,trust

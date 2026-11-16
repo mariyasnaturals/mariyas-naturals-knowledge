@@ -1,7 +1,6 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import MobileNavigation from './MobileNavigation.astro';
 import type { Locale, Dictionary } from '../i18n';
 interface Props {
   lang: Locale;
@@ -11,7 +10,7 @@ const { lang, t } = Astro.props;
 const cinematicHomepage = Astro.url.pathname === `/${lang}/`;
 ---
 
-<section id="store" class="store-section section" aria-label={t.storeShort}>
+<section class="store-section section" aria-label={t.storeShort}>
   <div class="wrap">
     <p class="eyebrow">{t.nextChapter}</p>
     <h2>{t.storeTitle}</h2>
@@ -37,4 +36,3 @@ const cinematicHomepage = Astro.url.pathname === `/${lang}/`;
     © {new Date().getFullYear()} {t.rights}. {!cinematicHomepage && t.preview}
   </p>
 </footer>
-<MobileNavigation lang={lang} t={t} />

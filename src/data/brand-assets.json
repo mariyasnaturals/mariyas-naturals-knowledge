@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "npm run brand:assets",
+  "landing": {
+    "master": "file_0000000001108211b11b1f7880d1df22.png",
+    "masterSha256": "7d2cb15adcae84f96b980f66c8642c501f33a4ed91515151efc30766a773fc9c",
+    "transformation": "horizontal mirror only; no retouching, no regeneration",
+    "intrinsic": {
+      "width": 1954,
+      "height": 805
+    },
+    "landscape": [
+      {
+        "width": 720,
+        "webp": "/hero/model-landscape-720.webp",
+        "height": 297
+      },
+      {
+        "width": 1080,
+        "webp": "/hero/model-landscape-1080.webp",
+        "height": 445
+      },
+      {
+        "width": 1440,
+        "webp": "/hero/model-landscape-1440.webp",
+        "height": 593
+      },
+      {
+        "width": 1920,
+        "webp": "/hero/model-landscape-1920.webp",
+        "height": 791
+      },
+      {
+        "width": 2400,
+        "webp": "/hero/model-landscape-2400.webp",
+        "height": 989
+      }
+    ],
+    "landscapeJpeg": "/hero/model-landscape-1440.jpg",
+    "mobile": [
+      {
+        "width": 430,
+        "webp": "/hero/model-mobile-3x2-430.webp",
+        "height": 287,
+        "crop": {
+          "width": 1208,
+          "height": 805,
+          "left": 686,
+          "top": 0
+        }
+      },
+      {
+        "width": 700,
+        "webp": "/hero/model-mobile-3x2-700.webp",
+        "height": 466,
+        "crop": {
+          "width": 1208,
+          "height": 805,
+          "left": 686,
+          "top": 0
+        }
+      },
+      {
+        "width": 1073,
+        "webp": "/hero/model-mobile-3x2-1073.webp",
+        "height": 715,
+        "crop": {
+          "width": 1208,
+          "height": 805,
+          "left": 686,
+          "top": 0
+        }
+      }
+    ]
+  },
+  "logo": {
+    "master": "logo",
+    "masterSha256": "7a3cc9d312a0cf815971294b23afc42c3dda82a8145beaf23955b1bf6e718d45",
+    "transformation": "white field trimmed, flattened onto brand green; the mark itself is unaltered",
+    "artifactsRemoved": {
+      "rows": 1,
+      "columns": 0
+    },
+    "full": "/brand/logo.png",
+    "fullSize": 512,
+    "icons": [
+      {
+        "size": 192,
+        "path": "/brand/icon-192.png"
+      },
+      {
+        "size": 512,
+        "path": "/brand/icon-512.png"
+      },
+      {
+        "size": 512,
+        "path": "/brand/icon-512-maskable.png"
+      },
+      {
+        "size": 180,
+        "path": "/brand/apple-touch-icon.png"
+      },
+      {
+        "size": 32,
+        "path": "/brand/favicon-32.png"
+      },
+      {
+        "size": 16,
+        "path": "/brand/favicon-16.png"
+      }
+    ],
+    "ico": "/favicon.ico"
+  },
+  "hero": {
+    "desktop": {
+      "src": "/cinematic/homepage-desktop.mp4",
+      "poster": "/cinematic/poster-desktop.jpg",
+      "status": "active",
+      "note": "Existing 16:9 owner cut retained; the replacement landscape cut failed face verification."
+    },
+    "mobile": {
+      "src": "/cinematic/hero-mobile.mp4",
+      "poster": "/cinematic/hero-mobile-poster.jpg",
+      "status": "active",
+      "master": "mariyas_hero.mp4",
+      "masterSha256": "d26d88839258791219597dc66bb3fe7024cbf54cda4db2e630b56da24899862a",
+      "transformation": "audio removed, H.264 fast-start re-encode at source dimensions; no crop, no stretch",
+      "encoded": {
+        "width": 720,
+        "height": 1280,
+        "codec": "h264",
+        "durationSeconds": 15,
+        "bytes": 2522658
+      }
+    }
+  },
+  "social": {
+    "ogDefault": {
+      "path": "/brand/og-default.jpg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 103333
+    },
+    "ogLogo": {
+      "path": "/brand/og-logo.jpg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 44519
+    },
+    "composition": "Approved photograph, official logo and brand type; no generative imagery and no alteration of the model."
+  }
+}

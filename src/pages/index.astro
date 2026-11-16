@@ -1,7 +1,6 @@
 ---
-import ArrowIcon from '../components/ArrowIcon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import LanguageLanding from '../components/LanguageLanding.astro';
 import { dictionaries } from '../i18n';
 ---
 
@@ -11,17 +10,12 @@ import { dictionaries } from '../i18n';
   description={dictionaries.en.description}
   path="/"
 >
-  <main class="language-landing wrap">
-    <p class="eyebrow">MARIYAS NATURALS</p>
-    <h1>
-      Rooted in Nature.
-      <br />
-      Guided by Tradition.
-    </h1>
-    <p>Choose your language to explore our knowledge website.</p>
-    <LanguageSwitcher lang="en" label="Choose language" />
-    <a class="button" href="/en/">
-      Continue in English <ArrowIcon />
-    </a>
-  </main>
+  <LanguageLanding
+    eyebrow="MARIYAS NATURALS"
+    headline="Rooted in Nature. Guided by Tradition."
+    lede="Choose your language to explore Mariyas Naturals — herbal hair care, skin care and everyday wellness from Kerala."
+    label="Choose language"
+    photoAlt="A model in a bright pink floral sari with long black hair, seated in an ornate carved wooden chair against a deep green botanical studio backdrop."
+    footnote="Five languages. One collection. Purchases are completed on our official store."
+  />
 </BaseLayout>

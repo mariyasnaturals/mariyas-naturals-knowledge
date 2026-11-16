@@ -16,7 +16,7 @@ export default defineConfig({
       filter: (page) => !new URL(page).pathname.match(/^\/$/),
       i18n: {
         defaultLocale: 'en',
-        locales: { en: 'en', ml: 'ml', hi: 'hi', ta: 'ta' },
+        locales: { en: 'en', ml: 'ml', hi: 'hi', ta: 'ta', kn: 'kn' },
       },
     }),
   ],

@@ -51,6 +51,7 @@ export const products: readonly Product[] = manifest.products.map((record) => {
         ml: `${name} — ഔദ്യോഗിക സ്റ്റോറിലെ ഉൽപ്പന്ന ചിത്രം`,
         hi: `${name} — आधिकारिक स्टोर की उत्पाद छवि`,
         ta: `${name} — அதிகாரப்பூர்வ கடையின் தயாரிப்புப் படம்`,
+        kn: `${name} — ಅಧಿಕೃತ ಅಂಗಡಿಯ ಉತ್ಪನ್ನ ಚಿತ್ರ`,
       }),
       variantAssociation,
     };
@@ -75,6 +76,7 @@ export const products: readonly Product[] = manifest.products.map((record) => {
       ml: record.displayName,
       hi: record.displayName,
       ta: record.displayName,
+      kn: record.displayName,
     },
     description: Object.fromEntries(
       Object.entries(dictionaries).map(([lang, t]) => [

@@ -7,12 +7,13 @@ interface Props {
   t: Dictionary;
 }
 const { lang, t } = Astro.props;
-const prefix = Astro.url.pathname === `/${lang}/` ? '' : `/${lang}/`;
-const links = [
-  ['story', t.story],
-  ['ingredients', t.ingredients],
-  ['knowledge', t.knowledge],
-  ['products', t.products],
+// Every destination exists on every page; no dead story anchors.
+const onHome = Astro.url.pathname === `/${lang}/`;
+const links: [string, string][] = [
+  [onHome ? '#showcase' : `/${lang}/#showcase`, t.products],
+  [onHome ? '#collections' : `/${lang}/#collections`, t.knowledge],
+  [onHome ? '#about' : `/${lang}/#about`, t.story],
+  [`/${lang}/products/`, t.catalogue],
 ];
 ---
 
@@ -29,8 +30,8 @@ const links = [
       <small>N A T U R A L S</small>
     </a>
     <nav class="desktop-nav" aria-label={t.navLabel}>
-      {links.map(([id, label]) => (
-        <a href={`${prefix}#${id}`}>{label}</a>
+      {links.map(([href, label]) => (
+        <a href={href}>{label}</a>
       ))}
     </nav>
     <details class="mobile-menu">
@@ -42,8 +43,8 @@ const links = [
         <span class="sr-only">{t.menu}</span>
       </summary>
       <nav aria-label={t.navLabel}>
-        {links.map(([id, label]) => (
-          <a href={`${prefix}#${id}`}>
+        {links.map(([href, label]) => (
+          <a href={href}>
             {label}
             <span aria-hidden="true">
               <ArrowIcon />

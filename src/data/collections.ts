@@ -17,5 +17,6 @@ export function collectionImage(category: ProductCategory, t: Dictionary) {
     ml: `മരിയാസ് നാച്വറൽസ് ${t.categories[category]} ശേഖരത്തിന്റെ ചിത്രം`,
     hi: `मरियास नैचुरल्स ${t.categories[category]} संग्रह की छवि`,
     ta: `மரியாஸ் நேச்சுரல்ஸ் ${t.categories[category]} தொகுப்பின் படம்`,
+    kn: `ಮರಿಯಾಸ್ ನ್ಯಾಚುರಲ್ಸ್ ${t.categories[category]} ಸಂಗ್ರಹದ ಚಿತ್ರ`,
   });
 }

@@ -27,15 +27,15 @@ def command(*args):
 
 def site_files():
     files = {'robots.txt': b'User-agent: *\nDisallow: /\n'}
-    for path in ['index.html', *[lang + '/index.html' for lang in ['en','ml','hi','ta']]]:
+    for path in ['index.html', *[lang + '/index.html' for lang in trust.LOCALES]]:
         files[path] = ('<html><head><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="' + trust.ORIGIN + '/' + path.removesuffix('index.html') + '"></head><body>Staging</body></html>').encode()
-    files['cinematic/test.mp4'] = b'original-mp4'
-    files['cinematic/original.jpg'] = b'original-photo'
+    files['cinematic/homepage-desktop.mp4'] = b'original-mp4'
+    files['brand/og-default.jpg'] = b'original-photo'
     return files
 
 
 def policy_for(files):
-    return {'public_files': {n: {'sha256': trust.digest(d), 'bytes': len(d)} for n,d in files.items() if n.startswith('cinematic/')}, 'original_media': [{'dimensions':[1280,720], 'provenance':'owner-upload', 'sha256':trust.digest(b'original-mp4')}]}
+    return {'public_files': {n: {'sha256': trust.digest(d), 'bytes': len(d)} for n,d in files.items() if n.startswith('cinematic/') or n.startswith('brand/')}, 'original_media': [{'path':'/cinematic/homepage-desktop.mp4', 'sha256':trust.digest(b'original-mp4'), 'source':'owner-original', 'masterSha256':None}]}
 
 
 class ArtifactTests(unittest.TestCase):
@@ -53,13 +53,13 @@ class ArtifactTests(unittest.TestCase):
         self.assertEqual(set(artifact.validate(self.m,self.archive,self.policy,SHA,RUN)),set(self.files)|{'staging-revision.json'})
 
     def test_tampered_video_and_photo_rejected_even_with_new_manifest_hashes(self):
-        for name in ['cinematic/test.mp4','cinematic/original.jpg']:
+        for name in ['cinematic/homepage-desktop.mp4','brand/og-default.jpg']:
             p=self.folder/name;original=p.read_bytes();p.write_bytes(b'changed')
             with self.assertRaisesRegex(ValueError,'Pinned public/media'):artifact.payload(self.folder,SHA,RUN,self.policy)
             p.write_bytes(original)
 
     def test_missing_media_rejected(self):
-        (self.folder/'cinematic/test.mp4').unlink()
+        (self.folder/'cinematic/homepage-desktop.mp4').unlink()
         with self.assertRaisesRegex(ValueError,'Missing original'):artifact.payload(self.folder,SHA,RUN,self.policy)
 
     def test_source_branch_provenance_and_release_confusion(self):
@@ -68,7 +68,9 @@ class ArtifactTests(unittest.TestCase):
             with self.assertRaises(ValueError):artifact.validate(m,self.archive,self.policy,SHA,RUN)
 
     def test_noindex_and_commerce(self):
-        for change in [lambda s:s.replace(b'noindex, nofollow',b'index, follow'),lambda s:s.replace(b'</body>',b'<a href="https://mariyasnaturals.com/checkout">Buy</a></body>')]:
+        # An outbound link to the official storefront is intended; a checkout
+        # form or an unofficial destination is not.
+        for change in [lambda s:s.replace(b'noindex, nofollow',b'index, follow'),lambda s:s.replace(b'</body>',b'<form action="https://www.mariyasnaturals.com/checkout/"></form></body>'),lambda s:s.replace(b'</body>',b'<a href="https://example.com/buy">Buy</a></body>')]:
             p=self.folder/'en/index.html';p.write_bytes(change(self.files['en/index.html']))
             with self.assertRaises(ValueError):artifact.payload(self.folder,SHA,RUN,self.policy)
 

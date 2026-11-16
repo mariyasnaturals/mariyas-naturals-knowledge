@@ -1,0 +1,150 @@
+---
+import ArrowIcon from './ArrowIcon.astro';
+import brand from '../data/brand-assets.json';
+import type { Dictionary } from '../i18n';
+interface Props {
+  t: Dictionary;
+}
+const { t } = Astro.props;
+const { desktop, mobile } = brand.hero;
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-film">
+    <picture>
+      <source media="(max-width: 759px)" srcset={mobile.poster} />
+      <img
+        src={desktop.poster}
+        width="1280"
+        height="720"
+        alt={t.cinematic.filmStill}
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <video
+      muted
+      playsinline
+      loop
+      preload="metadata"
+      poster={desktop.poster}
+      aria-label={t.cinematic.film}
+      data-hero-video
+      data-desktop={desktop.src}
+      data-mobile={mobile.src}
+      data-poster-desktop={desktop.poster}
+      data-poster-mobile={mobile.poster}
+      data-paused-label={t.cinematic.play}
+      data-playing-label={t.cinematic.pause}
+    ></video>
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <p class="eyebrow">{t.cinematic.heroKicker}</p>
+    <h1 id="hero-title">{t.hero}</h1>
+    <p class="hero-lede">{t.intro}</p>
+    <div class="hero-actions">
+      <a class="button" href="#showcase">
+        {t.explore}
+        <span aria-hidden="true">
+          <ArrowIcon />
+        </span>
+      </a>
+      <a class="text-link" href="#about">
+        {t.discover}
+        <span aria-hidden="true">
+          <ArrowIcon direction="down" />
+        </span>
+      </a>
+    </div>
+  </div>
+  <button class="hero-video-control" type="button" data-hero-toggle hidden>
+    <span aria-hidden="true" data-hero-icon>
+      ❚❚
+    </span>
+    <span data-hero-label>{t.cinematic.pause}</span>
+  </button>
+</section>
+
+<script>
+  /**
+   * One <video> that swaps source on breakpoint, starts muted and inline, keeps a
+   * real poster frame underneath, and degrades to that poster whenever autoplay is
+   * refused, the user asks for reduced motion, Save-Data is set, or the request
+   * fails. The same element also serves the visible play/pause control.
+   */
+  const setup = (video: HTMLVideoElement) => {
+    const toggle =
+      document.querySelector<HTMLButtonElement>('[data-hero-toggle]');
+    const label = toggle?.querySelector<HTMLElement>('[data-hero-label]');
+    const icon = toggle?.querySelector<HTMLElement>('[data-hero-icon]');
+    const mobileQuery = matchMedia('(max-width: 759px)');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean } }
+    ).connection;
+    let current = '';
+
+    const paint = () => {
+      if (!toggle) return;
+      const playing = !video.paused;
+      if (label)
+        label.textContent = playing
+          ? video.dataset.playingLabel!
+          : video.dataset.pausedLabel!;
+      if (icon) icon.textContent = playing ? '❚❚' : '▶';
+      toggle.setAttribute(
+        'aria-label',
+        playing ? video.dataset.playingLabel! : video.dataset.pausedLabel!,
+      );
+      toggle.dataset.playing = String(playing);
+    };
+
+    const source = () =>
+      mobileQuery.matches ? video.dataset.mobile! : video.dataset.desktop!;
+
+    const load = () => {
+      const next = source();
+      if (next === current) return;
+      current = next;
+      video.src = next;
+      video.load();
+      maybeAutoplay();
+    };
+
+    const maybeAutoplay = () => {
+      // A visible control only exists once a play is actually possible.
+      if (toggle) toggle.hidden = false;
+      if (reduced.matches || connection?.saveData) {
+        video.pause();
+        paint();
+        return;
+      }
+      video.play().catch(() => paint());
+    };
+
+    video.addEventListener('play', paint);
+    video.addEventListener('pause', paint);
+    video.addEventListener('error', () => {
+      // Keep the poster; never leave a blank hero.
+      video.pause();
+      paint();
+    });
+    toggle?.addEventListener('click', () => {
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
+    });
+    mobileQuery.addEventListener('change', load);
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) video.pause();
+      else video.play().catch(() => {});
+    });
+    load();
+    paint();
+  };
+
+  for (const node of document.querySelectorAll<HTMLVideoElement>(
+    'video[data-hero-video]',
+  ))
+    setup(node);
+</script>

@@ -54,5 +54,19 @@
     "path": "/fonts/noto-serif-tamil-tamil-wght-normal.woff2",
     "bytes": 52720,
     "license": "/fonts/licenses/noto-serif-tamil.txt"
+  },
+  {
+    "name": "noto-sans-kannada",
+    "subset": "kannada",
+    "path": "/fonts/noto-sans-kannada-kannada-wght-normal.woff2",
+    "bytes": 90796,
+    "license": "/fonts/licenses/noto-sans-kannada.txt"
+  },
+  {
+    "name": "noto-serif-kannada",
+    "subset": "kannada",
+    "path": "/fonts/noto-serif-kannada-kannada-wght-normal.woff2",
+    "bytes": 121744,
+    "license": "/fonts/licenses/noto-serif-kannada.txt"
   }
 ]
