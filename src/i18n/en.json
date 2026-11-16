@@ -68,7 +68,7 @@
   "storeText": "Purchases take place on our separate official e-commerce website.",
   "store": "Visit the Official Store",
   "footer": "Botanicals. Heritage. Thoughtful care.",
-  "preview": "Development preview · content and translations require editorial approval.",
+  "preview": "Preview build for owner review. Purchases are completed on mariyasnaturals.com.",
   "rights": "Mariyas Naturals",
   "root": "Choose your language",
   "back": "English homepage",
@@ -88,7 +88,7 @@
   "nextChapter": "The next chapter",
   "exploreIngredients": "Explore care notes",
   "viewDetails": "View product details",
-  "commercePending": "Purchasing is currently unavailable",
+  "commercePending": "Purchases are completed on our official store.",
   "storyIntro": "A quiet journey through the collection.",
   "sourceVerified": "Current store source checked",
   "sizesLabel": "Listed sizes",
@@ -168,5 +168,7 @@
   "aboutQ2": "Where do I buy?",
   "aboutA2": "All purchases are completed on the official store at mariyasnaturals.com. This website is a product discovery site and has no cart or checkout.",
   "aboutQ3": "Which formats are available?",
-  "aboutA3": "Hair oil is listed in 200 ml, 500 ml and 1 litre packs. Standard shipping and payment terms come from the store at checkout."
+  "aboutA3": "Hair oil is listed in 200 ml, 500 ml and 1 litre packs. Standard shipping and payment terms come from the store at checkout.",
+  "aboutTitle": "The Mariyas ritual",
+  "aboutLede": "Herbal hair care made in Kerala, in the formats listed in the current catalogue."
 }

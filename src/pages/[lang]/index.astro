@@ -29,8 +29,8 @@ const portrait = featuredProduct.images.main!;
       <div class="shell about-grid">
         <div>
           <p class="eyebrow-gold">{t.heritageLabel}</p>
-          <h2 id="about-title">{t.storeTitle}</h2>
-          <p class="section-note">{t.storeText}</p>
+          <h2 id="about-title">{t.aboutTitle}</h2>
+          <p class="section-note">{t.aboutLede}</p>
           <dl class="qa">
             <div>
               <dt>{t.aboutQ1}</dt>
@@ -61,30 +61,6 @@ const portrait = featuredProduct.images.main!;
             sizes="(min-width: 900px) 460px, 90vw"
           />
         </div>
-      </div>
-    </section>
-
-    <section
-      id="collections"
-      class="section"
-      aria-labelledby="collections-title"
-    >
-      <div class="shell">
-        <p class="eyebrow-gold">{t.campaignLabel}</p>
-        <h2 id="collections-title">{t.catalogueTitle}</h2>
-        <p class="section-note">{t.catalogueText}</p>
-        <ul class="browse-list">
-          <li>
-            <a href={storeLinks.hairCareCategory} rel="noopener">
-              {t.categories['hair-care']}
-            </a>
-          </li>
-          <li>
-            <a href={storeLinks.shop} rel="noopener">
-              {t.allProducts}
-            </a>
-          </li>
-        </ul>
       </div>
     </section>
   </main>

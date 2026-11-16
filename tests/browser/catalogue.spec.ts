@@ -91,9 +91,18 @@ for (const lang of locales) {
       expect(await axe(page)).toEqual([]);
 
       await page.goto(`/${lang}/products/${detailSlug}/`);
+      // The official product name stays verbatim, so it is explicitly English
+      // and renders in the Latin display face on every locale.
+      const heading = page.locator('h1');
+      await expect(heading).toHaveAttribute('lang', 'en');
+      expect(
+        await heading.evaluate((el) => getComputedStyle(el).fontFamily),
+      ).toContain('Cormorant Garamond Variable');
+      // The localized page furniture must still use the locale display face.
       expect(
         await page
-          .locator('h1')
+          .locator('.product-facts h2')
+          .first()
           .evaluate((el) => getComputedStyle(el).fontFamily),
       ).toContain(fonts[lang][1]);
       const original = page.locator(

@@ -136,34 +136,114 @@
 }
 
 /* The photo column is only safe while the text column is genuinely beside it. */
+/* Mobile composition: the photograph is a real grid row above the copy, so the
+ * model's face can never sit behind the text and the band is never counted
+ * twice. The copy row shrinks to fit one screen instead of overflowing. */
 @media (max-width: 899px) {
   .landing {
-    grid-template-rows: 1fr auto;
+    --photo-band: clamp(180px, 26svh, 300px);
+    grid-template-rows: var(--photo-band) minmax(0, 1fr);
+    min-height: 100svh;
   }
+
+  .landing > picture {
+    grid-area: 1 / 1;
+    position: relative;
+    display: block;
+    overflow: clip;
+  }
+
   .landing-photo {
-    object-position: 66% 30%;
-  }
-  .landing-shade {
-    background:
-      linear-gradient(180deg, #022d1e2e 0%, #022d1eb8 46%, #022d1eec 72%),
-      linear-gradient(90deg, #022d1ee0 0%, #022d1e33 60%, transparent 100%);
-  }
-  .landing-main {
-    align-content: end;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    /* Keep the model's face clear of the copy on a phone. */
-    padding-top: 46svh;
+    height: 100%;
+    object-position: 64% 22%;
   }
+
+  .landing-shade {
+    grid-area: 1 / 1;
+    position: relative;
+    background: linear-gradient(180deg, #022d1e00 62%, #022d1e66 100%);
+  }
+
+  .landing-main {
+    grid-area: 2 / 1;
+    align-content: center;
+    width: 100%;
+    gap: 0.55rem;
+    padding: clamp(0.8rem, 2.4svh, 1.6rem) clamp(1rem, 4.4vw, 1.75rem)
+      calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .landing-main .eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+  }
+
+  .landing-main h1 {
+    font-size: clamp(1.55rem, 5.4vw, 2.1rem);
+    line-height: 1.1;
+  }
+
+  .landing-lede {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    max-width: 40ch;
+  }
+
   .landing-languages {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
   }
+
   .landing-languages li:last-child {
     grid-column: 1 / -1;
   }
+
   .landing-languages a {
     min-width: 0;
+    min-height: 40px;
+    padding: 0.22rem 0.6rem;
+  }
+
+  .landing-languages .language-name {
+    font-size: 0.9rem;
+    line-height: 1.15;
+  }
+
+  .landing-languages .language-hint {
+    font-size: 0.55rem;
+    line-height: 1.15;
+  }
+
+  .landing-footnote {
+    margin: 0.1rem 0 0;
+    font-size: 0.66rem;
+    line-height: 1.3;
+  }
+}
+
+/* Short phones trade photograph height for copy rather than scrolling. */
+@media (max-width: 899px) and (max-height: 760px) {
+  .landing {
+    --photo-band: clamp(140px, 21svh, 200px);
+  }
+
+  .landing-main h1 {
+    font-size: clamp(1.4rem, 5vw, 1.75rem);
+  }
+
+  .landing-lede,
+  .landing-footnote {
+    font-size: 0.78rem;
+  }
+
+  .landing-languages a {
+    min-height: 36px;
   }
 }
 
@@ -519,9 +599,14 @@
     --chrome-height: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
+  /* Reserve the bar so it never covers the last line of content. The language
+   * landing has no chrome, so it opts out through its own class. */
   body {
-    /* Reserve the bar so it never covers the last line of content. */
     padding-bottom: var(--chrome-height);
+  }
+
+  body:has(.landing) {
+    padding-bottom: 0;
   }
 
   .mobile-chrome {
@@ -767,6 +852,19 @@
 .store-cta {
   background: var(--color-forest);
   color: var(--color-cream);
+}
+
+/* On the dark panel the light-surface text colours would drop below AA. */
+.store-cta .eyebrow-gold {
+  color: var(--color-gold);
+}
+
+.store-cta h2 {
+  color: var(--color-cream);
+}
+
+.store-cta .section-note {
+  color: #e8e0cd;
 }
 
 .store-cta .button {

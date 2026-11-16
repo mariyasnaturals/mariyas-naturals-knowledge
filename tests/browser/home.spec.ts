@@ -26,7 +26,9 @@ for (const lang of locales) {
 
     // The mobile chrome replaces the old bottom navigation and offer banner.
     const chrome = page.locator('[data-mobile-chrome]');
-    await expect(chrome).toBeVisible();
+    await expect(chrome).toBeAttached();
+    // The wrapper is a zero-height container; the fixed bar is the visible bar.
+    await expect(chrome.locator('[data-mobile-nav]')).toBeVisible();
     await expect(chrome.locator('[data-mobile-nav] > a')).toHaveCount(5);
     await expect(chrome.locator('[data-offer-tile]')).toBeVisible();
     await expect(page.locator('[data-offer-b]')).toHaveText('SAVE UP TO 20%');
@@ -68,11 +70,19 @@ test('language chooser offers all five languages with a static photograph', asyn
   await page.screenshot({ path: 'test-results/landing-desktop.png' });
 });
 
-for (const width of [320, 360, 375, 390, 412, 430]) {
-  test(`mobile ${width}px: no horizontal scroll, safe chrome and visible offer`, async ({
+for (const [width, height] of [
+  [320, 640],
+  [320, 740],
+  [360, 640],
+  [375, 667],
+  [390, 844],
+  [412, 915],
+  [430, 932],
+]) {
+  test(`mobile ${width}x${height}: no horizontal scroll, safe chrome and visible offer`, async ({
     page,
   }) => {
-    await page.setViewportSize({ width, height: 800 });
+    await page.setViewportSize({ width, height });
     await page.goto('/en/');
     expect(
       await page.evaluate(
@@ -83,13 +93,48 @@ for (const width of [320, 360, 375, 390, 412, 430]) {
     await expect(tile).toBeVisible();
     const box = await tile.boundingBox();
     expect(box!.height).toBeGreaterThanOrEqual(40);
-    expect(box!.width).toBeGreaterThan(80);
+    // The tile keeps its full share of the bar at every width down to 320px.
+    expect(box!.width / width).toBeGreaterThan(0.17);
     // The floating shop button must not overlap the offer tile.
     const fab = await page.locator('.shop-fab').boundingBox();
     expect(fab!.y + fab!.height).toBeLessThanOrEqual(box!.y + 1);
     await page.screenshot({ path: `test-results/mobile-${width}.png` });
   });
 }
+
+test('the language landing fits one screen with the face above the text', async ({
+  page,
+}) => {
+  for (const [width, height] of [
+    [320, 640],
+    [360, 740],
+    [375, 667],
+    [390, 844],
+    [412, 915],
+    [430, 932],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    const layout = await page.evaluate(() => {
+      const photo = document
+        .querySelector('.landing > picture')!
+        .getBoundingClientRect();
+      const heading = document
+        .querySelector('.landing-main h1')!
+        .getBoundingClientRect();
+      return {
+        scrollHeight: document.documentElement.scrollHeight,
+        hScroll: document.documentElement.scrollWidth > innerWidth,
+        photoBottom: photo.bottom,
+        textTop: heading.top,
+      };
+    });
+    // The photograph is a discrete band, so no face pixel is ever behind copy.
+    expect(layout.textTop, `${width}px`).toBeGreaterThan(layout.photoBottom);
+    expect(layout.hScroll, `${width}px`).toBe(false);
+    expect(layout.scrollHeight, `${width}px`).toBeLessThanOrEqual(height);
+  }
+});
 
 test('desktop, keyboard skip link and reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -183,7 +228,10 @@ for (const width of [360, 768, 1440]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/en/');
-    await page.locator('.product-card a.button').first().click();
+    // The local catalogue holds the detail pages; showcase cards link out to
+    // the official store instead, which is a separate assertion below.
+    await page.goto('/en/products/');
+    await page.locator('.catalogue-card a').first().click();
     await expect(page).toHaveURL(/\/en\/products\/[a-z0-9-]+\/$/);
     const productUrl = page.url();
     await page.locator('header .language-menu summary').click();

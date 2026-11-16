@@ -81,7 +81,7 @@ const descriptions: Record<string, Record<Locale, string>> = {
   </div>
 </section>
 
-<section id="browse" class="section" aria-labelledby="browse-title">
+<section id="collections" class="section" aria-labelledby="browse-title">
   <div class="shell">
     <p class="eyebrow-gold">{t.knowledgeLabel}</p>
     <h2 id="browse-title">{t.knowledgeTitle}</h2>
@@ -104,14 +104,5 @@ const descriptions: Record<string, Record<Locale, string>> = {
         </div>
       ))}
     </div>
-
-    <p class="browse-more">
-      <a class="button" href={storeLinks.shop} rel="noopener">
-        {t.allProducts}
-        <span aria-hidden="true">
-          <ArrowIcon />
-        </span>
-      </a>
-    </p>
   </div>
 </section>

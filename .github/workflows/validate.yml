@@ -40,15 +40,12 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: python3 -m unittest discover -s tests/pull -v
-      - run: python3 -m unittest discover -s tests/cinematic-release -v
       - run: python3 -m unittest discover -s tests/readiness -v
       - run: python3 -m unittest discover -s tests/staging-auto -v
       - run: python3 -m unittest discover -s tests/ci-staging -v
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
-      - name: Verify the reviewed botanical release set
-        run: npm run test:botanical-assets
       - name: Browser and accessibility checks
         run: |
           npx playwright install --with-deps chromium

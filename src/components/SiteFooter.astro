@@ -1,5 +1,4 @@
 ---
-import ArrowIcon from './ArrowIcon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import type { Locale, Dictionary } from '../i18n';
 interface Props {
@@ -10,20 +9,6 @@ const { lang, t } = Astro.props;
 const cinematicHomepage = Astro.url.pathname === `/${lang}/`;
 ---
 
-<section class="store-section section" aria-label={t.storeShort}>
-  <div class="wrap">
-    <p class="eyebrow">{t.nextChapter}</p>
-    <h2>{t.storeTitle}</h2>
-    <p>{t.storeText}</p>
-    <p class="commerce-status">
-      <span class="status-diamond" aria-hidden="true"></span>{' '}
-      {t.commercePending}
-    </p>
-    <a class="button button-gold" href={`/${lang}/products/`}>
-      {t.catalogue} <ArrowIcon />
-    </a>
-  </div>
-</section>
 <footer class="site-footer wrap">
   <div>
     <a class="footer-brand" href={`/${lang}/`} lang="en">

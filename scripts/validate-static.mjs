@@ -177,6 +177,39 @@ assert.ok(
   readdirSync(new URL('_astro/', root)).length > 0,
   'Astro assets are emitted',
 );
+// The language landing keeps a static approved photograph: no film, no animation.
+{
+  const $ = load(read('index.html'));
+  const photo = $('img.landing-photo');
+  assert.equal(photo.length, 1, 'The landing keeps the approved photograph');
+  assert.ok(
+    photo.attr('alt')?.length > 20,
+    'The photograph carries real alt text',
+  );
+  assert.ok(
+    photo.attr('src')?.startsWith('/hero/'),
+    'The landing photograph is a local brand derivative',
+  );
+  assert.equal($('video').length, 0, 'The landing has no video');
+  assert.equal($('.landing-languages a').length, locales.length);
+  for (const lang of locales)
+    assert.ok(
+      $(`.landing-languages a[hreflang="${lang}"]`).length === 1,
+      `Landing offers ${lang}`,
+    );
+  assert.equal(
+    $('meta[name="robots"]').attr('content'),
+    expectedRobots,
+    'The chooser is noindex while .cloud is a preview',
+  );
+  assert.ok(
+    $('link[rel="icon"]').length + $('link[rel="apple-touch-icon"]').length >=
+      3,
+    'Official icons are declared',
+  );
+  assert.ok($('link[rel="manifest"]').length === 1);
+}
+console.log('PASS language landing: static photograph, five languages, icons');
 console.log('PASS sitemap, robots and bundled assets');
 
 /** Validate every generated HTML page, including route-local alternates. */
