@@ -165,11 +165,16 @@ const notice = [
 ].join('\n');
 writeFileSync(join(stage, 'PREVIEW_NOTICE.txt'), notice);
 
+/**
+ * In normal flow at the very top: it is impossible to miss on load, it scrolls
+ * away with the page, and it can never sit on top of the mobile bottom bar, the
+ * offer tile or the floating shop pill that the owner is here to review.
+ */
 const banner =
-  `<div role="note" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483647;` +
-  `padding:.45rem .75rem;background:#3a2410;color:#f0e2c8;` +
+  `<div role="note" style="position:relative;z-index:1;` +
+  `padding:.4rem .75rem;background:#3a2410;color:#f0e2c8;` +
   `font:600 .72rem/1.35 system-ui,sans-serif;letter-spacing:.02em;` +
-  `text-align:center;pointer-events:none">` +
+  `text-align:center">` +
   `UNAPPROVED PREVIEW · commit ${short} · not for release</div>`;
 
 let banners = 0;
@@ -177,8 +182,9 @@ for (const file of walk(stage)) {
   if (!file.endsWith('.html')) continue;
   const html = readFileSync(file, 'utf8');
   if (html.includes('UNAPPROVED PREVIEW')) continue;
-  assert.ok(html.includes('</body>'), `No body close in ${file}`);
-  writeFileSync(file, html.replace('</body>', `${banner}</body>`));
+  const opened = html.match(/<body[^>]*>/);
+  assert.ok(opened, `No body open in ${file}`);
+  writeFileSync(file, html.replace(opened[0], `${opened[0]}${banner}`));
   banners += 1;
 }
 
