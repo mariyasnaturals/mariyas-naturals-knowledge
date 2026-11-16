@@ -27,7 +27,7 @@ const { t, lang } = Astro.props;
 const copy = {
   label: dict(careExplorer.label, lang),
   title: dict(careExplorer.title, lang),
-  note: dict(careExplorer.note, lang),
+  noteTemplate: dict(careExplorer.note, lang),
   count: dict(careExplorer.count, lang),
 };
 
@@ -68,6 +68,9 @@ const tiles = order
     icon: icons[key] ?? icons['hair-care'],
     count: products.filter((product) => product.category === key).length,
   }));
+
+/** The sentence counts the tiles on screen, never a remembered number. */
+const note = copy.noteTemplate.replace('{count}', String(tiles.length));
 ---
 
 <section
@@ -80,7 +83,9 @@ const tiles = order
       <p class="lg-eyebrow">{copy.label}</p>
       <h2 id="care-title">{copy.title}</h2>
       <span class="lg-rule" aria-hidden="true"></span>
-      <p>{copy.note}</p>
+      <p data-care-note data-count={tiles.length}>
+        {note}
+      </p>
     </div>
 
     <ul class="lg-care" role="list">

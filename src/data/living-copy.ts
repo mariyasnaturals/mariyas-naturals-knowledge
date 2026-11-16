@@ -236,13 +236,13 @@ export const careExplorer = {
     kn: 'ಆರೈಕೆ ಪ್ರಕಾರ ನೋಡಿ',
   } as Localized,
   note: {
-    // The count matches the tiles actually rendered (six care groups), so the
-    // sentence can never disagree with the grid.
-    en: 'Six ways into the collection. Every product still has its own page in the full catalogue.',
-    ml: 'ശേഖരത്തിലേക്കുള്ള ആറ് വഴികൾ. ഓരോ ഉൽപ്പന്നത്തിനും കാറ്റലോഗിൽ സ്വന്തം പേജുണ്ട്.',
-    hi: 'संग्रह के छह द्वार। हर उत्पाद का पूरे कैटलॉग में अपना पेज है।',
-    ta: 'தொகுப்பிற்குள் ஆறு வழிகள். ஒவ்வொரு தயாரிப்புக்கும் முழு பட்டியலில் தனிப் பக்கம் உண்டு.',
-    kn: 'ಸಂಗ್ರಹಕ್ಕೆ ಆರು ದಾರಿಗಳು. ಪ್ರತಿ ಉತ್ಪನ್ನಕ್ಕೂ ಪೂರ್ಣ ಪಟ್ಟಿಯಲ್ಲಿ ತನ್ನದೇ ಪುಟವಿದೆ.',
+    // `{count}` is filled with the number of tiles actually rendered, so the
+    // sentence can never disagree with the grid when a collection empties.
+    en: '{count} ways into the collection. Every product still has its own page in the full catalogue.',
+    ml: 'ശേഖരത്തിലേക്കുള്ള {count} വഴികൾ. ഓരോ ഉൽപ്പന്നത്തിനും കാറ്റലോഗിൽ സ്വന്തം പേജുണ്ട്.',
+    hi: 'संग्रह के {count} द्वार। हर उत्पाद का पूरे कैटलॉग में अपना पेज है।',
+    ta: 'தொகுப்பிற்குள் {count} வழிகள். ஒவ்வொரு தயாரிப்புக்கும் முழு பட்டியலில் தனிப் பக்கம் உண்டு.',
+    kn: 'ಸಂಗ್ರಹಕ್ಕೆ {count} ದಾರಿಗಳು. ಪ್ರತಿ ಉತ್ಪನ್ನಕ್ಕೂ ಪೂರ್ಣ ಪಟ್ಟಿಯಲ್ಲಿ ತನ್ನದೇ ಪುಟವಿದೆ.',
   } as Localized,
   count: {
     en: 'products in the current catalogue',

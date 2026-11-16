@@ -548,6 +548,40 @@ console.log(
     `${approvedHiddenCount} hidden listings absent from routes, sitemap, links and bundles`,
 );
 
+/* ------------------------------------------------ explore-by-care tile count -- */
+
+/**
+ * "N ways into the collection" must count the tiles actually rendered. When the
+ * combo collection lost its last visible product the old copy still said "six",
+ * so the sentence is now generated from the grid and checked here.
+ */
+for (const lang of locales) {
+  const $ = load(read(`${lang}/index.html`));
+  const care = $('#care');
+  assert.equal(care.length, 1, `${lang}: the care section exists`);
+  const tiles = new Set(
+    care
+      .find('a[href*="/collections/"]')
+      .toArray()
+      .map((node) => $(node).attr('href')),
+  );
+  const note = care.find('[data-care-note]');
+  assert.equal(
+    Number(note.attr('data-count')),
+    tiles.size,
+    `${lang}: the care sentence counts the tiles on screen`,
+  );
+  assert.ok(
+    note.text().includes(String(tiles.size)),
+    `${lang}: the care sentence states that count`,
+  );
+  assert.equal(
+    tiles.size,
+    5,
+    `${lang}: five non-empty collections are offered`,
+  );
+}
+
 /* ------------------------------------------ published voices and social links -- */
 
 /**

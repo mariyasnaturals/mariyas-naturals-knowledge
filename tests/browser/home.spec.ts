@@ -390,6 +390,25 @@ const INSTAGRAM = 'https://www.instagram.com/mariyas_herbal_hair_care_oil/';
 const FACEBOOK = 'https://www.facebook.com/mariayasnaturals/';
 const MAPS = 'https://maps.google.com/?cid=12669174919246619705';
 
+test('the care section counts the collections it actually shows', async ({
+  page,
+}) => {
+  for (const lang of locales) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/${lang}/`);
+    const care = page.locator('#care');
+    const tiles = care.locator('a[href*="/collections/"]');
+    await expect(tiles).toHaveCount(5);
+    // "5 ways into the collection" — the sentence follows the grid, and the
+    // combo collection that emptied out is no longer claimed.
+    await expect(care.locator('[data-care-note]')).toHaveAttribute(
+      'data-count',
+      '5',
+    );
+    await expect(care.locator('[data-care-note]')).toContainText('5');
+  }
+});
+
 test('the reviews section shows the verified aggregate and the three approved reviews', async ({
   page,
 }) => {
