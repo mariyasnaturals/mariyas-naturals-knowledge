@@ -2,9 +2,11 @@
 /**
  * Mobile bottom chrome (Phase 11).
  *
- * Four destinations — Home, Collections, My Ritual, Our Story — plus the gold
+ * Three destinations — Home, Collections, My Ritual — plus the gold
  * BUY NOW / SAVE UP TO 20% tile. "My Ritual" replaces the old "Discover" slot and
- * points at the Ritual Finder, which is the mobile entry point for the tool.
+ * points at the Ritual Finder, which is the mobile entry point for the tool; the
+ * old "Our Story" tab was removed so the three remaining labels and the offer tile
+ * each keep a usable share of a 320px bar.
  *
  * Every target is at least 44px, the bar reserves its own height in `body`
  * padding (see discovery.css / living-gallery.css) so it never covers content,
@@ -23,7 +25,6 @@ const t = dictionaries[lang];
 const nav = livingNav[lang];
 
 const onHome = Astro.url.pathname === `/${lang}/`;
-const anchor = (id: string) => (onHome ? `#${id}` : `/${lang}/#${id}`);
 
 const links = [
   {
@@ -45,12 +46,6 @@ const links = [
     href: `/${lang}/ritual/`,
     current: Astro.url.pathname.startsWith(`/${lang}/ritual`),
     icon: 'M12 3.5c2.6 2.4 4.6 4.9 4.6 7.6A4.6 4.6 0 0 1 12 15.7a4.6 4.6 0 0 1-4.6-4.6c0-2.7 2-5.2 4.6-7.6Zm0 12.2V21',
-  },
-  {
-    label: t.story,
-    href: anchor('story'),
-    current: false,
-    icon: 'M12 21c-4.4 0-7-2.6-7-6.4C5 9.6 12 3 12 3s7 6.6 7 11.6c0 3.8-2.6 6.4-7 6.4Z',
   },
 ];
 

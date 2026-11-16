@@ -15,7 +15,6 @@ export const storeLinks = Object.freeze({
   shop: `${STORE_ORIGIN}/shop/`,
   hairOil200: `${STORE_ORIGIN}/product/mariyas-herbal-hair-care-oil-200-ml/`,
   hairOil500: `${STORE_ORIGIN}/product/mariyas-herbal-hair-care-500-ml/`,
-  hairOil1l: `${STORE_ORIGIN}/product/mariyas-hair-oil-1-ltr/`,
   hairOilCombo: `${STORE_ORIGIN}/product/mariyas-herbal-hair-care-oil/`,
   hairCareCategory: `${STORE_ORIGIN}/product-category/hair-care/`,
 });
@@ -25,6 +24,10 @@ export const storeVerification = Object.freeze({
   verifiedOn: '2026-11-16',
   method: 'WooCommerce Store API v1, products endpoint, all 86 published items',
   productCount: 86,
+  publishedProductCount: 85,
+  excludedProductIds: [3010],
+  exclusion:
+    'Store #3010 (Mariyas Hair Oil – 1 ltr) is discontinued: priced at ₹0, no photograph, no longer sold. It is removed from every page, menu and size switcher.',
 });
 
 /**

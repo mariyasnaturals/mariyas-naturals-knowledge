@@ -632,9 +632,10 @@
     inset-inline: 0;
     bottom: 0;
     display: grid;
-    /* The offer tile gets a wider share so the discount line reads on two
-     * comfortable lines down to 320px instead of stacking four ways. */
-    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.45fr);
+    /* Three destinations plus the offer tile. The tile keeps a wider share so
+     * the discount line still reads on two comfortable lines at 320px, while
+     * each label keeps enough room to avoid a mid-word break. */
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.45fr);
     align-items: stretch;
     gap: 0.1rem;
     padding: 0.25rem 0.3rem calc(0.25rem + env(safe-area-inset-bottom, 0px));

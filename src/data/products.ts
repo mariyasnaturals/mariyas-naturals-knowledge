@@ -107,6 +107,7 @@ export const companionProduct = products.find(
 )!;
 export const featuredProducts = [featuredProduct, companionProduct];
 // Explicit current-store listings; these links are discovery, never purchasing.
+// The discontinued 1 litre pack (store #3010) is not an edition of the range.
 export const hairOilEditions = products
-  .filter((p) => [3008, 3009, 3010].includes(p.sources[0]?.id))
+  .filter((p) => [3008, 3009].includes(p.sources[0]?.id))
   .sort((a, b) => a.sources[0]!.id - b.sources[0]!.id);

@@ -64,13 +64,6 @@ export const showcaseItems: readonly ShowcaseItem[] = [
     ...withPhotos('mariyas-hair-oil-500-ml'),
   },
   {
-    id: 'hair-oil-1-ltr',
-    officialName: 'Mariyas Hair Oil – 1 ltr',
-    group: 'hairCare',
-    href: storeLinks.hairOil1l,
-    storeProductId: 3010,
-  },
-  {
     id: 'hair-oil-combo',
     officialName: 'Mariyas Herbal Hair Care Oil',
     group: 'hairCare',

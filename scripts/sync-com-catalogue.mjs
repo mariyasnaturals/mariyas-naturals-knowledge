@@ -100,7 +100,7 @@ for (const product of products) {
   const slug =
     previous && previous.slug
       ? previous.slug
-      : `${slugify(product.name)}-${sku || product.id}`;
+      : `${slugify(decodeEntities(product.name))}-${sku || product.id}`;
   identities.push({ sourceProductId: product.id, id, slug, sku });
 }
 if (new Set(identities.map((i) => i.slug)).size !== identities.length)
@@ -162,18 +162,32 @@ const entities = {
   '&mdash;': '—',
   '&hellip;': '…',
 };
+const named = (entity) => {
+  const key = entity.toLowerCase();
+  if (entities[key]) return entities[key];
+  const numeric = key.match(/^&#(x?)([0-9a-f]+);$/);
+  if (numeric) {
+    const code = Number.parseInt(numeric[2], numeric[1] ? 16 : 10);
+    return Number.isFinite(code) ? String.fromCodePoint(code) : ' ';
+  }
+  return null;
+};
+/** Decode the entities the store's own API publishes, without touching words. */
+const decodeEntities = (value) =>
+  String(value ?? '').replace(
+    /&[a-z#0-9]+;/gi,
+    (entity) => named(entity) ?? entity,
+  );
 const plainText = (html, limit) => {
   if (!html) return '';
-  const text = String(html)
-    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
-    .replace(/<\/(p|div|li|h[1-6]|tr)>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<li[^>]*>/gi, '• ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(
-      /&[a-z#0-9]+;/gi,
-      (entity) => entities[entity.toLowerCase()] ?? ' ',
-    )
+  const text = decodeEntities(
+    String(html)
+      .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+      .replace(/<\/(p|div|li|h[1-6]|tr)>/gi, '\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<li[^>]*>/gi, '• ')
+      .replace(/<[^>]+>/g, ' '),
+  )
     .replace(/[ \t\u00a0]+/g, ' ')
     .replace(/\n\s*\n+/g, '\n')
     .trim();
@@ -283,13 +297,13 @@ const catalogueProducts = products.map((product) => {
   return {
     productId: identity.id,
     slug: identity.slug,
-    displayName: product.name,
+    displayName: decodeEntities(product.name),
     category: categoryOf(product.name),
     sources: [
       {
         store: 'com',
         id: product.id,
-        name: product.name,
+        name: decodeEntities(product.name),
         sku: String(product.sku || ''),
         slug: product.slug,
         url: product.permalink,
@@ -299,7 +313,7 @@ const catalogueProducts = products.map((product) => {
         inStockAtVerification: Boolean(product.is_in_stock),
         categories: (product.categories || []).map((category) => ({
           id: category.id,
-          name: category.name,
+          name: decodeEntities(category.name),
           slug: category.slug,
         })),
         attributes: product.attributes || [],
@@ -336,7 +350,7 @@ const catalogueSource = {
   records: products.map((product) => ({
     store: 'com',
     id: product.id,
-    name: product.name,
+    name: decodeEntities(product.name),
     sku: String(product.sku || ''),
     slug: product.slug,
     url: product.permalink,
@@ -345,7 +359,7 @@ const catalogueSource = {
     inStockAtVerification: Boolean(product.is_in_stock),
     categories: (product.categories || []).map((category) => ({
       id: category.id,
-      name: category.name,
+      name: decodeEntities(category.name),
       slug: category.slug,
     })),
     attributes: product.attributes || [],
@@ -440,8 +454,10 @@ const careKnowledge = {
       categories: record.sources[0].categories.map((c) => c.name),
       attributes: record.sources[0].attributes
         .map((attribute) => ({
-          name: attribute.name,
-          terms: (attribute.terms || []).map((term) => term.name),
+          name: decodeEntities(attribute.name),
+          terms: (attribute.terms || []).map((term) =>
+            decodeEntities(term.name),
+          ),
         }))
         .filter((attribute) => attribute.terms.length),
       summary: plainText(product.short_description, 320),

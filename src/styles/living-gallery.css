@@ -1325,16 +1325,16 @@
 /* ----------------------------------------------------------- mobile bottom -- */
 
 @media (max-width: 859px) {
-  /* The bar is five equal cells: four destinations plus the buy tile. */
+  /* The bar is four cells: three destinations plus the buy tile. */
   .mobile-chrome-bar {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.35fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr);
     background: color-mix(in srgb, var(--lg-ivory) 94%, transparent);
     border-top: 1px solid var(--lg-beige);
   }
   .mobile-chrome-bar a.mobile-chrome-link {
     font-size: 0.56rem;
-    /* "My Ritual", "Collections" and the four Indic equivalents must all fit a
-     * quarter cell without splitting mid-word. */
+    /* "My Ritual", "Collections" and every Indic equivalent must all fit a
+     * third of the bar without splitting mid-word. */
     overflow-wrap: normal;
     hyphens: none;
     padding-inline: 0.1rem;
@@ -1355,7 +1355,7 @@
   }
   @media (max-width: 359px) {
     .mobile-chrome-bar {
-      grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.6fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr);
     }
     .mobile-chrome-bar a.mobile-chrome-link {
       font-size: 0.53rem;

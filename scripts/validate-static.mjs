@@ -132,11 +132,11 @@ for (const lang of locales) {
   assert.ok(mobile?.startsWith('/'), 'Mobile hero variant');
   assert.ok(has(mobile.slice(1)));
 
-  // Mobile chrome: one instance, four destinations, one offer tile.
+  // Mobile chrome: one instance, three destinations, one offer tile.
   const chrome = $('[data-mobile-chrome]');
   assert.equal(chrome.length, 1, `${lang} has one mobile chrome`);
   const nav = chrome.find('[data-mobile-nav]');
-  assert.equal(nav.find('a:not([data-offer-tile])').length, 4);
+  assert.equal(nav.find('a:not([data-offer-tile])').length, 3);
   const tile = nav.find('[data-offer-tile]');
   assert.equal(tile.length, 1, `${lang} offer tile`);
   assert.match(tile.attr('href'), /^https:\/\/www\.mariyasnaturals\.com\//);

@@ -78,7 +78,7 @@ const buyUrl = purchaseUrl(product);
       <p class="eyebrow">{t.categories[product.category]}</p>
       <h2>{t.detail}</h2>
       <p>{t.detailText}</p>
-      {[2865, 3008, 3009, 3010].includes(product.sources[0]!.id) && (
+      {[2865, 3008, 3009].includes(product.sources[0]!.id) && (
         <section class="product-variants" aria-label={t.sizesLabel}>
           <h2>{t.sizesLabel}</h2>
           <ul class="size-options">
@@ -89,11 +89,7 @@ const buyUrl = purchaseUrl(product);
                   lang="en"
                   aria-current={product.id === edition.id ? 'page' : undefined}
                 >
-                  {edition.sources[0]!.id === 3008
-                    ? '200 ml'
-                    : edition.sources[0]!.id === 3009
-                      ? '500 ml'
-                      : '1 ltr'}
+                  {edition.sources[0]!.id === 3008 ? '200 ml' : '500 ml'}
                 </a>
               </li>
             ))}

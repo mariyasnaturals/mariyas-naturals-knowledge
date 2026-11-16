@@ -29,7 +29,11 @@ for (const lang of locales) {
     await expect(chrome).toBeAttached();
     // The wrapper is a zero-height container; the fixed bar is the visible bar.
     await expect(chrome.locator('[data-mobile-nav]')).toBeVisible();
-    await expect(chrome.locator('[data-mobile-nav] > a')).toHaveCount(5);
+    // Three destinations plus the offer tile.
+    await expect(chrome.locator('[data-mobile-nav] > a')).toHaveCount(4);
+    await expect(
+      chrome.locator('[data-mobile-nav] > a:not([data-offer-tile])'),
+    ).toHaveCount(3);
     await expect(chrome.locator('[data-offer-tile]')).toBeVisible();
     await expect(page.locator('[data-offer-b]')).toHaveText('SAVE UP TO 20%');
     await expect(chrome.locator('.shop-fab')).toHaveAttribute(
