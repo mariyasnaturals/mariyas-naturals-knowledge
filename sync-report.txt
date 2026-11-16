@@ -1,0 +1,12 @@
+{
+  "productsPublished": 85,
+  "excluded": [
+    3010
+  ],
+  "productsWithImages": 59,
+  "productsWithoutImages": 26,
+  "attachments": 215,
+  "derivatives": 489,
+  "localMediaBytes": 26337590
+}
+exit=0
