@@ -1,6 +1,6 @@
 UNAPPROVED INTERACTIVE PREVIEW — NOT FOR RELEASE
 
-Source commit: 038f930b95ee5bd4b4d2cd579ff2003092c4c346
+Source commit: ab71ed93e1f0e8c66e84f9526325cc9eae034703
 
 Built by scripts/build-pages-preview.mjs from the verified static output.
 
