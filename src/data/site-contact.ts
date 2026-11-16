@@ -60,13 +60,43 @@ export const social = Object.freeze({
 /**
  * Google Business Profile / Maps.
  *
- * NOT VERIFIED. The owner has not supplied the exact listing URL and no search
- * result could be tied to this business with certainty, so the footer renders a
- * non-linked "to be confirmed" note rather than sending customers to the wrong
- * listing. Fill `href` only after the owner confirms the exact profile.
+ * VERIFIED 2026-11-16 by opening the listing directly and reading it. The owner
+ * supplied a share link (https://share.google/QQsEHUgqgWKfDj4AF) which resolves
+ * to this Maps place; `href` below is the canonical form of that place (Maps
+ * CID), so it keeps working after the share shortcode expires.
+ *
+ * What the listing itself says:
+ *   - name "Mariyas Naturals", category "Herb shop"
+ *   - 4.2 stars from 574 reviews
+ *   - "Avalookkunnu P.O, Mammood, Aryad South, Alappuzha, Keralam 688006"
+ *   - site mariyasnaturals.com, phone +91 90488 88395 (the ORDER line)
+ *   - "Identifies as women-owned"
+ *
+ * The rating and count are a dated reading, not a live value: Google revises
+ * them continuously, so `ratingReviewedOn` records when we last looked.
  */
-export const googleBusiness: { href?: string; verifiedOn?: string } =
-  Object.freeze({});
+export const googleBusiness = Object.freeze({
+  href: 'https://maps.google.com/?cid=12669174919246619705',
+  name: 'Mariyas Naturals',
+  category: 'Herb shop',
+  /** As displayed by Google on `ratingReviewedOn`. */
+  rating: 4.2,
+  reviewCount: 574,
+  ratingReviewedOn: '2026-11-16',
+  /**
+   * The listing's own address wording. Deliberately kept separate from
+   * `postalAddress`: it describes the same locality in a different format
+   * (Mammood / Aryad South vs Thalavady South S.O), so neither overwrites the
+   * other until the owner confirms which is the public walk-in address.
+   */
+  listingAddress:
+    'Avalookkunnu P.O, Mammood, Aryad South, Alappuzha, Keralam 688006',
+  /** The listing's phone line. Distinct from the customer WhatsApp number. */
+  orderLine: '+91 90488 88395',
+  verifiedOn: '2026-11-16',
+  evidence:
+    'Owner-supplied share link resolved to the Maps listing; name, category, rating, review count, address and phone read directly off that listing.',
+});
 
 /** Storefront entry points. Purchases always finish on the official store. */
 export const legalLinks = Object.freeze({

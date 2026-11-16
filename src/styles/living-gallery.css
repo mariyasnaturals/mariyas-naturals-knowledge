@@ -976,15 +976,108 @@
   color: var(--lg-gold);
 }
 
-.lg-voices__grid {
+/* ------------------------------------------------ aggregate rating block -- */
+
+.lg-rating {
   display: grid;
-  gap: clamp(0.75rem, 2vw, 1.25rem);
-  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 0.3rem;
+  margin: 0 auto clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.2rem, 3vw, 2rem);
+  max-width: 34rem;
+  border: 1px solid #d7b15d3d;
+  border-radius: var(--lg-radius-lg);
+  background: #063d2a66;
+  text-align: center;
 }
 
-@media (min-width: 720px) {
-  .lg-voices__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+.lg-rating__stars {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  letter-spacing: 0.18em;
+  line-height: 1;
+}
+
+.lg-rating__stars .is-full {
+  color: var(--lg-gold);
+}
+
+.lg-rating__stars .is-empty {
+  color: #d7b15d4d;
+}
+
+.lg-rating__line {
+  margin: 0.15rem 0 0;
+  font-family: var(--lg-display);
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  color: var(--lg-ivory);
+}
+
+.lg-rating__asof {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: #cfe0d3a8;
+}
+
+.lg-rating__cta {
+  margin-top: 0.7rem;
+}
+
+.lg-rating__cta svg {
+  flex: none;
+}
+
+/* ------------------------------------------------------ voice carousel -- */
+
+.lg-voices__rail {
+  padding-inline: 0;
+}
+
+/* Three cards on desktop, one-and-a-peek on mobile. */
+.lg-voices__rail > * {
+  width: min(84%, 22rem);
+}
+
+@media (min-width: 780px) {
+  .lg-voices__rail > * {
+    width: calc((100% - 2 * clamp(0.75rem, 2vw, 1.25rem)) / 3);
+  }
+}
+
+@media (min-width: 1040px) {
+  /* On the widest layout the three slots fit exactly. */
+  .lg-voices__rail {
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+}
+
+.lg-voices__rail .lg-voice {
+  height: 100%;
+}
+
+.lg-voice__quote {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.lg-voice__stars {
+  margin: 0;
+  color: var(--lg-gold);
+  letter-spacing: 0.14em;
+}
+
+.lg-voices__nav {
+  justify-content: center;
+  margin-top: 0.9rem;
+}
+
+/* With the three slots fitting on desktop the controls are redundant. */
+@media (min-width: 1040px) {
+  .lg-voices__nav {
+    display: none;
   }
 }
 
@@ -1393,4 +1486,255 @@ main > .section:last-child {
 :lang(ta) .lg-brand__sub,
 :lang(kn) .lg-brand__sub {
   letter-spacing: 0.42em;
+}
+
+/* ----------------------------------------------------- free-comb gift label -- */
+
+/*
+ * The 500 ml card's promotional label. The owner confirmed on 2026-11-16 that the
+ * 500 ml pack ships with a free oil-treated neem comb, so the label leads with
+ * FREE rather than the older "included" wording.
+ *
+ * Placement: pinned to the media quadrant of the card, inset from the edges and
+ * capped in width, so it never sits over the bottle, the comb, the product name
+ * or the buy button. On the narrow mobile card it moves to the top-right corner
+ * where the pack photography is empty.
+ *
+ * Motion is a single entrance plus a slow shimmer sweep; nothing flashes, and
+ * every animation is switched off under `prefers-reduced-motion`.
+ */
+.lg-gift {
+  position: absolute;
+  z-index: 2;
+  /* Top-right, but the pack photography in this crop puts the bottle cap at the
+   * top-left of the pack group, so this corner stays clear. */
+  top: clamp(0.55rem, 1.6vw, 0.8rem);
+  right: clamp(0.55rem, 1.6vw, 0.8rem);
+  display: grid;
+  justify-items: center;
+  gap: 0.05rem;
+  max-width: min(10rem, 42%);
+  padding: 0.5rem 0.7rem 0.55rem;
+  border: 1px solid #f3ddab;
+  border-radius: 0.85rem;
+  background: linear-gradient(
+    165deg,
+    #fdf3d4 0%,
+    #eac97c 42%,
+    #d7b15d 78%,
+    #c39a45 100%
+  );
+  box-shadow:
+    0 10px 24px #021b1366,
+    inset 0 1px 0 #fffdf7cc,
+    inset 0 -1px 0 #a97f2c66;
+  color: var(--lg-emerald-900);
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+  /* Sits flat until its card is on screen, then lifts in once. */
+  opacity: 0;
+  transform: translateY(-6px) scale(0.94);
+}
+
+/* Gift label is decorative chrome for the eyebrow, so the copy is not hidden:
+ * the note in the card body states the offer in a full sentence. */
+.lg-gift__free {
+  font-family: var(--lg-sans);
+  font-size: clamp(1rem, 2.6vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #5a3d0b;
+  text-shadow: 0 1px 0 #fff9ecb3;
+}
+
+.lg-gift__comb {
+  font-family: var(--lg-sans);
+  font-size: clamp(0.5rem, 1.15vw, 0.58rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4a3208;
+}
+
+/* A single slow band of light, not a strobe. */
+.lg-gift__shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    #fffdf7b3 47%,
+    #fffdf7e6 50%,
+    #fffdf7b3 53%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: lg-gift-sweep 5.5s ease-in-out 1.2s infinite;
+}
+
+@keyframes lg-gift-sweep {
+  0%,
+  62% {
+    transform: translateX(-120%);
+  }
+  82%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* Entrance: driven by an attribute the rail script sets with an
+ * IntersectionObserver, so it plays when the card is actually visible. */
+.lg-gift[data-gift-visible='true'] {
+  animation: lg-gift-in 0.68s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes lg-gift-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.94);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Without JavaScript the label is simply present. */
+.lg-gift:not([data-gift-visible]) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-gift,
+  .lg-gift[data-gift-visible='true'] {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lg-gift__shimmer {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Mobile: the media is a tall crop and the pack sits centre, so the label moves
+ * to the empty top-right corner and shrinks slightly. */
+@media (max-width: 699px) {
+  .lg-gift {
+    top: 0.55rem;
+    right: 0.55rem;
+    /* Wide enough that "OIL-TREATED NEEM COMB" wraps to two tidy lines rather
+     * than one squeezed line that spans the whole badge. */
+    max-width: 58%;
+    padding: 0.42rem 0.6rem 0.48rem;
+  }
+  .lg-gift__comb {
+    font-size: 0.52rem;
+    letter-spacing: 0.07em;
+    /* Two lines, balanced. */
+    text-wrap: balance;
+  }
+}
+
+/* Rail chrome shared by the voice carousel (the edition rail carries its own
+ * scoped copies of these, so they are duplicated here under a voices scope). */
+.lg-voices__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lg-voices__nav .lg-rail-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid #d7b15d59;
+  border-radius: 50%;
+  background: #063d2a99;
+  color: var(--lg-ivory);
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.lg-voices__nav .lg-rail-btn:hover {
+  background: #0c5a3f;
+  border-color: var(--lg-gold);
+}
+
+.lg-voices__nav .lg-rail-btn:focus-visible {
+  outline: 2px solid var(--lg-gold);
+  outline-offset: 3px;
+}
+
+.lg-voices__nav .lg-rail-btn[hidden] {
+  display: none;
+}
+
+.lg-voices__nav .lg-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/*
+ * The dot stays visually small but its tap target is 24x24, which is the WCAG
+ * 2.2 minimum. The visible circle is drawn with a radial gradient so the button
+ * box can be larger than the mark without changing the design.
+ */
+.lg-voices__nav .lg-dots button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #d7b15d66 0 4px,
+    transparent 4.5px
+  );
+  cursor: pointer;
+}
+
+.lg-voices__nav .lg-dots button[aria-current='true'] {
+  background: radial-gradient(
+    circle at center,
+    var(--lg-gold) 0 5px,
+    transparent 5.5px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-voices__nav .lg-rail-btn,
+  .lg-voices__nav .lg-dots button {
+    transition: none;
+  }
+}
+
+/* Ritual Finder result photo: the real approved product image, small and square
+ * so it never pushes the card's copy or buttons out of view. */
+.lf-result__photo {
+  display: block;
+  width: 100%;
+  max-width: 8.5rem;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: calc(var(--lg-radius) - 4px);
+  border: 1px solid var(--lg-beige);
 }

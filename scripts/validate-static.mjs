@@ -34,6 +34,8 @@ const approvedOutboundOrigins = new Set([
   'https://wa.me',
   'https://www.instagram.com',
   'https://www.facebook.com',
+  // The verified Google Business Profile (read 2026-11-16); see site-contact.ts.
+  'https://maps.google.com',
 ]);
 
 const isApprovedOutbound = (url) =>

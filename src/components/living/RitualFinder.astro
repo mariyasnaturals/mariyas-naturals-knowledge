@@ -130,6 +130,21 @@ const copy = {
     type QuestionKey,
     type Recommendation,
   } from '../../data/ritual-engine';
+  import mediaManifest from '../../data/media-manifest.json';
+
+  /**
+   * Map of approved local derivative per media id. Result cards show the real
+   * product photo when we hold one, and nothing at all when we do not — never a
+   * stand-in image.
+   */
+  const localImage = new Map<string, string>();
+  for (const item of (
+    mediaManifest as {
+      media?: { id: string; localAssetPath?: string }[];
+    }
+  ).media ?? []) {
+    if (item.localAssetPath) localImage.set(item.id, item.localAssetPath);
+  }
 
   const root = document.querySelector<HTMLElement>('[data-ritual-finder]');
   if (root) {
@@ -468,12 +483,20 @@ const copy = {
       const reason = reasonCopy[reasonKey] ?? reasonCopy.default;
       const placement =
         placementCopy[product.id] ?? placementCopy['mn-in-3008'];
+      const photo = product.imageId
+        ? localImage.get(product.imageId)
+        : undefined;
       return `
         <li class="lf-result">
           <div class="lf-result__head">
             <span class="lf-result__step">STEP ${String(position + 1).padStart(2, '0')}</span>
             <h3>${product.name}</h3>
           </div>
+          ${
+            photo
+              ? `<img class="lf-result__photo" src="${photo}" alt="${product.name}" width="1200" height="1200" loading="lazy" decoding="async" />`
+              : ''
+          }
           <p class="lf-result__why"><strong>${text(ritualCopy.why)}:</strong> ${text(reason)}</p>
           <p class="lf-result__place"><strong>${text(ritualCopy.placement)}:</strong> ${text(placement)}</p>
           <div class="lf-result__actions">

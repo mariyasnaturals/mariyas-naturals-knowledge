@@ -316,3 +316,88 @@ for (const width of [360, 768, 1440]) {
     }
   });
 }
+
+test('the 500 ml card states the owner-confirmed free comb, accessibly', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/en/');
+  const card = page.locator('[data-editions] [data-slide]').nth(1);
+  await card.scrollIntoViewIfNeeded();
+  const gift = card.locator('[data-gift-badge]');
+  await expect(gift).toBeVisible();
+  await expect(gift.locator('.lg-gift__free')).toHaveText('FREE');
+  await expect(gift.locator('.lg-gift__comb')).toContainText('NEEM COMB');
+  // The full sentence must also be in the card body, not only the badge.
+  await expect(card).toContainText(
+    'Get an Oil-Treated Neem Comb FREE with your Mariyas Herbal Hair Care Oil 500 ml purchase.',
+  );
+  // The offer must never be dressed up as a price or a percentage discount.
+  await expect(card).not.toContainText(/%/);
+  // It must stay inside its own card, never over the buy button.
+  const fits = await page.evaluate(() => {
+    const g = document.querySelector('[data-gift-badge]')!;
+    const c = g.closest('.lg-edition')!;
+    const gr = g.getBoundingClientRect();
+    const cr = c.getBoundingClientRect();
+    return gr.right <= cr.right + 1 && gr.top >= cr.top - 1;
+  });
+  expect(fits).toBe(true);
+});
+
+test('the free-comb badge honours reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/en/');
+  await page
+    .locator('[data-editions] [data-slide]')
+    .nth(1)
+    .scrollIntoViewIfNeeded();
+  const state = await page.evaluate(() => {
+    const g = document.querySelector('[data-gift-badge]') as HTMLElement;
+    const sweep = document.querySelector('.lg-gift__shimmer') as HTMLElement;
+    return {
+      anim: getComputedStyle(g).animationName,
+      opacity: getComputedStyle(g).opacity,
+      sweep: getComputedStyle(sweep).animationName,
+    };
+  });
+  expect(state.anim).toBe('none');
+  expect(state.opacity).toBe('1');
+  expect(state.sweep).toBe('none');
+});
+
+test('the reviews section shows the verified aggregate and links to Google', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/en/');
+  const voices = page.locator('#voices');
+  await expect(voices.locator('.lg-rating__line')).toHaveText(
+    '4.2 ★ | 574 Google reviews',
+  );
+  // The reading date is stated so the figure is never read as live.
+  await expect(voices.locator('.lg-rating__asof')).toContainText('2026-11-16');
+  await expect(voices.locator('.lg-rating__cta')).toHaveAttribute(
+    'href',
+    'https://maps.google.com/?cid=12669174919246619705',
+  );
+  // No invented testimonial: every card is the honest pending state.
+  await expect(voices.locator('.lg-voice')).toHaveCount(3);
+  await expect(voices.locator('.lg-voice--pending')).toHaveCount(3);
+});
+
+test('the footer links the verified listing without merging the two addresses', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/en/');
+  const footer = page.locator('#site-footer');
+  await expect(footer.locator('a[href*="maps.google.com"]')).toHaveAttribute(
+    'href',
+    'https://maps.google.com/?cid=12669174919246619705',
+  );
+  // The official-store postal address stays intact and separate.
+  await expect(footer).toContainText('Thalavady South S.O');
+  await expect(footer).toContainText('Avalookkunnu P.O');
+});

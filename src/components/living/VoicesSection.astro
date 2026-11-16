@@ -2,19 +2,25 @@
 /**
  * Phase 8 — Customer voices.
  *
- * Ships the visual container EMPTY. There is no auto-sync, no widget, no embedded
- * Google script, no scraped review, no invented quote, no star rating and no
- * "500+" count. The section says plainly that reviews are pending and why.
+ * There is NO auto-sync, no widget, no embedded Google script and no scraping.
  *
- * To publish for real, the owner must supply:
- *   1. the exact Google Business Profile / Maps URL for this business, and
- *   2. written approval to republish specific review text and the exact count
- *      and rating shown on that listing.
- * Only then should `reviews` below be filled in.
+ * What is published here, and why it is allowed:
+ *   - the aggregate rating and review count, read directly off the verified
+ *     Google Business Profile on `googleBusiness.ratingReviewedOn`, labelled with
+ *     that date so it can never be mistaken for a live figure;
+ *   - a link straight to the live listing, which is the source of truth;
+ *   - an honest "review text pending" card for each slot, because we do not hold
+ *     permission to republish any reviewer's words.
+ *
+ * To turn the placeholders into real quotes, the owner supplies the exact text
+ * and confirms permission to republish it and the reviewer attribution. Only
+ * then should `reviews` below be filled in. Never invent a quote, a name, an
+ * individual star rating or a count.
  */
 import { voices } from '../../data/living-copy';
 import { dict } from '../../i18n/living';
-import { googleBusiness } from '../../data/site-contact';
+import { googleBusiness, social } from '../../data/site-contact';
+import { railLabels } from '../../data/living-copy';
 import type { Locale } from '../../i18n';
 
 interface Props {
@@ -22,18 +28,44 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+
+/** Fills `{token}` placeholders without letting a value be read as markup. */
+const fill = (template: string, values: Record<string, string | number>) =>
+  template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
+
 const copy = {
   label: dict(voices.label, lang),
   title: dict(voices.title, lang),
   note: dict(voices.note, lang),
-  emptyTitle: dict(voices.emptyTitle, lang),
+  ratingLine: fill(dict(voices.ratingTemplate, lang), {
+    rating: googleBusiness.rating.toFixed(1),
+    count: googleBusiness.reviewCount,
+  }),
+  asOf: fill(dict(voices.ratingAsOf, lang), {
+    date: googleBusiness.ratingReviewedOn,
+  }),
+  view: dict(voices.viewOnGoogle, lang),
+  pendingTitle: dict(voices.cardPendingTitle, lang),
   emptyBody: dict(voices.emptyBody, lang),
-  social: dict(voices.socialPending, lang),
+  prev: dict(railLabels.prev, lang),
+  next: dict(railLabels.next, lang),
+  slideLabel: dict(railLabels.slideLabel, lang),
 };
 
-/** Intentionally empty. Never populated with anything we did not verify. */
-const reviews: { quote: string; author: string; source: string }[] = [];
-const skeletons = [0, 1, 2];
+/**
+ * Intentionally empty: we hold no permission to republish any reviewer's words.
+ * Three slots are rendered as honest pending cards so the carousel's shape and
+ * behaviour can be reviewed, and so filling this later needs no layout change.
+ */
+const reviews: {
+  quote: string;
+  author: string;
+  rating?: number;
+}[] = [];
+const slots = [0, 1, 2];
+
+/** Stars for the aggregate only; never per-card, because we have no per-card data. */
+const fullStars = Math.round(googleBusiness.rating);
 ---
 
 <section
@@ -49,46 +81,200 @@ const skeletons = [0, 1, 2];
       <p>{copy.note}</p>
     </div>
 
-    <div class="lg-voices__grid">
-      {reviews.length > 0
-        ? reviews.map((review) => (
+    <div class="lg-rating">
+      <p class="lg-rating__stars" aria-hidden="true">
+        {Array.from({ length: 5 }, (_, i) => (
+          <span class={i < fullStars ? 'is-full' : 'is-empty'}>★</span>
+        ))}
+      </p>
+      <p class="lg-rating__line">{copy.ratingLine}</p>
+      <p class="lg-rating__asof">{copy.asOf}</p>
+      <a
+        class="lg-btn lg-btn--gold lg-rating__cta"
+        href={googleBusiness.href}
+        rel="noopener"
+        target="_blank"
+      >
+        {copy.view}
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+          <path
+            d="M7 17 17 7M9 7h8v8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <ul
+      class="lg-rail lg-voices__rail"
+      tabindex="0"
+      aria-label={copy.slideLabel}
+      data-voices-rail
+    >
+      {(reviews.length > 0 ? reviews : slots.map(() => null)).map((review) => (
+        <li data-slide>
+          {review ? (
             <blockquote class="lg-voice">
-              <p>{review.quote}</p>
+              {review.rating ? (
+                <p class="lg-voice__stars" aria-label={`${review.rating} / 5`}>
+                  {'★'.repeat(review.rating)}
+                </p>
+              ) : null}
+              <p class="lg-voice__quote">{review.quote}</p>
               <footer>
-                <cite>{review.author}</cite> · <span>{review.source}</span>
+                <cite>{review.author}</cite> · <span>Google</span>
               </footer>
             </blockquote>
-          ))
-        : skeletons.map(() => (
-            <div class="lg-voice" aria-hidden="true">
-              <div class="lg-voice__head">
+          ) : (
+            <div class="lg-voice lg-voice--pending">
+              <div class="lg-voice__head" aria-hidden="true">
                 <span class="lg-voice__avatar" />
                 <span class="lg-voice__bars">
                   <i />
                   <i />
                 </span>
               </div>
-              <p class="lg-voice__empty">{copy.emptyTitle}</p>
+              <p class="lg-voice__empty">{copy.pendingTitle}</p>
             </div>
-          ))}
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class="lg-rail-nav lg-voices__nav">
+      <button
+        class="lg-rail-btn"
+        type="button"
+        aria-label={copy.prev}
+        data-voices-prev
+        hidden
+      >
+        <span aria-hidden="true">←</span>
+      </button>
+      <div
+        class="lg-dots"
+        data-voices-dots
+        role="tablist"
+        aria-label={copy.slideLabel}
+      ></div>
+      <button
+        class="lg-rail-btn"
+        type="button"
+        aria-label={copy.next}
+        data-voices-next
+        hidden
+      >
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
 
     <p class="lg-voices__note">{copy.emptyBody}</p>
 
     <div class="lg-voices__actions">
-      {googleBusiness.href ? (
-        <a
-          class="lg-btn lg-btn--gold"
-          href={googleBusiness.href}
-          rel="noopener"
-        >
-          {copy.social}
-        </a>
-      ) : (
-        <span class="lg-btn lg-btn--ghost" aria-disabled="true">
-          {copy.social}
-        </span>
-      )}
+      <a
+        class="lg-btn lg-btn--ghost"
+        href={social.instagram.href}
+        rel="noopener"
+      >
+        Instagram
+      </a>
+      <a
+        class="lg-btn lg-btn--ghost"
+        href={social.facebook.href}
+        rel="noopener"
+      >
+        Facebook
+      </a>
     </div>
   </div>
 </section>
+
+<script>
+  /**
+   * The voice carousel. Same contract as the edition rail: native scrolling,
+   * optional prev/next, dots that follow the real scroll position, and no
+   * auto-advance. It does nothing when the three cards already fit.
+   */
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const rail = document.querySelector<HTMLElement>('[data-voices-rail]');
+  const scope = rail?.closest<HTMLElement>('#voices');
+  if (rail && scope) {
+    const slides = [...rail.querySelectorAll<HTMLElement>('[data-slide]')];
+    const prev = scope.querySelector<HTMLButtonElement>('[data-voices-prev]');
+    const next = scope.querySelector<HTMLButtonElement>('[data-voices-next]');
+    const dots = scope.querySelector<HTMLElement>('[data-voices-dots]');
+    const overflows = () => rail.scrollWidth - rail.clientWidth > 8;
+
+    const current = () => {
+      const left = rail.scrollLeft;
+      let best = 0;
+      let distance = Infinity;
+      slides.forEach((slide, index) => {
+        const delta = Math.abs(slide.offsetLeft - rail.offsetLeft - left);
+        if (delta < distance) {
+          distance = delta;
+          best = index;
+        }
+      });
+      return best;
+    };
+
+    const sync = () => {
+      const over = overflows();
+      if (prev) prev.hidden = !over;
+      if (next) next.hidden = !over;
+      if (dots) {
+        dots.hidden = !over;
+        for (const [index, button] of [
+          ...dots.querySelectorAll<HTMLButtonElement>('button'),
+        ].entries()) {
+          button.setAttribute(
+            'aria-current',
+            index === current() ? 'true' : 'false',
+          );
+        }
+      }
+    };
+
+    if (dots && dots.childElementCount === 0) {
+      dots.innerHTML = slides
+        .map(
+          (_, index) =>
+            `<button type="button" role="tab" aria-current="false" aria-label="${index + 1} / ${slides.length}" data-voices-dot="${index}"></button>`,
+        )
+        .join('');
+    }
+
+    const goTo = (index: number) => {
+      const slide = slides[Math.max(0, Math.min(index, slides.length - 1))];
+      if (!slide) return;
+      rail.scrollTo({
+        left: slide.offsetLeft - rail.offsetLeft,
+        behavior: reduced.matches ? 'auto' : 'smooth',
+      });
+    };
+
+    prev?.addEventListener('click', () => goTo(current() - 1));
+    next?.addEventListener('click', () => goTo(current() + 1));
+    dots?.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLElement>(
+        '[data-voices-dot]',
+      );
+      if (button) goTo(Number(button.dataset.voicesDot));
+    });
+    // Arrow keys scroll the rail, so the focusable scroller is usable without a
+    // pointer (axe: scrollable-region-focusable).
+    rail.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      goTo(current() + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    rail.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync, { passive: true });
+    sync();
+  }
+</script>

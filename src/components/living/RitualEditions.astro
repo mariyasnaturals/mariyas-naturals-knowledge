@@ -40,6 +40,7 @@ const copy = {
   title: dict(ritualCards.title, lang),
   note: dict(ritualCards.note, lang),
   eyebrow: dict(ritualCards.eyebrow, lang),
+  badgeFree: dict(ritualCards.combBadgeFree, lang),
   badge: dict(ritualCards.combBadge, lang),
   combNote: dict(ritualCards.combNote, lang),
   shop: dict(ritualCards.shop, lang),
@@ -58,11 +59,11 @@ const lines: Record<string, Record<Locale, string>> = {
     kn: 'ಪ್ರಸುತ್ತ ಮರಿಯಾಸ್ ಬಾಟಲಿಯಲ್ಲಿ 200 ml ಹೆರ್ಬಲ್ ಹೇರ್ ಕೇರ್ ಆಯಿಲ್.',
   },
   'hair-oil-500-ml': {
-    en: 'The larger 500 ml pack, sold together with the oil-treated neem comb.',
-    ml: 'എണ്ണയിൽ സംസ്കരിച്ച നീം ചീർപ്പിനൊപ്പം വിൽക്കുന്ന വലിയ 500 ml പായ്ക്ക്.',
-    hi: 'तेल-उपचारित नीम कंघी के साथ बिकने वाला बड़ा 500 ml पैक।',
-    ta: 'எண்ணெய் பதப்படுத்திய வேப்பம் சீப்புடன் விற்கப்படும் பெரிய 500 ml பொதி.',
-    kn: 'ಎಣ್ಣೆ ಸಂಸ್ಕರಿಸಿದ ಬೇವು ಬಾಚಣಿಗೆಯೊಂದಿಗೆ ಮಾರಾಟವಾಗುವ ದೊಡ್ಡ 500 ml ಪ್ಯಾಕ್.',
+    en: 'The larger 500 ml pack of the same herbal hair care oil, for regular use.',
+    ml: 'അതേ ഹെർബൽ ഹെയർ കെയർ ഓയിലിന്റെ വലിയ 500 ml പായ്ക്ക്, സ്ഥിരമായ ഉപയോഗത്തിന്.',
+    hi: 'उसी हर्बल हेयर केयर ऑयल का बड़ा 500 ml पैक, नियमित उपयोग के लिए।',
+    ta: 'அதே ஹெர்பல் ஹேர் கேர் ஆயிலின் பெரிய 500 ml பொதி, வழக்கமான பயன்பாட்டுக்கு.',
+    kn: 'ಅದೇ ಹೆರ್ಬಲ್ ಹೇರ್ ಕೇರ್ ಆಯಿಲ್‌ನ ದೊಡ್ಡ 500 ml ಪ್ಯಾಕ್, ನಿಯಮಿತ ಬಳಕೆಗೆ.',
   },
 };
 ---
@@ -101,8 +102,10 @@ const lines: Record<string, Record<Locale, string>> = {
                   />
                   <figcaption>{copy.caption}</figcaption>
                   {item.id === 'hair-oil-500-ml' && (
-                    <span class="lg-edition__rosette lg-rosette">
-                      {copy.badge}
+                    <span class="lg-gift" data-gift-badge>
+                      <span class="lg-gift__shimmer" aria-hidden="true"></span>
+                      <span class="lg-gift__free">{copy.badgeFree}</span>
+                      <span class="lg-gift__comb">{copy.badge}</span>
                     </span>
                   )}
                 </figure>
@@ -181,6 +184,30 @@ const lines: Record<string, Record<Locale, string>> = {
    */
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const behaviour = (): ScrollBehavior => (reduced.matches ? 'auto' : 'smooth');
+
+  /**
+   * The 500 ml FREE label plays its entrance once, when its card first becomes
+   * visible. It is a one-shot reveal: replaying on every scroll would be noisy,
+   * and with motion reduced the CSS already shows it statically.
+   */
+  const gift = document.querySelector<HTMLElement>('[data-gift-badge]');
+  if (gift) {
+    if (reduced.matches || !('IntersectionObserver' in window)) {
+      gift.dataset.giftVisible = 'true';
+    } else {
+      const reveal = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            gift.dataset.giftVisible = 'true';
+            reveal.disconnect();
+          }
+        },
+        { threshold: 0.35 },
+      );
+      reveal.observe(gift);
+    }
+  }
 
   document
     .querySelectorAll<HTMLElement>('[data-edition-rail], [data-spotlight-rail]')

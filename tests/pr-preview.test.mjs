@@ -24,6 +24,58 @@ import {
 
 const root = resolve(import.meta.dirname, '..');
 const approved = 'f958b4b18ddf4dc91151720b4e6aea7e6226bee3';
+
+/**
+ * Make the approved baseline commit available before asserting against it.
+ *
+ * CI checks this repository out shallow, so the baseline commit is often absent
+ * even though it is an ancestor on the remote. The comparison below is the whole
+ * point of the test — it proves the trusted release tooling has not changed — so
+ * rather than skipping or weakening it, fetch that one commit and fail loudly if
+ * the fetch cannot provide it. Nothing is force-updated and no ref is rewritten.
+ */
+function ensureCommits(shas) {
+  const present = (sha) => {
+    try {
+      execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], {
+        cwd: root,
+        stdio: 'ignore',
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  for (const sha of shas) {
+    if (present(sha)) continue;
+    // `--depth=1` on the exact SHA keeps this cheap and touches no other ref.
+    for (const args of [
+      ['fetch', '--depth', '1', 'origin', sha],
+      ['fetch', 'origin', sha],
+    ]) {
+      try {
+        execFileSync('git', args, { cwd: root, stdio: 'ignore' });
+      } catch {
+        // Try the next strategy; the assertion below is the real gate.
+      }
+      if (present(sha)) break;
+    }
+    assert.ok(
+      present(sha),
+      `Baseline commit ${sha} is not in this clone and could not be fetched from origin. ` +
+        'The release-safety comparison cannot run without it; do not skip this test.',
+    );
+  }
+}
+
+/*
+ * Two baselines are compared: the approved tooling commit, and the packaging
+ * baseline that `scripts/package-staging.mjs` diffs the website tree against.
+ * CI checks this repository out shallow, so both are usually absent and the
+ * trusted script would die with "bad object" before it could reject the tree.
+ */
+ensureCommits([approved, '71cca8d24e73a7c10fd7c0585e1404a362424bb4']);
 const origin = 'https://www.mariyasnaturals.cloud';
 const hash = (data) => createHash('sha256').update(data).digest('hex');
 function temporary(t) {

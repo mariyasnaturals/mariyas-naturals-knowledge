@@ -7,8 +7,9 @@
  *   - Instagram (opened and read) and Facebook (declared in the store's own
  *     Organization data)
  *   - collection links that exist locally
- *   - Google Maps stays an honest "to be confirmed" note until the owner supplies
- *     the exact business listing URL. Never a guessed link.
+ *   - Google Maps links to the business listing verified on 2026-11-16. The
+ *     listing's own address wording is shown alongside it but is never used to
+ *     overwrite the official-store postal address.
  */
 import BrandMark from './living/BrandMark.astro';
 import { dictionaries, type Locale } from '../i18n';
@@ -71,10 +72,15 @@ const collections = collectionKeys
             <span class="lg-footer__hint">{c.mapsLabel}</span>
             {googleBusiness.href ? (
               <a href={googleBusiness.href} rel="noopener">
-                {c.mapsLabel}
+                {c.mapsFindUs}
               </a>
             ) : (
               <span class="lg-footer__pending">{c.mapsPending}</span>
+            )}
+            {googleBusiness.href && (
+              <span class="lg-footer__hint lg-footer__listing">
+                {googleBusiness.listingAddress}
+              </span>
             )}
           </li>
         </ul>

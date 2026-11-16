@@ -95,19 +95,37 @@ export const ritualCards = {
     ta: 'ஒரே ஹெர்பல் ஹேர் கேர் ஆயிலின் இரண்டு பொதிகள். எத்தனை முறை எண்ணெய் பயன்படுத்துகிறீர்கள் என்பதற்கு ஏற்ற அளவைத் தேர்ந்தெடுங்கள்.',
     kn: 'ಅದೇ ಹೆರ್ಬಲ್ ಹೇರ್ ಕೇರ್ ಆಯಿಲ್‌ನ ಎರಡು ಪ್ಯಾಕ್‌ಗಳು. ನೀವು ಎಷ್ಟು ಬಾರಿ ಎಣ್ಣೆ ಹಚ್ಚುತ್ತೀರಿ ಎಂಬುದಕ್ಕೆ ಸರಿಹೊಂದುವ ಗಾತ್ರ ಆರಿಸಿ.',
   } as Localized,
+  /*
+   * The owner confirmed on 2026-11-16 that the 500 ml pack ships with a free
+   * oil-treated neem comb, and asked for the word FREE to appear.
+   *
+   * NOTE FOR WHOEVER MAINTAINS THE STORE: the live .com product page for the
+   * 500 ml pack still describes the oil only and shows no comb offer. The pack
+   * photos do not show a comb either; the comb is visible only in the 200 ml
+   * listing photo. Until the store page states the offer, customers read it here
+   * and then do not see it at checkout. Do not silently repoint this card at a
+   * different SKU to paper over that mismatch.
+   */
+  combBadgeFree: {
+    en: 'FREE',
+    ml: 'സൗജന്യം',
+    hi: 'मुफ़्त',
+    ta: 'இலவசம்',
+    kn: 'ಉಚಿತ',
+  } as Localized,
   combBadge: {
-    en: 'OIL-TREATED NEEM COMB INCLUDED',
-    ml: 'എണ്ണയിൽ സംസ്കരിച്ച നീം ചീർപ്പ് ഉൾപ്പെടുന്നു',
-    hi: 'तेल-उपचारित नीम कंघी शामिल',
-    ta: 'எண்ணெய் பதப்படுத்திய வேப்பம் சீப்பு உள்ளடங்கும்',
-    kn: 'ಎಣ್ಣೆ ಸಂಸ್ಕರಿಸಿದ ಬೇವು ಬಾಚಣಿಗೆ ಒಳಗೊಂಡಿದೆ',
+    en: 'OIL-TREATED NEEM COMB',
+    ml: 'എണ്ണയിൽ സംസ്കരിച്ച നീം ചീർപ്പ്',
+    hi: 'तेल-उपचारित नीम कंघी',
+    ta: 'எண்ணெய் பதப்படுத்திய வேப்பம் சீப்பு',
+    kn: 'ಎಣ್ಣೆ ಸಂಸ್ಕರಿಸಿದ ಬೇವು ಬಾಚಣಿಗೆ',
   } as Localized,
   combNote: {
-    en: 'Sold together as one listing on the official store. The comb is part of the pack, not a free extra.',
-    ml: 'ഔദ്യോഗിക സ്റ്റോറിൽ ഒരു ലിസ്റ്റിംഗായി വിൽക്കുന്നു. ചീർപ്പ് പായ്ക്കിന്റെ ഭാഗമാണ്, സൗജന്യ സമ്മാനമല്ല.',
-    hi: 'आधिकारिक स्टोर पर एक ही लिस्टिंग के रूप में बिकता है। कंघी पैक का हिस्सा है, मुफ़्त उपहार नहीं।',
-    ta: 'அதிகாரப்பூர்வ கடையில் ஒரே பட்டியலாக விற்பனை. சீப்பு பொதியின் பகுதி, இலவச பரிசு அல்ல.',
-    kn: 'ಅಧಿಕೃತ ಅಂಗಡಿಯಲ್ಲಿ ಒಂದೇ ಪಟ್ಟಿಯಾಗಿ ಮಾರಾಟ. ಬಾಚಣಿಗೆ ಪ್ಯಾಕ್‌ನ ಭಾಗ, ಉಚಿತ ಉಡುಗೊರೆ ಅಲ್ಲ.',
+    en: 'Get an Oil-Treated Neem Comb FREE with your Mariyas Herbal Hair Care Oil 500 ml purchase.',
+    ml: 'മരിയാസ് ഹെർബൽ ഹെയർ കേയർ ഓയിൽ 500 മില്ലി വാങ്ങുമ്പോൾ എണ്ണയിൽ സംസ്കരിച്ച നീം ചീർപ്പ് സൗജന്യമായി ലഭിക്കും.',
+    hi: 'मरियास हर्बल हेयर केयर ऑयल 500 ml खरीदने पर तेल-उपचारित नीम कंघी मुफ़्त पाएं।',
+    ta: 'மரியாஸ் ஹெர்பல் ஹேர் கேர் ஆயில் 500 மிலி வாங்கினால் எண்ணெய் பதப்படுத்திய வேப்பம் சீப்பு இலவசம்.',
+    kn: 'ಮರಿಯಾಸ್ ಹೆರ್ಬಲ್ ಹೇರ್ ಕೇರ್ ಆಯಿಲ್ 500 ಮಿಲಿ ಖರೀದಿಸಿದಾಗ ಎಣ್ಣೆ ಸಂಸ್ಕರಿಸಿದ ಬೇವು ಬಾಚಣಿಗೆ ಉಚಿತ.',
   } as Localized,
   shop: {
     en: 'Shop on Official Store',
@@ -253,11 +271,39 @@ export const voices = {
     kn: 'ಗ್ರಾಹಕರ ಧ್ವನಿಗಳು',
   } as Localized,
   note: {
-    en: 'This space is reserved for reviews the owner has confirmed and approved for publication. Nothing is published until then.',
-    ml: 'ഉടമ സ്ഥിരീകരിച്ച് പ്രസിദ്ധീകരണത്തിന് അനുമതി നൽകിയ അഭിപ്രായങ്ങൾക്കായി ഈ ഇടം മാറ്റിവെച്ചിരിക്കുന്നു.',
-    hi: 'यह स्थान उन समीक्षाओं के लिए आरक्षित है जिन्हें मालिक ने सत्यापित और प्रकाशन के लिए स्वीकृत किया है।',
-    ta: 'உரிமையாளர் உறுதிப்படுத்தி வெளியிட அனுமதித்த மதிப்புரைகளுக்கான இடம் இது.',
-    kn: 'ಮಾಲೀಕರು ದೃಢೀಕರಿಸಿ ಪ್ರಕಟಣೆಗೆ ಅನುಮೋದಿಸಿದ ವಿಮರ್ಶೆಗಳಿಗೆ ಈ ಸ್ಥಳ ಮೀಸಲು.',
+    en: 'Customers review Mariyas Naturals on our Google Business Profile. The rating below is the figure that listing showed when we last checked.',
+    ml: 'ഉപഭോക്താക്കൾ മരിയാസ് നാച്ചുറൽസിനെ Google ബിസിനസ് പ്രൊഫൈലിൽ അവലോകനം ചെയ്യുന്നു. താഴെയുള്ള റേറ്റിംഗ് ഞങ്ങൾ അവസാനം പരിശോധിച്ചപ്പോൾ ആ ലിസ്റ്റിംഗിൽ കണ്ട കണക്കാണ്.',
+    hi: 'ग्राहक मरियास नेचुरल्स की समीक्षा हमारी Google बिज़नेस प्रोफ़ाइल पर करते हैं। नीचे दी रेटिंग वही है जो उस लिस्टिंग में हमारे अंतिम जाँच के समय दिखी थी।',
+    ta: 'வாடிக்கையாளர்கள் மரியாஸ் நேச்சுரல்ஸை Google வணிகச் சுயவிவரத்தில் மதிப்பிடுகின்றனர். கீழே உள்ள மதிப்பீடு நாங்கள் கடைசியாகப் பார்த்தபோது அந்தப் பட்டியலில் இருந்ததே.',
+    kn: 'ಗ್ರಾಹಕರು ಮರಿಯಾಸ್ ನ್ಯಾಚುರಲ್ಸ್ ಅನ್ನು ನಮ್ಮ Google ವ್ಯಾಪಾರ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ವಿಮರ್ಶಿಸುತ್ತಾರೆ. ಕೆಳಗಿನ ರೇಟಿಂಗ್ ನಾವು ಕೊನೆಯದಾಗಿ ಪರಿಶೀಲಿಸಿದಾಗ ಆ ಪಟ್ಟಿಯಲ್ಲಿ ಕಂಡ ಸಂಖ್ಯೆ.',
+  } as Localized,
+  ratingTemplate: {
+    en: '{rating} ★ | {count} Google reviews',
+    ml: '{rating} ★ | {count} Google അവലോകനങ്ങൾ',
+    hi: '{rating} ★ | {count} Google समीक्षाएँ',
+    ta: '{rating} ★ | {count} Google மதிப்புரைகள்',
+    kn: '{rating} ★ | {count} Google ವಿಮರ್ಶೆಗಳು',
+  } as Localized,
+  ratingAsOf: {
+    en: 'as shown on Google on {date}',
+    ml: 'Google-ൽ {date}-ന് കാണിച്ചത് പ്രകാരം',
+    hi: 'Google पर {date} को दिखाया गया',
+    ta: 'Google-இல் {date} அன்று காட்டியபடி',
+    kn: 'Google ನಲ್ಲಿ {date} ರಂದು ತೋರಿಸಿದಂತೆ',
+  } as Localized,
+  viewOnGoogle: {
+    en: 'View reviews on Google',
+    ml: 'Google-ൽ അവലോകനങ്ങൾ കാണൂ',
+    hi: 'Google पर समीक्षाएँ देखें',
+    ta: 'Google-இல் மதிப்புரைகளைப் பார்க்க',
+    kn: 'Google ನಲ್ಲಿ ವಿಮರ್ಶೆಗಳನ್ನು ನೋಡಿ',
+  } as Localized,
+  cardPendingTitle: {
+    en: 'Review text pending',
+    ml: 'അഭിപ്രായ വാചകം കാത്തിരിക്കുന്നു',
+    hi: 'समीक्षा पाठ प्रतीक्षित',
+    ta: 'மதிப்புரை உரை காத்திருக்கிறது',
+    kn: 'ವಿಮರ್ಶೆ ಪಠ್ಯ ಬಾಕಿ',
   } as Localized,
   emptyTitle: {
     en: 'Verified reviews pending',
@@ -267,7 +313,7 @@ export const voices = {
     kn: 'ದೃಢೀಕೃತ ವಿಮರ್ಶೆಗಳು ಬಾಕಿ',
   } as Localized,
   emptyBody: {
-    en: 'We will only publish a rating, a review count or a review text once the owner confirms the exact Google Business Profile and approves the wording.',
+    en: 'Individual review text is published only once the owner approves the exact wording for republication. Until then, the rating links straight to the live listing so you can read every review at source.',
     ml: 'കൃത്യമായ Google ബിസിനസ് പ്രൊഫൈൽ ഉടമ സ്ഥിരീകരിച്ച് വാചകം അംഗീകരിച്ചതിന് ശേഷം മാത്രമേ റേറ്റിംഗോ അഭിപ്രായങ്ങളോ പ്രസിദ്ധീകരിക്കൂ.',
     hi: 'रेटिंग, समीक्षा संख्या या समीक्षा पाठ तभी प्रकाशित होगा जब मालिक सटीक Google बिज़नेस प्रोफ़ाइल की पुष्टि और शब्दों की स्वीकृति दें।',
     ta: 'சரியான Google வணிகச் சுயவிவரத்தை உரிமையாளர் உறுதிப்படுத்தி, வாசகத்தை அனுமதித்த பிறகே மதிப்பீடோ மதிப்புரையோ வெளியிடப்படும்.',
@@ -279,6 +325,31 @@ export const voices = {
     hi: 'आधिकारिक इंस्टाग्राम और फ़ेसबुक पेज',
     ta: 'அதிகாரப்பூர்வ இன்ஸ்டாகிராம், பேஸ்புக் பக்கங்கள்',
     kn: 'ಅಧಿಕೃತ ಇನ್‌ಸ್ಟಾಗ್ರಾಮ್, ಫೇಸ್‌ಬುಕ್ ಪುಟಗಳು',
+  } as Localized,
+};
+
+/** Rail controls shared by the edition, spotlight and voice carousels. */
+export const railLabels = {
+  prev: {
+    en: 'Previous',
+    ml: 'മുമ്പത്തേത്',
+    hi: 'पिछला',
+    ta: 'முந்தையது',
+    kn: 'ಹಿಂದಿನದು',
+  } as Localized,
+  next: {
+    en: 'Next',
+    ml: 'അടുത്തത്',
+    hi: 'अगला',
+    ta: 'அடுத்தது',
+    kn: 'ಮುಂದಿನದು',
+  } as Localized,
+  slideLabel: {
+    en: 'Customer review slots',
+    ml: 'ഉപഭോക്തൃ അവലോകന സ്ലോട്ടുകൾ',
+    hi: 'ग्राहक समीक्षा स्लॉट',
+    ta: 'வாடிக்கையாளர் மதிப்புரை இடங்கள்',
+    kn: 'ಗ್ರಾಹಕ ವಿಮರ್ಶೆ ಸ್ಲಾಟ್‌ಗಳು',
   } as Localized,
 };
 
@@ -294,6 +365,8 @@ export const footerCopy: Record<
     whatsappLabel: string;
     whatsappHint: string;
     mapsLabel: string;
+    /** Text of the Maps link itself, e.g. "Find us on Google Maps". */
+    mapsFindUs: string;
     mapsPending: string;
     socialLabel: string;
     collectionsLabel: string;
@@ -314,6 +387,7 @@ export const footerCopy: Record<
     whatsappLabel: 'WhatsApp',
     whatsappHint: 'Orders, product questions and delivery help',
     mapsLabel: 'Google Maps',
+    mapsFindUs: 'Find us on Google Maps',
     mapsPending: 'Listing link to be confirmed',
     socialLabel: 'Follow',
     collectionsLabel: 'Collections',
@@ -338,6 +412,7 @@ export const footerCopy: Record<
     whatsappLabel: 'വാട്ട്സ്ആപ്പ്',
     whatsappHint: 'ഓർഡർ, ഉൽപ്പന്ന സംശയങ്ങൾ, ഡെലിവറി സഹായം',
     mapsLabel: 'ഗൂഗിൾ മാപ്സ്',
+    mapsFindUs: 'Google Maps-ൽ ഞങ്ങളെ കാണൂ',
     mapsPending: 'ലിങ്ക് സ്ഥിരീകരിക്കാനുണ്ട്',
     socialLabel: 'പിന്തുടരൂ',
     collectionsLabel: 'ശേഖരങ്ങൾ',
@@ -362,6 +437,7 @@ export const footerCopy: Record<
     whatsappLabel: 'व्हाट्सएप',
     whatsappHint: 'ऑर्डर, उत्पाद प्रश्न और डिलीवरी सहायता',
     mapsLabel: 'गूगल मैप्स',
+    mapsFindUs: 'Google Maps पर हमें खोजें',
     mapsPending: 'लिंक की पुष्टि बाकी',
     socialLabel: 'फ़ॉलो करें',
     collectionsLabel: 'संग्रह',
@@ -386,6 +462,7 @@ export const footerCopy: Record<
     whatsappLabel: 'வாட்ஸ்அப்',
     whatsappHint: 'ஆர்டர், தயாரிப்பு கேள்விகள், டெலிவரி உதவி',
     mapsLabel: 'கூகிள் மேப்ஸ்',
+    mapsFindUs: 'Google Maps-இல் எங்களைக் காணுங்கள்',
     mapsPending: 'இணைப்பு உறுதிப்படுத்தப்பட வேண்டும்',
     socialLabel: 'பின்தொடரவும்',
     collectionsLabel: 'தொகுப்புகள்',
@@ -410,6 +487,7 @@ export const footerCopy: Record<
     whatsappLabel: 'ವಾಟ್ಸಪ್',
     whatsappHint: 'ಆರ್ಡರ್, ಉತ್ಪನ್ನ ಪ್ರಶ್ನೆಗಳು ಮತ್ತು ಡೆಲಿವರಿ ಸಹಾಯ',
     mapsLabel: 'ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್',
+    mapsFindUs: 'Google Maps ನಲ್ಲಿ ನಮ್ಮನ್ನು ಹುಡುಕಿ',
     mapsPending: 'ಲಿಂಕ್ ದೃಢೀಕರಣ ಬಾಕಿ',
     socialLabel: 'ಅನುಸರಿಸಿ',
     collectionsLabel: 'ಸಂಗ್ರಹಗಳು',
