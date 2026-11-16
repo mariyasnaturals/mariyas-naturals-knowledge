@@ -21,3 +21,6 @@ botanical-review-results/
 
 # Owner-supplied masters stay out of Git; only derivatives are published.
 google_drive/
+
+# GitHub Pages preview staging (built output, published to preview/* only).
+pages-preview/
