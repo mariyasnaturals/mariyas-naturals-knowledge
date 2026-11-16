@@ -548,6 +548,167 @@ console.log(
     `${approvedHiddenCount} hidden listings absent from routes, sitemap, links and bundles`,
 );
 
+/* ------------------------------------------ published voices and social links -- */
+
+/**
+ * The owner supplied three reviews from the Google Business Profile and approved
+ * publishing them. They are quoted verbatim, attributed, and labelled as customer
+ * opinions; the aggregate above them stays a dated reading of the same listing.
+ */
+const APPROVED_REVIEWS = [
+  {
+    author: 'Pramod Kumar .M.S',
+    text: 'I am their regular customer and its hair oil really helps to reduce my hairfall and helps to strengthen my hair and improve hair growth. I really recommend this product.',
+  },
+  {
+    author: 'Abacus World Academy',
+    text: 'Excellent hair oil for hair growth, must try this',
+  },
+  {
+    author: 'Jincy Siju',
+    text: 'No chemicals very good experience i am happy',
+  },
+];
+const APPROVED_INSTAGRAM =
+  'https://www.instagram.com/mariyas_herbal_hair_care_oil/';
+const APPROVED_FACEBOOK = 'https://www.facebook.com/mariayasnaturals/';
+const APPROVED_MAPS = 'https://maps.google.com/?cid=12669174919246619705';
+
+for (const lang of locales) {
+  const $ = load(read(`${lang}/index.html`));
+  const voices = $('#voices');
+  assert.equal(voices.length, 1, `${lang}: the voices section exists`);
+  // Exactly three approved reviews; no placeholder card survives anywhere.
+  const cards = voices.find('blockquote.lg-voice');
+  assert.equal(cards.length, 3, `${lang}: exactly three review cards`);
+  assert.equal(
+    voices.find('.lg-voice--pending').length,
+    0,
+    `${lang}: no review placeholder is rendered`,
+  );
+  const authors = cards
+    .find('cite')
+    .toArray()
+    .map((node) => $(node).text().trim());
+  assert.deepEqual(
+    authors,
+    APPROVED_REVIEWS.map((review) => review.author),
+    `${lang}: reviewer names, verbatim and in order`,
+  );
+  const quotes = cards
+    .find('.lg-voice__quote')
+    .toArray()
+    .map((node) => $(node).text().trim());
+  assert.deepEqual(
+    quotes,
+    APPROVED_REVIEWS.map((review) => review.text),
+    `${lang}: review wording, verbatim and in order`,
+  );
+  // English quotations on every locale, with the localised attribution chip.
+  cards.each((_, card) => {
+    const quote = $(card).find('.lg-voice__quote');
+    assert.equal(quote.attr('lang'), 'en', `${lang}: quotation language`);
+    assert.equal(
+      $(card).find('.lg-voice__stars').attr('aria-label')?.includes('5'),
+      true,
+      `${lang}: per-card rating is announced`,
+    );
+    assert.ok(
+      $(card).find('.lg-voice__source').text().trim().length > 0,
+      `${lang}: per-card Google attribution`,
+    );
+  });
+  // The opinion label and a route back to the listing sit under the carousel.
+  const note = voices.find('.lg-voices__note');
+  assert.ok(note.text().trim().length > 0, `${lang}: opinion note present`);
+  assert.equal(
+    note.find('a').attr('href'),
+    APPROVED_MAPS,
+    `${lang}: the note links back to the listing`,
+  );
+  // The aggregate and its reading date are untouched by the review cards.
+  assert.equal(
+    voices.find('.lg-rating__cta').attr('href'),
+    APPROVED_MAPS,
+    `${lang}: view-reviews button`,
+  );
+  assert.ok(
+    voices.find('.lg-rating__asof').text().includes('2026-11-16'),
+    `${lang}: aggregate reading date`,
+  );
+}
+
+// One destination each, everywhere: footer and voices, all five locales.
+const socialPages = locales.map((lang) => load(read(`${lang}/index.html`)));
+for (const [index, $] of socialPages.entries()) {
+  const lang = locales[index];
+  const facebook = $('a[href*="facebook.com"]');
+  const instagram = $('a[href*="instagram.com"]');
+  assert.equal(facebook.length, 2, `${lang}: two Facebook buttons`);
+  assert.equal(instagram.length, 2, `${lang}: two Instagram buttons`);
+  for (const node of [...facebook.toArray(), ...instagram.toArray()]) {
+    assert.equal($(node).attr('target'), '_blank', `${lang}: social target`);
+    assert.match($(node).attr('rel') ?? '', /noopener/, `${lang}: social rel`);
+    assert.ok($(node).attr('aria-label'), `${lang}: social accessible label`);
+  }
+  facebook.each((_, node) =>
+    assert.equal(
+      $(node).attr('href'),
+      APPROVED_FACEBOOK,
+      `${lang}: every Facebook button uses the verified destination`,
+    ),
+  );
+  instagram.each((_, node) =>
+    assert.equal(
+      $(node).attr('href'),
+      APPROVED_INSTAGRAM,
+      `${lang}: every Instagram button uses the canonical profile`,
+    ),
+  );
+}
+
+// No review is turned into review markup, and the retired placeholder copy is gone.
+const retiredPending = [
+  'Review text pending',
+  'അഭിപ്രായ വാചകം കാത്തിരിക്കുന്നു',
+  'समीक्षा पाठ प्रतीक्षित',
+  'மதிப்புரை உரை காத்திருக்கிறது',
+  'ವಿಮರ್ಶೆ ಪಠ್ಯ ಬಾಕಿ',
+];
+const reviewPages = [];
+const scanReviews = (directory) => {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = new URL(
+      entry.name + (entry.isDirectory() ? '/' : ''),
+      directory,
+    );
+    if (entry.isDirectory()) {
+      scanReviews(path);
+      continue;
+    }
+    if (!entry.name.endsWith('.html')) continue;
+    const html = readFileSync(path, 'utf8');
+    const route = path.href.slice(root.href.length);
+    if (retiredPending.some((copy) => html.includes(copy))) {
+      reviewPages.push(route);
+    }
+    if (/"@type":"Review"|"aggregateRating"/.test(html)) {
+      reviewPages.push(`${route} (review structured data)`);
+    }
+  }
+};
+scanReviews(root);
+assert.deepEqual(
+  reviewPages,
+  [],
+  'No placeholder text and no review/aggregate structured data',
+);
+
+console.log(
+  `PASS customer voices: 3 approved Google reviews in ${locales.length} locales, ` +
+    'verbatim and attributed; Facebook and Instagram resolve to one verified destination each',
+);
+
 validateTree(root);
 console.log(
   'PASS all generated pages: local assets, navigation, alternates, chrome and outbound-only commerce',

@@ -53,13 +53,23 @@ const collections = activeCollectionKeys
         <h2>{c.socialLabel}</h2>
         <ul class="lg-footer__inline">
           <li>
-            <a href={social.instagram.href} rel="noopener">
+            <a
+              href={social.instagram.href}
+              rel="noopener noreferrer"
+              target="_blank"
+              aria-label={`${c.instagram} — ${c.newTab}`}
+            >
               {c.instagram}
             </a>
           </li>
           <li aria-hidden="true">·</li>
           <li>
-            <a href={social.facebook.href} rel="noopener">
+            <a
+              href={social.facebook.href}
+              rel="noopener noreferrer"
+              target="_blank"
+              aria-label={`${c.facebook} — ${c.newTab}`}
+            >
               {c.facebook}
             </a>
           </li>

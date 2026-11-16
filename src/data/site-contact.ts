@@ -35,25 +35,51 @@ export const postalAddress = Object.freeze({
 /**
  * Social profiles.
  *
- * `instagram` was opened and read directly: the profile is named MARIYAS HERBAL
- * HAIRCARE OIL (@mariyas_herbal_hair_care_oil), links to mariyasnaturals.com and
- * posts Mariyas product content. `facebook` is the URL the official store itself
- * declares in its own Organization structured data; the page refuses anonymous
- * fetches (HTTP 403), so it is recorded as owner-declared rather than read.
+ * Each record keeps three things apart: the destination the site links to, the
+ * link the owner supplied, and the evidence for the destination. The components
+ * read only `href`, so every Facebook button and every Instagram button on the
+ * site points at the same verified place.
+ *
+ * `instagram` — the owner supplied
+ * `https://www.instagram.com/mariyas_herbal_hair_care_oil?srtk=…`. The profile was
+ * opened directly: it is named MARIYAS HERBAL HAIRCARE OIL, its bio links to
+ * mariyasnaturals.com and it posts Mariyas product content. `href` below is the
+ * same profile without the share-tracking parameter, which is the clean canonical
+ * form of the owner's link.
+ *
+ * `facebook` — the owner supplied `https://www.facebook.com/share/1L7pFCXvWb/`.
+ * Facebook refuses anonymous fetches, so that share shortcode could not be
+ * resolved to its destination from here (HTTP 403 on the share URL and on the
+ * Page URL alike — it is a bot block, not a missing page). The destination used
+ * is the Page URL that the official store itself declares in its own Organization
+ * `sameAs` data and whose public Page metadata identifies it as the same business:
+ * "Mariyas Naturals, Alappuzha", the "Homemade 100 Percent Natural Haircare oil"
+ * shop with ~20k followers. It is therefore the genuine Page, never an invented
+ * username and never an unrelated page. The share link is kept below so a later
+ * reviewer can re-attempt the resolution.
  */
 export const social = Object.freeze({
   instagram: {
     label: 'Instagram',
     href: 'https://www.instagram.com/mariyas_herbal_hair_care_oil/',
+    /** Exactly what the owner sent, kept for traceability (contains a tracker). */
+    ownerSupplied:
+      'https://www.instagram.com/mariyas_herbal_hair_care_oil?srtk=MWt3dzU5ZGpldzNnaw==',
+    resolution:
+      'Owner link carries a share-tracking parameter; the clean canonical profile URL is used instead. Same account.',
     verifiedOn: '2026-11-16',
     evidence: 'Profile opened directly; bio links to mariyasnaturals.com.',
   },
   facebook: {
     label: 'Facebook',
     href: 'https://www.facebook.com/mariayasnaturals/',
+    /** Exactly what the owner sent, kept for traceability (unresolvable here). */
+    ownerSupplied: 'https://www.facebook.com/share/1L7pFCXvWb/',
+    resolution:
+      'Share shortcode returns HTTP 403 to anonymous fetches, so its destination could not be read. The canonical Page URL used here is the one the official store declares in its Organization sameAs data and whose Page metadata matches this business (Mariyas Naturals, Alappuzha).',
     verifiedOn: '2026-11-16',
     evidence:
-      "Declared in the official store's own Organization sameAs data; page returns HTTP 403 to anonymous fetches.",
+      "Declared in the official store's own Organization sameAs data; Page metadata (name, town, category) matches the business; page returns HTTP 403 to anonymous fetches.",
   },
 });
 

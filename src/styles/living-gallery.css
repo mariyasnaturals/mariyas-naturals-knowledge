@@ -743,8 +743,9 @@
 }
 
 .lg-dots button {
-  width: 34px;
-  height: 34px;
+  /* 44px hit area; the visible dot stays small. */
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 0;
   background: none;
@@ -1058,15 +1059,50 @@
 }
 
 .lg-voice__quote {
+  flex: 1 1 auto;
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.7;
+  /* Long reviewer words wrap instead of pushing the card wider than the rail. */
+  overflow-wrap: break-word;
+}
+
+/* The credit line: the reviewer who wrote it, and where it was written. */
+.lg-voice__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.lg-voice__foot cite {
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--lg-ivory);
+}
+
+.lg-voice__source {
+  padding: 0.12rem 0.45rem;
+  border: 1px solid #d7b15d59;
+  border-radius: 99px;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--lg-gold);
+  white-space: nowrap;
 }
 
 .lg-voice__stars {
   margin: 0;
   color: var(--lg-gold);
   letter-spacing: 0.14em;
+  font-size: 0.95rem;
+}
+
+.lg-voice__stars-rest {
+  color: #ffffff3d;
 }
 
 .lg-voices__nav {
@@ -1082,7 +1118,8 @@
 }
 
 .lg-voice {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.55rem;
   min-height: 132px;
   padding: 1rem 1.1rem;
@@ -1135,6 +1172,19 @@
   justify-content: center;
   gap: 0.6rem;
   margin-top: 1.4rem;
+}
+
+.lg-voices__note-link {
+  display: inline-block;
+  margin-left: 0.3rem;
+  color: var(--lg-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.lg-voices__note-link:hover,
+.lg-voices__note-link:focus-visible {
+  color: var(--lg-ivory);
 }
 
 .lg-voices__note {
@@ -1683,8 +1733,8 @@ main > .section:last-child {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid #d7b15d59;
   border-radius: 50%;
@@ -1717,13 +1767,14 @@ main > .section:last-child {
 }
 
 /*
- * The dot stays visually small but its tap target is 24x24, which is the WCAG
- * 2.2 minimum. The visible circle is drawn with a radial gradient so the button
- * box can be larger than the mark without changing the design.
+ * The dot stays visually small but its tap target is a full 44x44, so a thumb
+ * can hit it on a phone without aiming. The visible circle is drawn with a
+ * radial gradient so the button box can be larger than the mark without changing
+ * the design.
  */
 .lg-voices__nav .lg-dots button {
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: 50%;

@@ -371,7 +371,26 @@ test('the free-comb badge honours reduced motion', async ({ page }) => {
   expect(state.sweep).toBe('none');
 });
 
-test('the reviews section shows the verified aggregate and links to Google', async ({
+/** The owner's three approved Google reviews, exactly as published. */
+const APPROVED_REVIEWS = [
+  {
+    author: 'Pramod Kumar .M.S',
+    text: 'I am their regular customer and its hair oil really helps to reduce my hairfall and helps to strengthen my hair and improve hair growth. I really recommend this product.',
+  },
+  {
+    author: 'Abacus World Academy',
+    text: 'Excellent hair oil for hair growth, must try this',
+  },
+  {
+    author: 'Jincy Siju',
+    text: 'No chemicals very good experience i am happy',
+  },
+];
+const INSTAGRAM = 'https://www.instagram.com/mariyas_herbal_hair_care_oil/';
+const FACEBOOK = 'https://www.facebook.com/mariayasnaturals/';
+const MAPS = 'https://maps.google.com/?cid=12669174919246619705';
+
+test('the reviews section shows the verified aggregate and the three approved reviews', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -382,13 +401,211 @@ test('the reviews section shows the verified aggregate and links to Google', asy
   );
   // The reading date is stated so the figure is never read as live.
   await expect(voices.locator('.lg-rating__asof')).toContainText('2026-11-16');
-  await expect(voices.locator('.lg-rating__cta')).toHaveAttribute(
-    'href',
-    'https://maps.google.com/?cid=12669174919246619705',
-  );
-  // No invented testimonial: every card is the honest pending state.
+  await expect(voices.locator('.lg-rating__cta')).toHaveAttribute('href', MAPS);
+
+  // Exactly the three approved reviews, and no placeholder left behind.
+  const cards = voices.locator('blockquote.lg-voice');
+  await expect(cards).toHaveCount(3);
+  await expect(voices.locator('.lg-voice--pending')).toHaveCount(0);
   await expect(voices.locator('.lg-voice')).toHaveCount(3);
-  await expect(voices.locator('.lg-voice--pending')).toHaveCount(3);
+
+  // Reviewer names and wording, verbatim.
+  await expect(cards.locator('cite')).toHaveText(
+    APPROVED_REVIEWS.map((review) => review.author),
+  );
+  await expect(cards.locator('.lg-voice__quote')).toHaveText(
+    APPROVED_REVIEWS.map((review) => review.text),
+  );
+  // The quotations stay in the language they were written in.
+  for (const index of [0, 1, 2]) {
+    await expect(cards.nth(index).locator('.lg-voice__quote')).toHaveAttribute(
+      'lang',
+      'en',
+    );
+    // Five gold stars, announced as the reviewer's own rating.
+    await expect(cards.nth(index).locator('.lg-voice__stars')).toHaveAttribute(
+      'aria-label',
+      '5 out of 5',
+    );
+    await expect(cards.nth(index).locator('.lg-voice__stars-full')).toHaveText(
+      '★★★★★',
+    );
+    // Attributed to Google, on the card itself.
+    await expect(cards.nth(index).locator('.lg-voice__source')).toHaveText(
+      'Google Review',
+    );
+  }
+
+  // Labelled as customer opinions, with a route back to the source.
+  await expect(voices.locator('.lg-voices__note')).toContainText(
+    'Customer opinions',
+  );
+  await expect(voices.locator('.lg-voices__note')).toContainText(
+    'not medical outcomes',
+  );
+  await expect(voices.locator('.lg-voices__note-link')).toHaveAttribute(
+    'href',
+    MAPS,
+  );
+});
+
+test('every locale publishes the same English reviews with localised labels', async ({
+  page,
+}) => {
+  const localisedAttribution: Record<string, string> = {
+    en: 'Google Review',
+    ml: 'Google അവലോകനം',
+    hi: 'Google समीक्षा',
+    ta: 'Google மதிப்புரை',
+    kn: 'Google ವಿಮರ್ಶೆ',
+  };
+  for (const lang of locales) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/${lang}/`);
+    const voices = page.locator('#voices');
+    await expect(voices.locator('blockquote.lg-voice')).toHaveCount(3);
+    await expect(voices.locator('.lg-voice--pending')).toHaveCount(0);
+    // The words are never translated; only the interface around them is.
+    await expect(voices.locator('.lg-voice__quote').first()).toHaveText(
+      APPROVED_REVIEWS[0].text,
+    );
+    await expect(voices.locator('.lg-voice__quote').first()).toHaveAttribute(
+      'lang',
+      'en',
+    );
+    await expect(voices.locator('.lg-voice__source').first()).toHaveText(
+      localisedAttribution[lang],
+    );
+    await expect(voices.locator('.lg-voice__stars').first()).toHaveAttribute(
+      'aria-label',
+      lang === 'en' ? '5 out of 5' : /5/,
+    );
+  }
+});
+
+test('the review carousel fits at every release width without overlap', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  for (const [width, height] of [
+    [320, 640],
+    [360, 740],
+    [390, 844],
+    [430, 932],
+    [768, 1024],
+    [1024, 768],
+    [1440, 1000],
+    [1920, 1080],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto('/en/');
+    const voices = page.locator('#voices');
+    const cards = voices.locator('blockquote.lg-voice');
+    await expect(cards).toHaveCount(3);
+
+    // No horizontal page overflow.
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `${width}px overflow`,
+    ).toBe(true);
+
+    // Cards sit side by side in the rail: never on top of one another.
+    const boxes = [];
+    for (const index of [0, 1, 2]) {
+      const box = await cards.nth(index).boundingBox();
+      expect(box, `${width}px card ${index} has a box`).not.toBeNull();
+      boxes.push(box!);
+    }
+    for (let index = 1; index < boxes.length; index += 1) {
+      expect(
+        boxes[index - 1]!.x + boxes[index - 1]!.width,
+        `${width}px cards ${index - 1}/${index} overlap`,
+      ).toBeLessThanOrEqual(boxes[index]!.x + 1);
+    }
+
+    // Controls never cover the cards, and are at least 44x44 when shown.
+    const rail = await voices.locator('.lg-voices__rail').boundingBox();
+    const nav = await voices.locator('.lg-voices__nav').boundingBox();
+    if (rail && nav) {
+      expect(nav.y, `${width}px nav overlaps the rail`).toBeGreaterThanOrEqual(
+        rail.y + rail.height - 1,
+      );
+    }
+    const next = voices.locator('[data-voices-next]');
+    if (await next.isVisible()) {
+      const target = await next.boundingBox();
+      expect(
+        target!.width,
+        `${width}px next button width`,
+      ).toBeGreaterThanOrEqual(44);
+      expect(
+        target!.height,
+        `${width}px next button height`,
+      ).toBeGreaterThanOrEqual(44);
+    }
+  }
+  expect(errors).toEqual([]);
+});
+
+test('the review carousel is keyboard operable and instant under reduced motion', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/en/');
+  const rail = page.locator('[data-voices-rail]');
+  const next = page.locator('[data-voices-next]');
+  await expect(next).toBeVisible();
+  // Arrow keys move the rail, so the focusable scroller is usable keyboard-only.
+  await rail.focus();
+  const before = await rail.evaluate((element) => element.scrollLeft);
+  await page.keyboard.press('ArrowRight');
+  await expect
+    .poll(() => rail.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(before);
+  // Controls work the same way, and reduced motion scrolls without animating.
+  await next.click();
+  await expect
+    .poll(() => rail.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(before);
+  await expect(
+    page.locator('[data-voices-dots] button').first(),
+  ).toHaveAttribute('aria-current', 'true');
+});
+
+test('every social button points at the two verified destinations', async ({
+  page,
+}) => {
+  for (const lang of locales) {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(`/${lang}/`);
+    const instagram = page.locator(`#voices a[href="${INSTAGRAM}"]`);
+    const facebook = page.locator(`#voices a[href="${FACEBOOK}"]`);
+    await expect(instagram).toHaveCount(1);
+    await expect(facebook).toHaveCount(1);
+    const footer = page.locator('#site-footer');
+    await expect(footer.locator(`a[href="${INSTAGRAM}"]`)).toHaveCount(1);
+    await expect(footer.locator(`a[href="${FACEBOOK}"]`)).toHaveCount(1);
+    // One destination each: no stale or duplicated social URLs anywhere.
+    expect(
+      await page.locator(`a[href*="facebook.com"]`).count(),
+      `${lang} facebook links`,
+    ).toBe(2);
+    expect(
+      await page.locator(`a[href*="instagram.com"]`).count(),
+      `${lang} instagram links`,
+    ).toBe(2);
+    for (const link of [instagram, facebook]) {
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('rel', /noopener/);
+      await expect(link).toHaveAttribute('aria-label', /\S/);
+    }
+    // The Maps listing link still works from both the rating block and footer.
+    await expect(page.locator(`#voices a[href="${MAPS}"]`)).toHaveCount(1);
+  }
 });
 
 test('the footer links the verified listing without merging the two addresses', async ({

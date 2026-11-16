@@ -9,18 +9,24 @@
  *     Google Business Profile on `googleBusiness.ratingReviewedOn`, labelled with
  *     that date so it can never be mistaken for a live figure;
  *   - a link straight to the live listing, which is the source of truth;
- *   - an honest "review text pending" card for each slot, because we do not hold
- *     permission to republish any reviewer's words.
+ *   - the three reviews the owner supplied from that profile and approved for
+ *     publication (`src/data/customer-reviews.ts`), each quoted verbatim, credited
+ *     to the reviewer who wrote it and labelled as a customer opinion.
  *
- * To turn the placeholders into real quotes, the owner supplies the exact text
- * and confirms permission to republish it and the reviewer attribution. Only
- * then should `reviews` below be filled in. Never invent a quote, a name, an
- * individual star rating or a count.
+ * The provenance, the consent position and the removal path live in
+ * `src/data/customer-reviews.ts` and docs/customer-voices.md. Never invent a
+ * quote, a name, a date, an individual star rating or a review count: the cards
+ * are rendered from that one list, so deleting a record there removes the card
+ * from all five locales on the next build.
  */
+import {
+  customerReviews,
+  reviewsProvenance,
+} from '../../data/customer-reviews';
 import { voices } from '../../data/living-copy';
 import { dict } from '../../i18n/living';
 import { googleBusiness, social } from '../../data/site-contact';
-import { railLabels } from '../../data/living-copy';
+import { footerCopy, railLabels } from '../../data/living-copy';
 import type { Locale } from '../../i18n';
 
 interface Props {
@@ -29,10 +35,15 @@ interface Props {
 
 const { lang } = Astro.props;
 
+/** Only approved reviews are rendered; the carousel keeps its three slots. */
+const reviews = customerReviews.slice(0, 3);
+const slots = [0, 1, 2].slice(reviews.length);
+
 /** Fills `{token}` placeholders without letting a value be read as markup. */
 const fill = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
+const footer = footerCopy[lang];
 const copy = {
   label: dict(voices.label, lang),
   title: dict(voices.title, lang),
@@ -47,25 +58,22 @@ const copy = {
   view: dict(voices.viewOnGoogle, lang),
   pendingTitle: dict(voices.cardPendingTitle, lang),
   emptyBody: dict(voices.emptyBody, lang),
+  sourceNote: dict(voices.sourceNote, lang),
+  railLabel: dict(voices.railLabel, lang),
+  googleReview: dict(voices.googleReview, lang),
+  ratingOf: (rating: number) => fill(dict(voices.ratingOf, lang), { rating }),
   prev: dict(railLabels.prev, lang),
   next: dict(railLabels.next, lang),
-  slideLabel: dict(railLabels.slideLabel, lang),
 };
 
-/**
- * Intentionally empty: we hold no permission to republish any reviewer's words.
- * Three slots are rendered as honest pending cards so the carousel's shape and
- * behaviour can be reviewed, and so filling this later needs no layout change.
- */
-const reviews: {
-  quote: string;
-  author: string;
-  rating?: number;
-}[] = [];
-const slots = [0, 1, 2];
-
-/** Stars for the aggregate only; never per-card, because we have no per-card data. */
+/** Stars for the aggregate only; the cards carry each reviewer's own rating. */
 const fullStars = Math.round(googleBusiness.rating);
+
+/** Every social button on the site reads the same two verified destinations. */
+const socialLinks = [
+  { ...social.instagram, label: footer.instagram, href: social.instagram.href },
+  { ...social.facebook, label: footer.facebook, href: social.facebook.href },
+];
 ---
 
 <section
@@ -92,7 +100,7 @@ const fullStars = Math.round(googleBusiness.rating);
       <a
         class="lg-btn lg-btn--gold lg-rating__cta"
         href={googleBusiness.href}
-        rel="noopener"
+        rel="noopener noreferrer"
         target="_blank"
       >
         {copy.view}
@@ -112,35 +120,49 @@ const fullStars = Math.round(googleBusiness.rating);
     <ul
       class="lg-rail lg-voices__rail"
       tabindex="0"
-      aria-label={copy.slideLabel}
+      aria-label={copy.railLabel}
       data-voices-rail
     >
-      {(reviews.length > 0 ? reviews : slots.map(() => null)).map((review) => (
+      {reviews.map((review) => (
         <li data-slide>
-          {review ? (
-            <blockquote class="lg-voice">
-              {review.rating ? (
-                <p class="lg-voice__stars" aria-label={`${review.rating} / 5`}>
-                  {'★'.repeat(review.rating)}
-                </p>
-              ) : null}
-              <p class="lg-voice__quote">{review.quote}</p>
-              <footer>
-                <cite>{review.author}</cite> · <span>Google</span>
-              </footer>
-            </blockquote>
-          ) : (
-            <div class="lg-voice lg-voice--pending">
-              <div class="lg-voice__head" aria-hidden="true">
-                <span class="lg-voice__avatar" />
-                <span class="lg-voice__bars">
-                  <i />
-                  <i />
+          <blockquote class="lg-voice" data-review={review.id}>
+            <p
+              class="lg-voice__stars"
+              role="img"
+              aria-label={copy.ratingOf(review.rating)}
+            >
+              <span class="lg-voice__stars-full" aria-hidden="true">
+                {'★'.repeat(review.rating)}
+              </span>
+              {review.rating < 5 ? (
+                <span class="lg-voice__stars-rest" aria-hidden="true">
+                  {'★'.repeat(5 - review.rating)}
                 </span>
-              </div>
-              <p class="lg-voice__empty">{copy.pendingTitle}</p>
+              ) : null}
+            </p>
+            {/* The reviewer's own words, in the language they were written in. */}
+            <p class="lg-voice__quote" lang="en">
+              {review.text}
+            </p>
+            <footer class="lg-voice__foot">
+              <cite lang="en">{review.author}</cite>
+              <span class="lg-voice__source">{copy.googleReview}</span>
+            </footer>
+          </blockquote>
+        </li>
+      ))}
+      {slots.map(() => (
+        <li data-slide>
+          <div class="lg-voice lg-voice--pending">
+            <div class="lg-voice__head" aria-hidden="true">
+              <span class="lg-voice__avatar" />
+              <span class="lg-voice__bars">
+                <i />
+                <i />
+              </span>
             </div>
-          )}
+            <p class="lg-voice__empty">{copy.pendingTitle}</p>
+          </div>
         </li>
       ))}
     </ul>
@@ -159,7 +181,7 @@ const fullStars = Math.round(googleBusiness.rating);
         class="lg-dots"
         data-voices-dots
         role="tablist"
-        aria-label={copy.slideLabel}
+        aria-label={copy.railLabel}
       ></div>
       <button
         class="lg-rail-btn"
@@ -172,23 +194,32 @@ const fullStars = Math.round(googleBusiness.rating);
       </button>
     </div>
 
-    <p class="lg-voices__note">{copy.emptyBody}</p>
+    <p class="lg-voices__note">
+      {reviews.length > 0 ? copy.sourceNote : copy.emptyBody}
+      {reviews.length > 0 ? (
+        <a
+          class="lg-voices__note-link"
+          href={reviewsProvenance.profileUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {copy.view}
+        </a>
+      ) : null}
+    </p>
 
     <div class="lg-voices__actions">
-      <a
-        class="lg-btn lg-btn--ghost"
-        href={social.instagram.href}
-        rel="noopener"
-      >
-        Instagram
-      </a>
-      <a
-        class="lg-btn lg-btn--ghost"
-        href={social.facebook.href}
-        rel="noopener"
-      >
-        Facebook
-      </a>
+      {socialLinks.map((link) => (
+        <a
+          class="lg-btn lg-btn--ghost"
+          href={link.href}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label={`${link.label} — ${footer.newTab}`}
+        >
+          {link.label}
+        </a>
+      ))}
     </div>
   </div>
 </section>
@@ -197,7 +228,7 @@ const fullStars = Math.round(googleBusiness.rating);
   /**
    * The voice carousel. Same contract as the edition rail: native scrolling,
    * optional prev/next, dots that follow the real scroll position, and no
-   * auto-advance. It does nothing when the three cards already fit.
+   * auto-advance. It does nothing when the cards already fit.
    */
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const rail = document.querySelector<HTMLElement>('[data-voices-rail]');

@@ -89,10 +89,19 @@ To validate a future production build without deploying:
 ```sh
 SITE_URL=https://mariyasnaturals.in SITE_ENV=production ALLOW_INDEXING=true npm run build
 EXPECT_SITE_URL=https://mariyasnaturals.in EXPECT_INDEXABLE=true npm run test:static
+EXPECT_SITE_URL=https://mariyasnaturals.in npm run test:media-policy
 # Restore the safe development build afterwards:
 npm run build
 npm run test:static
 ```
+
+The canonical origin is the apex `https://mariyasnaturals.in`, which is what the
+configuration guard enforces for an indexable build and what canonical, Open
+Graph, hreflang and sitemap URLs carry. The host must therefore serve the apex
+over valid HTTPS; if `www.mariyasnaturals.in` is the address customers use, it
+belongs as a redirect to the apex, not as a second canonical origin. Choosing
+`www` as canonical instead is a reviewed change to
+`src/config/resolve-site.mjs` and its test, not a build flag.
 
 ## GitHub workflow
 

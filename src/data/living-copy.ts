@@ -298,6 +298,41 @@ export const voices = {
     ta: 'Google-இல் மதிப்புரைகளைப் பார்க்க',
     kn: 'Google ನಲ್ಲಿ ವಿಮರ್ಶೆಗಳನ್ನು ನೋಡಿ',
   } as Localized,
+  /** Small attribution printed under each published review. */
+  googleReview: {
+    en: 'Google Review',
+    ml: 'Google അവലോകനം',
+    hi: 'Google समीक्षा',
+    ta: 'Google மதிப்புரை',
+    kn: 'Google ವಿಮರ್ಶೆ',
+  } as Localized,
+  /** Accessible label for a card's star row, e.g. "5 out of 5". */
+  ratingOf: {
+    en: '{rating} out of 5',
+    ml: '5-ൽ {rating}',
+    hi: '5 में से {rating}',
+    ta: '5 இல் {rating}',
+    kn: '5 ರಲ್ಲಿ {rating}',
+  } as Localized,
+  /**
+   * Printed under the carousel: these are customers' own opinions, quoted from
+   * Google Reviews, not product claims or medical outcomes.
+   */
+  sourceNote: {
+    en: "Customer opinions, quoted verbatim from Google Reviews and published with the owner's approval. They describe individual experiences, not medical outcomes, and individual results vary.",
+    ml: 'ഉപഭോക്തൃ അഭിപ്രായങ്ങൾ Google അവലോകനങ്ങളിൽ നിന്ന് അതേപടി ഉദ്ധരിച്ച്, ഉടമയുടെ അനുമതിയോടെ പ്രസിദ്ധീകരിച്ചത്. ഇവ വ്യക്തിപരമായ അനുഭവങ്ങളാണ്, വൈദ്യഫലങ്ങളല്ല; ഓരോരുത്തരുടെയും ഫലം വ്യത്യസ്തമായിരിക്കും.',
+    hi: 'ग्राहकों की राय, Google समीक्षाओं से शब्दशः उद्धृत और मालिक की स्वीकृति से प्रकाशित। ये व्यक्तिगत अनुभव हैं, चिकित्सीय परिणाम नहीं; हर व्यक्ति का परिणाम भिन्न हो सकता है।',
+    ta: 'வாடிக்கையாளர் கருத்துகள் Google மதிப்புரைகளில் இருந்து அப்படியே மேற்கோள் காட்டப்பட்டு, உரிமையாளர் ஒப்புதலுடன் வெளியிடப்பட்டவை. இவை தனிப்பட்ட அனுபவங்கள், மருத்துவ முடிவுகள் அல்ல; ஒவ்வொருவரின் விளைவும் வேறுபடும்.',
+    kn: 'ಗ್ರಾಹಕರ ಅಭಿಪ್ರಾಯಗಳು Google ವಿಮರ್ಶೆಗಳಿಂದ ಅಕ್ಷರಶಃ ಉಲ್ಲೇಖಿಸಿ, ಮಾಲೀಕರ ಅನುಮೋದನೆಯೊಂದಿಗೆ ಪ್ರಕಟಿಸಲಾಗಿದೆ. ಇವು ವೈಯಕ್ತಿಕ ಅನುಭವಗಳು, ವೈದ್ಯಕೀಯ ಫಲಿತಾಂಶಗಳಲ್ಲ; ಪ್ರತಿಯೊಬ್ಬರ ಫಲಿತಾಂಶ ಬೇರೆಯಾಗಿರಬಹುದು.',
+  } as Localized,
+  /** Accessible name for the review carousel itself. */
+  railLabel: {
+    en: 'Customer reviews',
+    ml: 'ഉപഭോക്തൃ അവലോകനങ്ങൾ',
+    hi: 'ग्राहक समीक्षाएँ',
+    ta: 'வாடிக்கையாளர் மதிப்புரைகள்',
+    kn: 'ಗ್ರಾಹಕ ವಿಮರ್ಶೆಗಳು',
+  } as Localized,
   cardPendingTitle: {
     en: 'Review text pending',
     ml: 'അഭിപ്രായ വാചകം കാത്തിരിക്കുന്നു',
@@ -369,6 +404,8 @@ export const footerCopy: Record<
     mapsFindUs: string;
     mapsPending: string;
     socialLabel: string;
+    /** Screen-reader hint appended to social links that open a new tab. */
+    newTab: string;
     collectionsLabel: string;
     legalLabel: string;
     legal: string[];
@@ -390,6 +427,7 @@ export const footerCopy: Record<
     mapsFindUs: 'Find us on Google Maps',
     mapsPending: 'Listing link to be confirmed',
     socialLabel: 'Follow',
+    newTab: 'opens in a new tab',
     collectionsLabel: 'Collections',
     legalLabel: 'Site information',
     legal: [
@@ -415,6 +453,7 @@ export const footerCopy: Record<
     mapsFindUs: 'Google Maps-ൽ ഞങ്ങളെ കാണൂ',
     mapsPending: 'ലിങ്ക് സ്ഥിരീകരിക്കാനുണ്ട്',
     socialLabel: 'പിന്തുടരൂ',
+    newTab: 'പുതിയ ടാബിൽ തുറക്കുന്നു',
     collectionsLabel: 'ശേഖരങ്ങൾ',
     legalLabel: 'സൈറ്റ് വിവരങ്ങൾ',
     legal: [
@@ -440,6 +479,7 @@ export const footerCopy: Record<
     mapsFindUs: 'Google Maps पर हमें खोजें',
     mapsPending: 'लिंक की पुष्टि बाकी',
     socialLabel: 'फ़ॉलो करें',
+    newTab: 'नई टैब में खुलता है',
     collectionsLabel: 'संग्रह',
     legalLabel: 'साइट जानकारी',
     legal: [
@@ -465,6 +505,7 @@ export const footerCopy: Record<
     mapsFindUs: 'Google Maps-இல் எங்களைக் காணுங்கள்',
     mapsPending: 'இணைப்பு உறுதிப்படுத்தப்பட வேண்டும்',
     socialLabel: 'பின்தொடரவும்',
+    newTab: 'புதிய தாவலில் திறக்கிறது',
     collectionsLabel: 'தொகுப்புகள்',
     legalLabel: 'தளத் தகவல்',
     legal: [
@@ -490,6 +531,7 @@ export const footerCopy: Record<
     mapsFindUs: 'Google Maps ನಲ್ಲಿ ನಮ್ಮನ್ನು ಹುಡುಕಿ',
     mapsPending: 'ಲಿಂಕ್ ದೃಢೀಕರಣ ಬಾಕಿ',
     socialLabel: 'ಅನುಸರಿಸಿ',
+    newTab: 'ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ',
     collectionsLabel: 'ಸಂಗ್ರಹಗಳು',
     legalLabel: 'ಸೈಟ್ ಮಾಹಿತಿ',
     legal: [
