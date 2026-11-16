@@ -9,7 +9,7 @@ import type { LocalizedText, ProductImage } from './products';
 import { assertApprovedMedia } from '../config/media-policy.mjs';
 const productManifest = productData as ProductMediaManifest;
 const brandManifest = brandData as unknown as {
-  sourcePolicy: 'current-approved-in-only';
+  sourcePolicy: 'official-com-catalogue-with-editorial-artwork';
   media: (ProductMediaRecord & { category: ProductCategory })[];
 };
 assertApprovedMedia(productManifest);
@@ -20,7 +20,7 @@ const approved = new Map(
 export function approvedImage(id: string, alt: LocalizedText): ProductImage {
   const media = approved.get(id);
   if (!media)
-    throw new Error(`Image is not in the current approved .in manifest: ${id}`);
+    throw new Error(`Image is not in the approved official-store manifest: ${id}`);
   const largest = media.derivatives.at(-1)!;
   return {
     id,
@@ -47,7 +47,7 @@ export function assertApprovedImage(image: ProductImage) {
     )
   )
     throw new Error(
-      'Rendering an image outside the approved .in manifest is forbidden',
+      'Rendering an image outside the approved official-store manifest is forbidden',
     );
 }
 export const categoryArtwork = (

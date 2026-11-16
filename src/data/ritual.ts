@@ -594,23 +594,23 @@ export interface RitualProduct {
 
 export const ritualProducts: readonly RitualProduct[] = [
   {
-    id: 'mn-in-3008',
+    id: 'mn-89552',
     slug: 'mariyas-hair-oil-200-ml',
     name: 'Mariyas Herbal Hair Care Oil – 200 ml',
     href: 'https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-oil-200-ml/',
     storeProductId: 3008,
     cares: ['fall', 'thinning', 'dryness', 'greying', 'shine', 'frizz'],
-    imageId: 'media-in-4294',
+    imageId: 'product-media-4294',
     category: 'hair',
   },
   {
-    id: 'mn-in-3009',
+    id: 'mn-89553',
     slug: 'mariyas-hair-oil-500-ml',
     name: 'Mariyas Herbal Hair Care – 500 ml',
     href: 'https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-500-ml/',
     storeProductId: 3009,
     cares: ['fall', 'thinning', 'dryness', 'greying', 'shine', 'frizz'],
-    imageId: 'media-in-4290',
+    imageId: 'product-media-4290',
     category: 'hair',
   },
   {
@@ -619,6 +619,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Coconut Milk Shampoo 200 ml',
     href: 'https://www.mariyasnaturals.com/product/coconut-milk-shampoo-200-ml/',
     storeProductId: 2868,
+    imageId: 'product-media-4316',
     cares: ['dryness', 'frizz', 'shine', 'dandruff'],
     category: 'hair',
   },
@@ -628,6 +629,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Amla Shikkakai Shampoo 200 ml',
     href: 'https://www.mariyasnaturals.com/product/amla-shikkakai-shampoo-200-ml/',
     storeProductId: 2869,
+    imageId: 'product-media-4321',
     cares: ['dandruff', 'fall', 'thinning'],
     category: 'hair',
   },
@@ -637,6 +639,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Tulsi Shampoo 200 ml',
     href: 'https://www.mariyasnaturals.com/product/tulsi-shampoo-200-ml/',
     storeProductId: 2871,
+    imageId: 'product-media-4330',
     cares: ['dandruff', 'oily'],
     category: 'hair',
   },
@@ -646,6 +649,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Honey Aloevera Shampoo 200 ml',
     href: 'https://www.mariyasnaturals.com/product/honey-aloevera-shampoo-200-ml/',
     storeProductId: 2870,
+    imageId: 'product-media-4325',
     cares: ['dryness', 'frizz', 'shine'],
     category: 'hair',
   },
@@ -655,6 +659,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Rosemary Water 200 ml',
     href: 'https://www.mariyasnaturals.com/product/rosemary-water-200-ml/',
     storeProductId: 2942,
+    imageId: 'product-media-4709',
     cares: ['fall', 'thinning'],
     category: 'hair',
   },
@@ -664,6 +669,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Rose Water 200 ml',
     href: 'https://www.mariyasnaturals.com/product/rose-water-200-ml/',
     storeProductId: 2883,
+    imageId: 'product-media-4724',
     cares: ['hydration', 'glow', 'soothing'],
     category: 'skin',
   },
@@ -673,6 +679,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Beard Oil 50 ml',
     href: 'https://www.mariyasnaturals.com/product/beard-oil-50-ml/',
     storeProductId: 2884,
+    imageId: 'product-media-4759',
     cares: ['dryness', 'texture'],
     category: 'skin',
   },
@@ -682,6 +689,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Saffron Gel 100 g',
     href: 'https://www.mariyasnaturals.com/product/saffron-gel-100-g/',
     storeProductId: 2889,
+    imageId: 'product-media-4694',
     cares: ['glow', 'hydration'],
     category: 'skin',
   },
@@ -691,6 +699,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Alovera Gel 100 g',
     href: 'https://www.mariyasnaturals.com/product/alovera-gel-100-g/',
     storeProductId: 2891,
+    imageId: 'product-media-4776',
     cares: ['hydration', 'soothing', 'texture'],
     category: 'skin',
   },
@@ -700,6 +709,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Cucumber Gel 100 g',
     href: 'https://www.mariyasnaturals.com/product/cucumber-gel-100-g/',
     storeProductId: 2890,
+    imageId: 'product-media-4781',
     cares: ['soothing', 'hydration'],
     category: 'skin',
   },
@@ -709,6 +719,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Heal Crack Cream 25 g',
     href: 'https://www.mariyasnaturals.com/product/heal-crack-cream-25-g/',
     storeProductId: 2893,
+    imageId: 'product-media-4346',
     cares: ['hydration', 'texture'],
     category: 'skin',
   },
@@ -718,6 +729,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Baby Massage Oil 200 ml',
     href: 'https://www.mariyasnaturals.com/product/baby-massage-oil-200-ml/',
     storeProductId: 2866,
+    imageId: 'product-media-4799',
     cares: ['baby'],
     category: 'baby',
   },
@@ -727,6 +739,7 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Baby Hair Oil 200 ml',
     href: 'https://www.mariyasnaturals.com/product/baby-hair-oil-200-ml/',
     storeProductId: 2867,
+    imageId: 'product-media-4796',
     cares: ['baby'],
     category: 'baby',
   },
@@ -736,27 +749,28 @@ export const ritualProducts: readonly RitualProduct[] = [
     name: 'Chyavanaprash',
     href: 'https://www.mariyasnaturals.com/product/chyavanaprash/',
     storeProductId: 3011,
+    imageId: 'product-media-4742',
     cares: ['wellness'],
     category: 'wellness',
   },
 ];
 
 /** Shown when the answers cannot support a real match. Never fabricated. */
-export const fallbackProductIds = ['mn-in-3008', 'mn-19187'] as const;
+export const fallbackProductIds = ['mn-89552', 'mn-19187'] as const;
 
 /**
  * Routine placement, in plain words. Purely how-to-use guidance paraphrased from
  * each product's own directions; no efficacy claim is made here.
  */
 export const placementCopy: Record<string, Localized> = {
-  'mn-in-3008': {
+  'mn-89552': {
     en: 'Warm a little and massage into the scalp, leave for an hour or overnight, then wash out.',
     ml: 'അൽപം ചൂടാക്കി തലയോട്ടിയിൽ തിരുമ്മൂ, ഒരു മണിക്കൂർ അല്ലെങ്കിൽ രാത്രി മുഴുവൻ വെച്ചതിന് ശേഷം കഴുകൂ.',
     hi: 'थोड़ा गर्म करके खोपड़ी में मालिश करें, एक घंटा या रात भर रखें, फिर धो लें।',
     ta: 'சற்று சூடாக்கி தலைக்கவசத்தில் தடவி, ஒரு மணி நேரம் அல்லது இரவு முழுவதும் வைத்த பின் கழுவுங்கள்.',
     kn: 'ಸ್ವಲ್ಪ ಬಿಸಿ ಮಾಡಿ ನೆತ್ತಿಗೆ ಮಸಾಜ್ ಮಾಡಿ, ಒಂದು ಗಂಟೆ ಅಥವಾ ರಾತ್ರಿಯಿಡೀ ಇಟ್ಟು ತೊಳೆಯಿರಿ.',
   },
-  'mn-in-3009': {
+  'mn-89553': {
     en: 'Same ritual as the 200 ml, in the larger pack for regular use.',
     ml: '200 ml പോലെ തന്നെ, സ്ഥിരമായ ഉപയോഗത്തിന് വലിയ പായ്ക്കിൽ.',
     hi: '200 ml जैसा ही रिचुअल, नियमित उपयोग के लिए बड़े पैक में।',

@@ -161,6 +161,20 @@ const entities = {
   '&ndash;': '–',
   '&mdash;': '—',
   '&hellip;': '…',
+  '&middot;': '·',
+  '&bull;': '•',
+  '&trade;': '™',
+  '&reg;': '®',
+  '&copy;': '©',
+  '&deg;': '°',
+  '&times;': '×',
+  '&frac12;': '½',
+  '&frac14;': '¼',
+  '&plus;': '+',
+  '&percnt;': '%',
+  '&dollar;': '$',
+  '&equals;': '=',
+  '&comma;': ',',
 };
 const named = (entity) => {
   const key = entity.toLowerCase();
@@ -176,7 +190,9 @@ const named = (entity) => {
 const decodeEntities = (value) =>
   String(value ?? '').replace(
     /&[a-z#0-9]+;/gi,
-    (entity) => named(entity) ?? entity,
+    // An entity the store publishes but we do not name is punctuation, not a
+    // word: dropping it keeps the sentence readable and the JSON clean.
+    (entity) => named(entity) ?? ' ',
   );
 const plainText = (html, limit) => {
   if (!html) return '';

@@ -1,0 +1,303 @@
+---
+/**
+ * "Chat with Mariyas" — the care assistant.
+ *
+ * A deterministic catalogue guide, not a chatbot and not a clinician: it answers
+ * from `src/data/care-knowledge.json`, which is a verbatim snapshot of the
+ * official store listings, and it refuses to answer anything that needs a
+ * practitioner. There is no network call and no generated text.
+ *
+ * Placement is deliberate. On small screens the trigger sits bottom-LEFT, above
+ * the mobile bar, mirroring the gold shop pill that occupies bottom-right; on
+ * desktop it sits bottom-left as well, clear of the hero's own video control
+ * (bottom-right, absolute). It therefore never overlaps `.shop-fab`,
+ * `[data-mobile-nav]` or `.hero-video-control` at any width from 320 px up.
+ *
+ * The panel is a native `<dialog>`: the browser supplies the focus trap, the
+ * inert background, Escape-to-close and focus restoration.
+ */
+import { assistantCopy } from '../data/care-assistant';
+import type { Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = assistantCopy[lang];
+---
+
+<div class="care" data-care data-lang={lang}>
+  <button
+    class="care-trigger"
+    type="button"
+    data-care-open
+    aria-haspopup="dialog"
+    aria-controls="care-dialog"
+    hidden
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4.5 5.5h15v11h-8.4L6.5 20v-3.5h-2Z"></path>
+      <path d="M8.5 9.5h7M8.5 12.5h4.5"></path>
+    </svg>
+    <span>{copy.label}</span>
+  </button>
+
+  <dialog
+    class="care-dialog"
+    id="care-dialog"
+    data-care-dialog
+    aria-labelledby="care-dialog-title"
+  >
+    <header class="care-dialog__head">
+      <div>
+        <p class="care-dialog__eyebrow">{copy.eyebrow}</p>
+        <h2 id="care-dialog-title">{copy.title}</h2>
+      </div>
+      <button
+        class="care-close"
+        type="button"
+        data-care-close
+        aria-label={copy.close}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+    </header>
+
+    <p class="care-dialog__intro">{copy.intro}</p>
+
+    <div class="care-log" data-care-log role="log" aria-live="polite">
+      <p class="care-bubble care-bubble--bot">{copy.answers.greet}</p>
+    </div>
+
+    <div class="care-chips" data-care-chips>
+      {copy.chips.map((chip) => (
+        <button class="care-chip" type="button" data-care-chip={chip}>
+          {chip}
+        </button>
+      ))}
+    </div>
+
+    <form class="care-form" data-care-form novalidate>
+      <label class="care-sr" for="care-input">
+        {copy.placeholder}
+      </label>
+      <input
+        class="care-input"
+        id="care-input"
+        data-care-input
+        name="question"
+        type="search"
+        autocomplete="off"
+        enterkeyhint="send"
+        placeholder={copy.placeholder}
+      />
+      <button class="care-send" type="submit">
+        {copy.send}
+      </button>
+    </form>
+
+    <p class="care-note">{copy.disclaimer}</p>
+  </dialog>
+</div>
+
+<script>
+  import { assistantCopy } from '../data/care-assistant';
+  import type { CareProduct } from '../data/care-index';
+
+  const root = document.querySelector<HTMLElement>('[data-care]');
+  const dialog =
+    document.querySelector<HTMLDialogElement>('[data-care-dialog]');
+  const trigger = document.querySelector<HTMLButtonElement>('[data-care-open]');
+  const closeButton =
+    document.querySelector<HTMLButtonElement>('[data-care-close]');
+  const form = document.querySelector<HTMLFormElement>('[data-care-form]');
+  const input = document.querySelector<HTMLInputElement>('[data-care-input]');
+  const log = document.querySelector<HTMLElement>('[data-care-log]');
+
+  if (root && dialog && trigger && closeButton && form && input && log) {
+    const lang = (root.dataset.lang || 'en') as keyof typeof assistantCopy;
+    const copy = assistantCopy[lang] ?? assistantCopy.en;
+    const answers = copy.answers;
+
+    /** Loaded on first open: the catalogue index and the lookup functions. */
+    let engine: Promise<{
+      search: typeof import('../data/care-search.mjs').searchProducts;
+      intents: typeof import('../data/care-search.mjs').detectIntents;
+      money: typeof import('../data/care-search.mjs').formatMoney;
+      products: readonly CareProduct[];
+      image: (product: CareProduct, width?: number) => string | null;
+    }> | null = null;
+
+    const load = () => {
+      engine ??= Promise.all([
+        import('../data/care-index'),
+        import('../data/care-search.mjs'),
+      ]).then(([index, search]) => ({
+        search: search.searchProducts,
+        intents: search.detectIntents,
+        money: search.formatMoney,
+        products: index.careProducts,
+        image: index.careImage,
+      }));
+      return engine;
+    };
+
+    const bubble = (text: string) => {
+      const paragraph = document.createElement('p');
+      paragraph.className = 'care-bubble care-bubble--bot';
+      paragraph.textContent = text;
+      log.append(paragraph);
+    };
+
+    const ask = async (question: string) => {
+      const text = question.trim();
+      if (!text) return;
+
+      const user = document.createElement('p');
+      user.className = 'care-bubble care-bubble--user';
+      user.textContent = text;
+      log.append(user);
+
+      const { search, intents, money, products, image } = await load();
+      const price = (product: CareProduct) =>
+        money(
+          product.prices.sale ?? product.prices.price,
+          product.prices.minorUnit,
+          product.prices.currencyCode,
+        );
+
+      const matched = search(products, text, 2);
+      const top = matched[0];
+      const found = new Set(intents(text));
+      const parts: string[] = [];
+
+      if (found.has('safety')) parts.push(answers.safety);
+      if (found.has('shipping')) parts.push(answers.shipping);
+      if (found.has('contact')) parts.push(answers.contact);
+
+      if (top) {
+        const value = price(top);
+        if (found.has('price'))
+          parts.push(
+            value ? answers.price.replace('{price}', value) : answers.noPrice,
+          );
+        if (found.has('stock'))
+          parts.push(top.inStock ? answers.inStock : answers.outOfStock);
+        if (found.has('use'))
+          parts.push(
+            top.details
+              ? answers.use.replace('{details}', top.details)
+              : answers.noUse,
+          );
+        if (found.has('ingredients'))
+          parts.push(
+            top.summary
+              ? answers.ingredients.replace('{details}', top.summary)
+              : answers.noIngredients,
+          );
+        if (!parts.length)
+          parts.push(
+            top.summary || answers.found.replace('{summary}', top.name),
+          );
+        if (top.packSize)
+          parts.push(answers.size.replace('{size}', top.packSize));
+      } else if (!parts.length) {
+        parts.push(answers.notFound);
+      }
+
+      for (const part of parts) bubble(part);
+
+      for (const product of matched) {
+        const card = document.createElement('article');
+        card.className = 'care-card';
+
+        const source = image(product);
+        if (source) {
+          const picture = document.createElement('img');
+          picture.className = 'care-card__media';
+          picture.src = source;
+          picture.width = 320;
+          picture.height = 320;
+          picture.loading = 'lazy';
+          picture.alt = product.name;
+          card.append(picture);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'care-card__body';
+
+        const title = document.createElement('h3');
+        title.className = 'care-card__name';
+        title.lang = 'en';
+        title.textContent = product.name;
+
+        const facts = document.createElement('p');
+        facts.className = 'care-card__facts';
+        facts.lang = 'en';
+        facts.textContent = [
+          product.packSize,
+          price(product),
+          product.inStock ? answers.inStock : answers.outOfStock,
+        ]
+          .filter(Boolean)
+          .join(' · ');
+
+        const link = document.createElement('a');
+        link.className = 'care-card__link';
+        link.href = product.storeUrl;
+        link.rel = 'noopener';
+        link.textContent = answers.seeListing;
+
+        body.append(title, facts, link);
+        card.append(body);
+        log.append(card);
+      }
+
+      log.scrollTop = log.scrollHeight;
+    };
+
+    const open = async () => {
+      if (!dialog.open) dialog.showModal();
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.hidden = true;
+      await load();
+      input.focus({ preventScroll: true });
+    };
+
+    const close = () => {
+      if (dialog.open) dialog.close();
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.hidden = false;
+      trigger.focus({ preventScroll: true });
+    };
+
+    trigger.hidden = false;
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.addEventListener('click', open);
+    closeButton.addEventListener('click', close);
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      close();
+    });
+    // A click on the backdrop lands on the dialog element itself.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) close();
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const question = input.value;
+      input.value = '';
+      void ask(question);
+    });
+    for (const chip of document.querySelectorAll<HTMLButtonElement>(
+      '[data-care-chip]',
+    ))
+      chip.addEventListener(
+        'click',
+        () => void ask(chip.dataset.careChip || ''),
+      );
+  }
+</script>

@@ -137,13 +137,26 @@ const copy = {
    * product photo when we hold one, and nothing at all when we do not — never a
    * stand-in image.
    */
-  const localImage = new Map<string, string>();
+  const localImage = new Map<
+    string,
+    { src: string; width: number; height: number }
+  >();
   for (const item of (
     mediaManifest as {
-      media?: { id: string; localAssetPath?: string }[];
+      media?: {
+        id: string;
+        localAssetPath?: string;
+        width?: number;
+        height?: number;
+      }[];
     }
   ).media ?? []) {
-    if (item.localAssetPath) localImage.set(item.id, item.localAssetPath);
+    if (item.localAssetPath)
+      localImage.set(item.id, {
+        src: item.localAssetPath,
+        width: item.width ?? 1200,
+        height: item.height ?? 1200,
+      });
   }
 
   const root = document.querySelector<HTMLElement>('[data-ritual-finder]');
@@ -481,8 +494,7 @@ const copy = {
       const reasonKey =
         entry.matched[0] ?? (entry.fallback ? 'default' : 'default');
       const reason = reasonCopy[reasonKey] ?? reasonCopy.default;
-      const placement =
-        placementCopy[product.id] ?? placementCopy['mn-in-3008'];
+      const placement = placementCopy[product.id] ?? placementCopy['mn-89552'];
       const photo = product.imageId
         ? localImage.get(product.imageId)
         : undefined;
@@ -494,7 +506,7 @@ const copy = {
           </div>
           ${
             photo
-              ? `<img class="lf-result__photo" src="${photo}" alt="${product.name}" width="1200" height="1200" loading="lazy" decoding="async" />`
+              ? `<img class="lf-result__photo" src="${photo.src}" alt="${product.name}" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async" />`
               : ''
           }
           <p class="lf-result__why"><strong>${text(ritualCopy.why)}:</strong> ${text(reason)}</p>

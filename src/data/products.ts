@@ -67,9 +67,7 @@ export const products: readonly Product[] = manifest.products.map((record) => {
     id: record.productId,
     slug: record.slug,
     category: record.category,
-    sku:
-      record.sources.find((s) => s.store === 'in')?.sku ||
-      record.sources.find((s) => s.sku)?.sku,
+    sku: record.sources.find((source) => source.sku)?.sku,
     // Official names remain verbatim; the interface is localized separately.
     name: {
       en: record.displayName,

@@ -34,8 +34,8 @@ const LIGHT_WASH = new Set(['mn-19197', 'mn-19193']);
 
 /** Conditioning-leaning products, used for dry scalps and dry-feeling hair. */
 const CONDITIONING = new Set([
-  'mn-in-3008',
-  'mn-in-3009',
+  'mn-89552',
+  'mn-89553',
   'mn-19191',
   'mn-19195',
   'mn-19185',
@@ -62,7 +62,9 @@ const HAIR_PRODUCTS = new Set(
  * recommendations. `familyOf` collapses them to the size that scored best.
  */
 const familyOf = (product: RitualProduct): string =>
-  product.id.startsWith('mn-in-300') ? 'hair-oil-edition' : product.id;
+  ['mn-89552', 'mn-89553'].includes(product.id)
+    ? 'hair-oil-edition'
+    : product.id;
 
 const score = (product: RitualProduct, answers: AnswerSet): number => {
   let total = 0;
@@ -98,11 +100,11 @@ const score = (product: RitualProduct, answers: AnswerSet): number => {
 
   // 4. Routine fit: a frequent routine justifies the larger pack.
   if (answers.routine === 'daily' || answers.routine === 'twice') {
-    if (product.id === 'mn-in-3009') total += 1;
+    if (product.id === 'mn-89553') total += 1;
     if (product.id === 'mn-19224') total += 1; // rose water is a daily refresh
   }
   if (answers.routine === 'weekly' || answers.routine === 'rare') {
-    if (product.id === 'mn-in-3008') total += 1;
+    if (product.id === 'mn-89552') total += 1;
   }
 
   return total;
