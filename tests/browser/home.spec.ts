@@ -506,3 +506,163 @@ test('the care assistant is reachable and labelled in every locale', async ({
     expect(await axe(page)).toEqual([]);
   }
 });
+
+/**
+ * The footer closes every page, and on phones three fixed controls live near
+ * that part of the screen: the gold "Shop products" pill, the bottom
+ * navigation bar and the care assistant trigger. None of them may ever cover a
+ * footer link — the footer is where the postal address, the WhatsApp number and
+ * the email live, so an overlap is a lost way to contact the shop.
+ *
+ * Two independent guarantees are pinned here:
+ *   1. the pill is hidden while the footer is on screen (MobileChrome observer),
+ *   2. even if it were shown, the footer's clearance rule
+ *      (`@media (width<=859px) { .lg-footer__bottom { padding-bottom: 3.8rem } }`)
+ *      keeps the last row and every link clear of it, of the bottom bar and of
+ *      the care trigger.
+ *
+ * The stylesheet is not touched by this test: it only measures the design.
+ */
+test('no fixed control ever covers a footer link at any phone width', async ({
+  page,
+}) => {
+  const widths = [
+    [320, 640],
+    [360, 740],
+    [390, 844],
+    [430, 932],
+  ] as const;
+
+  type Report = {
+    links: number;
+    problems: string[];
+    blockers: string[];
+    clearance: { care: number; bar: number } | null;
+  };
+
+  /** Everything measured in one pass inside the page, at the current scroll. */
+  const measure = (): Promise<Report> =>
+    page.evaluate(() => {
+      const isShown = (element: Element) => {
+        const style = getComputedStyle(element);
+        return (
+          style.display !== 'none' &&
+          style.visibility === 'visible' &&
+          Number(style.opacity) > 0.05
+        );
+      };
+      const blockers = [
+        ['.shop-fab', 'shop pill'],
+        ['[data-mobile-nav]', 'bottom bar'],
+        ['[data-care-open]', 'care trigger'],
+      ]
+        .map(([selector, name]) => {
+          const element = document.querySelector(selector);
+          return element && isShown(element)
+            ? { name, box: element.getBoundingClientRect() }
+            : null;
+        })
+        .filter((entry): entry is { name: string; box: DOMRect } =>
+          Boolean(entry),
+        );
+
+      const problems: string[] = [];
+      const links = [
+        ...document.querySelectorAll<HTMLAnchorElement>('#site-footer a'),
+      ];
+      for (const link of links) {
+        const rect = link.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+        const label = (link.textContent ?? '').trim().slice(0, 24);
+        for (const blocker of blockers) {
+          const b = blocker.box;
+          if (
+            rect.left < b.right &&
+            b.left < rect.right &&
+            rect.top < b.bottom &&
+            b.top < rect.bottom
+          ) {
+            problems.push(`"${label}" overlaps the ${blocker.name}`);
+          }
+        }
+        // The centre of the link must genuinely be the topmost thing there.
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        if (y <= 0 || y >= window.innerHeight) continue;
+        const top = document.elementFromPoint(x, y);
+        if (!top || !(top === link || link.contains(top))) {
+          problems.push(
+            `"${label}" is painted over by ${
+              (top as HTMLElement | null)?.className ||
+              top?.tagName ||
+              'nothing'
+            }`,
+          );
+        }
+      }
+
+      // How far the closing row sits above the fixed controls, in pixels.
+      const row = document.querySelector('.lg-footer__bottom');
+      const bar = document.querySelector('[data-mobile-nav]');
+      const care = document.querySelector('[data-care-open]');
+      let clearance: Report['clearance'] = null;
+      if (row && bar && care) {
+        const bottoms = [...row.querySelectorAll('p, li')].map(
+          (item) => item.getBoundingClientRect().bottom,
+        );
+        const lowest = Math.max(...bottoms);
+        clearance = {
+          care: care.getBoundingClientRect().top - lowest,
+          bar: bar.getBoundingClientRect().top - lowest,
+        };
+      }
+
+      return {
+        links: links.length,
+        problems,
+        blockers: blockers.map((blocker) => blocker.name),
+        clearance,
+      };
+    });
+
+  for (const [width, height] of widths) {
+    await page.setViewportSize({ width, height });
+    await page.goto('/en/');
+    // Park the page at its end: the footer is the reading position here.
+    await page.evaluate(() =>
+      window.scrollTo(0, document.documentElement.scrollHeight),
+    );
+    await expect(page.locator('[data-care-open]')).toBeVisible();
+    await expect(page.locator('[data-mobile-nav]')).toBeVisible();
+    // Guarantee 1: the pill steps aside for the footer instead of painting on it.
+    await expect(page.locator('.shop-fab')).toBeHidden();
+
+    const resting = await measure();
+    expect(resting.links).toBeGreaterThan(10);
+    expect(resting.blockers).toEqual(['bottom bar', 'care trigger']);
+    expect(resting.problems).toEqual([]);
+    expect(resting.clearance).not.toBeNull();
+    expect(resting.clearance!.care).toBeGreaterThanOrEqual(16);
+    expect(resting.clearance!.bar).toBeGreaterThanOrEqual(16);
+
+    // Guarantee 2: force the worst case — a visible pill resting on the footer.
+    // The clearance rule alone must keep every link readable at this width.
+    await page.evaluate(() => {
+      document
+        .querySelector('.shop-fab')
+        ?.setAttribute('data-fab-visible', 'true');
+    });
+    await expect(page.locator('.shop-fab')).toBeVisible();
+    // The pill fades in over 0.22s; measure only once it is fully painted.
+    await expect(page.locator('.shop-fab')).toHaveCSS('opacity', '1');
+    const forced = await measure();
+    expect(forced.blockers).toEqual([
+      'shop pill',
+      'bottom bar',
+      'care trigger',
+    ]);
+    expect(forced.problems).toEqual([]);
+    expect(forced.clearance!.care).toBeGreaterThanOrEqual(16);
+    expect(forced.clearance!.bar).toBeGreaterThanOrEqual(16);
+  }
+});
