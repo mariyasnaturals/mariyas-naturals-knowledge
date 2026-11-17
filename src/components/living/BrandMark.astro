@@ -1,0 +1,24 @@
+---
+/**
+ * The wordmark, in one place so the header and footer can never drift apart.
+ * It is text, not an image: it stays crisp at every width and needs no asset.
+ */
+interface Props {
+  href: string;
+  inverse?: boolean;
+}
+const { href, inverse = false } = Astro.props;
+---
+
+<a
+  class="lg-brand"
+  href={href}
+  aria-label="Mariyas Naturals — home"
+  lang="en"
+  class:list={{ 'is-inverse': inverse }}
+>
+  <span class="lg-brand__word">
+    Mariyas<i>.</i>
+  </span>
+  <span class="lg-brand__sub">N A T U R A L S</span>
+</a>

@@ -1,5 +1,12 @@
 # Current approved Mariyas .in media policy
 
+> **Superseded on 2026-11-16.** The discovery site now builds its catalogue and
+> product photography from the official `.com` store: 85 published listings, 59 with
+> the store's own photograph, 215 attachments and 489 local WebP derivatives. The
+> `.in` rules below remain true only for the four category artworks. Read
+> [official-store-sync.md](official-store-sync.md) and
+> [../catalogue/README.md](../catalogue/README.md) instead.
+
 The rebrand's business direction supersedes the earlier dual-store acquisition. **Only the current `https://mariyasnaturals.in` catalogue and approved current artwork may be used in active rendering.** No legacy `.com` packaging, banner or story image is an acceptable fallback.
 
 ## Actual current coverage

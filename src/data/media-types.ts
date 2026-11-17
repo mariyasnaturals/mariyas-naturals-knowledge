@@ -1,11 +1,16 @@
+export type StoreKey = 'com' | 'in';
 export interface CatalogueSource {
-  store: 'in';
+  store: 'com';
   id: number;
   name: string;
   sku: string;
   slug: string;
   url: string;
-  type: string;
+  type?: string;
+  /** Verified store price in minor units, exactly as published. */
+  priceMinor?: number | null;
+  currencyCode?: string;
+  currencyMinorUnit?: number;
   inStockAtVerification: boolean;
   categories: readonly { id: number; name: string; slug: string }[];
   attributes: readonly unknown[];
@@ -40,7 +45,7 @@ export interface ProductMediaRecord {
   height: number;
   verificationStatus: 'source-verified';
   sources: readonly {
-    store: 'in';
+    store: StoreKey;
     id: number;
     sourceUrl: string;
     metadataUrl: string;
@@ -50,7 +55,7 @@ export interface ProductMediaRecord {
     productId: string;
     variantId?: string;
     variantLabel?: string;
-    sourceStore: 'in';
+    sourceStore: StoreKey;
     sourceProductId: number;
     role: 'main' | 'gallery';
   }[];
@@ -74,7 +79,7 @@ export interface CatalogueProductRecord {
   missing: readonly string[];
 }
 export interface ProductMediaManifest {
-  sourcePolicy: 'current-approved-in-only';
+  sourcePolicy: 'official-com-catalogue-with-editorial-artwork';
   schemaVersion: number;
   verifiedOn: string;
   products: readonly CatalogueProductRecord[];

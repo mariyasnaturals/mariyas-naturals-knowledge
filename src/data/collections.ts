@@ -1,4 +1,5 @@
 import type { ProductCategory } from './media-types';
+import { products } from './products';
 import type { Locale, Dictionary } from '../i18n';
 import { categoryArtwork } from './media';
 export const collectionKeys: readonly ProductCategory[] = [
@@ -9,6 +10,15 @@ export const collectionKeys: readonly ProductCategory[] = [
   'combo',
   'wellness',
 ];
+/**
+ * Collections that still hold at least one publicly visible product. A category
+ * whose listings are all hidden gets neither a route nor a navigation link, so
+ * the site never offers an empty shelf or a dead end.
+ */
+export const activeCollectionKeys: readonly ProductCategory[] =
+  collectionKeys.filter((key) =>
+    products.some((product) => product.category === key),
+  );
 export const collectionPath = (lang: Locale, category: ProductCategory) =>
   `/${lang}/collections/${category}/`;
 export function collectionImage(category: ProductCategory, t: Dictionary) {
@@ -17,5 +27,6 @@ export function collectionImage(category: ProductCategory, t: Dictionary) {
     ml: `മരിയാസ് നാച്വറൽസ് ${t.categories[category]} ശേഖരത്തിന്റെ ചിത്രം`,
     hi: `मरियास नैचुरल्स ${t.categories[category]} संग्रह की छवि`,
     ta: `மரியாஸ் நேச்சுரல்ஸ் ${t.categories[category]} தொகுப்பின் படம்`,
+    kn: `ಮರಿಯಾಸ್ ನ್ಯಾಚುರಲ್ಸ್ ${t.categories[category]} ಸಂಗ್ರಹದ ಚಿತ್ರ`,
   });
 }

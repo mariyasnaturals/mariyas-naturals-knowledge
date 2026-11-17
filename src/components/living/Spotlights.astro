@@ -1,0 +1,193 @@
+---
+/**
+ * Phase 5 — Daily Care Spotlight.
+ *
+ * Four real products from the current catalogue. Each card shows:
+ *   - an authentic Mariyas photograph when one is held locally (clearly captioned
+ *     as the official range photograph), otherwise a correctly sized, labelled
+ *     photo slot naming the exact .com image still to import
+ *   - the official product name
+ *   - a neutral one-line format description
+ *   - a direct link to the verified .com permalink
+ *
+ * The image transition is a two-layer cross-fade on hover/focus only. Nothing is
+ * animated on a timer and nothing moves under prefers-reduced-motion.
+ */
+import ApprovedImage from '../ApprovedImage.astro';
+import { approvedImage } from '../../data/media';
+import { spotlightItems } from '../../data/spotlights';
+import { spotlights } from '../../data/living-copy';
+import { dict } from '../../i18n/living';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = {
+  label: dict(spotlights.label, lang),
+  title: dict(spotlights.title, lang),
+  note: dict(spotlights.note, lang),
+  view: dict(spotlights.view, lang),
+  rail: dict(spotlights.rail, lang),
+  pending: dict(spotlights.pendingPhoto, lang),
+};
+
+/** Local approved images, resolved once so the template stays declarative. */
+const imageFor = (id?: string) =>
+  id
+    ? approvedImage(id, {
+        en: 'Official Mariyas baby-care range photograph',
+        ml: 'ഔദ്യോഗിക മരിയാസ് ബേബി കെയർ ചിത്രം',
+        hi: 'आधिकारिक मरियास बेबी केयर फ़ोटो',
+        ta: 'அதிகாரப்பூர்வ மரியாஸ் குழந்தை பராமரிப்பு படம்',
+        kn: 'ಅಧಿಕೃತ ಮರಿಯಾಸ್ ಮಗು ಆರೈಕೆ ಫೋಟೋ',
+      })
+    : undefined;
+---
+
+<section
+  id="spotlights"
+  class="lg-section lg-spotlights-section"
+  aria-labelledby="spotlights-title"
+>
+  <div class="lg-shell">
+    <div class="lg-heading lg-heading--start">
+      <p class="lg-eyebrow">{copy.label}</p>
+      <h2 id="spotlights-title">{copy.title}</h2>
+      <span class="lg-rule" aria-hidden="true"></span>
+      <p>{copy.note}</p>
+    </div>
+
+    <div class="lg-spotlight-wrap" data-spotlights>
+      <ul
+        class="lg-rail lg-spotlight-rail"
+        role="list"
+        aria-label={copy.rail}
+        data-spotlight-rail
+      >
+        {spotlightItems.map((item, index) => {
+          const image = imageFor(item.imageId);
+          return (
+            <li data-slide={index}>
+              <article class="lg-spotlight" id={item.id}>
+                <figure class="lg-spotlight__layer">
+                  {image ? (
+                    <ApprovedImage
+                      lang={lang}
+                      image={image}
+                      sizes="(min-width: 1040px) 280px, (min-width: 700px) 44vw, 74vw"
+                    />
+                  ) : (
+                    <div class="lg-spotlight__slot">
+                      <span
+                        class="lg-spotlight__slot-mark"
+                        aria-hidden="true"
+                      />
+                      <span>{copy.pending}</span>
+                    </div>
+                  )}
+                  {dict(item.imageNote, lang) && (
+                    <figcaption class="lg-spotlight__tag">
+                      {dict(item.imageNote, lang)}
+                    </figcaption>
+                  )}
+                </figure>
+                <div class="lg-spotlight__body">
+                  <h3 lang="en">{item.name}</h3>
+                  <p>{dict(item.line, lang)}</p>
+                  <a class="lg-link" href={item.href} rel="noopener">
+                    {copy.view}
+                  </a>
+                </div>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div class="lg-rail-nav">
+        <button
+          class="lg-rail-btn"
+          type="button"
+          aria-label={dict(spotlights.view, lang)}
+          data-rail-prev
+          hidden
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <div class="lg-dots" role="tablist" aria-label={copy.rail}>
+          {spotlightItems.map((_, index) => (
+            <button
+              type="button"
+              role="tab"
+              aria-current={index === 0 ? 'true' : 'false'}
+              aria-label={`${index + 1} / ${spotlightItems.length}`}
+              data-rail-dot={index}
+            />
+          ))}
+        </div>
+        <button
+          class="lg-rail-btn"
+          type="button"
+          aria-label={copy.rail}
+          data-rail-next
+          hidden
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lg-spotlights-section {
+    background: var(--lg-ivory);
+    border-top: 1px solid var(--lg-beige);
+  }
+
+  .lg-spotlight-wrap {
+    position: relative;
+  }
+
+  @media (min-width: 1040px) {
+    .lg-spotlight-wrap :global(.lg-rail-nav) {
+      display: none;
+    }
+  }
+
+  /* An empty, honest photo slot: hairline frame, no invented artwork. */
+  .lg-spotlight__slot {
+    display: grid;
+    place-content: center;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1rem;
+    text-align: center;
+    color: var(--lg-ink-mute);
+    font-size: 0.68rem;
+    line-height: 1.5;
+    background: repeating-linear-gradient(
+      45deg,
+      #f7f0e0,
+      #f7f0e0 8px,
+      #f4ecda 8px,
+      #f4ecda 16px
+    );
+  }
+
+  .lg-spotlight__slot-mark {
+    display: block;
+    width: 34px;
+    height: 26px;
+    margin-inline: auto;
+    border: 1.5px solid #bfae8c;
+    border-radius: 3px;
+  }
+
+  .lg-spotlight__tag:empty {
+    display: none;
+  }
+</style>

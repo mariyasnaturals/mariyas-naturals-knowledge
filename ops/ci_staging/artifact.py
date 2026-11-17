@@ -5,17 +5,18 @@ from pathlib import Path
 import stat
 import zipfile
 from html.parser import HTMLParser
-from .trust import ORIGIN, BRANCH, HERO_ORIGIN, WORKFLOW_ID, MAX_TOTAL, MAX_ZIP, BOTANICAL_ROOT, require, valid_sha, safe_name, digest
+from .trust import ORIGIN, BRANCH, HERO_ORIGIN, WORKFLOW_ID, MAX_TOTAL, MAX_ZIP, LOCALES, STORE_ORIGIN, require, valid_sha, safe_name, digest
 
 
 class Page(HTMLParser):
     def __init__(self):
-        super().__init__(); self.robots=[]; self.canonicals=[]; self.links=[]
+        super().__init__(); self.robots=[]; self.canonicals=[]; self.links=[]; self.forms=[]
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if tag=='meta' and a.get('name')=='robots':self.robots.append(a.get('content'))
         if tag=='link' and a.get('rel')=='canonical':self.canonicals.append(a.get('href'))
         if tag=='a':self.links.append(a.get('href',''))
+        if tag=='form':self.forms.append(a.get('action',''))
 
 
 def encode(value):
@@ -93,19 +94,18 @@ def validate(m,archive,policy,sha,run):
             require(revision.get('source_sha')==sha and revision.get('hero_origin')==HERO_ORIGIN and set(revision)<= {'source_sha','hero_origin','note'}, 'Invalid public revision')
         elif name.endswith('.html'):
             import re
-            require(name=='index.html' or re.fullmatch(r'(en|ml|hi|ta)/(?:[a-z0-9-]+/)*index\.html',name), 'Unsafe HTML route')
+            require(name=='index.html' or re.fullmatch(r'('+'|'.join(LOCALES)+r')/(?:[a-z0-9-]+/)*index\.html',name), 'Unsafe HTML route')
             page=Page();page.feed(data.decode('utf-8'))
             require(page.robots==['noindex, nofollow'] and page.canonicals==[ORIGIN+'/'+name.removesuffix('index.html')], 'Unsafe page metadata')
-            require(not any('mariyasnaturals.com' in href for href in page.links), 'Purchasing link is forbidden')
+            # Discovery links out to the official storefront; nothing else may
+            # carry a purchase flow on this origin.
+            require(all(href=='' or not href.startswith('http') or href.startswith(STORE_ORIGIN+'/') for href in page.links), 'Unofficial outbound link')
+            require(not page.forms, 'Checkout form is forbidden')
         elif name=='robots.txt':require(data==b'User-agent: *\nDisallow: /\n', 'Unsafe robots policy')
         elif name in ('sitemap-index.xml','sitemap-0.xml'):require(ORIGIN.encode() in data and b'mariyasnaturals.in' not in data, 'Wrong sitemap origin')
-        elif name.startswith(BOTANICAL_ROOT):
-            import re
-            require(re.fullmatch(r'_botanical-assets/[A-Za-z0-9_.-]+\.webp',name), 'Unexpected botanical release file')
-            require(name in policy['public_files'], 'Botanical media must be pinned in the reviewed policy')
         else:
             import re
             require(re.fullmatch(r'_astro/[A-Za-z0-9_.-]+\.(css|js)',name), 'Unexpected release file')
     require(set(policy['public_files'])<=set(files), 'Missing original/public media')
-    require({'index.html','en/index.html','ml/index.html','hi/index.html','ta/index.html','robots.txt','staging-revision.json'}<=set(files), 'Missing language/revision output')
+    require({'index.html','robots.txt','staging-revision.json'}<=set(files) and {lang+'/index.html' for lang in LOCALES}<=set(files), 'Missing language/revision output')
     return files

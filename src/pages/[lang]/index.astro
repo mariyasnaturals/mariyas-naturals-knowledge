@@ -1,58 +1,33 @@
 ---
-import ArrowIcon from '../../components/ArrowIcon.astro';
+/**
+ * The language homepage. `/` renders the same body (see src/pages/index.astro),
+ * so English is reachable both at the root and at /en/ — with the root canonical
+ * pointing at /en/ and every locale declaring the full hreflang set.
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import StorytellingSection from '../../components/StorytellingSection.astro';
-import BotanicalJourney from '../../components/botanical/BotanicalJourney.astro';
-import IngredientPreview from '../../components/IngredientPreview.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
-import ProductCard from '../../components/ProductCard.astro';
-import CollectionHighlights from '../../components/CollectionHighlights.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { featuredProduct, featuredProducts } from '../../data/products';
-import { socialImage } from '../../data/seo';
+import MobileChrome from '../../components/MobileChrome.astro';
+import HomeHero from '../../components/HomeHero.astro';
+import HomeSections from '../../components/living/HomeSections.astro';
+import LanguageSuggestion from '../../components/living/LanguageSuggestion.astro';
 import { locales, dictionaries, type Locale } from '../../i18n';
+
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
 }
+
 const lang = Astro.params.lang as Locale;
 const t = dictionaries[lang];
 ---
 
-<BaseLayout
-  lang={lang}
-  title={t.title}
-  description={t.description}
-  socialImage={socialImage(featuredProduct.images.main, lang)}
->
-  <SiteHeader lang={lang} t={t} />
+<BaseLayout lang={lang} title={t.title} description={t.description}>
+  <LanguageSuggestion lang={lang} />
+  <SiteHeader lang={lang} route="home" />
   <main id="main" tabindex="-1">
-    <StorytellingSection t={t} lang={lang} />
-    <BotanicalJourney lang={lang} />
-    <IngredientPreview t={t} />
-    <CollectionHighlights t={t} lang={lang} />
-    <section id="products" class="product-section section">
-      <div class="wrap">
-        <SectionHeading
-          eyebrow={t.productLabel}
-          title={t.productTitle}
-          text={t.productText}
-        />
-        <div
-          class="product-rail"
-          tabindex="0"
-          role="region"
-          aria-label={t.products}
-        >
-          {featuredProducts.map((product) => (
-            <ProductCard product={product} t={t} lang={lang} />
-          ))}
-        </div>
-        <a class="button catalogue-link" href={`/${lang}/products/`}>
-          {t.allProducts} <ArrowIcon />
-        </a>
-      </div>
-    </section>
+    <HomeHero t={t} />
+    <HomeSections t={t} lang={lang} />
   </main>
-  <SiteFooter lang={lang} t={t} />
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
 </BaseLayout>

@@ -16,7 +16,7 @@
   "explore": "Meet the collection",
   "discover": "Discover the ritual",
   "heroNote": "Mariyas Herbal Hair Care Oil · 200 ml",
-  "heritageLabel": "01 / THE MARIYAS RITUAL",
+  "heritageLabel": "THE MARIYAS RITUAL",
   "heritageTitle": "A closer look at care.",
   "heritageText": "A quiet journey through the details of the current Mariyas hair-oil collection. Take your time. Find your format.",
   "heritageNote": "Explore the 200 ml and 500 ml editions in their distinctive brown-and-gold packaging.",
@@ -68,7 +68,7 @@
   "storeText": "Purchases take place on our separate official e-commerce website.",
   "store": "Visit the Official Store",
   "footer": "Botanicals. Heritage. Thoughtful care.",
-  "preview": "Development preview · content and translations require editorial approval.",
+  "preview": "Preview build for owner review. Purchases are completed on mariyasnaturals.com.",
   "rights": "Mariyas Naturals",
   "root": "Choose your language",
   "back": "English homepage",
@@ -88,7 +88,7 @@
   "nextChapter": "The next chapter",
   "exploreIngredients": "Explore care notes",
   "viewDetails": "View product details",
-  "commercePending": "Purchasing is currently unavailable",
+  "commercePending": "Purchases are completed on our official store.",
   "storyIntro": "A quiet journey through the collection.",
   "sourceVerified": "Current store source checked",
   "sizesLabel": "Listed sizes",
@@ -105,7 +105,7 @@
     "baby-care": "Baby care",
     "skin-care": "Skin & body care",
     "combo": "Kits & combos",
-    "wellness": "Other catalogue products"
+    "wellness": "Herbal wellness"
   },
   "imageMissing": "Product photograph pending",
   "heroEdition": "Explore the editions",
@@ -159,5 +159,16 @@
     "heroKicker": "THE MARIYAS RITUAL",
     "heroLine": "Nature. A little closer.",
     "finalLine": "A little time. Entirely yours."
-  }
+  },
+  "shopProducts": "Shop Products",
+  "buyNow": "BUY NOW",
+  "hairOilOffer": "Hair oil offer",
+  "aboutQ1": "What does Mariyas Naturals make?",
+  "aboutA1": "Herbal hair care, baby care, skin and body care, herbal powders and everyday wellness products, made in Kerala.",
+  "aboutQ2": "Where do I buy?",
+  "aboutA2": "All purchases are completed on the official store at mariyasnaturals.com. This website is a product discovery site and has no cart or checkout.",
+  "aboutQ3": "Which formats are available?",
+  "aboutA3": "Hair oil is listed in 200 ml and 500 ml packs. Standard shipping and payment terms come from the store at checkout.",
+  "aboutTitle": "The Mariyas ritual",
+  "aboutLede": "Herbal hair care made in Kerala, in the formats listed in the current catalogue."
 }

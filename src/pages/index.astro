@@ -1,27 +1,40 @@
 ---
-import ArrowIcon from '../components/ArrowIcon.astro';
+/**
+ * The site root.
+ *
+ * Phase 2: this used to be a standalone language gateway. It is now the real
+ * homepage. It renders the English homepage, declares `lang="en"`, sends an
+ * explicit canonical to `/en/` so the two URLs cannot compete as duplicates, and
+ * keeps `/en/` in the hreflang graph as the x-default.
+ *
+ * A visitor whose browser prefers another language still gets there through the
+ * non-blocking suggestion strip in the header — never through a forced redirect.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import MobileChrome from '../components/MobileChrome.astro';
+import HomeHero from '../components/HomeHero.astro';
+import HomeSections from '../components/living/HomeSections.astro';
+import LanguageSuggestion from '../components/living/LanguageSuggestion.astro';
 import { dictionaries } from '../i18n';
+
+const t = dictionaries.en;
 ---
 
 <BaseLayout
   lang="en"
-  title="Choose your language"
-  description={dictionaries.en.description}
+  title={t.title}
+  description={t.description}
   path="/"
+  canonicalPath="/en/"
 >
-  <main class="language-landing wrap">
-    <p class="eyebrow">MARIYAS NATURALS</p>
-    <h1>
-      Rooted in Nature.
-      <br />
-      Guided by Tradition.
-    </h1>
-    <p>Choose your language to explore our knowledge website.</p>
-    <LanguageSwitcher lang="en" label="Choose language" />
-    <a class="button" href="/en/">
-      Continue in English <ArrowIcon />
-    </a>
+  <LanguageSuggestion lang="en" />
+  <SiteHeader lang="en" route="home" />
+  <main id="main" tabindex="-1">
+    <HomeHero t={t} />
+    <HomeSections t={t} lang="en" />
   </main>
+  <SiteFooter lang="en" />
+  <MobileChrome lang="en" />
 </BaseLayout>

@@ -1,40 +1,175 @@
 ---
-import ArrowIcon from './ArrowIcon.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
-import MobileNavigation from './MobileNavigation.astro';
-import type { Locale, Dictionary } from '../i18n';
+/**
+ * The one footer used by every route.
+ *
+ * Contents are limited to what has been verified:
+ *   - full postal address, enquiry email, exactly one WhatsApp number
+ *   - Instagram (opened and read) and Facebook (declared in the store's own
+ *     Organization data)
+ *   - collection links that exist locally
+ *   - Google Maps links to the business listing verified on 2026-11-16. The
+ *     listing's own address wording is shown alongside it but is never used to
+ *     overwrite the official-store postal address.
+ */
+import BrandMark from './living/BrandMark.astro';
+import { dictionaries, type Locale } from '../i18n';
+import { footerCopy } from '../data/living-copy';
+import { activeCollectionKeys, collectionPath } from '../data/collections';
+import {
+  whatsapp,
+  email,
+  postalAddress,
+  social,
+  googleBusiness,
+} from '../data/site-contact';
+import { storeLinks } from '../data/store';
+import {
+  evidenceCopy,
+  awardsPublishable,
+  certificationsPublishable,
+} from '../data/evidence';
+
 interface Props {
   lang: Locale;
-  t: Dictionary;
 }
-const { lang, t } = Astro.props;
-const cinematicHomepage = Astro.url.pathname === `/${lang}/`;
+
+const { lang } = Astro.props;
+const t = dictionaries[lang];
+const c = footerCopy[lang];
+const year = new Date().getFullYear();
+
+/** Only categories that actually hold a visible product and a built route. */
+const collections = activeCollectionKeys
+  .filter((key) => key !== 'combo')
+  .map((key) => ({
+    href: collectionPath(lang, key),
+    label: t.categories[key],
+  }));
 ---
 
-<section id="store" class="store-section section" aria-label={t.storeShort}>
-  <div class="wrap">
-    <p class="eyebrow">{t.nextChapter}</p>
-    <h2>{t.storeTitle}</h2>
-    <p>{t.storeText}</p>
-    <p class="commerce-status">
-      <span class="status-diamond" aria-hidden="true"></span>{' '}
-      {t.commercePending}
-    </p>
-    <a class="button button-gold" href={`/${lang}/products/`}>
-      {t.catalogue} <ArrowIcon />
-    </a>
+<footer class="lg-footer" id="site-footer">
+  <div class="lg-shell">
+    <div class="lg-footer__top">
+      <div class="lg-footer__brand">
+        <BrandMark href={`/${lang}/`} inverse />
+        <p class="lg-footer__tagline">{c.tagline}</p>
+        <p class="lg-footer__hint">{c.storeNote}</p>
+
+        <h2>{c.socialLabel}</h2>
+        <ul class="lg-footer__inline">
+          <li>
+            <a
+              href={social.instagram.href}
+              rel="noopener noreferrer"
+              target="_blank"
+              aria-label={`${c.instagram} — ${c.newTab}`}
+            >
+              {c.instagram}
+            </a>
+          </li>
+          <li aria-hidden="true">·</li>
+          <li>
+            <a
+              href={social.facebook.href}
+              rel="noopener noreferrer"
+              target="_blank"
+              aria-label={`${c.facebook} — ${c.newTab}`}
+            >
+              {c.facebook}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>{c.addressLabel}</h2>
+        <address>{postalAddress.display}</address>
+        <ul class="lg-footer__facts">
+          <li>
+            <span class="lg-footer__hint">{c.mapsLabel}</span>
+            {googleBusiness.href ? (
+              <a href={googleBusiness.href} rel="noopener">
+                {c.mapsFindUs}
+              </a>
+            ) : (
+              <span class="lg-footer__pending">{c.mapsPending}</span>
+            )}
+            {googleBusiness.href && (
+              <span class="lg-footer__hint lg-footer__listing">
+                {googleBusiness.listingAddress}
+              </span>
+            )}
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>{c.collectionsLabel}</h2>
+        <ul class="lg-footer__links">
+          {collections.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+          <li>
+            <a href={`/${lang}/hair-oil/`}>{evidenceCopy[lang].nav.guide}</a>
+          </li>
+          {awardsPublishable && (
+            <li>
+              <a href={`/${lang}/awards/`}>{evidenceCopy[lang].nav.awards}</a>
+            </li>
+          )}
+          {certificationsPublishable && (
+            <li>
+              <a href={`/${lang}/certifications/`}>
+                {evidenceCopy[lang].nav.certifications}
+              </a>
+            </li>
+          )}
+          <li>
+            <a href={`/${lang}/products/`}>{t.catalogue}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>{c.legalLabel}</h2>
+        <ul class="lg-footer__links">
+          <li>
+            <a href={email.href}>
+              <span class="lg-footer__hint">{c.emailLabel}</span>
+              {email.display}
+            </a>
+          </li>
+          <li>
+            <a href={whatsapp.href} rel="noopener">
+              <span class="lg-footer__hint">{c.whatsappLabel}</span>
+              {whatsapp.display}
+            </a>
+          </li>
+          <li>
+            <a href={storeLinks.shop} rel="noopener">
+              {t.shopProducts}
+            </a>
+          </li>
+          {c.legal.map((line) => (
+            <li>
+              <span class="lg-footer__hint">{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="lg-footer__bottom">
+      <p style="margin:0">
+        © {year} {t.rights}. {c.rights}
+      </p>
+      <ul class="lg-footer__legal">
+        <li>Mariyas Naturals</li>
+        <li>{postalAddress.display.split(', ').slice(-2).join(', ')}</li>
+        <li>{c.whatsappHint}</li>
+      </ul>
+    </div>
   </div>
-</section>
-<footer class="site-footer wrap">
-  <div>
-    <a class="footer-brand" href={`/${lang}/`} lang="en">
-      Mariyas Naturals
-    </a>
-    <p>{t.footer}</p>
-  </div>
-  <LanguageSwitcher lang={lang} label={t.language} compact />
-  <p class="footer-note">
-    © {new Date().getFullYear()} {t.rights}. {!cinematicHomepage && t.preview}
-  </p>
 </footer>
-<MobileNavigation lang={lang} t={t} />

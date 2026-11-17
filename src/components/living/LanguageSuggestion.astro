@@ -1,0 +1,142 @@
+---
+/**
+ * Non-blocking browser-language suggestion.
+ *
+ * Rules that make it safe:
+ *   - never redirects; the visitor stays exactly where they are
+ *   - never appears if the visitor already made a manual choice (localStorage)
+ *   - never appears when they are already reading the suggested language
+ *   - dismissible and remembered when dismissed
+ *   - entirely client-side; with JavaScript off it simply never renders
+ */
+import { locales, type Locale } from '../../i18n';
+import { languageHint } from '../../data/living-copy';
+import { dict } from '../../i18n/living';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const labels = {
+  question: dict(languageHint.question, lang),
+  accept: dict(languageHint.accept, lang),
+  dismiss: dict(languageHint.dismiss, lang),
+  close: dict(languageHint.close, lang),
+};
+const known = locales.join(',');
+---
+
+<div
+  class="lg-suggest"
+  data-language-suggestion
+  data-current={lang}
+  data-locales={known}
+  data-question={labels.question}
+  data-accept={labels.accept}
+  hidden
+>
+  <div class="lg-suggest__inner lg-shell">
+    <p data-suggest-text></p>
+    <a class="lg-btn lg-btn--sm" data-suggest-accept></a>
+    <button
+      class="lg-suggest__dismiss"
+      type="button"
+      aria-label={labels.close}
+      data-suggest-dismiss
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+<script>
+  /**
+   * Reads the browser's language list, matches the first tag whose base language
+   * is one this site publishes, and offers it once. Nothing is applied without a
+   * click, and the offer is suppressed forever after a dismissal or a manual
+   * language choice.
+   */
+  const CHOSEN = 'mariyas-language-choice';
+  const DISMISSED = 'mariyas-language-dismissed';
+  const root = document.querySelector<HTMLElement>(
+    '[data-language-suggestion]',
+  );
+  if (root) {
+    const current = root.dataset.current as string;
+    const locales = (root.dataset.locales ?? '').split(',');
+    const question = root.dataset.question ?? '';
+    const accept = root.dataset.accept ?? '';
+    const text = root.querySelector<HTMLElement>('[data-suggest-text]');
+    const link = root.querySelector<HTMLAnchorElement>('[data-suggest-accept]');
+    const dismiss = root.querySelector<HTMLButtonElement>(
+      '[data-suggest-dismiss]',
+    );
+    const names: Record<string, string> = {
+      en: 'English',
+      ml: 'മലയാളം',
+      hi: 'हिन्दी',
+      ta: 'தமிழ்',
+      kn: 'ಕನ್ನಡ',
+    };
+    const read = (key: string) => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    };
+    const write = (key: string, value: string) => {
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        /* ignore */
+      }
+    };
+    const fill = (template: string, name: string) =>
+      template.replace(/\{language\}/g, () => name);
+
+    const suggestion = (navigator.languages ?? [navigator.language ?? 'en'])
+      .map((tag) => String(tag).toLowerCase().split('-')[0])
+      .find((tag) => locales.includes(tag) && tag !== current);
+
+    const allowed =
+      suggestion &&
+      !read(CHOSEN) &&
+      read(DISMISSED) === null &&
+      !document.documentElement.hasAttribute('data-language-dismissed');
+
+    if (suggestion && allowed && text && link) {
+      const name = names[suggestion] ?? suggestion;
+      // Wrap the endonym in a span carrying its own lang: the surrounding page is
+      // English, so an untagged Malayalam (etc.) endonym would be rendered by the
+      // Latin face and show as missing-glyph boxes.
+      const asSpan = `<span lang="${suggestion}">${name.replace(/</g, '&lt;')}</span>`;
+      text.innerHTML = fill(question, asSpan).replace(
+        /<(?!\/?span\b)[^>]*>/g,
+        '',
+      );
+      link.innerHTML = fill(accept, asSpan).replace(
+        /<(?!\/?span\b)[^>]*>/g,
+        '',
+      );
+      link.href = (() => {
+        const parts = location.pathname.split('/').filter(Boolean);
+        if (locales.includes(parts[0])) parts[0] = suggestion;
+        else parts.unshift(suggestion);
+        return `/${parts.join('/')}/`.replace(/\/+$/, '/');
+      })();
+      link.lang = suggestion;
+      link.hreflang = suggestion;
+      link.addEventListener('click', () => write(CHOSEN, suggestion));
+      root.hidden = false;
+      root.dataset.open = 'true';
+    }
+
+    dismiss?.addEventListener('click', () => {
+      write(DISMISSED, new Date().toISOString().slice(0, 10));
+      root.dataset.open = 'false';
+      root.hidden = true;
+    });
+  }
+</script>

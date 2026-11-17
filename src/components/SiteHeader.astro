@@ -1,64 +1,115 @@
 ---
-import ArrowIcon from './ArrowIcon.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
-import type { Locale, Dictionary } from '../i18n';
+/**
+ * The one header used by every route.
+ *
+ * It replaces the older per-page chrome: same wordmark, same nav, same language
+ * selector, same primary action, at every width. Nothing here is homepage
+ * specific, so a product page and the Ritual Finder share it exactly.
+ */
+import LanguageSelector from './living/LanguageSelector.astro';
+import BrandMark from './living/BrandMark.astro';
+import { dictionaries, type Locale } from '../i18n';
+import { livingNav } from '../data/living-copy';
+import { storeLinks } from '../data/store';
+
 interface Props {
   lang: Locale;
-  t: Dictionary;
+  /** Current route, used for aria-current. */
+  route?: 'home' | 'products' | 'collections' | 'ritual' | 'other';
 }
-const { lang, t } = Astro.props;
-const prefix = Astro.url.pathname === `/${lang}/` ? '' : `/${lang}/`;
-const links = [
-  ['story', t.story],
-  ['ingredients', t.ingredients],
-  ['knowledge', t.knowledge],
-  ['products', t.products],
+
+const { lang, route = 'other' } = Astro.props;
+const t = dictionaries[lang];
+const nav = livingNav[lang];
+
+/**
+ * In-page destinations on the homepage are plain fragments, so the browser
+ * scrolls instead of reloading the document; everywhere else they are absolute
+ * links back to the homepage section.
+ */
+const onHome = Astro.url.pathname === `/${lang}/` || Astro.url.pathname === '/';
+const anchor = (id: string) => (onHome ? `#${id}` : `/${lang}/#${id}`);
+
+const links: { href: string; label: string; current: boolean }[] = [
+  {
+    href: `/${lang}/products/`,
+    label: t.products,
+    current: route === 'products' || route === 'collections',
+  },
+  { href: anchor('care'), label: nav.collections, current: false },
+  { href: `/${lang}/ritual/`, label: nav.ritual, current: route === 'ritual' },
+  { href: anchor('story'), label: nav.story, current: false },
 ];
 ---
 
 <a class="skip-link" href="#main">
   {t.skip}
 </a>
-<div class="announcement">{t.announcement}</div>
-<header class="header-shell">
-  <div class="site-header wrap">
-    <a class="brand" href={`/${lang}/`} aria-label="Mariyas Naturals" lang="en">
-      <span>
-        Mariyas<span class="brand-dot">.</span>
-      </span>
-      <small>N A T U R A L S</small>
-    </a>
-    <nav class="desktop-nav" aria-label={t.navLabel}>
-      {links.map(([id, label]) => (
-        <a href={`${prefix}#${id}`}>{label}</a>
+<header class="lg-header" data-site-header>
+  <div class="lg-header__bar lg-shell">
+    <BrandMark href={`/${lang}/`} />
+
+    <nav class="lg-nav" aria-label={t.navLabel}>
+      {links.map((link) => (
+        <a href={link.href} aria-current={link.current ? 'page' : undefined}>
+          {link.label}
+        </a>
       ))}
     </nav>
-    <details class="mobile-menu">
-      <summary>
-        <span class="hamburger" aria-hidden="true">
-          <i></i>
-          <i></i>
-        </span>
-        <span class="sr-only">{t.menu}</span>
-      </summary>
-      <nav aria-label={t.navLabel}>
-        {links.map(([id, label]) => (
-          <a href={`${prefix}#${id}`}>
-            {label}
-            <span aria-hidden="true">
-              <ArrowIcon />
-            </span>
-          </a>
-        ))}
-      </nav>
-    </details>
-    <LanguageSwitcher lang={lang} label={t.language} compact />
+
+    <div class="lg-header__actions">
+      <LanguageSelector lang={lang} label={t.language} />
+      <a
+        class="lg-btn lg-btn--sm lg-btn--gold lg-header__shop"
+        href={storeLinks.shop}
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="15" height="15">
+          <path
+            d="M6 8h12l-1 12H7L6 8Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+          ></path>
+          <path
+            d="M9 8V6.2a3 3 0 0 1 6 0V8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+          ></path>
+        </svg>
+        {t.shopProducts}
+      </a>
+      <details class="lg-burger" data-mobile-menu>
+        <summary aria-label={t.menu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </summary>
+        <div class="lg-burger__panel">
+          <nav aria-label={t.navLabel}>
+            {links.map((link) => (
+              <a
+                href={link.href}
+                aria-current={link.current ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            ))}
+            <a href={`/${lang}/products/`}>{t.catalogue}</a>
+          </nav>
+        </div>
+      </details>
+    </div>
   </div>
 </header>
+
 <script>
-  for (const menu of document.querySelectorAll<HTMLDetailsElement>(
-    '.mobile-menu, .language-menu',
-  )) {
+  // One open menu at a time; Escape closes and restores focus.
+  const menus = document.querySelectorAll<HTMLDetailsElement>(
+    '[data-mobile-menu], [data-language-selector] details',
+  );
+  for (const menu of menus) {
     menu.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && menu.open) {
         menu.open = false;
@@ -67,20 +118,13 @@ const links = [
     });
     menu.addEventListener('toggle', () => {
       if (menu.open)
-        document
-          .querySelectorAll<HTMLDetailsElement>('.mobile-menu, .language-menu')
-          .forEach((other) => {
-            if (other !== menu) other.open = false;
-          });
+        menus.forEach((other) => {
+          if (other !== menu) other.open = false;
+        });
     });
-    menu.querySelectorAll('a').forEach((link) =>
+    for (const link of menu.querySelectorAll('a'))
       link.addEventListener('click', () => {
         menu.open = false;
-      }),
-    );
-    document.addEventListener('click', (event) => {
-      if (event.target instanceof Node && !menu.contains(event.target))
-        menu.open = false;
-    });
+      });
   }
 </script>

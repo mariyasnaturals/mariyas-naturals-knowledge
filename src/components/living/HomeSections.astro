@@ -1,0 +1,155 @@
+---
+/**
+ * The homepage body, in the order the approved reference establishes:
+ *
+ *   1. hero film (unchanged — HomeHero owns it)
+ *   2. Discover Your Mariyas Ritual — two edition cards
+ *   3. Daily Care Spotlight — four real products
+ *   4. Explore by Care — visual tiles
+ *   5. Customer voices — empty by policy
+ *   6. Ritual Finder CTA
+ *   7. Our story (the one editorial panel the brief keeps)
+ *
+ * `/[lang]/` and `/` both render this, so the root is a real homepage rather than
+ * a language gateway. No page duplicates another page's layout elsewhere.
+ */
+import ArrowIcon from '../ArrowIcon.astro';
+import ApprovedImage from '../ApprovedImage.astro';
+import RitualEditions from './RitualEditions.astro';
+import Spotlights from './Spotlights.astro';
+import CareExplorer from './CareExplorer.astro';
+import VoicesSection from './VoicesSection.astro';
+import RitualCta from './RitualCta.astro';
+import { featuredProduct } from '../../data/products';
+import { storeLinks } from '../../data/store';
+import type { Dictionary, Locale } from '../../i18n';
+
+interface Props {
+  t: Dictionary;
+  lang: Locale;
+}
+
+const { t, lang } = Astro.props;
+const portrait = featuredProduct.images.main!;
+---
+
+<RitualEditions lang={lang} />
+<Spotlights lang={lang} />
+<CareExplorer t={t} lang={lang} />
+<VoicesSection lang={lang} />
+<RitualCta lang={lang} />
+
+<section id="story" class="lg-section lg-story" aria-labelledby="story-title">
+  <div class="lg-shell lg-story__grid">
+    <div>
+      <p class="lg-eyebrow">{t.heritageLabel}</p>
+      <h2 id="story-title">{t.aboutTitle}</h2>
+      <p class="lg-story__lede">{t.aboutLede}</p>
+      <dl class="lg-story__qa">
+        <div>
+          <dt>{t.aboutQ1}</dt>
+          <dd>{t.aboutA1}</dd>
+        </div>
+        <div>
+          <dt>{t.aboutQ2}</dt>
+          <dd>{t.aboutA2}</dd>
+        </div>
+        <div>
+          <dt>{t.aboutQ3}</dt>
+          <dd>{t.aboutA3}</dd>
+        </div>
+      </dl>
+      <p class="lg-story__actions">
+        <a class="lg-btn" href={storeLinks.shop} rel="noopener">
+          {t.shopProducts}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
+        </a>
+        <a class="lg-link" href={`/${lang}/products/`}>
+          {t.catalogue}
+        </a>
+      </p>
+    </div>
+    <div class="lg-story__media">
+      <ApprovedImage
+        lang={lang}
+        image={portrait}
+        sizes="(min-width: 900px) 460px, 90vw"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .lg-story {
+    background: var(--lg-ivory-deep);
+    border-top: 1px solid var(--lg-beige);
+  }
+
+  .lg-story__grid {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .lg-story__grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+
+  .lg-story h2 {
+    margin: 0;
+    font-family: var(--lg-display);
+    font-weight: 400;
+    font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+    line-height: 1.1;
+    color: var(--lg-emerald-900);
+  }
+
+  .lg-story__lede {
+    max-width: 46ch;
+    margin: 0.7rem 0 0;
+    font-size: 0.95rem;
+    color: var(--lg-ink-soft);
+  }
+
+  .lg-story__qa {
+    display: grid;
+    gap: 0.85rem;
+    margin: 1.35rem 0 0;
+  }
+
+  .lg-story__qa div {
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--lg-beige-deep);
+  }
+
+  .lg-story__qa dt {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--lg-emerald-800);
+  }
+
+  .lg-story__qa dd {
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--lg-ink-soft);
+  }
+
+  .lg-story__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.25rem;
+    margin: 1.4rem 0 0;
+  }
+
+  .lg-story__media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--lg-radius);
+  }
+</style>

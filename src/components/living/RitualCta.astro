@@ -1,0 +1,36 @@
+---
+/**
+ * Phase 7 entry point — the homepage banner that opens the Ritual Finder.
+ *
+ * Phase 2 also uses this area for the language suggestion, so the two never fight:
+ * the suggestion is a dismissible strip in the header, this is a content section.
+ */
+import { ritualCta } from '../../data/living-copy';
+import { dict } from '../../i18n/living';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = {
+  label: dict(ritualCta.label, lang),
+  title: dict(ritualCta.title, lang),
+  text: dict(ritualCta.text, lang),
+  action: dict(ritualCta.action, lang),
+  disclaimer: dict(ritualCta.disclaimer, lang),
+};
+---
+
+<section id="ritual-cta" class="lg-cta" aria-labelledby="ritual-cta-title">
+  <div class="lg-shell lg-cta__inner">
+    <p class="lg-eyebrow">{copy.label}</p>
+    <h2 id="ritual-cta-title">{copy.title}</h2>
+    <p>{copy.text}</p>
+    <a class="lg-btn" href={`/${lang}/ritual/`}>
+      {copy.action}
+    </a>
+    <p class="lg-disclaimer">{copy.disclaimer}</p>
+  </div>
+</section>

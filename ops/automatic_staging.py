@@ -13,7 +13,7 @@ import urllib.request
 
 ORIGIN = 'https://www.mariyasnaturals.cloud'
 ROOT = '/home/mariyascloud/htdocs/www.mariyasnaturals.cloud'
-NAMES = {'pull_deploy.py', 'prepare_release.py', 'publish_release.py', 'media_policy.py', 'owner-media-policy.json'}
+NAMES = {'pull_deploy.py', 'prepare_release.py', 'publish_release.py', 'owner-media-policy.json'}
 
 
 def private_file(path):

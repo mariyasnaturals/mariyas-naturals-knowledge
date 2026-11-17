@@ -1,0 +1,384 @@
+/* ==========================================================================
+   Chat with Mariyas — the care assistant
+   --------------------------------------------------------------------------
+   Placement rules that keep it clear of every other fixed control:
+
+     • bottom-left on every viewport, so it never covers the gold shop pill
+       (bottom-right) or the hero's own video control (bottom-right, absolute);
+     • above the mobile bar on small screens, using the same `--chrome-height`
+       that reserves space for the bar and the pill;
+     • the panel is a native <dialog>, so the focus trap, Escape and the inert
+       background come from the browser rather than from hand-written handlers.
+   ========================================================================== */
+
+.care {
+  /* The wrapper exists only to scope the trigger and dialog. */
+  display: contents;
+}
+
+.care-trigger {
+  position: fixed;
+  z-index: 62;
+  left: 0.85rem;
+  bottom: calc(var(--chrome-height) + 0.6rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 46px;
+  padding: 0 1rem;
+  border: 1px solid #d9b67266;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #0b4b34, #063d2a);
+  color: var(--lg-ivory, #fcf8ef);
+  font-family: var(--lg-sans, inherit);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  box-shadow: 0 6px 20px #04251a3d;
+  cursor: pointer;
+}
+
+.care-trigger:hover {
+  background: linear-gradient(180deg, #135c41, #0b4b34);
+}
+
+.care-trigger:focus-visible {
+  outline: 2px solid var(--lg-gold-deep, #b5852f);
+  outline-offset: 3px;
+}
+
+.care-trigger svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (min-width: 860px) {
+  .care-trigger {
+    left: 1.35rem;
+    bottom: 1.35rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* Keep the trigger out of the way of the printed page. */
+@media print {
+  .care-trigger {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ panel -- */
+
+.care-dialog {
+  width: min(30rem, calc(100vw - 1.5rem));
+  max-height: min(78svh, 44rem);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--lg-beige-deep, #ddd0b4);
+  border-radius: 16px;
+  background: var(--lg-ivory, #fcf8ef);
+  color: #1d3a2c;
+  box-shadow: 0 24px 60px #04251a4d;
+  overflow: hidden;
+}
+
+.care-dialog::backdrop {
+  background: #04251aa8;
+  backdrop-filter: blur(2px);
+}
+
+.care-dialog__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.6rem;
+  background: linear-gradient(180deg, #063d2a, #0b4b34);
+  color: var(--lg-ivory, #fcf8ef);
+}
+
+.care-dialog__eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lg-gold, #d9b672);
+}
+
+.care-dialog__head h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.care-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: -0.35rem -0.35rem 0 0;
+  border: 1px solid #ffffff33;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.care-close:hover {
+  background: #ffffff1a;
+}
+
+.care-close:focus-visible {
+  outline: 2px solid var(--lg-gold, #d9b672);
+  outline-offset: 2px;
+}
+
+.care-close svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.care-dialog__intro {
+  margin: 0;
+  padding: 0.8rem 1.1rem 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #33513f;
+}
+
+.care-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.8rem 1.1rem;
+  overflow-y: auto;
+  max-height: 46svh;
+  scroll-behavior: smooth;
+}
+
+.care-bubble {
+  margin: 0;
+  padding: 0.62rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.care-bubble--bot {
+  background: var(--lg-ivory-deep, #f6efe0);
+  border: 1px solid var(--lg-beige, #ebe3d1);
+  color: #1d3a2c;
+}
+
+.care-bubble--user {
+  align-self: flex-end;
+  max-width: 85%;
+  background: #063d2a;
+  color: var(--lg-ivory, #fcf8ef);
+}
+
+/* ------------------------------------------------------------ result card -- */
+
+.care-card {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem;
+  border: 1px solid var(--lg-beige-deep, #ddd0b4);
+  border-radius: 12px;
+  background: #fffdf7;
+}
+
+.care-card__media {
+  width: 68px;
+  height: 68px;
+  border-radius: 9px;
+  object-fit: cover;
+  background: var(--lg-ivory-deep, #f6efe0);
+}
+
+.care-card__body {
+  min-width: 0;
+}
+
+.care-card__name {
+  margin: 0 0 0.2rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #063d2a;
+}
+
+.care-card__facts {
+  margin: 0 0 0.3rem;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: #47614f;
+}
+
+.care-card__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--lg-gold-ink, #7d5c17);
+  text-underline-offset: 0.25em;
+}
+
+.care-card__link:hover {
+  text-decoration: underline;
+}
+
+.care-card__link:focus-visible {
+  outline: 2px solid var(--lg-gold-deep, #b5852f);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------ input area -- */
+
+.care-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0 1.1rem 0.55rem;
+}
+
+.care-chip {
+  min-height: 34px;
+  padding: 0 0.7rem;
+  border: 1px solid var(--lg-beige-deep, #ddd0b4);
+  border-radius: 999px;
+  background: #fffdf7;
+  color: #14382a;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.care-chip:hover {
+  border-color: var(--lg-gold-deep, #b5852f);
+  background: #f8f0dd;
+}
+
+.care-chip:focus-visible {
+  outline: 2px solid var(--lg-gold-deep, #b5852f);
+  outline-offset: 2px;
+}
+
+.care-form {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0 1.1rem 0.6rem;
+}
+
+.care-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid #c9bfa8;
+  border-radius: 10px;
+  background: #fffdf7;
+  color: #14382a;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.care-input:focus-visible {
+  outline: 2px solid var(--lg-gold-deep, #b5852f);
+  outline-offset: 1px;
+}
+
+.care-send {
+  flex: none;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #b5852f, #96691f);
+  color: #fffdf7;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.care-send:hover {
+  background: linear-gradient(180deg, #c3923a, #a07123);
+}
+
+.care-send:focus-visible {
+  outline: 2px solid var(--lg-emerald-900, #063d2a);
+  outline-offset: 2px;
+}
+
+.care-note {
+  margin: 0;
+  padding: 0.55rem 1.1rem 0.85rem;
+  border-top: 1px solid var(--lg-beige, #ebe3d1);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: #5a6f5f;
+}
+
+.care-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Bottom sheet on narrow screens; centred card from 560 px up. */
+@media (max-width: 559px) {
+  .care-dialog {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 86svh;
+    margin: auto auto 0;
+    border-radius: 16px 16px 0 0;
+    border-bottom: 0;
+  }
+
+  .care-log {
+    max-height: 42svh;
+  }
+}
+
+/* The trigger floats above the mobile bar; the footer's last row keeps clear of it
+   so no link ends up underneath a fixed pill. */
+@media (max-width: 859px) {
+  .lg-footer__bottom {
+    padding-bottom: calc(0.7rem + 3.1rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .care-trigger,
+  .care-chip,
+  .care-send {
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease;
+  }
+}

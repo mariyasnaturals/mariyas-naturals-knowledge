@@ -1,0 +1,152 @@
+---
+/**
+ * Mobile bottom chrome (Phase 11).
+ *
+ * Three destinations — Home, Collections, My Ritual — plus the gold
+ * BUY NOW / SAVE UP TO 20% tile. "My Ritual" replaces the old "Discover" slot and
+ * points at the Ritual Finder, which is the mobile entry point for the tool; the
+ * old "Our Story" tab was removed so the three remaining labels and the offer tile
+ * each keep a usable share of a 320px bar.
+ *
+ * Every target is at least 44px, the bar reserves its own height in `body`
+ * padding (see discovery.css / living-gallery.css) so it never covers content,
+ * and the discount wording only appears while the offer is marked verified.
+ */
+import { hairOilOffer, storeLinks } from '../data/store';
+import { dictionaries, type Locale } from '../i18n';
+import { livingNav } from '../data/living-copy';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = dictionaries[lang];
+const nav = livingNav[lang];
+
+const onHome = Astro.url.pathname === `/${lang}/`;
+
+const links = [
+  {
+    label: t.home,
+    href: `/${lang}/`,
+    current: onHome,
+    icon: 'M3 10.5 12 3l9 7.5V21h-6.2v-6.4H9.2V21H3Z',
+  },
+  {
+    label: t.knowledge,
+    href: `/${lang}/products/`,
+    current:
+      Astro.url.pathname.startsWith(`/${lang}/products`) ||
+      Astro.url.pathname.includes(`/${lang}/collections/`),
+    icon: 'M4 5.5h16M4 12h16M4 18.5h10',
+  },
+  {
+    label: nav.ritualShort,
+    href: `/${lang}/ritual/`,
+    current: Astro.url.pathname.startsWith(`/${lang}/ritual`),
+    icon: 'M12 3.5c2.6 2.4 4.6 4.9 4.6 7.6A4.6 4.6 0 0 1 12 15.7a4.6 4.6 0 0 1-4.6-4.6c0-2.7 2-5.2 4.6-7.6Zm0 12.2V21',
+  },
+];
+
+// The discount wording is published only while the offer is marked verified.
+const offerMessage = hairOilOffer.verified
+  ? hairOilOffer.message
+  : hairOilOffer.fallbackMessage;
+---
+
+<div class="mobile-chrome" data-mobile-chrome>
+  <a class="shop-fab" href={storeLinks.shop} rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 8h12l-1 12H7L6 8Z"></path>
+      <path d="M9 8V6.2a3 3 0 0 1 6 0V8"></path>
+    </svg>
+    {t.shopProducts}
+  </a>
+
+  <nav class="mobile-chrome-bar" data-mobile-nav aria-label={t.navLabel}>
+    {links.map((link) => (
+      <a
+        class="mobile-chrome-link"
+        href={link.href}
+        aria-current={link.current ? 'page' : undefined}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d={link.icon} />
+        </svg>
+        <span>{link.label}</span>
+      </a>
+    ))}
+    <a
+      class="offer-tile"
+      data-offer-tile
+      data-offer-href={hairOilOffer.href}
+      href={hairOilOffer.href}
+      rel="noopener"
+      aria-label={`${t.hairOilOffer}: ${offerMessage}`}
+    >
+      <span class="offer-tile-shimmer" aria-hidden="true"></span>
+      <span class="offer-tile-label" data-offer-a aria-hidden="true">
+        {t.buyNow}
+      </span>
+      <span class="offer-tile-label" data-offer-b aria-hidden="true">
+        {offerMessage}
+      </span>
+    </a>
+  </nav>
+</div>
+
+<script>
+  /**
+   * The hero already offers its own primary action, so the floating shop pill
+   * waits until that action has scrolled out of view. Revealing it late keeps
+   * translated hero copy (Tamil and Malayalam run long at 320px) free of a
+   * fixed overlay, and the pill never competes with the offer tile either.
+   */
+  const fab = document.querySelector<HTMLAnchorElement>('.shop-fab');
+  const heroActions = document.querySelector('.hero-actions');
+  if (fab) {
+    if (!heroActions) {
+      fab.dataset.fabVisible = 'true';
+    } else {
+      /**
+       * The pill hides while the hero's own action is on screen, and while any
+       * closing panel is in view. The reviews block, the story panel and the
+       * footer are dense text; a fixed pill on top of them is exactly the
+       * failure this rule prevents. An observer is used rather than a scroll
+       * calculation so it stays correct when the page height changes.
+       */
+      const dense = ['#voices', '#story', '#site-footer']
+        .map((selector) => document.querySelector(selector))
+        .filter((element): element is Element => Boolean(element));
+      const inView = new Set<Element>();
+
+      const render = () => {
+        const past = heroActions.getBoundingClientRect().bottom <= 0;
+        fab.dataset.fabVisible = String(past && inView.size === 0);
+      };
+
+      if ('IntersectionObserver' in window && dense.length > 0) {
+        const watcher = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) inView.add(entry.target);
+              else inView.delete(entry.target);
+            }
+            render();
+          },
+          // Trigger before the panel's top edge reaches the pill.
+          { rootMargin: '0px 0px -30% 0px' },
+        );
+        for (const element of dense) watcher.observe(element);
+      } else {
+        // Without the observer, stay visible rather than risk hiding a link.
+        fab.dataset.fabVisible = 'true';
+      }
+
+      render();
+      addEventListener('scroll', render, { passive: true });
+      addEventListener('resize', render, { passive: true });
+    }
+  }
+</script>

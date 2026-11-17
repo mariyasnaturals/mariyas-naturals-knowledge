@@ -11,6 +11,8 @@ const selections = [
   ['noto-serif-devanagari', 'devanagari', 'wght'],
   ['noto-sans-tamil', 'tamil', 'wght'],
   ['noto-serif-tamil', 'tamil', 'wght'],
+  ['noto-sans-kannada', 'kannada', 'wght'],
+  ['noto-serif-kannada', 'kannada', 'wght'],
 ];
 await mkdir(resolve(root, 'public/fonts/licenses'), { recursive: true });
 let css =
