@@ -260,3 +260,25 @@ test('evidence copy never promises a document we do not hold', () => {
     );
   }
 });
+
+test('every claim that has wording carries it in all five languages', () => {
+  /*
+   * A claim with an English sentence and no translation is a gate with a hole:
+   * the Malayalam or Kannada version of the same claim would never be matched by
+   * the built-HTML scan in scripts/validate-seo.mjs, because that scan works from
+   * the phrases this file defines. Claims whose `wording` is null are refused
+   * outright and need no translation.
+   */
+  const blocks = gates.split(/\n\s{2}\{\n/).slice(1);
+  const withWording = blocks.filter((block) => /wording:\s*\{/.test(block));
+  assert.ok(withWording.length >= 2, 'expected at least two localised claims');
+  for (const block of withWording) {
+    const id = block.match(/id:\s*'([^']+)'/)?.[1] ?? 'unknown claim';
+    for (const locale of LOCALES)
+      assert.match(
+        block,
+        new RegExp(`\\b${locale}:\\s*['"\`][^'"\`]{3,}`),
+        `claim ${id} has no ${locale} wording`,
+      );
+  }
+});
