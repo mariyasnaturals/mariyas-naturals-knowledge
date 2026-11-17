@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+import { expectedOrigin, expectedRobots } from './site-env';
 
 const manifest = JSON.parse(
   readFileSync('catalogue/media-manifest.json', 'utf8'),
@@ -261,7 +262,7 @@ test('collection landmark and localized switcher stay linked', async ({
   expect(await axe(page)).toEqual([]);
 });
 
-test('legacy product image URLs are no longer served and metadata is staging-safe', async ({
+test('legacy product image URLs are no longer served and metadata matches the deployment', async ({
   page,
   request,
 }) => {
@@ -283,12 +284,16 @@ test('legacy product image URLs are no longer served and metadata is staging-saf
     for (const value of [product.image].flat())
       expect(value).toContain('/images/products/');
   }
+  // Indexability and canonical follow the build being served, so a production
+  // release is not judged against staging metadata (see ./site-env).
   await expect(page.locator('meta[name=robots]')).toHaveAttribute(
     'content',
-    'noindex, nofollow',
+    expectedRobots,
   );
-  await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
-    'href',
-    'https://www.mariyasnaturals.cloud/en/products/mariyas-hair-oil-200-ml/',
+  const canonical = await page
+    .locator('link[rel=canonical]')
+    .getAttribute('href');
+  expect(canonical).toBe(
+    `${expectedOrigin}/en/products/mariyas-hair-oil-200-ml/`,
   );
 });
