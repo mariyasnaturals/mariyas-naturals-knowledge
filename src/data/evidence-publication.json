@@ -1,0 +1,6 @@
+{
+  "$comment": "Publication switches for evidence-gated routes. Read by astro.config.mjs (sitemap), by the pages themselves (robots + nav) and by scripts/validate-seo.mjs. Flip a switch only after the owner has supplied and approved the underlying evidence.",
+  "awards": false,
+  "certifications": false,
+  "reviewedOn": "2026-11-17"
+}

@@ -21,6 +21,8 @@ interface Props {
   breadcrumbs?: { name: string; path: string }[];
   /** Absolute canonical override, e.g. the root homepage canonicalising to /en/. */
   canonicalPath?: string;
+  /** Per-page robots directive; see SEOHead. */
+  robots?: string;
 }
 const subset = {
   en: 'latin',

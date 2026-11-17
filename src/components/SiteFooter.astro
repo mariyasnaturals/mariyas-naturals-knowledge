@@ -23,6 +23,11 @@ import {
   googleBusiness,
 } from '../data/site-contact';
 import { storeLinks } from '../data/store';
+import {
+  evidenceCopy,
+  awardsPublishable,
+  certificationsPublishable,
+} from '../data/evidence';
 
 interface Props {
   lang: Locale;
@@ -106,6 +111,21 @@ const collections = activeCollectionKeys
               <a href={item.href}>{item.label}</a>
             </li>
           ))}
+          <li>
+            <a href={`/${lang}/hair-oil/`}>{evidenceCopy[lang].nav.guide}</a>
+          </li>
+          {awardsPublishable && (
+            <li>
+              <a href={`/${lang}/awards/`}>{evidenceCopy[lang].nav.awards}</a>
+            </li>
+          )}
+          {certificationsPublishable && (
+            <li>
+              <a href={`/${lang}/certifications/`}>
+                {evidenceCopy[lang].nav.certifications}
+              </a>
+            </li>
+          )}
           <li>
             <a href={`/${lang}/products/`}>{t.catalogue}</a>
           </li>

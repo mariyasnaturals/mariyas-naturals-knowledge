@@ -1,0 +1,438 @@
+---
+/**
+ * /[lang]/hair-oil/ — the Hair Oil pillar.
+ *
+ * The `.in` site's informational home for its most important product: original
+ * educational copy in five languages, the two pack sizes with exact `.com`
+ * purchase links, the three approved reviews, and a visible FAQ whose questions
+ * and answers are mirrored in the page's structured data.
+ *
+ * It deliberately carries no ingredient count and no absolute purity promise:
+ * both are gated in `src/data/knowledge-gates.ts` until the formulation is
+ * verified and the owner approves the exact public wording.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import MobileChrome from '../../../components/MobileChrome.astro';
+import { pillarCopy, pillarReviews } from '../../../data/pillar';
+import { claimText } from '../../../data/knowledge-gates';
+import { collectionPath } from '../../../data/collections';
+import { storeLinks } from '../../../data/store';
+import { locales, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+const copy = pillarCopy[lang];
+
+/** Only a published claim can reach the page; today that is the Kerala location. */
+const madeInKerala = claimText('kerala-manufacture-location', lang);
+
+const pageSchema = {
+  '@type': 'FAQPage',
+  mainEntity: copy.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
+const storeHrefs = {
+  collection: collectionPath(lang, 'hair-care'),
+  product200: `/${lang}/products/mariyas-hair-oil-200-ml/`,
+  product500: `/${lang}/products/mariyas-hair-oil-500-ml/`,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={copy.title}
+  description={copy.description}
+  path={`/${lang}/hair-oil/`}
+  pageSchema={pageSchema}
+  breadcrumbs={[{ name: copy.eyebrow, path: `/${lang}/hair-oil/` }]}
+>
+  <SiteHeader lang={lang} route="other" />
+  <main id="main" tabindex="-1" class="pillar">
+    <div class="lg-shell pillar__shell">
+      <nav class="pillar__crumbs" aria-label={copy.heading}>
+        <a href={`/${lang}/`}>{'Mariyas Naturals'}</a>
+        <span aria-hidden="true">/</span>
+        <a href={storeHrefs.collection}>{copy.backToCollection}</a>
+      </nav>
+
+      <p class="pillar__eyebrow">{copy.eyebrow}</p>
+      <h1 class="pillar__title">{copy.heading}</h1>
+      <p class="pillar__lede">{copy.lede}</p>
+
+      <div class="pillar__sizes" aria-labelledby="pillar-sizes">
+        <h2 id="pillar-sizes" class="pillar__h2">
+          {copy.sizesHeading}
+        </h2>
+        <p class="pillar__note">{copy.sizesNote}</p>
+        <ul class="pillar__size-list">
+          {copy.sizes.map((size) => (
+            <li class="pillar__size">
+              <p class="pillar__size-volume">{size.volume}</p>
+              <p class="pillar__size-note">{size.note}</p>
+              <a
+                class="pillar__buy"
+                href={size.href}
+                rel="noopener"
+                aria-label={`${size.volume} — ${copy.ctaLabel}`}
+              >
+                {copy.ctaLabel}
+              </a>
+              <a
+                class="pillar__detail"
+                href={
+                  size.volume === '200 ml'
+                    ? storeHrefs.product200
+                    : storeHrefs.product500
+                }
+              >
+                {copy.productPage}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {copy.sections.map((section) => (
+        <section class="pillar__section" id={section.id}>
+          <h2 class="pillar__h2">{section.heading}</h2>
+          {section.body.map((paragraph) => (
+            <p class="pillar__body">{paragraph}</p>
+          ))}
+          {section.id === 'made-in-kerala' && madeInKerala && (
+            <p class="pillar__fact">{madeInKerala}</p>
+          )}
+        </section>
+      ))}
+
+      <section class="pillar__section" aria-labelledby="pillar-reviews">
+        <h2 id="pillar-reviews" class="pillar__h2">
+          {copy.reviewsHeading}
+        </h2>
+        <p class="pillar__note">{copy.reviewsNote}</p>
+        <ul class="pillar__reviews">
+          {pillarReviews.map((review) => (
+            <li class="pillar__review">
+              <p class="pillar__stars" aria-hidden="true">
+                {'★'.repeat(review.rating)}
+              </p>
+              <p class="pillar__review-author" lang="en">
+                {review.author}
+              </p>
+              <blockquote class="pillar__quote" lang="en">
+                {review.text}
+              </blockquote>
+              <p class="pillar__attribution">Google Review</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="pillar__section" aria-labelledby="pillar-faq">
+        <h2 id="pillar-faq" class="pillar__h2">
+          {copy.faqHeading}
+        </h2>
+        <div class="pillar__faq">
+          {copy.faq.map((item) => (
+            <details class="pillar__qa">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="pillar__section" aria-labelledby="pillar-evidence">
+        <h2 id="pillar-evidence" class="pillar__h2">
+          {copy.evidenceHeading}
+        </h2>
+        <p class="pillar__body">{copy.evidenceBody}</p>
+      </section>
+
+      <aside class="pillar__cta" aria-labelledby="pillar-cta">
+        <h2 id="pillar-cta" class="pillar__h2">
+          {copy.ctaHeading}
+        </h2>
+        <p class="pillar__body">{copy.ctaBody}</p>
+        <p class="pillar__cta-actions">
+          <a class="pillar__buy" href={storeLinks.hairOil200} rel="noopener">
+            200 ml
+          </a>
+          <a class="pillar__buy" href={storeLinks.hairOil500} rel="noopener">
+            500 ml
+          </a>
+          <a class="pillar__detail" href={storeLinks.shop} rel="noopener">
+            {copy.ctaLabel}
+          </a>
+        </p>
+      </aside>
+    </div>
+  </main>
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
+</BaseLayout>
+
+<style>
+  .pillar {
+    background:
+      radial-gradient(
+        110% 60% at 85% 0%,
+        var(--lg-leaf-wash) 0%,
+        transparent 55%
+      ),
+      var(--lg-ivory);
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .pillar__shell {
+    max-width: 72ch;
+  }
+
+  .pillar__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.82rem;
+    color: var(--lg-ink-mute);
+    margin-bottom: 1.25rem;
+  }
+
+  .pillar__crumbs a {
+    color: var(--lg-botanical);
+    min-height: var(--lg-target);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .pillar__eyebrow {
+    margin: 0 0 0.7rem;
+    color: var(--lg-gold-ink);
+    font-size: var(--lg-eyebrow-size);
+    letter-spacing: var(--lg-eyebrow-track);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .pillar__title {
+    margin: 0 0 0.9rem;
+    font-family: var(--lg-display);
+    font-size: clamp(1.9rem, 4.4vw, 3rem);
+    line-height: 1.1;
+    color: var(--lg-ink);
+    text-wrap: balance;
+  }
+
+  .pillar__lede {
+    margin: 0 0 clamp(1.8rem, 4vw, 2.6rem);
+    font-size: clamp(1rem, 1.55vw, 1.12rem);
+    line-height: 1.72;
+    color: var(--lg-ink-soft);
+  }
+
+  .pillar__section,
+  .pillar__sizes {
+    margin-block: clamp(1.9rem, 4vw, 2.9rem);
+    padding-top: clamp(1.4rem, 3vw, 2rem);
+    border-top: var(--lg-hairline);
+  }
+
+  .pillar__h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--lg-display);
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    color: var(--lg-ink);
+  }
+
+  .pillar__body {
+    margin: 0 0 0.9rem;
+    line-height: 1.75;
+    color: var(--lg-ink-soft);
+  }
+
+  .pillar__note {
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--lg-ink-mute);
+  }
+
+  .pillar__fact {
+    margin: 0.5rem 0 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--lg-gold-deep);
+    background: var(--lg-ivory-deep);
+    border-radius: var(--lg-radius);
+    color: var(--lg-ink);
+    line-height: 1.6;
+  }
+
+  .pillar__size-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .pillar__size-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .pillar__size {
+    border: var(--lg-hairline);
+    border-radius: var(--lg-radius-lg);
+    background: #fffdf7;
+    box-shadow: var(--lg-shadow-card);
+    padding: 1.1rem 1.2rem 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .pillar__size-volume {
+    margin: 0;
+    font-family: var(--lg-display);
+    font-size: 1.35rem;
+    color: var(--lg-ink);
+  }
+
+  .pillar__size-note {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--lg-ink-soft);
+  }
+
+  .pillar__buy,
+  .pillar__detail {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--lg-target);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  /* White on the deep gold measures 3.3:1 — below WCAG AA. The button carries the
+     dark ink instead, which measures 12.4:1 and matches the site's other CTAs. */
+  .pillar__buy {
+    background: var(--lg-ink);
+    color: #fff;
+  }
+
+  .pillar__buy:hover,
+  .pillar__buy:focus-visible {
+    background: var(--lg-botanical);
+  }
+
+  .pillar__detail {
+    color: var(--lg-botanical);
+    border: 1px solid var(--lg-beige-deep);
+    background: #fff;
+    font-size: 0.9rem;
+  }
+
+  .pillar__reviews {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .pillar__review {
+    border: var(--lg-hairline);
+    border-radius: var(--lg-radius-lg);
+    background: #fff;
+    padding: 1.1rem 1.2rem;
+  }
+
+  .pillar__stars {
+    margin: 0 0 0.35rem;
+    color: var(--lg-gold-deep);
+    letter-spacing: 0.12em;
+  }
+
+  .pillar__review-author {
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+    color: var(--lg-ink);
+  }
+
+  .pillar__quote {
+    margin: 0 0 0.5rem;
+    line-height: 1.65;
+    color: var(--lg-ink-soft);
+  }
+
+  .pillar__attribution {
+    margin: 0;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lg-ink-mute);
+  }
+
+  .pillar__faq {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .pillar__qa {
+    border: var(--lg-hairline);
+    border-radius: var(--lg-radius);
+    background: #fff;
+    padding: 0.35rem 1rem;
+  }
+
+  .pillar__qa summary {
+    cursor: pointer;
+    min-height: var(--lg-target);
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--lg-ink);
+  }
+
+  .pillar__qa p {
+    margin: 0 0 0.9rem;
+    line-height: 1.68;
+    color: var(--lg-ink-soft);
+  }
+
+  .pillar__cta {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    border: 1px solid var(--lg-beige-deep);
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-ivory-deep);
+    padding: clamp(1.2rem, 3vw, 1.8rem);
+  }
+
+  .pillar__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pillar__qa summary {
+      transition: none;
+    }
+  }
+</style>

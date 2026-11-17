@@ -1,0 +1,90 @@
+---
+/**
+ * /[lang]/certifications/ — certifications and quality assurance.
+ *
+ * Evidence-gated like the awards page. The four document kinds are always
+ * explained, because that distinction is itself the safeguard: a manufacturing
+ * licence is not a product approval, and a one-sample laboratory report is not a
+ * certificate for the whole range.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import MobileChrome from '../../../components/MobileChrome.astro';
+import EvidencePage from '../../../components/EvidencePage.astro';
+import {
+  certifications,
+  certificationsPublishable,
+  evidenceCopy,
+  type CertificationEntry,
+} from '../../../data/evidence';
+import { locales, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+const copy = evidenceCopy[lang].certifications;
+
+const kindLabel = (kind: CertificationEntry['kind']) =>
+  copy.kinds.find((entry) => entry.kind === kind)?.label ?? kind;
+
+const entries = (certifications as readonly CertificationEntry[]).map(
+  (certificate) => ({
+    title: certificate.name[lang] ?? certificate.name.en,
+    meta: [
+      certificate.issuer,
+      kindLabel(certificate.kind),
+      certificate.issuedOn,
+      certificate.expiresOn ? `→ ${certificate.expiresOn}` : '',
+    ]
+      .filter(Boolean)
+      .join(' · '),
+    body: certificate.scope[lang] ?? certificate.scope.en,
+    note: certificate.redactions,
+  }),
+);
+
+/** The document kinds, explained, with the licence clarification last. */
+const rules = [
+  ...copy.kinds.map((entry) => `${entry.label} — ${entry.note}`),
+  copy.licenceClarification,
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={copy.title}
+  description={copy.description}
+  path={`/${lang}/certifications/`}
+  robots={certificationsPublishable ? undefined : 'noindex, follow'}
+  breadcrumbs={[
+    {
+      name: evidenceCopy[lang].nav.certifications,
+      path: `/${lang}/certifications/`,
+    },
+  ]}
+>
+  <SiteHeader lang={lang} route="other" />
+  <main id="main" tabindex="-1">
+    <EvidencePage
+      lang={lang}
+      eyebrow={copy.eyebrow}
+      heading={copy.heading}
+      lede={copy.lede}
+      pendingHeading={copy.pendingHeading}
+      pendingBody={copy.pendingBody}
+      checklistHeading={copy.checklistHeading}
+      checklist={copy.checklist}
+      rulesHeading={copy.kindsHeading}
+      rules={rules}
+      entries={entries}
+      footnote={copy.redactionNote}
+      backHref={`/${lang}/products/`}
+      backLabel={copy.back}
+    />
+  </main>
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
+</BaseLayout>

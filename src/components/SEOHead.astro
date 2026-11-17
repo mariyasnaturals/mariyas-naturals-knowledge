@@ -14,6 +14,11 @@ interface Props {
   canonicalPath?: string;
   /** Ordered trail below the language root; the home and language root are added. */
   breadcrumbs?: { name: string; path: string }[];
+  /**
+   * Per-page robots directive. Defaults to the deployment's own indexability.
+   * Evidence-gated routes use `noindex, follow` until their entries are verified.
+   */
+  robots?: string;
 }
 const {
   title,
@@ -23,6 +28,7 @@ const {
   socialImage,
   canonicalPath,
   breadcrumbs = [],
+  robots,
 } = Astro.props;
 const suffix = path.startsWith(`/${lang}/`) ? path.slice(lang.length + 2) : '';
 const canonical = absoluteUrl(canonicalPath ?? path);
@@ -112,7 +118,7 @@ const structuredData = {
 <meta name="description" content={description} />
 <meta
   name="robots"
-  content={site.indexable ? 'index, follow' : 'noindex, nofollow'}
+  content={robots ?? (site.indexable ? 'index, follow' : 'noindex, nofollow')}
 />
 <link rel="canonical" href={canonical} />
 {locales.map((locale) => (

@@ -1,0 +1,268 @@
+---
+/**
+ * Shared shell for the two evidence-gated routes (`/awards/`, `/certifications/`).
+ *
+ * Both pages render the same shape: an honest state panel while nothing is
+ * verified, the exact evidence checklist the owner has to satisfy, and the rules
+ * that will govern each entry. When entries exist and publication is switched on,
+ * the same shell renders them — the layout never has to be rebuilt in a hurry.
+ */
+import type { Locale } from '../i18n';
+
+export interface EvidenceListItem {
+  title: string;
+  meta: string;
+  body?: string;
+  note?: string;
+}
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lede: string;
+  pendingHeading: string;
+  pendingBody: string;
+  checklistHeading: string;
+  checklist: readonly string[];
+  rulesHeading: string;
+  rules: readonly string[];
+  entries: readonly EvidenceListItem[];
+  footnote?: string;
+  backHref: string;
+  backLabel: string;
+  lang: Locale;
+}
+
+const {
+  eyebrow,
+  heading,
+  lede,
+  pendingHeading,
+  pendingBody,
+  checklistHeading,
+  checklist,
+  rulesHeading,
+  rules,
+  entries,
+  footnote,
+  backHref,
+  backLabel,
+  lang,
+} = Astro.props;
+
+const isPending = entries.length === 0;
+---
+
+<section class="ev">
+  <div class="lg-shell ev__shell">
+    <p class="ev__eyebrow">{eyebrow}</p>
+    <h1 class="ev__title">{heading}</h1>
+    <p class="ev__lede">{lede}</p>
+
+    {isPending ? (
+      <div class="ev__pending" role="status">
+        <p class="ev__pending-title">{pendingHeading}</p>
+        <p class="ev__pending-body">{pendingBody}</p>
+      </div>
+    ) : (
+      <ul class="ev__entries">
+        {entries.map((entry) => (
+          <li class="ev__entry">
+            <h2 class="ev__entry-title">{entry.title}</h2>
+            <p class="ev__entry-meta">{entry.meta}</p>
+            {entry.body && <p class="ev__entry-body">{entry.body}</p>}
+            {entry.note && <p class="ev__entry-note">{entry.note}</p>}
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <div class="ev__grid">
+      <section class="ev__panel" aria-labelledby="ev-checklist">
+        <h2 id="ev-checklist" class="ev__panel-title">
+          {checklistHeading}
+        </h2>
+        <ul class="ev__list">
+          {checklist.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="ev__panel" aria-labelledby="ev-rules">
+        <h2 id="ev-rules" class="ev__panel-title">
+          {rulesHeading}
+        </h2>
+        <ul class="ev__list">
+          {rules.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    {footnote && <p class="ev__footnote">{footnote}</p>}
+
+    <p class="ev__back">
+      <a href={backHref} lang={lang}>
+        {backLabel}
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .ev {
+    background:
+      radial-gradient(
+        120% 70% at 12% 0%,
+        var(--lg-leaf-wash) 0%,
+        transparent 60%
+      ),
+      var(--lg-ivory);
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .ev__shell {
+    max-width: 76ch;
+  }
+
+  .ev__eyebrow {
+    margin: 0 0 0.75rem;
+    color: var(--lg-gold-ink);
+    font-size: var(--lg-eyebrow-size);
+    letter-spacing: var(--lg-eyebrow-track);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .ev__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--lg-display);
+    font-size: clamp(1.85rem, 4.2vw, 2.9rem);
+    line-height: 1.12;
+    color: var(--lg-ink);
+  }
+
+  .ev__lede {
+    margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+    font-size: clamp(1rem, 1.6vw, 1.12rem);
+    line-height: 1.7;
+    color: var(--lg-ink-soft);
+  }
+
+  .ev__pending {
+    border: 1px solid var(--lg-beige-deep);
+    border-left: 3px solid var(--lg-gold-deep);
+    border-radius: var(--lg-radius);
+    background: var(--lg-ivory-deep);
+    padding: clamp(1.1rem, 2.4vw, 1.6rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .ev__pending-title {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    color: var(--lg-ink);
+  }
+
+  .ev__pending-body {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--lg-ink-soft);
+  }
+
+  .ev__entries {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .ev__entry {
+    border: var(--lg-hairline);
+    border-radius: var(--lg-radius-lg);
+    background: #fffdf7;
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--lg-shadow-card);
+  }
+
+  .ev__entry-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    color: var(--lg-ink);
+  }
+
+  .ev__entry-meta {
+    margin: 0 0 0.5rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--lg-ink-mute);
+  }
+
+  .ev__entry-body,
+  .ev__entry-note {
+    margin: 0 0 0.5rem;
+    line-height: 1.6;
+    color: var(--lg-ink-soft);
+  }
+
+  .ev__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .ev__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .ev__panel {
+    border: var(--lg-hairline);
+    border-radius: var(--lg-radius-lg);
+    background: #fff;
+    padding: clamp(1.1rem, 2.4vw, 1.5rem);
+  }
+
+  .ev__panel-title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--lg-ink);
+  }
+
+  .ev__list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.5rem;
+    line-height: 1.6;
+    color: var(--lg-ink-soft);
+  }
+
+  .ev__footnote {
+    margin: 1.5rem 0 0;
+    padding-top: 1rem;
+    border-top: var(--lg-hairline);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--lg-ink-mute);
+  }
+
+  .ev__back {
+    margin: 1.75rem 0 0;
+  }
+
+  .ev__back a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--lg-target);
+    color: var(--lg-botanical);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+</style>

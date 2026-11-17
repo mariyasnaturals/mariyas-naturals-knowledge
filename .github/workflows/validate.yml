@@ -46,6 +46,7 @@ jobs:
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:media-policy
+      - run: npm run test:seo
       - name: Browser and accessibility checks
         run: |
           npx playwright install --with-deps chromium

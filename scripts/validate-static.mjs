@@ -13,6 +13,20 @@ import { load } from 'cheerio';
 const root = new URL('../dist/', import.meta.url);
 const expectedOrigin =
   process.env.EXPECT_SITE_URL || 'https://www.mariyasnaturals.cloud';
+/**
+ * Evidence-gated routes (awards, certifications) carry `noindex, follow` and stay
+ * out of the sitemap until the owner has supplied and approved the documents.
+ * One switch decides it for the pages, the sitemap and this validator.
+ */
+const evidencePublication = JSON.parse(
+  readFileSync(
+    new URL('../src/data/evidence-publication.json', import.meta.url),
+    'utf8',
+  ),
+);
+const isGatedRoute = (route) =>
+  (route.includes('/awards/') && !evidencePublication.awards) ||
+  (route.includes('/certifications/') && !evidencePublication.certifications);
 const expectedRobots =
   process.env.EXPECT_INDEXABLE === 'true'
     ? 'index, follow'
@@ -263,7 +277,7 @@ function validateTree(directory) {
     const route = `/${relative}`;
     assert.equal(
       $('meta[name="robots"]').attr('content'),
-      expectedRobots,
+      isGatedRoute(route) ? 'noindex, follow' : expectedRobots,
       `${route} robots`,
     );
     // The site root renders the English homepage and canonicalises to it, so the

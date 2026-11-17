@@ -297,3 +297,68 @@ test('legacy product image URLs are no longer served and metadata matches the de
     `${expectedOrigin}/en/products/mariyas-hair-oil-200-ml/`,
   );
 });
+
+test('the hair-oil pillar answers the question and sends buyers to the store', async ({
+  page,
+}) => {
+  await page.goto('/en/hair-oil/');
+  await expect(page.locator('h1')).toHaveCount(1);
+  // The two pack sizes link to the exact store product pages, never to a cart.
+  const storeLinks = await page
+    .locator('a[href^="https://www.mariyasnaturals.com/product/"]')
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href')));
+  expect(storeLinks).toContain(
+    'https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-oil-200-ml/',
+  );
+  expect(storeLinks).toContain(
+    'https://www.mariyasnaturals.com/product/mariyas-herbal-hair-care-500-ml/',
+  );
+  // The approved reviews travel with their attribution.
+  for (const author of [
+    'Pramod Kumar .M.S',
+    'Abacus World Academy',
+    'Jincy Siju',
+  ])
+    await expect(
+      page.locator('.pillar__review-author', { hasText: author }),
+    ).toHaveCount(1);
+  // FAQ questions are answerable without JavaScript and match the schema.
+  const faq = await page.locator('.pillar__qa').count();
+  expect(faq).toBeGreaterThanOrEqual(4);
+  const schema = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluate((el) => JSON.parse(el.textContent!)['@graph'][2]);
+  expect(schema['@type']).toBe('FAQPage');
+  expect(schema.mainEntity).toHaveLength(faq);
+  // No unapproved claim can be read on the page.
+  const body = (await page.locator('main').innerText()).toLowerCase();
+  for (const banned of [
+    'chemical-free',
+    '60 ingredients',
+    'guaranteed',
+    'clinically proven',
+  ])
+    expect(body).not.toContain(banned);
+  expect(await axe(page)).toEqual([]);
+});
+
+test('the evidence routes exist, explain the process and stay out of search', async ({
+  page,
+}) => {
+  for (const route of ['/en/awards/', '/en/certifications/']) {
+    const response = await page.goto(route);
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('h1')).toHaveCount(1);
+    // Nothing is verified yet, so the page says so instead of inventing entries.
+    await expect(page.locator('.ev__pending')).toHaveCount(1);
+    await expect(page.locator('.ev__entry')).toHaveCount(0);
+    const robots =
+      process.env.EXPECT_INDEXABLE === 'true' ? 'noindex, follow' : null;
+    if (robots)
+      await expect(page.locator('meta[name=robots]')).toHaveAttribute(
+        'content',
+        robots,
+      );
+    expect(await axe(page)).toEqual([]);
+  }
+});

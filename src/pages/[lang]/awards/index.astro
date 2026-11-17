@@ -1,0 +1,69 @@
+---
+/**
+ * /[lang]/awards/ — awards and recognitions.
+ *
+ * Evidence-gated: the page exists in all five locales with its own title,
+ * description, breadcrumb and hreflang, but stays `noindex, follow` and out of
+ * the sitemap until `src/data/evidence-publication.json` flips `awards` to true
+ * *and* at least one verified entry exists. No award, issuer, year or photograph
+ * has been invented to fill it.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import MobileChrome from '../../../components/MobileChrome.astro';
+import EvidencePage from '../../../components/EvidencePage.astro';
+import {
+  awards,
+  awardsPublishable,
+  evidenceCopy,
+  type AwardEntry,
+} from '../../../data/evidence';
+import { locales, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+const copy = evidenceCopy[lang].awards;
+
+const entries = (awards as readonly AwardEntry[]).map((award) => ({
+  title: award.title[lang] ?? award.title.en,
+  meta: `${award.issuer} · ${award.year}`,
+  body: award.description[lang] ?? award.description.en,
+  note: `${copy.checklistHeading}: ${award.evidence.kind} · ${award.verifiedOn}`,
+}));
+---
+
+<BaseLayout
+  lang={lang}
+  title={copy.title}
+  description={copy.description}
+  path={`/${lang}/awards/`}
+  robots={awardsPublishable ? undefined : 'noindex, follow'}
+  breadcrumbs={[
+    { name: evidenceCopy[lang].nav.awards, path: `/${lang}/awards/` },
+  ]}
+>
+  <SiteHeader lang={lang} route="other" />
+  <main id="main" tabindex="-1">
+    <EvidencePage
+      lang={lang}
+      eyebrow={copy.eyebrow}
+      heading={copy.heading}
+      lede={copy.lede}
+      pendingHeading={copy.pendingHeading}
+      pendingBody={copy.pendingBody}
+      checklistHeading={copy.checklistHeading}
+      checklist={copy.checklist}
+      rulesHeading={copy.rulesHeading}
+      rules={copy.rules}
+      entries={entries}
+      backHref={`/${lang}/products/`}
+      backLabel={copy.back}
+    />
+  </main>
+  <SiteFooter lang={lang} />
+  <MobileChrome lang={lang} />
+</BaseLayout>

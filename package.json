@@ -18,6 +18,7 @@
     "format": "prettier --write .",
     "test": "node --test tests/*.test.mjs",
     "test:static": "node scripts/validate-static.mjs",
+    "test:seo": "node scripts/validate-seo.mjs",
     "test:browser": "playwright test",
     "media:import": "node scripts/sync-com-catalogue.mjs",
     "fonts:prepare": "node scripts/prepare-fonts.mjs",

@@ -136,10 +136,20 @@ test('no brand or medical claim is built out of a review', () => {
   const hits = files.filter((file) =>
     /chemical[- ]free|no chemicals/i.test(readFileSync(file, 'utf8')),
   );
+  // `knowledge-gates.ts` is the one place allowed to write the phrase, because it
+  // is where the phrase is refused: it records the claim, its status and the
+  // evidence that would be needed. The assertion below keeps that exception honest.
   assert.deepEqual(
-    hits.map((file) => file.slice(root.length)),
-    ['src/data/customer-reviews.ts'],
+    hits.map((file) => file.slice(root.length)).sort(),
+    ['src/data/customer-reviews.ts', 'src/data/knowledge-gates.ts'].sort(),
     'A review opinion must not be restated as a brand claim',
+  );
+  const gates = text('src/data/knowledge-gates.ts');
+  const refused = gates.slice(gates.indexOf("id: 'chemical-free-blanket'"));
+  assert.match(
+    refused.slice(0, 600),
+    /status: 'not-approved'/,
+    'the registry may only hold the phrase in order to refuse it',
   );
 });
 

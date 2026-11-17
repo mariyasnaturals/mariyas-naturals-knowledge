@@ -2,7 +2,24 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
+import { readFileSync } from 'node:fs';
 import { resolveSiteConfig } from './src/config/resolve-site.mjs';
+
+/**
+ * Evidence-gated routes stay out of the sitemap until the owner has supplied and
+ * approved the underlying documents; they also carry `noindex, follow` on the
+ * page itself. Both read the same switch.
+ */
+const evidence = JSON.parse(
+  readFileSync(
+    new URL('./src/data/evidence-publication.json', import.meta.url),
+    'utf8',
+  ),
+);
+const gatedRoutes = [
+  evidence.awards ? null : '/awards/',
+  evidence.certifications ? null : '/certifications/',
+].filter(Boolean);
 const site = resolveSiteConfig({
   ...loadEnv(process.env.NODE_ENV || 'production', process.cwd(), ''),
   ...process.env,
@@ -29,7 +46,11 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !new URL(page).pathname.match(/^\/$/),
+      filter: (page) => {
+        const { pathname } = new URL(page);
+        if (/^\/$/.test(pathname)) return false;
+        return !gatedRoutes.some((route) => pathname.includes(route));
+      },
       i18n: {
         defaultLocale: 'en',
         locales: { en: 'en', ml: 'ml', hi: 'hi', ta: 'ta', kn: 'kn' },
