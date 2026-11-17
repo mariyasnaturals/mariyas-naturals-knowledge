@@ -1,7 +1,7 @@
 # Technical SEO audit — built by `scripts/validate-seo.mjs`
 
-Generated: 2026-11-17T10:22:29.140Z
-Origin: `https://mariyasnaturals.in` · indexable: `true` · publication switches: `awards=false`, `certifications=false`
+Generated: 2026-11-17T10:34:06.680Z
+Origin: `https://www.mariyasnaturals.cloud` · indexable: `false` · publication switches: `awards=false`, `certifications=false`
 
 ## Pages
 

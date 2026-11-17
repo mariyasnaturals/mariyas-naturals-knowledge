@@ -380,10 +380,24 @@ for (const route of pageRoutes) {
   const indexable = page.robots.startsWith('index');
   if (isGated && sitemapRoutes.has(route))
     fail('sitemap', `lists the unverified route ${route}`);
-  if (indexable && route !== '/' && !sitemapRoutes.has(route))
-    fail('sitemap', `omits the indexable route ${route}`);
-  if (!indexable && sitemapRoutes.has(route))
-    fail('sitemap', `lists the non-indexable route ${route}`);
+  // Coverage holds for every deployment: everything built is listed, except the
+  // language-choice root, which canonicalises to /en/ and is excluded on purpose.
+  if (!isGated && route !== '/' && !sitemapRoutes.has(route))
+    fail('sitemap', `omits the built route ${route}`);
+  // Robots and sitemap must agree *within a release*. A staging or preview build
+  // is noindex across the board by design while still shipping a sitemap for
+  // review, so the contradiction is only a defect on an indexable deployment.
+  if (
+    INDEXABLE &&
+    !isGated &&
+    // The root is canonicalised to /en/ and excluded from the sitemap by design.
+    route !== '/' &&
+    indexable !== sitemapRoutes.has(route)
+  )
+    fail(
+      'sitemap',
+      `${route} is ${indexable ? 'indexable' : 'non-indexable'} but ${sitemapRoutes.has(route) ? 'listed' : 'absent'} in the sitemap`,
+    );
 }
 for (const route of sitemapRoutes) {
   if (!exists(route)) fail('sitemap', `lists ${route}, which was not built`);
