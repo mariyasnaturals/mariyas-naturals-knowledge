@@ -8,7 +8,9 @@ evidence and approves the exact wording.
 Companion documents: [`five-language-audit.md`](five-language-audit.md) (locale
 matrix, defects found and fixed), [`claim-discrepancies.md`](claim-discrepancies.md)
 (what `.com` says versus what `.in` publishes), [`keyword-map.md`](keyword-map.md)
-(hypotheses, explicitly not volumes) and [`evidence-request.md`](evidence-request.md).
+(hypotheses, explicitly not volumes), [`legacy-urls.md`](legacy-urls.md) (redirect
+rules and the missing inventory), [`release-provenance.md`](release-provenance.md)
+(revision and artifact hashes) and [`evidence-request.md`](evidence-request.md).
 
 Reproduce the checks with:
 
