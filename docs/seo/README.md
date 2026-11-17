@@ -5,6 +5,11 @@ Everything below is implemented and verified in the repository. Items marked
 and the page stays `noindex` and out of the sitemap until the owner supplies the
 evidence and approves the exact wording.
 
+Companion documents: [`five-language-audit.md`](five-language-audit.md) (locale
+matrix, defects found and fixed), [`claim-discrepancies.md`](claim-discrepancies.md)
+(what `.com` says versus what `.in` publishes), [`keyword-map.md`](keyword-map.md)
+(hypotheses, explicitly not volumes) and [`evidence-request.md`](evidence-request.md).
+
 Reproduce the checks with:
 
 ```bash
@@ -70,12 +75,26 @@ Implemented and enforced by `scripts/validate-seo.mjs` (fails the build):
 - title ≤ 65 characters, description 70–165 characters — measured, and the
   five homepage titles plus eight collection descriptions were corrected to fit;
 - robots per deployment (`index, follow` on `.in`), evidence routes excepted;
-- sitemap ↔ page parity in both directions, with gated routes excluded;
+- sitemap ↔ page parity in both directions, with gated routes excluded — 351 built
+  pages against 340 sitemap URLs, the difference being exactly the language gate at
+  `/` (which canonicalises to `/en/`) plus the ten unpublished evidence templates
+  (`{en,ml,hi,ta,kn} × {awards, certifications}`); the validator names those eleven
+  routes individually if the arithmetic ever changes;
+- section labelling: the eyebrow on every collection and product page must equal the
+  localized category the page actually belongs to, and every product page must be
+  reachable from a collection, so a page can neither be mislabelled nor skip the
+  check;
 - `Organization`, `WebSite` and a WebPage-family node on every page, no `offers`
   in Product markup (prices stay on `.com`);
+- `Organization` entity basics: name, the canonical origin, a logo, and a
+  de-duplicated `sameAs` list that carries the store and the two social profiles the
+  footer links to, never the site itself;
 - every internal link resolves to a built file (10,440 checked);
 - every image is local with an `alt` (1,738 checked);
-- `robots.txt` allows Googlebot, Bingbot and OAI-SearchBot on production.
+- `robots.txt` on a production build is `User-agent: *` / `Allow: /` plus the
+  sitemap line — permissive for every crawler, so Googlebot, Bingbot and
+  OAI-SearchBot are all covered by the wildcard; on any non-indexable build it is
+  `Disallow: /` instead. There is no per-bot stanza, and none is needed.
 
 AEO/GEO specifics: the pillar's FAQ is real text in the HTML (not injected by
 script), the answers are short and self-contained, product and pack-size facts are
@@ -107,26 +126,17 @@ fully offline — no model, no API call, no new paid service.
 | Legacy WordPress URL mapping      | The live `.in` sitemap/analytics export (see below)                  |
 | Analytics and conversion tracking | A measurement ID and consent decision from the owner                 |
 
-### Redirect mapping (not yet possible)
+### Redirect mapping
 
-The old WordPress site's URL inventory has not been exported, and inventing
-redirects would be worse than none. When the export exists (`/wp-sitemap.xml`,
-Search Console → Pages, or the host's access log), map each old path to its
-closest new route and add it to the NGINX snippet in
-[`release/nginx/`](../../release/nginx/) as a `map` block:
-
-```nginx
-map $uri $legacy_target {
-    /product/mariyas-herbal-hair-care-oil/  /en/products/mariyas-hair-oil-200-ml/;
-    default                                 "";
-}
-# inside the apex server block:
-if ($legacy_target != "") { return 301 https://mariyasnaturals.in$legacy_target; }
-```
-
-Nothing in that block may be written until the inventory is real. Unknown paths
-already return the site's own 404; a retired product returns 404 rather than a
-soft redirect, and the withdrawn 1-litre pack returns 404 permanently.
+The live `.in` host already serves the static site — and `/wp-sitemap.xml` answers
+404, so the WordPress site is gone and its URL inventory can no longer be read from
+the host. The deterministic part is generated anyway:
+[`legacy-urls.md`](legacy-urls.md) documents the rules and
+`scripts/build-legacy-redirects.mjs` emits 85 product, 13 category and 6 commerce
+rules into `release/nginx/legacy-redirects.proposed.conf`. What is still missing is
+the real inventory — Search Console → Pages, the host access log, or a saved
+`wp-sitemap.xml` — so nothing is enabled, and the withdrawn 1-litre pack is reported
+for manual `410` mapping instead of being guessed at.
 
 ### Analytics
 

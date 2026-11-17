@@ -44,7 +44,7 @@ const breadcrumbs = [
         <ArrowIcon direction="left" /> {t.backDiscovery}
       </a>
       <header class="editorial-heading">
-        <p class="eyebrow">MARIYAS NATURALS / {t.journal}</p>
+        <p class="eyebrow">MARIYAS NATURALS / {page.eyebrow ?? t.journal}</p>
         <h1 lang={page.titleLang}>{page.title}</h1>
         <p class="lede">{page.description}</p>
         {!page.reviewed && <p class="editor-note">{t.preview}</p>}

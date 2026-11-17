@@ -733,10 +733,12 @@ test('the care assistant is reachable and labelled in every locale', async ({
   await page.setViewportSize({ width: 1280, height: 900 });
   const labels = {
     en: 'Chat with Mariyas',
-    ml: 'മാരിയാസിനോട് സംസാരിക്കൂ',
-    hi: 'मारियास से बात करें',
-    ta: 'மாரியாஸுடன் பேசுங்கள்',
-    kn: 'ಮಾರಿಯಾಸ್ ಜೊತೆ ಮಾತನಾಡಿ',
+    // The brand is transliterated once per language across the whole site; these
+    // labels follow src/data/care-assistant.ts.
+    ml: 'മരിയാസിനോട് സംസാരിക്കൂ',
+    hi: 'मरियास से बात करें',
+    ta: 'மரியாஸுடன் பேசுங்கள்',
+    kn: 'ಮರಿಯಾಸ್ ಜೊತೆ ಮಾತನಾಡಿ',
   } as const;
   for (const [lang, label] of Object.entries(labels)) {
     await page.goto(`/${lang}/`);

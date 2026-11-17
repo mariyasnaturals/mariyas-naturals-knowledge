@@ -12,6 +12,11 @@ export interface EditorialPage {
   title: string;
   titleLang?: Locale;
   description: string;
+  /**
+   * Section label in the page eyebrow, localised and truthful to the route.
+   * Defaults to the generic journal label when a page has nothing better.
+   */
+  eyebrow?: string;
   sources: readonly EditorialSource[];
   reviewed: boolean;
   reviewedOn?: string;

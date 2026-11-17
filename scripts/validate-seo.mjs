@@ -278,6 +278,25 @@ for (const file of htmlFiles) {
       const type = node['@type'];
       if (typeof type === 'string')
         stats.schemaTypes.set(type, (stats.schemaTypes.get(type) ?? 0) + 1);
+      if (type === 'Organization') {
+        // Entity basics: a name, the canonical site URL, a logo, and a sameAs list
+        // that is neither empty, duplicated, nor pointing at the site itself.
+        if (node.name !== 'Mariyas Naturals')
+          fail(route, 'Organization has no consistent name');
+        if (node.url !== ORIGIN)
+          fail(route, `Organization url ${node.url} is not ${ORIGIN}`);
+        if (!node.logo?.url) fail(route, 'Organization has no logo');
+        const sameAs = Array.isArray(node.sameAs) ? node.sameAs : [];
+        if (sameAs.length === 0)
+          fail(route, 'Organization has no sameAs links');
+        if (new Set(sameAs).size !== sameAs.length)
+          fail(route, 'Organization sameAs repeats an entry');
+        if (sameAs.some((link) => link.replace(/\/+$/, '') === ORIGIN))
+          fail(route, 'Organization sameAs points back at this site');
+        for (const link of sameAs)
+          if (!/^https:\/\//.test(link))
+            fail(route, `Organization sameAs ${link} is not absolute https`);
+      }
       if (type === 'Product' && node.offers)
         fail(
           route,
@@ -410,6 +429,81 @@ for (const slug of hiddenSlugs)
   )
     fail('sitemap', `lists hidden listing "${slug}"`);
 
+// ---------------------------------------------------------- section labelling
+/*
+ * Every editorial page names its own section in the eyebrow. Before this check
+ * existed, all 30 collection pages and 295 product pages said "THE HAIR CARE
+ * EDIT" — wrong on baby care, skin care, powders and wellness, and untranslated
+ * on the Kannada pages. The label is now derived per route, and this gate keeps
+ * it that way: the eyebrow must match the category the page actually belongs to.
+ */
+const decodeEntities = (value) =>
+  value
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ');
+const textOf = (html, pattern) => {
+  const raw = html.match(pattern)?.[1] ?? '';
+  return decodeEntities(raw.replace(/<[^>]+>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+const eyebrowOf = (html) =>
+  textOf(html, /<p class="eyebrow">([\s\S]*?)<\/p>/).replace(
+    /^MARIYAS NATURALS\s*\/\s*/i,
+    '',
+  );
+const sectionLabelOf = (html) =>
+  textOf(html, /<h2 class="collection-list-heading">([\s\S]*?)<\/h2>/);
+const productsInCollection = new Map(); // product route -> section label
+for (const route of pageRoutes) {
+  if (!/^\/[a-z]{2}\/collections\/[^/]+\/$/.test(route)) continue;
+  const html = readFileSync(join(DIST, route, 'index.html'), 'utf8');
+  const label = sectionLabelOf(html);
+  if (!label) {
+    fail(route, 'collection page has no list heading');
+    continue;
+  }
+  if (eyebrowOf(html) !== label)
+    fail(
+      route,
+      `eyebrow "${eyebrowOf(html)}" does not match its own collection "${label}"`,
+    );
+  for (const match of html.matchAll(/href="(\/[a-z]{2}\/products\/[^"/]+\/)"/g))
+    productsInCollection.set(match[1], label);
+}
+let productsChecked = 0;
+for (const [route, label] of productsInCollection) {
+  if (!pageRoutes.has(route)) continue;
+  productsChecked += 1;
+  const eyebrow = eyebrowOf(
+    readFileSync(join(DIST, route, 'index.html'), 'utf8'),
+  );
+  if (eyebrow !== label)
+    fail(
+      route,
+      `eyebrow "${eyebrow}" does not match the collection it sits in "${label}"`,
+    );
+}
+// Fail closed: a product page reachable from the sitemap but absent from every
+// collection would skip this gate silently, so coverage is asserted, not assumed.
+const productRoutesInSitemap = [...pageRoutes].filter((route) =>
+  /^\/[a-z]{2}\/products\/[^/]+\/$/.test(route),
+);
+for (const route of productRoutesInSitemap)
+  if (!productsInCollection.has(route))
+    fail(
+      route,
+      'product page is not listed in any collection, so its section label is unchecked',
+    );
+const ALL_LABELS = new Set([...productsInCollection.values()]);
+notes.push(
+  `${productsChecked} product pages labelled with their own collection, ${ALL_LABELS.size} section labels in use`,
+);
+
 // ------------------------------------------------------------ robots + pillar
 const robots = existsSync(join(DIST, 'robots.txt'))
   ? readFileSync(join(DIST, 'robots.txt'), 'utf8')
@@ -488,6 +582,13 @@ const percentile = (values, p) => {
 };
 const titleLengths = stats.titles.map((entry) => entry.length);
 const descriptionLengths = stats.descriptions.map((entry) => entry.length);
+/**
+ * Smallest value, or 0 for an empty list. `Math.min(...values, 0)` looks like a
+ * guard but is not one — the literal 0 becomes a candidate, so the report always
+ * claimed a "shortest description" of zero even when every page carried one.
+ */
+const shortest = (values) => (values.length ? Math.min(...values) : 0);
+const longest = (values) => (values.length ? Math.max(...values) : 0);
 const longestTitles = [...stats.titles]
   .sort((a, b) => b.length - a.length)
   .slice(0, 5);
@@ -499,7 +600,7 @@ const schemaRows = [...stats.schemaTypes.entries()].sort((a, b) => b[1] - a[1]);
 const audit = `# Technical SEO audit — built by \`scripts/validate-seo.mjs\`
 
 Generated: ${new Date().toISOString()}
-Origin: \`${ORIGIN}\` · indexable: \`${INDEXABLE}\` · publication switches: ${LOCALES.map(() => '').join('')}\`awards=${publication.awards}\`, \`certifications=${publication.certifications}\`
+Origin: \`${ORIGIN}\` · indexable: \`${INDEXABLE}\` · publication switches: \`awards=${publication.awards}\`, \`certifications=${publication.certifications}\`
 
 ## Pages
 
@@ -508,8 +609,8 @@ Origin: \`${ORIGIN}\` · indexable: \`${INDEXABLE}\` · publication switches: ${
 | HTML pages | ${stats.pages} |
 | Exactly one \`<h1>\` | ${stats.h1Count.get(1) ?? 0} / ${stats.pages} |
 | Pages with a skipped heading level | ${stats.headingSkips} |
-| Titles | median ${percentile(titleLengths, 50)}, longest ${Math.max(0, ...titleLengths)} |
-| Meta descriptions | median ${percentile(descriptionLengths, 50)}, shortest ${Math.min(...descriptionLengths, 0)} |
+| Titles | median ${percentile(titleLengths, 50)}, longest ${longest(titleLengths)} |
+| Meta descriptions | median ${percentile(descriptionLengths, 50)}, shortest ${shortest(descriptionLengths)} |
 | Images | ${stats.images}, without \`alt\` ${stats.imagesWithoutAlt} |
 | Internal links checked | ${stats.internalLinks}, unresolved ${stats.missingTargets.size} |
 | Sitemap URLs | ${sitemapRoutes.size} |

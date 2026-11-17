@@ -31,3 +31,6 @@ docs/reference/**/*.jpg
 docs/reference/**/*.jpeg
 docs/reference/**/*.png
 docs/reference/**/*.webp
+
+# Local tool caches (browser binaries, extracted libraries) never belong in Git.
+.cache/

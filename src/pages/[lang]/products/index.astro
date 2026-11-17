@@ -25,6 +25,7 @@ const categories = (Object.keys(t.categories) as ProductCategory[]).filter(
     lang,
     title: t.catalogueTitle,
     description: t.catalogueText,
+    eyebrow: t.catalogue,
     sources: [],
     reviewed: true,
     pageSchema: collectionSchema(products, lang),

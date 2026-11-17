@@ -2,6 +2,7 @@
 import { site, absoluteUrl } from '../config/site';
 import { locales, type Locale } from '../i18n';
 import { currentStoreOrigin } from '../config/media-policy.mjs';
+import { social as socialProfiles } from '../data/site-contact';
 import brandAssets from '../data/brand-assets.json';
 interface Props {
   title: string;
@@ -59,7 +60,21 @@ const structuredData = {
         width: brandAssets.logo.fullSize,
         height: brandAssets.logo.fullSize,
       },
-      sameAs: [currentStoreOrigin, site.storeUrl],
+      /*
+       * The store is the transactional home; the two social profiles are the ones
+       * the footer already links to and whose destinations are recorded in
+       * src/data/site-contact.ts. Deduplicated: the store origin and the configured
+       * store URL were previously listed twice, which told search engines nothing
+       * and dropped the entity profiles entirely.
+       */
+      sameAs: [
+        ...new Set([
+          site.storeUrl,
+          currentStoreOrigin,
+          socialProfiles.instagram.href,
+          socialProfiles.facebook.href,
+        ]),
+      ],
     },
     {
       '@type': 'WebSite',

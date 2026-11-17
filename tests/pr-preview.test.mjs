@@ -123,6 +123,41 @@ function fixture(t) {
   return path;
 }
 
+/*
+ * Independent of the run above: prove by reading the trusted script that no
+ * staging artifact can be written before its guards have all run, so a guard
+ * that aborts for any reason — including a resource error — still cannot leak a
+ * package. This is a structural check; it does not execute anything.
+ */
+test('the staging packager writes nothing before its guards have passed', () => {
+  const source = readFileSync(
+    resolve(root, 'scripts/package-staging.mjs'),
+    'utf8',
+  );
+  const writes = ['mkdirSync(', 'writeFileSync(', 'copyFileSync(']
+    .map((name) => source.indexOf(name))
+    .filter((index) => index >= 0);
+  assert.ok(
+    writes.length > 0,
+    'the packager should write its artifact somewhere',
+  );
+  const firstWrite = Math.min(...writes);
+  for (const guard of [
+    'Untracked website files must be reviewed before packaging',
+    'Approved website differs from the review baseline',
+    'Commerce must remain disabled and unmapped',
+  ]) {
+    const at = source.indexOf(guard);
+    assert.ok(at >= 0, `missing guard: ${guard}`);
+    assert.ok(
+      at < firstWrite,
+      `guard "${guard}" is not checked before the first filesystem write`,
+    );
+  }
+  // The only output location is the review artifact directory, never a build tree.
+  assert.match(source, /const output = resolve\(root, 'review-artifacts'\)/);
+});
+
 test('approved staging packager still rejects the cinematic website; trusted tools are unchanged', () => {
   const artifacts = resolve(root, 'review-artifacts');
   const existedBefore = existsSync(artifacts);

@@ -35,6 +35,9 @@ const buyUrl = purchaseUrl(product);
     lang,
     title: product.name[lang],
     titleLang: 'en',
+    // A shampoo page says "Hair care", a baby-oil page says "Baby care": the
+    // eyebrow names the section the page is actually in, in the reader's script.
+    eyebrow: t.categories[product.category],
     description: `${product.name[lang]} · ${product.description[lang]}`,
     sources: [],
     reviewed: true,

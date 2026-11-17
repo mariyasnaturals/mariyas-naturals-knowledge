@@ -1,7 +1,7 @@
 # Technical SEO audit — built by `scripts/validate-seo.mjs`
 
-Generated: 2026-11-17T10:40:22.456Z
-Origin: `https://mariyasnaturals.in` · indexable: `true` · publication switches: `awards=false`, `certifications=false`
+Generated: 2026-11-17T12:25:02.443Z
+Origin: `https://www.mariyasnaturals.cloud` · indexable: `false` · publication switches: `awards=false`, `certifications=false`
 
 ## Pages
 
@@ -11,7 +11,7 @@ Origin: `https://mariyasnaturals.in` · indexable: `true` · publication switche
 | Exactly one `<h1>` | 351 / 351 |
 | Pages with a skipped heading level | 0 |
 | Titles | median 41, longest 65 |
-| Meta descriptions | median 128, shortest 0 |
+| Meta descriptions | median 128, shortest 72 |
 | Images | 1738, without `alt` 0 |
 | Internal links checked | 10440, unresolved 0 |
 | Sitemap URLs | 340 |
@@ -53,4 +53,4 @@ Origin: `https://mariyasnaturals.in` · indexable: `true` · publication switche
 
 ## Notes
 
-- none
+- 295 product pages labelled with their own collection, 25 section labels in use
